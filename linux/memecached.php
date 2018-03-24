@@ -7,9 +7,10 @@
 2.安装基本依赖
 	yum install -y libevent-devel
 3.安装memcached
-	tar -zxvf memecached-1.4.33.tar.gz
-	cd memecached1.4.33
-	./configure --prefix=/usr/local/memecached --enable-64bit
+    wget http://memcached.org/files/memcached-1.5.2.tar.gz
+	tar -zxvf memecached-1.5.2.tar.gz
+	cd memecached1.4.2
+	./configure --prefix=/usr/local/memecached --enable-64bit（64位打开）
 	make && make install
 
 	开启服务:
@@ -29,7 +30,7 @@
 	./configure --with-php-config=/usr/local/php7/bin/with-php-config
 	--with-libmemecached-dir=/usr/local/libmemecached/
 	make && make install
-	将上不得到的路径添加到php配置文件：usr/loacl/php7/etc/php.ini 
+	将上步得到的路径添加到php配置文件：usr/loacl/php7/etc/php.ini 
 	extension="/usr/local/php7/lib/php/extensions/no-debug-non-zts-20151012/memcached.so"
 	重启Php:
 	service php-fpm restart 
@@ -44,5 +45,6 @@
 	清空所有缓存：flush
 7. 设置session使用memecached保存
 	vi /usr/local/php7/etc/php.ini
-	session.save_handler = memecached
-	session.save_path = "127.0.0.1:11211"
+	session.save_handler = memecached//找到session.save_handler更改
+	session.save_path = "127.0.0.1:11211"//和上一句写在一起
+8. 重启

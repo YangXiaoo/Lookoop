@@ -52,6 +52,8 @@ class Upload{
 			$this->setOption($key, $value);
 		}
 	}
+
+	//protected $errorNumber;所以可以用get_class_vars判断是否存在
 	protected function setOption($key, $value){
 		$keys = array_keys(get_class_vars(__CLASS__));//get_class_vars(__CLASS__)全局属性名称
 		//get_class_vars() performed within a class can access any public, protected, and private members.
@@ -73,6 +75,7 @@ class Upload{
 		}
 		//判断$_FILES里面的erro信息是否为0，若为0则文件信息在服务器上可以直接获取，提取信息保存到成员属性
 		$error = $_FILES[$key]['error'];
+		
 		if ($error) {
 			$this->setOption('errorNumber', $error);
 			return false;
@@ -85,7 +88,7 @@ class Upload{
 		if (!$this->checkSize() || !$this->checkMime() || !$this->checkSuffix()) {
 			return false;
 		}
-		
+
 		//得到新的名字
 		$this->newName = $this->createNewName();
 

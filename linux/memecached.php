@@ -35,6 +35,7 @@
 	重启Php:
 	service php-fpm restart 
 6. 使用memcached
+	查看php手册
 	创建新对象：new Memecached 
 	添加服务器：addService
 	添加键值对：set

@@ -45,7 +45,7 @@ alter table yangxiao2 drop foreign key (y_foreign);#外键名
 外键约束有3中约束模式(针对父表的约束)：
 	district:严格模式(默认)，父表不能删除或更新一个已经被子表数据引用的记录
 	cascade:级联模式：父表的操作，对应子表关联的数据也跟着操作
-	setnull:置空模式，父表操作后，子表对应的数据(外键字段)被置空
+	set null:置空模式，父表操作后，子表对应的数据(外键字段)被置空
 	一般：删除的时候置空，更新的时候级联
 --删除置空，更新级联
 create table y_foreign1(
@@ -53,7 +53,7 @@ id int primary key auto_increment,
 name varchar(10) not null,
 c_id int,
 foreign key(c_id)
-references yangxiao(id)
+references class(id)
 on delete set null
 on update cascade
 )charset utf8;

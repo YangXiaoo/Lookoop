@@ -1,4 +1,6 @@
 #date(2018-3-24)
+进入数据库：
+mysql -uroot -pxxxxxx;--xxxxxx为密码
 -----------------主键约束---------------------
 唯一性
 1.复合主键
@@ -15,6 +17,7 @@ CREATE TABLE yangxiao1(
 	num char(10) comment 'xuexiao',
 	cou char(10) comment '代码',
 )charset utf8;
+
 --添加主键两种方法
 alter table yangxiao1 modify nun char(10) primary key commet 'xuexiao';
 alter table yangxiao1 add primary key(num);

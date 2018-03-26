@@ -72,7 +72,7 @@ union
 -----------------------------------------------------------------------
 
 		3.行子查询 ： 子查询得到的结果是多列一行(多行多列)(一行)
-		需求：要求查询整个学生中，年龄最大且身高最高的学生
+		需求：要求查询整个学生中，年龄最大且身高最高的学生???
 		->确定数据源 
 		select * from student having age =? and height=?;
 		->确定最大的年龄和最高身高
@@ -96,8 +96,8 @@ union
 		select * from student group by c_id;#每个班选出第一个学生
 		表子查询：from 子查询：得到的结果作为from的数据源
 
-		select * from student (select * from student order by height desc) as student group by c_id ;
-------------------------------------------------------
+		select * from  (select * from student order by height desc) as student group by c_id ;
+------------------------- -----------------------------
 		form之后必须跟表名
 		什么时候用子查询而不要纠结于用了什么子查询
 -------------------------------------------------------

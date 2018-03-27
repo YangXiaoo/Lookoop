@@ -81,3 +81,14 @@ mysql> show variables like 'log_bin_trust_function_creators';
 +---------------------------------+-------+
 mysql> set global log_bin_trust_function_creators=1;
 --------------------------ok--------------------------------------
+
+=============查看函数
+查看所有函数：
+show function status\G 
+
+查看函数创建语句
+show create function display\G
+
+==========修改函数(不可以)&删除
+drop function 函数名;
+

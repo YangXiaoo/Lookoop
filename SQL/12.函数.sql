@@ -91,4 +91,68 @@ show create function display\G
 
 ==========修改函数(不可以)&删除
 drop function 函数名;
+--删除
+drop function display;
 
+
+==========函数参数 
+两种：定义时的参数叫做形参，调用的时的参数叫实参(实参可以是数值也可以是变量)
+
+--计算1到指定数之间的和
+
+delimiter $$
+create function display(int_1 int) returns int 
+begin 
+	set @i = 1;#@定义的变量时全局变量，在函数外部也可以访问
+	set @res = 0;
+	while @i <= int_1 do 
+	--任何变量修改必须用set
+		set @res = @res + @i;
+		set @i = @i + 1;
+	end while;
+	return @res;
+end 
+$$
+
+delimiter ;
+--------------------------------
+select diaplay(3);
++-------------+
+| display(@i) |
++-------------+
+|          10 |
++-------------+
+mysql> select @i,@res;
++------+------+
+| @i   | @res |
++------+------+
+|    4 |    6 |
++------+------+
+-----------------------------------
+====作用域
+Mysql中的作用域与js中的作用域完全一样
+全局变量可以在任何地方使用，全局变量只能在函数内部使用
+
+全局变量：set @变量名; 使用@
+局部变量：declear 关键字声明; 不使用@，所有局部变量的声明必须在函数体之前
+
+--求和：1-指定数之和，要求5的倍数不能加
+delimiter $$
+create function display1(int_1 int) returns int 
+begin 
+	declare i int default 1;
+	declare res int default 0;
+	mywhile:while i <= int_1 do 
+		if i % 5 = 0 then 
+			set i = i + 1;
+			iterate mywhile;
+		end if;
+		set res = res + i;
+		set i = i + 1;
+	end while;
+
+	return res;
+end 
+$$
+
+delimiter ;

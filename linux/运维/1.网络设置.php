@@ -96,3 +96,67 @@ ifdown      ifdown-ib    ifdown-isdn  ifdown-routes  ifdown-TeamPort  ifup-alias
 	i:进入插入模式
 	保存：先按Esc,再按 :wq
 	[root]# vim /etc/sysconfig/network-scripts/ifcfg-eth0 
+-------------------------------------------------------------------
+DEVICE=eth0
+ONBOOT=yes//网卡启动
+//DNS1=192.168.1.1
+//DNS1=192.168.1.2  多个DNS
+BOOTPROTO=static //dhcp:动态获取ip地址，static：表示ip，none表示不指定，就是动态
+IPADDR=172.16.252.65
+NETMASK=255.255.255.0
+//UUID:网卡名(唯一识别号)，不是MAC地址
+---------------------------------------------------------------------
+网关：从一个网络向另一个网络发送信息，也必须经过一道“关口”，这道关口就是网关
+
+2.1 关闭防火墙
+[root]# systemctl status firewalld 	#当前状态firewalld可以写成firewalld.service
+[root]# systemctl stop firewalld.service
+[root]# systemctl start firewalld.service
+[root]# systemctl disable firewalld.service #开机不启动
+[root]# systemctl enable firewalld.service  #开机启动
+[root]# systemctl --list|grep firewalld.service  #centeos6开机启动
+
+2.2 临时和永久关闭selinux
+	临时关闭
+	[root]# getenforce  #查看firewalld是否开启
+	[root]# setenforce 0  #临时关闭
+	永久关闭
+	[root]# vim /etc/selinux/config
+	#SELINUX=enforcing  改为
+	#SELINUX=disabled
+	[root]# reboot 	#重启服务
+
+2.3 设置系统光盘开机自动挂载
+	1)方法一  
+	[root]# vim /etc/fstab   --文档后面增加以下内容
+	/dev/cdrom    /mnt   iso9600 defaults 0 0
+	退出保存
+
+	2)方法二 
+	[root]# echo "/dev/sr0/media iso9660 defaults 0 0" >> /etc/fstab
+	cdrom为sr0/media的快捷方式
+
+	验证挂载是否成功
+	[root]# umount /mnt/
+	[root]# ls /mnt/
+	[root]# mount -a
+	[root]# ls /mnt/
+
+2.4 配置本地yum源
+   	yum所配置在
+   	[root]# cd /etc/yum.repos.d/
+   	[root]# ls
+   	创建新的yum源，结尾必须为repo
+   	[root]# vim CentOs7.repo   #写入以下
+   	-----------------------
+   	[CentOS7]  #yum源的ID，必须唯一
+   	name=CentOS- server #描述信息
+   	baseurl=file:///mnt  #mnt表示光盘的挂载点
+   	enabled=1  #启用
+   	gpgcheck=0 	#取消验证
+   	---------------------------
+
+   	清空yum缓存
+   	[root]# yum clean all   #清理缓存
+   	[root]# yum list     #生成列表
+   	[root]# yum install -y xx   #安装

@@ -1,4 +1,5 @@
 //date(2018-3-28)
+[root]# pwd  #当前目录
 [root]# ifconfig
 [root]# ifconfig eth0 172.16.252.60 重启后就没有
 //阿里云centos7.3修改后xshell不能连接，此时重启服务器
@@ -94,6 +95,7 @@ ctrl+
 [root]# runlevel   #查看当前级别，显示两个旧和新
 [root]# systemctl get_default  #查看当前级别
 
+----------------文件----------------------
 [root]# stat /etc/passwd   #查看文件状态
 [root]# touch file{6..20}  #创建file.6 到 file.20文件
 [root]#mkdir test.txt    #创建一个目录
@@ -108,3 +110,29 @@ ctrl+
 [root]# tail -n 3 文件名   #显示文件末尾三行
 [root]# tail -f 文件名    #动态数据，一般查看日志
 [root]# mv /etc/test.txt /tmp/mv.txt   #移动并修改名称
+
+-----------------------vim---------------------------------
+永久设置环境：
+[root]# vim /etc/.vimrc  #影响所有用户
+[root]# vim ~/.vimrc  #只能影响当前用户
+
+vim打开多个文件：
+[root]# vim -o /etc/passwd /etc/hostname   #上下显示
+[root]# vim -O /etc/passwd /etc/hostname   #左右显示，使用ctrl+ww切换编辑
+
+[root]# vimdiff /etc/passwd test.txt  #比较文件内容
+
+打开乱码解决方案：
+[root]# iconv -f gb2312 -t utf8 test.txt  #test.txt文件乱码解决
+文件串行解决：
+[root]# rpm dos2nuix  #centos6需要安装dos2nuix
+[root]# unix2dos test1.txt #解决串行
+[root]# sz test1.txt #发送到windows本地
+
+删除所有文件:
+[root]# rm -rf/*   #删除所有文件*/
+
+查看inode号：
+[root]# stat test.txt  #查看文件状态
+[root]# ls -i test.txt #直接显示inode号
+[root]# ls -l test.txt #显示详细信息

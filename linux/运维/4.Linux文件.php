@@ -97,3 +97,30 @@ xfsdump的备份级别分为两种：
 增量备份: 每次将之前(第一次，二次，直到前一次)做过的备份之后有变化的文件备份
 差异备份：每次都将第一次完整备份以来有变化的文件进行备份
 
+==============================================================
+date(2018-3-30)
+
+[root]# whereis useradd #查看命令所在目录，并且显示压缩包
+
+grep过滤
+[root]# grep x test.txt #过滤显示test.txt中的x内容
+[root]# grep -v x test.txt #过滤显示test.txt中不为x开头的内容
+[root]# grep ^x test.txt #过滤显示test.txt中的以x开头的内容
+[root]# grep ^$ test.txt #过滤显示test.txt中空行开头内容
+
+find:
+在目录总搜索文件
+find pathname -options [-print]
+
+-options:
+	-name 文件名
+	-prem 文件权限
+	-user 按照文件属性
+	-mtime -n +n 文件更改时间
+		-n 距离现在n天以内
+		+n n天前
+
+[root]# find ./ -name '*.txt'  查找以txt结尾的文件
+[root]# find /etc/ -name 'host*'  查找以host开始的文件
+[root]# find /etc/ -type d  #查找所有目录
+

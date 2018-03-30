@@ -124,3 +124,55 @@ ctrl+
 查看当前级别
 [root]# runlevel
 [root]# systemctl get_default
+
+
+
+==========================================================
+					BASH脚本
+==========================================================
+[root]# vim first.sh
+------------------
+#! /bin/bash  #主要是为了声明为bash解释器，不是注释，有用
+#This is my first shell script  #注释信息不生效
+mkdir /tmp/shell/ 
+ifconfig
+----------------:wq保存退出
+[root]# chmod +x first.sh #权限
+[root]# ./first.sh   #执行
+
+
+
+执行脚本的不同方式;
+	绝对路径
+	相对路径
+	sh  路径/脚本名.sh    #不需要执行权限
+	bash  路径/脚本名.sh    #不需要执行权限,与上一中方法一样的
+
+shell中的变量
+定义：可以存放一个可变值得空间
+常见变量：自定义变量，环境变量，位置变量，预定义变量
+一般echo输出
+
+1) 自定义变量 
+	不需要提前声明，而是直接指定变量名并赋给初始值
+	定义变量格式：变量名=变量值，两边没有等号
+	height=170
+	[root]# echo $height #170
+	[root]# echo ${height}systemctl #170systemctl
+	[root]# read weight height
+		170 135
+	[root]# $weight $height  #170 135
+	[root]# read -p "input your password" passwd #提示符
+
+数值运算：
+	格式 变量1 运算符 变量2    
+	+  -  \*  /  %
+	[root]# A=10 B=20
+	[root]# expr $A + $B   #30
+
+2) 环境变量
+	环境配置变量文件再/etc/profile(全局)
+	用户宿主目录/home/root/.bash_profile(局部)
+	[root]# env 变量  #环境变量
+	$PATH 只有执行的命令在path变量包含的目录下，才能直接使用
+	$USER $SHELL $HOME $LANG 

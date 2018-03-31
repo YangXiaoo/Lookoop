@@ -77,3 +77,39 @@ cyangxiao
 yangxiaoc
 w
 -------------------------------
+自定义vim使用环境
+	临时设置：
+	:set nu #设置行号
+	:set nonu #取消行号
+	永久设置环境：
+	[root]# vim /etc/.vimrc  #影响所有用户
+	[root]# vim ~/.vimrc  #只能影响当前用户
+	set nu
+	:wq 保存退出 
+
+vim打开多个文件：
+	[root]# vim -o /etc/passwd /etc/hostname   #上下显示
+	[root]# vim -O /etc/passwd /etc/hostname   #左右显示，使用ctrl+ww切换编辑
+
+	[root]# vimdiff /etc/passwd test.txt  #比较文件内容
+
+打开乱码解决方案：
+	[root]# iconv -f gb2312 -t utf8 test.txt  #test.txt文件乱码解决
+文件串行解决：
+	[root]# rpm dos2nuix  #centos6需要安装dos2nuix
+	[root]# unix2dos test1.txt #解决串行
+	[root]# sz test1.txt #发送到windows本地
+
+删除所有文件:
+	[root]# rm -rf/*   #删除所有文件，*代表所有         */
+
+Linux文件由三部分组成：
+	文件名 test.txt 
+	元数据信息 inode 
+	真正存放数据 block
+
+查看inode号：
+	[root]# stat test.txt  #查看文件状态
+	[root]# ls -i test.txt #直接显示inode号
+	[root]# ls -l test.txt #显示详细信息
+	

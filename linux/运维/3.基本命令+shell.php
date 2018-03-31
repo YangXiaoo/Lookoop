@@ -176,3 +176,74 @@ shell中的变量
 	[root]# env 变量  #环境变量
 	$PATH 只有执行的命令在path变量包含的目录下，才能直接使用
 	$USER $SHELL $HOME $LANG 
+
+将脚本在所有地方直接使用，将脚本路径添加到$PATH中
+临时生效
+[root]# PATH="$PATH:/tmp/test"  #将脚本路径添加到全局
+永久生效
+[root]# vim /etc/profile  #在末尾添加PATH="$PATH:/tmp/test"，全局永久
+[root]# vim /root/.bash_profile  #若只对rott生效
+需要重启系统，立即生效则要运行
+[root]# source /etc/profile  #立即生效
+
+3) 位置变量
+[root]# expr $A + $B   # expr为$0   $A为$1  $B为$2
+
+编写一个算法：
+[root]# vim test1.sh
+-----------
+#! /bin/bash
+SUM=$(expr $1 + $2)
+echo "$1 + $2 = SUM"
+----------
+$#：表示命令行中位置变量的个数
+$*:所有位置变量的内容
+$?:上一条执行后返回的状态，0位正常，非0标志执行出错或异常值得范围1-127
+$0:当前执行的程序或程序名
+!$:上一命令参数
+
+========
+sed 和 awk 
+
+sed [option] '[sed command]' [filename]
+-n ：只打印模式匹配的行
+-e ：直接在命令行模式上进行sed动作编辑，此为默认选项
+-f ：将sed的动作写在一个文件内，用–f filename 执行filename内的sed动作
+-r ：支持扩展表达式
+-i ：直接修改文件内容
+
+command：
+p 打印匹配行（和-n选项一起合用）
+= 显示文件行号
+a\ 在定位行号后附加新文本信息
+i\ 在定位行号后插入新文本信息
+d 删除定位行
+c\用新文本替换定位文本
+w filename 写文本到一个文件，类似输出重定向 >
+r filename 从另一个文件中读文本，类似输入重定向 <
+s 使用替换模式替换相应模式
+q  第一个模式匹配完成后退出或立即退出
+l 显示与八进制ACSII代码等价的控制符
+{} 在定位行执行的命令组，用分号隔开
+n 从另一个文件中读文本下一行，并从下一条命令而不是第一条命令开始对其的处理
+N 在数据流中添加下一行以创建用于处理的多行组
+g 将模式2粘贴到/pattern n/
+y 传送字符，替换单个字符
+
+awk 
+[root]# awk '{print $1}' test2.txt #显示第一列
+[root]# awk -F: '{print $1}' /tmp/test/test2.txt #显示第一列内容
+打印一个头一个尾
+[root]# awk 'BEGIN {print "name level result\n"} {print $1,$2,$3} END{print  "end of class1 results"}' .test2.txt
+------------
+name level result
+
+an 4 5
+bob 2 3
+lili 33 45
+stand 12 21
+end of class1 results
+------------
+[root]# awk '$2 >= 5 {print $0}' test2.txt  #第二列大于5全部输出
+[root]# awk '{if($1 == "bob" || $2 == "22") print $0}' test2.txt #判断输出
+[root]# awk '{if($1 == "bob" && $2 == "22") print $0}' test2.txt #判断输出

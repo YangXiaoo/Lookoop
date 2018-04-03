@@ -61,9 +61,7 @@ BIND软件
 [root]# ps -aux | grep named #查看named进程
 [root]# netstat -an|grep :53 #检查named工作是否正常，监口为53
 [root]# ls /var/named/chroot/etc/  #查看文件
-[root]#
-[root]#
-[root]#
+
 
 例：配置服务器解析：lxxx.site
 [root]# vim /etc/named.conf #修改文件配置

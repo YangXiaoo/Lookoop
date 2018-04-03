@@ -198,7 +198,5 @@ tcp端口:anpt  udp端口：anpu
 [root]# ping lxxx.site -c 3  -i 3  #ping
 -c 数目 在发送指定的包后停止
 -i 秒数 设定隔几秒送一个网络封装包给一台机器，预设值是一秒一次
-
-
 ----------------------------------递归查询
 [root]# vim /etc/named.conf  #修改配置 

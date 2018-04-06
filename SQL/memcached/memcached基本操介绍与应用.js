@@ -18,6 +18,8 @@ mongadb：文档为单位来存储；
 开启： 
 #-m 内存分配, -p 端口 ,-vv 打印调试信息, -c 最大链接数
 [root]# /usr/local/memcached/bin/memcached -m 64 -p 11211 -u root -vv #临时使用
+[root]# /usr/local/memcached/bin/memcached -m 64 -p 11215 -u root & #后台打开
+#可以在同一台机器开多个端口，然后不同客户端使用不同内存
 
 连接：
 memcached 客户端与服务器端的通信比较简单,使用的基于文本的协议,而不是二进制协议.
@@ -29,6 +31,7 @@ Connected to localhost.
 Escape character is '^]'.
 #显示上面结果则表示连接成功
 
+[root]# netstat -lp | grep memcached #查看进程
 
 
 memcached操作命令：
@@ -105,5 +108,61 @@ mysql> show processlist;
 mysql> stats;
 mysql> show status like '%connect%';
 
+==========================经典现象与问题=====================================
+(1)雪崩现象：缓存雪崩一般是由某个缓存节点失效,导致其他节点的缓存命中率下降, 缓存中缺失的数据
+去数据库查询.短时间内,造成数据库服务器崩溃
 
 
+(2)multiget-hole ：无底洞现象，数据太分散
+解决方案：nosql键的设计
+
+哈希算法根据键自动分配所使用的服务器
+
+mysql的计算为：
+表：主键字段：主键值：字段名
+my_goods:id:1:name  PKU
+计算key->server时根据 主键字段：主键值  来分发
+----------------------------------------------------------------------------------
+NoSQL 和传统的 RDBMS,并不是水火不容,两者在某些设计上,是可以相互参考的.
+对于 memcached, redis 这种 kv 存储, key 的设计,可以参考 MySQL 中表/列的设计.
+比如: user 表下,有 age 列,name 列,身高列,
+对应的 key,可以用 user:133:age = 23, user:133:name = ‘lisi’, user:133:height = 168;
+-----------------------------------------------------------------------------------
+nosql:
+my_goods:name:iphone7:id , 1
+此时根据name查询
+
+此时查询：
+select id from my_goods where name=iphone7;
+select * from my_goods where id=1;
+
+其意义就是为了让同一组数据分发到同一个服务器，减少客服端对不同服务器多次请求，减压
+
+(3)永久数据被踢现象
+1:如果 slab 里的很多 chunk,已经过期,但过期后没有被 get 过, 系统不知他们已经过期.
+2:永久数据很久没 get 了,不活跃,如果新增item,则永久数据被踢了.
+3: 当然,如果那些非永久数据被 get,也会被标识为 expire,从而不会再踢掉永久数据
+
+解决方法：永久性数据与非永久性数据分离
+惰性删除：get后才删除过期的数据
+memcache每get一次活跃度加1，使用的是lru机制(least recently used),即使某个key设置永久有效，也一样会被踢出。
+其它数据库有fifo(first in, first out),rand。
+
+(4)内存碎片化
+memcached 用 slab allocator 机制来管理内存.
+slab allocator 原理: 预告把内存划分成数个 slab class 仓库.{每个 slab class 大小 1M}
+各仓库,再切分成不同尺寸的小块(chunk). 
+需要存内容时,判断内容的大小,为其选取合理的仓库。
+在启动memcached的时候就可以看到切出的块：
+[root]# /usr/local/memcached/bin/memcached -m 64 -p 11211 -u root -vv
+chunk切片增长速度叫做grow factor,使用方法如下：
+[root]# /usr/local/memcached/bin/memcached ­f 2 -vv
+
+(5)参数限制
+key 的长度: 250 字节, (二进制协议支持 65536 个字节)
+value 的限制: 1m, 一般都是存储一些文本,如新闻列表等等,这个值足够了.
+内存的限制: 32 位下最大设置到 2g.
+如果有 30g 数据要缓存,一般也不会单实例装 30g, (不要把鸡蛋装在一个篮子里),
+一般建议 开启多个实例(可以在不同的机器,或同台机器上的不同端口)
+
+(6)分布式缓存

@@ -23,3 +23,5 @@ location ^~ /public/ {
     #rewrite ^/service/(.*)$  /Tp5/public/$1$2 redirect;
     rewrite ^/public/(.*)$  /Tp5/public/$1$2;
 }
+
+vim黄底解决：esc :nohl

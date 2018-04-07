@@ -103,7 +103,7 @@ at 一次性使用  #很少用
 使用：
 [root]# at 16:20 #启动时间，20:00 2018-3-31，now +10min 都可以
 at> mkdir /tmp/linux 
-at> #ctl+v结束
+at> #ctl+d结束
 [root]# at -l #查看任务
 
 删除at计划任务
@@ -139,3 +139,5 @@ anacron
 情景：cron用控制循环执行工作，若执行命令时机器未开启，则机器重启后cron的脚本不会被执行
 
 
+mv /home/wwwroot/default/index.html /home/wwwroot/default/24.html 
+mv /home/wwwroot/default/xxxx.html /home/wwwroot/default/index.html

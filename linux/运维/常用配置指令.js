@@ -25,3 +25,7 @@ location ^~ /public/ {
 }
 
 vim黄底解决：esc :nohl
+
+代码录制：
+[root]#  yum install -y asciinema
+[root]# asciinema rec #ctrl+D结束

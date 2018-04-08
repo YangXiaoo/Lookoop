@@ -1,5 +1,5 @@
-<?php
-===================主函数==================
+
+%===================主函数==================
 clc;
 clear all;
 img = imread('00.jpg'); 
@@ -10,7 +10,7 @@ level = otsu(counts, m*n);
  output(output<level) = 0;  
 output(output>=level) = 255;  
 imshow(output)  
-=====================调用函数======================
+%=====================调用函数======================
 function level = otsu(histogramCounts, total)  
 sum0 = 0;  
 w0 = 0;  

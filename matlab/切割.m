@@ -1,4 +1,4 @@
-<?php
+
 clc;clear all;
 pic = imread('00.jpg');
 imshow(pic);

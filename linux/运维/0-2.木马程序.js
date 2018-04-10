@@ -1,3 +1,4 @@
+#date(2018-4-8)
 1)小程序
 [root]# cd /usr/bin/yxmm 
 #!/bin/bash

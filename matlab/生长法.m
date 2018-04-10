@@ -28,9 +28,9 @@ end
   
 if( nargin == 0)  
     reg_maxdist = 0.2;  
-   %nargin是matlab代码编写中常用的一个技巧，主要用于计算当前主函数的输入参数个  
-    %数，一般可以根据nargin的返回值来确定主函数输入参数的缺省值。在实现中，如果  
-   %用户输入的参数个数为零，那么默认为0.2  
+  %nargin是matlab代码编写中常用的一个技巧，主要用于计算当前主函数的输入参数个  
+  %数，一般可以根据nargin的返回值来确定主函数输入参数的缺省值。在实现中，如果  
+  %用户输入的参数个数为零，那么默认为0.2  
 end  
 J = zeros(size(I)); % 主函数的返回值，记录区域生长所得到的区域  
 Isizes = size(I);  
@@ -73,14 +73,14 @@ neigb = [ -1 0;
     end  
   %从所有待分析的像素点中选择一个像素点，该点的灰度值和已经分割好区域灰度均值的  
    %差的绝对值时所待分析像素中最小的  
-   dist = abs(neg_list(1:neg_pos,3)-reg_mean);  
+    dist = abs(neg_list(1:neg_pos,3)-reg_mean);  
     [pixdist,index] = min(dist);  
-   reg_mean = (reg_mean * reg_size +neg_list(index,3))/(reg_size + 1);  
+    reg_mean = (reg_mean * reg_size +neg_list(index,3))/(reg_size + 1);  
     reg_size = reg_size + 1;  
     %将旧的种子点标记为已经分割好的区域像素点
     J(x,y)=2;%标志该像素点已经是分割好的像素点  
     x = neg_list(index,1);  
-   y = neg_list(index,2);  
+    y = neg_list(index,2);  
 %     pause(0.0005);%动态绘制  
 %     if(J(x,y)==2)  
 %     plot(x,y,'r.');  
@@ -89,11 +89,11 @@ neigb = [ -1 0;
    neg_list(index,:) = neg_list(neg_pos,:);  
    neg_pos = neg_pos -1;  
 end  
-J = (J==2);%我们之前将分割好的像素点标记为2  
- hold off;   
+  J = (J==2);%我们之前将分割好的像素点标记为2  
+  hold off;   
   B1=[0 1 0  
-1 1 1  
-0 1 0];  
+      1 1 1  
+      0 1 0];  
 A2=imdilate(J,B1);%图像A1被结构元素B膨胀  
 A3=imdilate(A2,B1);  
 J=imdilate(A3,B1); 
@@ -105,12 +105,12 @@ J=imdilate(A3,B1);
 % se3=strel('disk',20);  
 % J=imerode(J,se3); 
 
- subplot(1,2,2),imshow(J); 
- imwrite(J,'2-2.jpg');
-J = bwmorph(J,'dilate');%补充空洞  
-figure;
- subplot(1,2,1),imshow(J); 
+  subplot(1,2,2),imshow(J); 
+  imwrite(J,'2-2.jpg');
+  J = bwmorph(J,'dilate');%补充空洞  
+  figure;
+  subplot(1,2,1),imshow(J); 
   imwrite(J,'2-3.jpg');
- subplot(1,2,2),imshow(I+J);
+  subplot(1,2,2),imshow(I+J);
   imwrite(I+J,'2-4.jpg');
  

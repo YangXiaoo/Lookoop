@@ -30,6 +30,19 @@ NetworkManager
 [root]# systemctl enable firewalld.service  #开机启动
 [root]# systemctl --list|grep firewalld.service  #centeos6开机启动
 
+	临时关闭
+	[root]# getenforce  #查看firewalld是否开启
+	[root]# setenforce 0  #临时关闭
+	永久关闭
+	[root]# vim /etc/selinux/config
+	#SELINUX=enforcing  改为
+	#SELINUX=disabled
+	[root]# reboot 	#重启服务
+
+[root]# netstat -antup | grep sshd #查看端口状态
+[root]# route -n  #查看默认路由
+[root]# ping lxxx.site -c 3  -i 3  #ping
+
 [root]#tty    #Teletype查看终端
 [root]# echo shuchu > /dev/pts/1  #向终端/dev/pts/1  发消息
 [root]# wall "关机了"  #向所有在线的终端广播消息
@@ -43,7 +56,8 @@ NetworkManager
 [root]# alias vimeth0="vim /etc/sysconfig/network-scripts/ifcfg-eth0" 
 [root]# vim vimeth0   #执行网卡修改命令
 [root]# unalias vimeth0    #取消别名
-[root]# vim /etc/bashrc  #永久设置别名
+[root]# vim /etc/bashrc  #永久设置别名，修改系统变量
+[root]# vim /etc/profile #全局变量
 
 [root]# cd ..  #进入上级目录
 [root]# cd .    #进入当前目录
@@ -111,6 +125,20 @@ ctrl+
 [root]# tail -f 文件名    #动态数据，一般查看日志
 [root]# mv /etc/test.txt /tmp/mv.txt   #移动并修改名称
 
+
+[root]# whereis useradd #查看命令所在目录，并且显示压缩包
+grep过滤
+[root]# grep x test.txt #过滤显示test.txt中的x内容
+[root]# grep -v x test.txt #过滤显示test.txt中不为x开头的内容
+[root]# grep ^x test.txt #过滤显示test.txt中的以x开头的内容
+[root]# grep ^$ test.txt #过滤显示test.txt中空行开头内容
+
+[root]# find ./ -name '*.txt'  查找以txt结尾的文件
+[root]# find /etc/ -name 'host*'  查找以host开始的文件
+[root]# find /etc/ -type d  #查找所有目录
+
+
+
 -----------------------vim---------------------------------
 永久设置环境：
 [root]# vim /etc/.vimrc  #影响所有用户
@@ -136,3 +164,19 @@ vim打开多个文件：
 [root]# stat test.txt  #查看文件状态
 [root]# ls -i test.txt #直接显示inode号
 [root]# ls -l test.txt #显示详细信息
+
+
+
+[root]# free -m  #查看内存状态
+[root]# systemctl status atd  #查看服务是否运行
+[root]# ls /usr/lib/systemd/system  #查看所有服务命令
+[root]# at -l #查看任务
+
+[root]# vim /etc/crontab #系统计划任务
+[root]# systemctl status crond #查看crond状态
+[root]# systemctl restart crond #启动
+[root]# systemctl enable crond #开机启动
+
+[root]# crontab -e #创建一个计划任务
+[root]# crontab -l #显示任务
+[root]# crontab -r #删除计划任务

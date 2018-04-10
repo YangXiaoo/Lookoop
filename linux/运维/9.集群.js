@@ -142,11 +142,11 @@ ONBOOT=yes
 
 
 2.配置规则(提前安装ipvsadm)
-[root@1 ~]# ipvsdamin -A -t 192.168.1.63:80 -s rr 
-#[root@1 ~]# ipvsdamin -a -t 192.168.1.63:80 -s rr #错误代码
+[root@1 ~]# ipvsadm -A -t 192.168.1.63:80 -s rr 
+#[root@1 ~]# ipvsadm -a -t 192.168.1.63:80 -s rr #错误代码
 
-[root@1 ~]# ipvsdamin -a -t 192.168.1.63:80 -r 192.168.1.62 -g  #直接路由real server
-[root@1 ~]# ipvsdamin -a -t 192.168.1.63:80 -r 192.168.1.64 -g  #直接路由
+[root@1 ~]# ipvsadm -a -t 192.168.1.63:80 -r 192.168.1.62 -g  #直接路由real server
+[root@1 ~]# ipvsadm -a -t 192.168.1.63:80 -r 192.168.1.64 -g  #直接路由
 #-g 表示DR模式
 [root@1 ~]# ipvsadm -L -n  #查看配置情况
 
@@ -183,7 +183,7 @@ net.ipv4.conf.eth0.arp_announce=2
 [root@2 ~]# route -n #查看网关出口ip地址
 [root@2 ~]# vim /etc/sysconfig/network-scripts/ifcfg-eth0 #修改网关地址
 GATEWAY=192.168.1.1
-[root@2 ~]# vim /etc/host
+[root@2 ~]# vim /etc/hosts
 192.168.1.64 lxa.kim  #服务器域名
 [root@2 ~]# echo '192.168.1.64' > /var/www/html/index.html #写入数据
 [root@2 ~]# service httpd restart #重启或以下重启

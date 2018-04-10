@@ -3,9 +3,9 @@
 
 术语解释
 	TCP(Transmission Control Protocal)
-	UDP(Duser Uatagram Protocal)
+	UDP(Duser Datagram Protocal)
     MAC(Media Access Control)
-	bps:Bits Per Scend;
+	bps:Bits Per Second;
 	传输速率又称带宽(Bandwidth);
 	网卡(全称为网络接口卡,Network Information Center)又称网络适配器，LAN卡;
 	ATM(Asynchronous Tranfer Mode)异步传输方式
@@ -175,9 +175,6 @@ IP地址的网络部分用于进行路由控制。
 	以太网默认MTU是1500字节，因此超过此字节的IP数据报文无法在一个帧中完成，这就需要对IP分片
 (IP Fragmentation).经过分片的IP数据报只能由目标主机进行。为了避免出现数据缺失，使用路径MTU
 发现。
-
-
-
 
 
 

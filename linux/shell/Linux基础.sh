@@ -38,6 +38,7 @@ Linux环境变量
 	[root]# printenv PATH #获取单个全局变量
 	[root]# echo $PATH #引用全局变量
 	[root]# ls $PATH #列出全局变量
+	
 2)局部变量
 	[root]# set #显示局部变量和全局变量
 
@@ -132,3 +133,52 @@ Linux文件权限
 		[root]# chown yangxiao file #改变文件file的属主权限
 		[root]# chown yang.yx file #改变文件file的属主权限和属组权限
 
+
+文件系统
+--------
+1)基本文件系统
+	(1)ext 
+		最早期的linux文件系统，全称extended filesystem.使用虚拟目录来操作硬件设备。
+	文件系统通过索引节点来表示文件。
+	(2)ext2
+		第二类扩展文件
+	(3)ext3
+		第三类文件系统，增加了日志文件。没有任何内建的数据压缩功能，不支持加密文件，无法恢复
+	误删文件。
+	(4)ext4
+		第三类系统文件的升级版。
+(2)创建分区
+	[root]# fdisk /dev/sda #驱动器为虚拟机安装时命名
+	此时进入操作界面，各命令参数如下：P148,可直接m查看命令
+		a 设置活动分区标志 active
+		c 设置DOS兼容标识 compatible
+		d 删除分区 delete
+		l 显示可用的分区类型 list 
+		m 显示命令选项 man 
+		n 添加一个新分区 new 
+		o 创建DOS分区表
+		p 显示当前分区表
+		q 退出不保存更改 quit
+		t 修改系统的分区ID
+		u 改变使用的存储单位,unit
+		v 验证分区表 validate
+		w 将分区表写入磁盘 write
+		x 高级功能
+(3)创建文件系统
+	[root]# mkfs.ext4 /dev/sda1 #为新分区创建默认的文件系统
+	[root]# mkdir /mnt/my_partition #创建挂载点目录
+	[root]# sudo mount -t ext4 /dev/sda1 /mnt/my_partition #挂载到虚拟目录中
+
+(4)逻辑卷管理LVM(Logical Volume Manager)
+	[root]# fdisk #
+	t #修改分区ID
+	8e #分区类型，表示该分区作为LinuxLVM系统的一部分
+	p 
+	w 
+	[root]# sudo pvcreate /dev/sda4 #用分区来创建实际物理卷 
+	[root]# sudo pvdisplay /dev/sda4 #显示已经创建的物理卷列表
+	[root]# sudo vgcreate Voll /dev/sda4 #创建卷组
+	[root]# sudo lvcreate -l 100%FREE -n lvtest Voll #创建逻辑卷
+	[root]# sudo lvdisplay Voll #查看创建的逻辑卷
+	[root]# sudo mkfs.ext4 /dev/Voll/lvtest #创建文件系统
+	[root]# sudo mount /dev/Voll/lvtest /mnt/my_partition #挂载到虚拟目录中

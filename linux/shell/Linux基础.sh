@@ -17,7 +17,7 @@ shell的父子关系
 [root]# coproc my_shell { sleep 10; } #设置名称
 
 3)外部命令
-衍生(forking),外部执行时，会创建一个子进程。会产生一个全新环境的子进程，使用成本高
+衍生(forking),外部执行时，会产生一个全新环境的子进程，使用成本高
 [root]# type -a cd #查看一个命令是外键命令还是内建命令
 [root]# which cd #只显示外部命令
 

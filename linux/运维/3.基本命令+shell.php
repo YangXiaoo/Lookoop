@@ -207,7 +207,7 @@ sed 和 awk
 
 sed [option] '[sed command]' [filename]
 -n ：只打印模式匹配的行
--e ：直接在命令行模式上进行sed动作编辑，此为默认选项
+-e ：直接在命令行模式上进行sed动作编辑，此为默认选项,使用多个命令用;隔开
 -f ：将sed的动作写在一个文件内，用–f filename 执行filename内的sed动作
 -r ：支持扩展表达式
 -i ：直接修改文件内容

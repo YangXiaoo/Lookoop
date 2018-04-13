@@ -106,6 +106,8 @@ at> mkdir /tmp/linux
 at> #ctl+d结束
 [root]# at -l #查看任务
 
+[root]# at -f file.sh 14:23
+
 删除at计划任务
 [root]# atrm 命令   #删除计划任务
 [root]# atrm 计划任务编号   #删除计划任务
@@ -136,8 +138,6 @@ cron命令
 	每五分钟执行：*/5 * * * * /root/back.sh 
 
 anacron
-情景：cron用控制循环执行工作，若执行命令时机器未开启，则机器重启后cron的脚本不会被执行
+情景：cron用控制循环执行工作，若执行命令时机器未开启，则机器重启后cron的脚本不会被执行,
+	anacron会让做过执行的程序在开机的时候执行，如处理一些日志文件。
 
-
-mv /home/wwwroot/default/index.html /home/wwwroot/default/24.html 
-mv /home/wwwroot/default/xxxx.html /home/wwwroot/default/index.html

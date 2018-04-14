@@ -1,4 +1,4 @@
-#date(2018-4-12)
+#date(2018-4-12~4-14)
 sed(stream editor)
 对数据流中的文本执行程序脚本
 --------------------
@@ -47,6 +47,8 @@ y 	传送字符，替换单个字符
 		[root]# sed '/user/s/name/bob/gi' data.txt #匹配user所在行并替换
 2)多行命令
 	(1)next命令
+		n:让sed编辑器移动到文本的下一行
+		N：将下一文本添加到模式空间中已有的文本后
 		[root]# sed '/head/{n ; d}' data.txt #匹配head所在行并移至下一行进行删除指令
 		[root]# sed 'N ; s/my.name/Youth/' data.txt #若my name不在一行，则可以通过N连接两行，并进行替换。
 		[root]# sed 'N ; s/my\nname/D' data.txt #删除my name的第一行,下面为结果
@@ -122,15 +124,12 @@ gawk options program file
 ARGC	 	The number of command line parameters present
 ARGIND 		The index in ARGV of the current fle being processed
 ARGV 		An array of command line parameters
-CONVFMT 	The conversion format for numbers (see the printf statement), with a
-			default value of %.6 g
-ENVIRON 	An associative array of the current shell environment variables and their
-			values
+CONVFMT 	The conversion format for numbers (see the printf statement), with a default value of %.6 g
+ENVIRON 	An associative array of the current shell environment variables and their values
 ERRNO 		The system error if an error occurs when reading or closing input fles
 FILENAME 	The flename of the data fle used for input to the gawk program
 FNR 		The current record number in the data fle
-IGNORECASE 	If set to a non-zero value, ignores the case of characters in strings used in
-			the gawk command
+IGNORECASE 	If set to a non-zero value, ignores the case of characters in strings used in the gawk command
 NF 			The total number of data felds in the data fle
 NR 			The number of input records processed
 OFMT 		The output format for displaying numbers, with a default of %.6 g
@@ -140,6 +139,31 @@ RSTART 		The start index of the substring matched in the match function
 5)数组
 	for var in array #var为array的索引
 	delete array[var] #删除数组变量
+
+6)使用模式 
+	[root]# gawk -F: '$1 ~ /rich/{print $1,$NR}' /etc/passwd #匹配rich字段
+7)实例：统计每组成绩的总分和平均分
+	[root]# cat data.txt 
+	bob,team1,20,34,34
+	ben,team2,32,12,34
+	dol,team2,12,25,34
+	ted,team1,32,14,21
+	[root]# vim score.sh
+	#!/bin/bash
+	for team in $(gawk -F, '{print $2}' data.txt | uniq)
+	do 	
+		gawk -v team=$team 'BEGIN{FS=",";total=0}
+		{
+			if ($2==team)
+				{
+					total += $3 + $4 + $5;
+				}
+		}
+		END {  #此处花括号不能换行
+			avg=total/6;
+			print "Total for",taem,"is",total,",the average is",avg
+		}' data.txt
+	done
 
 
 

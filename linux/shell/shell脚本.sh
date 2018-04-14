@@ -16,24 +16,24 @@ CLI(command-line interface)
 		date=`date +%y%m%d`
 		ls /tmp/test -al > log.$date
 	结果：
-	-rw-r--r-- 1 root   root   287 4月  11 16:44 log.180411
+	-rw-r--r-- 1  root  root   287 4月  11 16:44 log.180411
 3)输出重定向
 	>  输出重定向
 	<  输入重定向，command < inputfile ,将文件内容重定向到命令
 	<< 内联重定向(inline input redirection),指定文本标记的开始结尾
-4)管道连接(piping)
+4)管道连接(piping) 
 	输出重定向和输入重定向连用时。
-	[root]# rpm -qa | sort #得到软件列表，然后排序
-	[root]# rpm -qa | sort | more #使用文本分页命令
-	[root]# rpm -qa | sort > list.txt #联合重定向使用
-
-5)数学运算
+	[root]# rpm -qa | sort #得到软件列表，然后排序 
+	[root]# rpm -qa | sort | more #使用文本分页命令 
+	[root]# rpm -qa | sort > list.txt #联合重定向使用 
+ 
+5)数学运算 
 	(1)expr 
-	(2)使用方括号
-		[root]# $va1=$[ 1 + 5 ]
-		[root]# $va2=$[ $va1 * 2 ] #结果为12
-	(3)浮点运算
-		使用bc计算器
+	(2)使用方括号 
+		[root]# $va1=$[ 1 + 5 ] 
+		[root]# $va2=$[ $va1 * 2 ] #结果为12 
+	(3)浮点运算 
+		使用bc计算器 
 			[root]# bc -q #进入计算器并不显示欢迎字符
 		脚本中使用
 			var=$(echo "scale=4; 3.7 / 4" | bc) #scale=4表示显示四位小数
@@ -95,17 +95,17 @@ CLI(command-line interface)
 		-n 检查字符串长度是否非0，不是0返回状态码0
 		-z 检查字符串长度是否为0，若为0返回状态码0
 	(4)文件比较
-		-d file
-		-e file 
-		-f file 
-		-r file 
-		-w file 
-		-s file 
-		-x file 
-		-O file 
-		-G file 
-		file1 -nt file2
-		file1 -ot file2 
+		-d file 是否为目录
+		-e file 是否存在
+		-f file 是否是一个文件
+		-r file 是否存在并可读
+		-w file 是否存在并可写
+		-s file 是否存在并非空
+		-x file 是否可以执行
+		-O file 是否属于当前用户所有
+		-G file 默认组与当前组是否相同
+		file1 -nt file2	file1是否比file2新
+		file1 -ot file2 旧
 
 3) if高级运算
 	使用双括号: (( expression )),P256
@@ -161,7 +161,7 @@ CLI(command-line interface)
 #!/bin/bash
 #detect parameters of input
 count=1
-while [ -n "$1" ]
+while [ -n "$1" ] #-n,-z检查变量是否含数据
 do
   case "$1" in
   -a) echo "found command a";;
@@ -380,3 +380,33 @@ do
 done
 rm -f $tmp1 2> /dev/null #空文件不记录数据，重定向STDOUT
 rm -f $tmp2 2> /dev/null 
+
+
+
+grep
+----
+-a 不要忽略二进制数据。
+-A<显示列数> 除了显示符合范本样式的那一行之外，并显示该行之后的内容。
+-b 在显示符合范本样式的那一行之外，并显示该行之前的内容。
+-c 计算符合范本样式的列数。
+-C<显示列数>或-<显示列数>  除了显示符合范本样式的那一列之外，并显示该列之前后的内容。
+-d<进行动作> 当指定要查找的是目录而非文件时，必须使用这项参数，否则grep命令将回报信息并停止动作。
+-e<范本样式> 指定字符串作为查找文件内容的范本样式。
+-E 将范本样式为延伸的普通表示法来使用，意味着使用能使用扩展正则表达式。
+-f<范本文件> 指定范本文件，其内容有一个或多个范本样式，让grep查找符合范本条件的文件内容，格式为每一列的范本样式。
+-F 将范本样式视为固定字符串的列表。
+-G 将范本样式视为普通的表示法来使用。
+-h 在显示符合范本样式的那一列之前，不标示该列所属的文件名称。
+-H 在显示符合范本样式的那一列之前，标示该列的文件名称。
+-i 忽略字符大小写的差别。
+-l 列出文件内容符合指定的范本样式的文件名称。
+-L 列出文件内容不符合指定的范本样式的文件名称。
+-n 在显示符合范本样式的那一列之前，标示出该列的编号。
+-q 不显示任何信息。
+-R/-r 此参数的效果和指定“-d recurse”参数相同。
+-s 不显示错误信息。
+-v 反转查找。
+-w 只显示全字符合的列。
+-x 只显示全列符合的列。
+-y 此参数效果跟“-i”相同。
+-o 只输出文件中匹配到的部分。

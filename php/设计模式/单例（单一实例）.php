@@ -24,9 +24,9 @@ class Dog {
 	private function _construct(){
 		//静态属性保存单例对象
 		static private $instance;
-		static public function GetInstance(){
+		static public function GetInstance(){  #静态函数：共同分享实例
 			//判别是否为空
-			if (!self::$instance) {
+			if (!self::$instance) {  //空
 				self::$instance = new self();
 			}
 			return self::$instance;

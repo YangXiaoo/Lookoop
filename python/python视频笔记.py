@@ -360,3 +360,62 @@ a = A()
 a.name = youth
 a.age = 23
 a.height = 170 #错误，不能创建，因为已经被锁定了
+
+
+
+循环与递归
+--------------
+	重复执行，解决的问题是线性的
+
+#遍历列表
+mylist = [1,2,3,[4,5],[6,[7,8]]]
+
+def func(obj):
+	for var in obj:
+		if 'list' in str(type(var)):
+			func(var)
+		else:
+			print(var)
+	return None 
+func(mylist)
+
+
+CSV文件操作
+-----------
+ - open 
+ - r 	#读
+ - w 	#写，但会截断清空
+ - a  	#附加
+ - +	#读写模式
+#csv文件写
+import csv
+
+fp = open('1.csv', 'a+')
+mylist = [1,2,3,4,5]
+mystr = ','.join([str(var) for var in mylist])
+#csv_fp = csv.writer(fp) #处理成支持csv文件操作的对象
+fp.write(mystr)
+fp.write('\n')
+fp.write(mystr)
+fp.close()
+
+
+#读
+fp = open('1.csv', 'r',encoding='utf-8')
+mystr = fp.read()
+
+mylist = mystr.strip().split('\n') #有空字符
+
+for var in mylist:
+	print(var.split(','))
+
+fp.close()
+
+
+---------------
+爬虫
+web
+自动化运维
+数据分析
+测试
+QT,MFC,VC,VB

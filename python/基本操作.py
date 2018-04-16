@@ -92,7 +92,7 @@ Linux下安装
 	join		#合并序列的元素，必须都是字符串
 	lower()		#返回字符串的小写版本
 	replace()	#替换
-	split()		#拆分
+	split('\n')		#以换行符拆分
 	strip()		#将字符串开头和末尾的空白删除
 3)打印print
 	print(a,b,sep="_")	#自定义分隔符

@@ -411,7 +411,7 @@ for var in mylist:
 
 fp.close()
 
-
+6
 ---------------
 爬虫
 web

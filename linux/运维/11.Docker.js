@@ -97,3 +97,6 @@ Docker Image 的发布
 实战
 使用生成的centos:httpd 镜像，启动容器，然后将容器中的80端口映射到docker物理机上的9000端口上
 [root@yangxiao ~]# docker run -d -p 9000:80 centos:httpd /bin/sh -c /usr/local/bin/start.sh
+
+#查看一个正在运行的container
+[root@yangxiao ~]# docker exec -ti ID /bin/bash #ID-想要查看的容器ID

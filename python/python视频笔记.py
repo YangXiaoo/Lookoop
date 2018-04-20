@@ -141,29 +141,58 @@ func1()
 正则
 ----
 特殊符号与字符
+.  :匹配任意换行符之外的字符
 \d :匹配任何数字
+\D :非数字[^\d]
 \s ：匹配任何空白符\n\t\r\v\f 
 \w :匹配任何数字，字母，字符==[a-zA-Z0-9_]
-
+\W :非单词字符
+\A :仅匹配字符串开头
+\Z :仅匹配字符串末尾
+\b :匹配\w和\W之间
 	(1)re.compile(pattern) 
 		编译正则表达式
 	(2)re.match(pattern,string) 
-		使用正则表达式匹配字符串，匹配成功则返回一个匹配对象，否则返回None；
+		使用正则表达式匹配字符串，匹配成功则返回一个匹配对象，否则返回None;从起始位置开始找，一次匹配
 	成功时可以使用结果的group函数获取匹配到的值
+		reg = re.compile(r'([a-z]+) ([A-Z]+)',re.I)#re.I 忽略大小写
+		res = re.match(reg,'hello world wide web') # res = reg.match('hello world wide web')
+		res.groups() #返回结果 ('hello', 'world')
+		res.span(0) #返回匹配成功的整个子串的索引
+		res.group(0) #'hello world'
+		res.group(1) # 'hello' 返回第一个分组匹配成功的子串
 	(3)re.search(pattern,string)
-		返回字符串中正则表达式pattern的第一次出现
+		返回字符串中正则表达式pattern的第一次出现，从任何位置开始找，一次匹配(找到匹配之后就不匹配之后的)
+		reg = re.compile(r'\d+')
+		res1 = reg.search('hello 1234 789')
+		res2 = reg.mathc('hello 1234 789')
+		res1.group() #1234 匹配第一次出现的位置
+		res2.group() #None 从字符串起始位置开始匹配，不能匹配到
+		res1.span() #(6,10) 0脚标开始，脚标为6开始到9结束包括9
 	(4)re.split(pattern,string)
-		根据模式来分割字符串
-	(5)re.final(pattern,string) 
-		返回一个列表，包含字符串中所有模式匹配的的子串
+		根据模式来分割字符串，返回列表
+		reg = re.compile(r'[\s\,\;]+') #匹配空白字符，逗号，分号
+		res = reg.split('a,b; ;c   d') #['a','b','c','d']
+	(5)re.findall(pattern,string) 
+		返回一个列表，包含字符串中所有模式匹配的的子串,返回迭代器
+		reg = re.compile(r'\d+')
+		res = reg.findall('hello 1234 789')
+		res.group() # ['1234', '789']
 	(6)re.sub(pat,repl,string)
 		将字符串中与pat匹配的字符换位repl
 		string = 'a*b*s'
   		re.sub('\*','-',string)
+  	(7)findier
+	  	reg = re.compile(r'\d+')
+			res1 = reg.finditer('hello 1234 789')
+			for m in res1:
+				print 'matching strig {},position {}'.format(m.group(),m.span()) 
+				#结果matching string 1234,position (6,10)
+				# matching string 789,position (11,14)
 
-	reg = re.compile('^a')
-	res = re.match(reg,'adssdaa')
-	res.group() #返回结果
+
+
+
 
 ########简单网页爬虫
 	from urllib.request import *

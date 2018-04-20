@@ -161,7 +161,7 @@ RSTART 		The start index of the substring matched in the match function
 		}
 		END {  #此处花括号不能换行
 			avg=total/6;
-			print "Total for",taem,"is",total,",the average is",avg
+			print "Total for",team,"is",total,",the average is",avg
 		}' data.txt
 	done
 

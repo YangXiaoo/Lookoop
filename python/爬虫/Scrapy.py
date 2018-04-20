@@ -43,11 +43,11 @@ $x('//div[@id="touch"]//text()') #id="touch"下所有文本
 
 启动一个项目
 -----------
-[root]# scrapy startproject webs
-[root]# cd web
+[root]# scrapy startproject lxweb
+[root]# cd lxweb
 [root]# tree 
 .
-├── webs
+├── lxweb
 │   ├── __init__.py
 │   ├── items.py
 │   ├── middlewares.py
@@ -64,7 +64,7 @@ $x('//div[@id="touch"]//text()') #id="touch"下所有文本
 from scrapy.item import Item,Field 
 
 
-class WebsItem(Item):
+class LxwebItem(Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     #primary fields
@@ -87,7 +87,7 @@ class WebsItem(Item):
 
 [root]# scrapy genspider basic web
 .
-├── webs
+├── lxweb
 │   ├── __init__.py
 │   ├── items.py
 │   ├── middlewares.py
@@ -102,7 +102,7 @@ class WebsItem(Item):
 │       └── __pycache__
 │           └── __init__.cpython-35.pyc
 └── scrapy.cfg
-[root]# vim webs/spiders/basic.py
+[root]# vim lxweb/spiders/basic.py
 import scrapy
 
 class BasicSpider(scrapy.Spider):
@@ -122,9 +122,9 @@ class BasicSpider(scrapy.Spider):
         	'//*[@id="container_base"]/ul/li[1]/div[1]/div/a/img/@src').extract())
 
 [root]# scrapy crawl basic #运行爬虫
-[root]# vim webs/spiders/basic.py
+[root]# vim lxweb/spiders/basic.py
 import scrapy
-from webs.items import WebsItem
+from lxweb.items import LxwebItem
 
 class BasicSpider(scrapy.Spider):
     name = 'basic'
@@ -132,7 +132,7 @@ class BasicSpider(scrapy.Spider):
     start_urls = ['http://www.taoche.com/all/?from=1293855&WT_KW=%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E5%B8%82%E5%9C%BA%E4%BA%8C%E6%89%8B%E8%BD%A6']
 
     def parse(self, response):
-    	item = WebsItem()
+    	item = LxwebItem()
         item['title'] = response.xpath(
         	'//*[@class="title"][1]/@title').extract()
         item['price'] = response.xpath(
@@ -145,14 +145,14 @@ class BasicSpider(scrapy.Spider):
         return item
 
 [root]# scrapy crawl basic -o items.json #运行爬虫并保存指定格式.jl,.csv
-[root]# vim webs/spiders/basic.py #重新编写
+[root]# vim lxweb/spiders/basic.py #重新编写
 import scrapy
 import socket
 import urlparse
 import datetime
 from scrapy.loader import TtemLoader
 from scrapy.loader.processors import MapCompose, Join
-from webs.items import WebsItem
+from lxweb.items import LxwebItem
 
 class BasicSpider(scrapy.Spider):
     name = 'basic'
@@ -160,14 +160,77 @@ class BasicSpider(scrapy.Spider):
     start_urls = ['http://www.taoche.com/all/?from=1293855&WT_KW=%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E5%B8%82%E5%9C%BA%E4%BA%8C%E6%89%8B%E8%BD%A6']
 
     def parse(self, response):
-    	item = WebsItem()
-        item['title'] = response.xpath(
-        	'//*[@class="title"][1]/@title').extract()
-        item['price'] = response.xpath(
-        	'//*[@class="Total brand_col"][1]/text()').extract()
-        item['description'] = "none"
-        item['address'] = response.xpath(
-        	'//*[@id="container_base"]/ul/li[1]/div[2]/p/i[3]/a/text()').extract()
-        item['image_urls'] = response.xpath(
-        	'//*[@id="container_base"]/ul/li[1]/div[1]/div/a/img/@src').extract()
-        return item
+    	"""
+    	This function parses property page.
+    	@url http://www.taoche.com/all/?from=1293855&WT_KW=%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E5%B8%82%E5%9C%BA%E4%BA%8C%E6%89%8B%E8%BD%A6
+		@return items 1
+		@scrapes title price description address image_urls
+		@scrapes url project spider server date
+    	"""
+    	#create loader using the response
+    	l = ItemLoader(item=LxwebItem(),response=response)
+
+    	#Loader fields using Xpath expressions
+    	l.add_xpath('title','//*[@class="title"][1]/@title',MapCompose(unicode.strip,unicode.title))
+    	l.add_xpath('price','//*[@class="Total brand_col"][1]/text()',MapCompose(unicode.strip))
+    	l.add_xpath('description','none')
+    	l.add_xpath('address','//*[@id="container_base"]/ul/li[1]/div[2]/p/i[3]/a/text()',MapCompose(unicode.strip))
+    	l.add_xpath('image_urls','//*[@id="container_base"]/ul/li[1]/div[1]/div/a/img/@src',MapCompose(lamda i: urlparse.urljoin(response.url,i)))
+        
+        #FIELD
+        l.add_value('url',response.url)
+        l.add_value('project',self.settings.get('BOT_NAME'))
+        l.add_value('spider',self.name)
+        l.add_value('server',socket.gethostname())
+        l.add_value('date',datetime.datetime.now())
+
+        return l.load_time()
+[root]# scrapy genspinder -t crawl easy web  #实现双向爬取
+[root]# vim lxweb/spiders/easy.py
+#python3.5版本下,import MapCpmpose不能用，urlparse也不能引入模块
+import scrapy
+import socket
+import urlparse
+import datetime
+from scrapy.loader import TtemLoader
+from scrapy.loader.processors import MapCompose, Join
+from lxweb.items import LxwebItem
+from scrapy.linkextractors import LinkExtractor
+from scrapy.spiders import CrawlSpider,Rule
+
+class EasySpider(CrawlSpider):
+    name = 'easy'
+    allowed_domains = ['web']
+    start_urls = ['http://www.taoche.com/all/?from=1293855&WT_KW=%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E5%B8%82%E5%9C%BA%E4%BA%8C%E6%89%8B%E8%BD%A6']
+
+    rules = (
+        Rule(LinkExtractor(restrict_xpaths='//*[contains(@class,"pages-next")]')),
+        Rule(LinkExtractor(restrict_xpaths='//*[@id="levelList"]/li[2]/a'),
+        callback='parse_item', follow=True),
+    )
+
+    def parse(self, response):
+    	"""This function parses  property page.
+    	@url http://www.taoche.com/all/?from=1293855&WT_KW=%E4%BA%8C%E6%89%8B%E8%BD%A6%E4%BA%A4%E6%98%93%E5%B8%82%E5%9C%BA%E4%BA%8C%E6%89%8B%E8%BD%A6
+		@return items 1
+		@scrapes title price description address image_urls
+		@scrapes url project spider server date
+    	"""
+    	#create loader using the response
+    	l = ItemLoader(item=LxwebItem(),response=response)
+
+    	#Loader fields using Xpath expressions
+    	l.add_xpath('title','//*[@class="title"][1]/@title',MapCompose(unicode.strip,unicode.title))
+    	l.add_xpath('price','//*[@class="Total brand_col"][1]/text()',MapCompose(unicode.strip))
+    	l.add_xpath('description','none')
+    	l.add_xpath('address','//*[@id="container_base"]/ul/li[1]/div[2]/p/i[3]/a/text()',MapCompose(unicode.strip))
+    	l.add_xpath('image_urls','//*[@id="container_base"]/ul/li[1]/div[1]/div/a/img/@src',MapCompose(lambda i: urlparse.urljoin(response.url,i)))
+
+    	l.add_value('url',response.url)
+    	l.add_value('project',self.settings.get('BOT_NAME'))
+    	l.add_value('spider',self.name)
+    	l.add_value('server',socket.gethostname())
+    	l.add_value('date',datetime.datetime.now())
+
+    	return l.load_time()
+[root]# scrapy crawl easy -s CLOSESPIDER_ITEMCOUNT=90

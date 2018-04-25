@@ -31,6 +31,10 @@
 [root]# ln -s /usr/local/python3/bin/scrapy /usr/bin/scrapy
 [root]# scrapy -v
 [root]# scrapy shell http://www.lxxx.site/Tp5/public/home/index/index
+
+【方法三】
+[root]# pip install scrapy
+
 >>> response.xpath('//div[@class="list-arc-item top"][1]/a/@href').extract()
 ['/Tp5/public/deta/linux/212']
 

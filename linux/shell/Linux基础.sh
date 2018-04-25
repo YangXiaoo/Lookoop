@@ -1,5 +1,7 @@
 #date(2018-4-10)
 #参考书籍：Linux命令行与shell脚本编程大全(第3版)
+getconf LONG_BIT  linux是多少位
+
 [root]# ln -s test.txt test1.txt #硬链接
 [root]# sort -M file #排序，常用-nr
 -b：忽略每行前面开始出的空格字符；

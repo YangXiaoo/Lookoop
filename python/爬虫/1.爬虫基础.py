@@ -115,7 +115,7 @@ Out[3]: "wd=%E4%BC%A0%E6%99%BA%E6%92%AD%E5%AE%A2"
 In [4]: print urllib.unquote("wd=%E4%BC%A0%E6%99%BA%E6%92%AD%E5%AE%A2")
 wd=传智播客
 ---------------------------------------------------
-手动搜索：i
+手动搜索：
 import urllib 
 import urllib2
 import random
@@ -192,18 +192,31 @@ keyfrom=fanyi.web
 action=FY_BY_REALTIME
 typoResult=false
 
-Handler处理器和自定义opener
----------------------------
-import urllib2
+XML(EXtensible Markup Language)
+-------------------------------
+XML的设计宗旨是传输数据，标签需要自定义，被设计为具有自由描述性
 
-#构建一个httphandler处理器对象，支持处理http请求
-#http_handler = urllib2.HTTPHandler()
 
-http_handler = urllib2.HTTPHandler(debuglevel=1) #创建调试信息
+beautifulsoup4
+-------------
+是一个HTML/XML的解析器，但是速度慢
 
-#调用build_opener方法构建一个自定义的opener对象，参数是构建的处理器对象
-opener = urllib2.build_opener(http_handler)
+计算机的核心CPU，一个CPU只能执行一个任务
+一个CPU一次只能执行一个进程
+进程的执行单元叫线程，一个进程可以包含多个线程。
+一个进程的内存空间是共享的，每个进程里的线程都可以使用这个共享空间。
+一个线程在使用这个共享的时候，其它线程必须等它结束
 
-request = urllib2.Request(url)
-response = opener.open(request)
+通过锁实现，防止多个线程使用这个空间。
 
+进程：表示程序的一次执行
+线程：CPU运算的基本调度单位
+
+GIL：python里的执行通行证，而且只有一个，
+
+python的多线程适用于大量密集的I/O处理，文件处理
+python多进程适用于大量的密集并行计算
+
+[root]# pip install selenuim 
+[root]#wget https://bitbucket.org/ariya/phantomjs/downloads/phantomjs-2.1.1-linux-x86_64.tar.bz2
+[root]# tar -jxvf phantomjs-2.1.1-linux-x86_64.tar.bz2

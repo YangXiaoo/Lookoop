@@ -29,3 +29,17 @@ vim黄底解决：esc :nohl
 代码录制：
 [root]#  yum install -y asciinema
 [root]# asciinema rec #ctrl+D结束
+
+ssh配置：
+[root]# passwd yangxiao #修改密码
+
+以下方法错误：
+[root]# vim /etc/ssh/sshd_config # 添加配置
+AllowUsers:yangxiao
+[root]# service sshd restart # 重启ssh 方法一
+[root]# /bin/systemctl restart  sshd.service # 重启方法二
+
+[root]# vim /etc/sudoers 
+## Allows people in group wheel to run all commands
+%wheel    ALL=(ALL)    ALL
+[root]# usermod -g root yangxiao

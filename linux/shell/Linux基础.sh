@@ -184,7 +184,7 @@ Linux文件权限
 	[root]# mkfs.ext4 /dev/sda1 #为新分区创建默认的文件系统
 	[root]# mkdir /mnt/my_partition #创建挂载点目录
 	[root]# sudo mount -t ext4 /dev/sda1 /mnt/my_partition #挂载到虚拟目录中
-
+	
 (4)逻辑卷管理LVM(Logical Volume Manager)
 	[root]# fdisk #
 	t #修改分区ID

@@ -51,7 +51,10 @@ var：系统运行和软件运行产生的日志信息，该目录的内容是�
 	创建普通目录
 	[root]#mkdir test.txt    #创建一个目录
 	[root]#mkdir -p /temp/a/b/c   #创建多个目录，前面加个-p
-
+	-Z：设置安全上下文，当使用SELinux时有效；
+    -m<目标属性>或--mode<目标属性>建立目录的同时设置目录的权限；
+    -p或--parents 若所要建立目录的上层目录目前尚未建立，则会一并建立上层目录；
+    --version 显示版本信息。
 删除文件和目录 rm
 	选项：
 	-f, --force   ignore nonexistent files and arguments, never prompt

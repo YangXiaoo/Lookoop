@@ -43,3 +43,18 @@ AllowUsers:yangxiao
 ## Allows people in group wheel to run all commands
 %wheel    ALL=(ALL)    ALL
 [root]# usermod -g root yangxiao
+
+
+--------------------------------------------------------
+系统网络服务关闭
+[root]# killall php-fpm 
+[root]# nginx -s stop 
+or [root]# /usr/local/nginx/sbin/nginx -s stop
+[root]# service httpd stop
+
+
+-------------------------------------------------------- 
+Django 基本操作命令
+
+1.7以下版本数据库同步
+[root]# python manage.py syncdb

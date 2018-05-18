@@ -44,8 +44,6 @@ def set_cmd_text_color(color, handle=std_out_handle):
 #reset white
 def resetColor():
     set_cmd_text_color(FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE)
- 
- 
 
 #blue
 def printBlue(mess):

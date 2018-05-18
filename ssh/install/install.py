@@ -21,7 +21,6 @@ sys.path.append(ssh_dir)
 
 def bash(cmd):
     """
-    run a bash shell command
     执行bash命令
     """
     return shlex.os.system(cmd)
@@ -91,7 +90,7 @@ class PreSetup(object):
         self.db_port = 3306
         self.db_user = 'sshweb'
         self.db_pass = 'ssh@web'
-        self.db = 'ssh'
+        self.db = 'sshweb'
         self.mail_host = 'smtp.qq.com'
         self.mail_port = 25
         self.mail_addr = 'ssh@web.com'

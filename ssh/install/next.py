@@ -11,32 +11,32 @@ import socket
 import subprocess
 
 
-jms_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
-sys.path.append(jms_dir)
+ssh_dir = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(ssh_dir)
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'jumpserver.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'ssh.settings'
 if django.get_version() != '1.6':
     setup = django.setup()
 
-from juser.user_api import db_add_user, get_object, User
+from ssh.models import User
 from install import color_print
-from jumpserver.api import get_mac_address, bash
+from ssh.api import get_mac_address, bash, get_object
 
 socket.setdefaulttimeout(2) #2秒后超时
 
 
 class Setup(object):
     """
-    安装jumpserver向导
+    安装ssh向导
     """
 
     def __init__(self):
-        self.admin_user = 'admin'
-        self.admin_pass = '5Lov@wife'
+        self.admin_user = 'sshweb'
+        self.admin_pass = 'ssh@web'
 
     @staticmethod
     def _pull(): 
-        color_print('开始更新jumpserver', 'green') 
+        color_print('更新sshweb', 'green') 
         #应该是记录安装jumpserver的主机数目
         # bash('git pull')
         try:
@@ -47,7 +47,7 @@ class Setup(object):
                 mac = uuid.UUID(int=node).hex[-12:]
                 return mac
             '''
-            version = urllib.urlopen('http://jumpserver.org/version/?id=%s' % mac)
+            version = urllib.urlopen('http://jumpserver.org/version/?id=wsjisuhwgyuxwyu')
         except:
             pass
 
@@ -75,15 +75,16 @@ class Setup(object):
 
     @staticmethod
     def _sync_db():
-        os.chdir(jms_dir) #改变当前工作目录到指定文件下
-        execute_from_command_line(['manage.py', 'syncdb', '--noinput']) #本命令会修复SQL的匹配问题，同步数据库，生成管理界面使用的额外的数据库表
+        os.chdir(ssh_dir) #改变当前工作目录到指定文件下
+        execute_from_command_line(['manage.py', 'syncdb', '--noinput']) 
+        #本命令会修复SQL的匹配问题，同步数据库，生成管理界面使用的额外的数据库表
 
     def _create_admin(self):
         user = get_object(User, username=self.admin_user)
         if user:
             user.delete()
-        db_add_user(username=self.admin_user, password=self.admin_pass, role='SU', name='admin', groups='',
-                    admin_groups='', email='admin@jumpserver.org', uuid='MayBeYouAreTheFirstUser', is_active=True)
+        user_data = User(username=self.admin_user, password=self.admin_pass, name='admin', email='ssh@web.com', uuid='MayBeYouAreTheFirstUser', is_active=True)
+        user_data.save()
         cmd = 'id %s 2> /dev/null 1> /dev/null || useradd %s' % (self.admin_user, self.admin_user)
         '''
         &  表示任务在后台执行，如要在后台运行redis-server,则有  redis-server &
@@ -95,25 +96,25 @@ class Setup(object):
 
     @staticmethod
     def _chmod_file():
-        os.chdir(jms_dir) #工作路径移动到当前目录下
-        os.chmod('init.sh', 0755)
-        os.chmod('connect.py', 0755)
+        os.chdir(ssh_dir) #工作路径移动到当前目录下
+        # os.chmod('init.sh', 0755)
+        # os.chmod('connect.py', 0755)
         os.chmod('manage.py', 0755)
         os.chmod('run_server.py', 0755)
         os.chmod('service.sh', 0755)
         os.chmod('logs', 0777)
-        os.chmod('keys', 0777)
+        # os.chmod('keys', 0777)
 
     @staticmethod
     def _run_service():
-        cmd = 'bash %s start' % os.path.join(jms_dir, 'service.sh') #$1结果未出
+        cmd = 'bash %s start' % os.path.join(ssh_dir, 'service.sh') #$1结果未出
         shlex.os.system(cmd)
         print
-        color_print('安装成功，Web登录请访问http://ip:8000, 祝你使用愉快。\n请访问 https://github.com/jumpserver/jumpserver/wiki 查看文档', 'green')
+        color_print('安装成功，Web登录请访问http://ip:8000, 祝你使用愉快。\n', 'green')
 
     def start(self):
-        print "开始安装Jumpserver ..."
-        self._pull()
+        print "开始安装sshweb ..."
+        # self._pull()
         self._sync_db()
         self._input_admin()
         self._create_admin()

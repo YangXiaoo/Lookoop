@@ -27,20 +27,9 @@
 
 		<form id="asset_form" method="POST">
 			<div class="form-group">
-				<label class="col-sm-3 control-label">IP地址</label>
-				<div class="col-sm-7"><input class="form-control" name="ip" placeholder="IP Address"></div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">端口号</label>
-				<div class="col-sm-7"><input class="form-control" name="port" placeholder="port">
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">主机名</label>
-				<div class="col-sm-7"><input class="form-control" name="hostname" placeholder="hostname">
-				</div>
-			</div>
-					
+				<label class="col-sm-3 control-label">姓名</label>
+				<div class="col-sm-7"><input class="form-control" name="name" placeholder="your name"></div>
+			</div>	
 			<div class="form-group">
 				<label class="col-sm-3 control-label">登录名</label>
 				<div class="col-sm-7"><input class="form-control" name="username" placeholder="username"></div>
@@ -48,11 +37,11 @@
 			<div class="form-group">
 				<label class="col-sm-3 control-label">密码</label>
 				<div class="col-sm-7"><input class="form-control" name="password" placeholder="password"></div>
-			</div>                    
+			</div>  
 			<div class="form-group">
-				<label class="col-sm-3 control-label">密匙</label>
-				<div class="col-sm-7"><input class="form-control" name="ssh_key" placeholder="ssh key"></div>
-			</div>
+				<label class="col-sm-3 control-label">邮箱</label>
+				<div class="col-sm-7"><input class="form-control" name="email" placeholder="email"></div>
+			</div>                    
 			<div class="form-group">
 				<label class="col-sm-3 control-label">是否激活</label>
 				<div  class="col-sm-7">
@@ -65,11 +54,7 @@
 						</label>
 					</div>
 				</div>
-			</div>
-			<div class="form-group">
-				<label class="col-sm-3 control-label">备注</label>
-				<div class="col-sm-7"><input class="form-control" name="comment" placeholder="comment"></div>
-			</div>                                        
+			</div>                                      
 			<div class="form-group">
 				<div class="col-sm-3"></div>
 					<div class="col-sm-7">
@@ -97,26 +82,15 @@
             check_port: [/^\d{1,5}$/, '端口号不正确'],
         },
         fields: {
-            "ip": {
-                rule: "required;check_ip;",
-                tip: "输入IP",
-                ok: "",
-                msg: {required: "必须填写!"}
-            },
-            "hostname": {
+            "name": {
                 rule: "required;length[0~53]",
-                tip: "填写主机名",
+                tip: "填写姓名",
                 ok: "",
                 msg: {required: "必须填写!"}
             },
-            "port": {
-                rule: "required",
-                tip: "输入端口号",
-                ok: "",
-                msg: {required: "必须填写!"}
-            },
+
             "username": {
-                rule: "required",
+                rule: "required;length[0~53]",
                 tip: "输入用户名",
                 ok: "",
                 msg: {required: "必须填写!"}

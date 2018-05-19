@@ -205,3 +205,74 @@ def web_terminal(request):
     asset_id = request.GET.get('id')
     asset = get_object(Asset, id=asset_id)
     return render_to_response('web_terminal.html', locals())
+
+
+@require_login
+def user_add(request):
+    '''
+    堡垒机用户添加
+    '''
+    error = ''
+    msg = ''
+
+    if request.method == 'POST':
+        username = request.POST.get('username', '')
+        password = PyCrypt.gen_rand_pass(16)
+        name = request.POST.get('name', '')
+        email = request.POST.get('email', '')
+        uuid_r = uuid.uuid4().get_hex()
+        ssh_key_pwd = PyCrypt.gen_rand_pass(16)
+        is_active = True if request.POST.get('is_active') == '1' else False
+        send_mail_need = True
+
+        try:
+            if '' in [username, password, ssh_key_pwd, name]:
+                error = u'带*内容不能为空'
+                raise ServerError
+            check_user_is_exist = UserPar.objects.filter(username=username)
+            if check_user_is_exist:
+                error = u'注意：用户 %s 重复' % username
+                user_de = get_object(UserPar, username=username)
+        except ServerError:
+            pass
+        else:
+            try:
+                user = db_add_user(username=username, name=name,
+                                   password=password,
+                                   email=email, uuid=uuid_r,
+                                   ssh_key_pwd=ssh_key_pwd,
+                                   is_active=is_active,
+                                   date_joined=datetime.datetime.now())
+                server_add_user(username=username, ssh_key_pwd=ssh_key_pwd)
+                user = get_object(UserPar, username=username)
+            except IndexError, e:
+                error = u'添加用户 %s 失败 %s ' % (username, e)
+                try:
+                    db_del_user(username)
+                    server_del_user(username)
+                except Exception:
+                    pass
+            else:
+                if MAIL_ENABLE and send_mail_need:
+                    user_add_mail(user, kwargs=locals())
+                msg = get_display_msg(user, password=password, ssh_key_pwd=ssh_key_pwd, send_mail_need=send_mail_need)
+    return render_to_response('user_add.html', locals(),context_instance=RequestContext(request))
+
+
+@require_login
+def key_down(request):
+    uuid_r = request.GET.get('uuid', '')
+    if uuid_r:
+        user = get_object(UserPar, uuid=uuid_r)
+        if user:
+            username = user.username
+            private_key_file = os.path.join(KEY_DIR, 'user', username+'.pem')
+            print private_key_file
+            if os.path.isfile(private_key_file):
+                f = open(private_key_file)
+                data = f.read()
+                f.close()
+                response = HttpResponse(data, content_type='application/octet-stream')
+                response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(private_key_file)
+                return response
+    return HttpResponse('No Key File. Contact Admin.')

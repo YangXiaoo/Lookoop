@@ -57,3 +57,17 @@ class Log(models.Model):
 
     def __unicode__(self):
         return self.log_path
+
+
+class UserPar(models.Model):
+    name = models.CharField(max_length = 100)
+    username = models.CharField(max_length = 100)
+    password = models.CharField(max_length = 100)
+    email = models.CharField(max_length = 100)
+    ssh_key_pwd = models.CharField(max_length = 100)
+    uuid = models.CharField(max_length = 100)
+    is_active = models.BooleanField(default=True)
+    date_joined = models.DateTimeField(auto_now=True, null=True)
+
+    def __unicode__(self):
+        return self.name

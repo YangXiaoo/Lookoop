@@ -58,3 +58,10 @@ Django 基本操作命令
 
 1.7以下版本数据库同步
 [root]# python manage.py syncdb
+
+
+
+----------------------------
+查看用户
+[root]# cat /etc/passwd
+[root]# cat /etc/group

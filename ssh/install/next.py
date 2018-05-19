@@ -33,6 +33,7 @@ class Setup(object):
     def __init__(self):
         self.admin_user = 'sshweb'
         self.admin_pass = 'ssh@web'
+        self.admin_email = ''
 
     @staticmethod
     def _pull(): 
@@ -55,11 +56,15 @@ class Setup(object):
         while True:
             print
             admin_user = raw_input('请输入管理员用户名 [%s]: ' % self.admin_user).strip()
+            admin_user = raw_input('请输入管理员邮箱 [%s]: ' % self.admin_email).strip()
             admin_pass = raw_input('请输入管理员密码: [%s]: ' % self.admin_pass).strip()
             admin_pass_again = raw_input('请再次输入管理员密码: [%s]: ' % self.admin_pass).strip()
 
             if admin_user:
                 self.admin_user = admin_user
+
+            if admin_email:
+                self.admin_email = admin_email
 
             if not admin_pass_again:
                 admin_pass_again = self.admin_pass
@@ -83,7 +88,7 @@ class Setup(object):
         user = get_object(User, username=self.admin_user)
         if user:
             user.delete()
-        user_data = User(username=self.admin_user, password=self.admin_pass, name='admin', email='ssh@web.com', uuid='MayBeYouAreTheFirstUser', is_active=True)
+        user_data = User(username=self.admin_user, password=self.admin_pass, name='admin', email=self.admin_email, uuid='you are administrator', is_active=True)
         user_data.save()
         cmd = 'id %s 2> /dev/null 1> /dev/null || useradd %s' % (self.admin_user, self.admin_user)
         '''
@@ -110,7 +115,7 @@ class Setup(object):
         cmd = 'bash %s start' % os.path.join(ssh_dir, 'service.sh') #$1结果未出
         shlex.os.system(cmd)
         print
-        color_print('安装成功，Web登录请访问http://ip:8000, 祝你使用愉快。\n', 'green')
+        color_print('安装成功，Web登录请访问http://ip:80, 祝你使用愉快。\n', 'green')
 
     def start(self):
         print "开始安装sshweb ..."

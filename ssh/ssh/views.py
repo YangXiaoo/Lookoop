@@ -54,7 +54,9 @@ def Logout(request):
     '''
     注销
     '''
+    request.session['role_id'] = ''
     logout(request)
+
     return HttpResponseRedirect(reverse('index'))
 
 

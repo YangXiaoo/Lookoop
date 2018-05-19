@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title> 增添主机 | SshWeb</title>
+	<title> 编辑主机 | SshWeb</title>
 	<link href="/static/css/bootstrap.min.css" rel="stylesheet">
 	<link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
 </head>
@@ -27,30 +27,30 @@
 		<form id="asset_form" method="POST">
 			<div class="form-group">
 				<label class="col-sm-3 control-label">IP地址</label>
-				<div class="col-sm-7"><input class="form-control" name="ip" placeholder="IP Address"></div>
+				<div class="col-sm-7"><input class="form-control" name="ip" value="{{ asset.ip }}" placeholder="IP Address"></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">端口号</label>
-				<div class="col-sm-7"><input class="form-control" name="port" placeholder="port">
+				<div class="col-sm-7"><input class="form-control" value="{{ asset.port }}" name="port" placeholder="port">
 				</div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">主机名</label>
-				<div class="col-sm-7"><input class="form-control" name="hostname" placeholder="hostname">
+				<div class="col-sm-7"><input class="form-control" value="{{ asset.hostname }}" name="hostname" placeholder="hostname">
 				</div>
 			</div>
 					
 			<div class="form-group">
 				<label class="col-sm-3 control-label">登录名</label>
-				<div class="col-sm-7"><input class="form-control" name="username" placeholder="username"></div>
+				<div class="col-sm-7"><input class="form-control" value="{{ asset.username }}" name="username" placeholder="username"></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">密码</label>
-				<div class="col-sm-7"><input class="form-control" name="password" placeholder="password"></div>
+				<div class="col-sm-7"><input class="form-control" value="{{ asset.password }}" name="password" placeholder="password"></div>
 			</div>                    
 			<div class="form-group">
 				<label class="col-sm-3 control-label">密匙</label>
-				<div class="col-sm-7"><input class="form-control" name="ssh_key" placeholder="ssh key"></div>
+				<div class="col-sm-7"><input class="form-control" value="{{ asset.ssh_key }}" name="ssh_key" placeholder="ssh key"></div>
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">是否激活</label>
@@ -67,9 +67,9 @@
 			</div>
 			<div class="form-group">
 				<label class="col-sm-3 control-label">备注</label>
-				<div class="col-sm-7"><input class="form-control" name="comment" placeholder="comment"></div>
+				<div class="col-sm-7"><input class="form-control" value="{{ asset.comment }}" name="comment" placeholder="comment"></div>
 			</div>                                        
-			<div class="form-group">
+			<div class="row">
 				<div class="col-sm-3"></div>
 					<div class="col-sm-7">
 						<div class="btn-group pull-right">
@@ -85,8 +85,7 @@
 	</div>
     <script src="/static/js/jquery-2.1.1.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
-	<script src="/static/js/validator/jquery.validator.js"></script>
-	<script src="/static/js/validator/zh_CN.js"></script>
+
     <script>
        $('#asset_form').validator({
         timely: 2,
@@ -97,7 +96,7 @@
         },
         fields: {
             "ip": {
-                rule: "required;check_ip;",
+                rule: "check_ip;",
                 tip: "输入IP",
                 ok: "",
                 msg: {required: "必须填写!"}
@@ -121,7 +120,7 @@
                 msg: {required: "必须填写!"}
             },
             "password": {
-                rule: "required;length[0~64]",
+                rule: "length[0~64]",
                 tip: "输入密码",
                 ok: "",
                 msg: {required: "必须填写!"}

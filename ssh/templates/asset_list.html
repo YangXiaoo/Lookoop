@@ -9,21 +9,31 @@
     <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
 </head>
 
-<body class="gray-bg">
-
+<body class="gray-bg container">
+    <div  align="center">
+        {% if error %}
+        <div class="alert alert-warning text-center">{{ error }}</div>
+        {% endif %}
+        {% if msg %}
+        <div class="alert alert-success text-center">{{ msg }}</div>
+        {% endif %}
+    </div>
+    <hr>
     <div class="search row">
         <div class="col-sm-6">
            {# <a href="{% url 'asset_add' %}" class="btn btn-xs btn-info">增加</a> #}
         </div>
         <div class="col-sm-6">
-            <div class="input-group">
-                <input type="text" class="form-control" id="search_input" placeholder="搜索">
-                <span class="input-group-btn">
-                    <button class="btn btn-default" id="search-btn" type="submit"><i class="fa fa-search"></i></button>
-                </span>
-            </div>            
+            <form class="form-horizontal" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control"  name="keyword" value="{{ keyword }}" id="search_input" placeholder="搜索">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"  id="search-btn" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>  
+            </form>          
         </div>
-        <br>
+    </div><hr>
     <div class="center">
         <table class="table table-condensed">
         <tr class="success">
@@ -35,6 +45,19 @@
             <td>创建时间</td>
             <td>操作</td>
         </tr>
+        {% ifequal iters 0 %}
+            <td>{{ asset.hostname }}</td>
+            <td>{{ asset.ip }}</td>
+            <td>{{ asset.username }}</td>
+            <td>{{ asset.system_version }}</td>
+            <td>{{ asset.is_active }}</td>
+            <td>{{ asset.date_add }}</td>
+            <td>
+                <a href="{% url 'asset_edit' %}?id={{ asset.id }}" class="btn btn-xs btn-info">编辑</a>
+                <a value="{{ asset.id }}" class="conn btn btn-xs btn-warning">连接</a>
+                <a value="{% url 'asset_del' %}?id={{ asset.id }}" class="btn btn-xs btn-danger asset_del">删除</a>
+            </td>
+        {% else %}        
         {% for asset in asset_find %}
             <td>{{ asset.hostname }}</td>
             <td>{{ asset.ip }}</td>
@@ -48,6 +71,7 @@
                 <a value="{% url 'asset_del' %}?id={{ asset.id }}" class="btn btn-xs btn-danger asset_del">删除</a>
             </td>
         {% endfor %}
+        {% endifequal %}
         </table>
      
     </div>
@@ -57,5 +81,13 @@
 
 </body>
 
+<script>
+$(document).ready(function(){
+    $('.conn').click(function(){
+        var url = '{% url "web_terminal" %}?id=' + $(this).attr('value');
+        window.open(url, '_blank');
+    });
+});
+</script>
 </html>
 

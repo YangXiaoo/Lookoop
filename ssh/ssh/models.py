@@ -29,6 +29,7 @@ class Asset(models.Model):
     is_active = models.BooleanField(default=True, verbose_name=u"是否激活")
     date_add = models.DateTimeField(auto_now=True, null=True, verbose_name=u"创建时间")
     comment = models.CharField(max_length=100, blank=True, null=True, verbose_name=u"备注")
+    
     mac = models.CharField(max_length=20, blank=True, null=True, verbose_name=u"MAC地址")
     brand = models.CharField(max_length=64, blank=True, null=True, verbose_name=u'硬件厂商型号')
     cpu = models.CharField(max_length=64, blank=True, null=True, verbose_name=u'CPU')

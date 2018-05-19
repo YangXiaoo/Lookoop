@@ -31,9 +31,17 @@ import struct, fcntl, signal, socket, select
 from tornado.options import define, options
 from pyinotify import WatchManager, ProcessEvent, IN_DELETE, IN_CREATE, IN_MODIFY, AsyncNotifier
 import select
+try:
+    import termios
+    # 堡垒机实现：https://my.oschina.net/eddylinux/blog/604317
+    import tty
+except ImportError:
+    print '\033[1;31m仅支持类Unix系统 Only unix like supported.\033[0m'
+    time.sleep(3)
+    sys.exit()
 
 try:
-    import simplejson as json #simplejson（c语言）速度要快于json
+    import simplejson as json
 except ImportError:
     import json
 
@@ -41,22 +49,21 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'ssh.settings'
 if not django.get_version().startswith('1.6'):
     setup = django.setup()
 
-from ssh.api import color_print, logger
+from ssh.api import *
 try:
     remote_ip = os.environ.get('SSH_CLIENT').split()[0]
 except (IndexError, AttributeError):
     remote_ip = os.popen("who -m | awk '{ print $NF }'").read().strip('()\n')
 
-
+from ssh.models import *
 from ssh.settings import IP, PORT, LOG_DIR, NAV_SORT_BY
 
 define("port", default=PORT, help="run on the given port", type=int)
 define("host", default=IP, help="run port on given host", type=str)
 
 def django_request_support(func): 
-    # 带参数的装饰器
-    @functools.wraps(func)# 编写装饰器时，在实现前加入 @functools.wraps(func) 可以保证装饰器不会对被装饰函数造成影响
-    def _deco(*args, **kwargs): # *元组，**字典；无名参数和有名参数的区别
+    @functools.wraps(func)
+    def _deco(*args, **kwargs):
         request_started.send_robust(func)
         response = func(*args, **kwargs)
         request_finished.send_robust(func)
@@ -79,8 +86,8 @@ class Tty(object):
         self.username = asset.username
         self.asset_name = asset.hostname
         self.ip = asset.ip
-        self.port = asset.ip
-        self.passwd = asset.passwd
+        self.port = asset.port
+        self.passwd = asset.password
         self.ssh_key = asset.ssh_key
         self.ssh = None
         self.channel = None
@@ -163,6 +170,11 @@ class Tty(object):
         记录用户的日志
         """
         tty_log_dir = os.path.join(LOG_DIR, 'tty')
+        if not os.path.isfile(tty_log_dir):
+            try:
+                mkdir(tty_log_dir, mode=777)
+            except:
+                logger.debug('创建目录 %s 失败' % tty_log_dir)
         date_today = datetime.datetime.now()
         date_start = date_today.strftime('%Y%m%d')
         time_start = date_today.strftime('%H%M%S')
@@ -203,16 +215,17 @@ class Tty(object):
         """
         获取需要登陆的主机的信息和映射用户的账号密码
         """
-        passwd = CRYPTOR.decrypt(self.passwd)
-        connect_info = {'user': self.username, 'asset_name': self.hostname, 'ip': self.ip,
-                        'port': int(self.port),'role_passwd': passwd, 'role_key': self.ssh_key}
+        # passwd = CRYPTOR.decrypt(self.passwd)
+        connect_info = {'user': self.username, 'asset_hostname': self.asset_name, 'ip': self.ip, 'port': self.port,'ssh_passwd': self.passwd, 'role_key': self.ssh_key}
         logger.debug(connect_info)
+        # logger.debug('get_connection_info successful')
         return connect_info
 
     def get_connection(self):
         """
         获取连接成功后的ssh
         """
+        # logger.debug('start connection')
         connect_info = self.get_connect_info()
 
         # 发起ssh连接请求 Make a ssh connection
@@ -226,7 +239,7 @@ class Tty(object):
                     ssh.connect(connect_info.get('ip'),
                                 port=connect_info.get('port'),
                                 username=connect_info.get('user'),
-                                password=connect_info.get('role_passwd'),
+                                password=connect_info.get('ssh_passwd'),
                                 key_filename=role_key,
                                 look_for_keys=False)
                     return ssh
@@ -237,7 +250,7 @@ class Tty(object):
             ssh.connect(connect_info.get('ip'),
                         port=connect_info.get('port'),
                         username=connect_info.get('user'),
-                        password=connect_info.get('role_passwd'),
+                        password=connect_info.get('ssh_passwd'),
                         allow_agent=False,
                         look_for_keys=False)
 
@@ -248,6 +261,7 @@ class Tty(object):
         else:
             self.ssh = ssh
             return ssh
+        # logger.debug('connect successful')
 
 
 class WebTty(Tty):
@@ -282,7 +296,7 @@ class WebTerminalKillHandler(tornado.web.RequestHandler):
 
 
 class WebTerminalHandler(tornado.websocket.WebSocketHandler):
-    # 参考博客 https://www.cnblogs.com/shijingjing07/p/6558668.html
+    # https://www.cnblogs.com/shijingjing07/p/6558668.html
     clients = []
     tasks = []
 
@@ -303,9 +317,9 @@ class WebTerminalHandler(tornado.websocket.WebSocketHandler):
     @django_request_support
     def open(self):
         logger.debug('Websocket: Open request')
-        asset_name = self.get_argument('user', 'sb')
-        asset_id = self.get_argument('id', 9999)
+        asset_id = self.get_argument('id', 1)
         asset = get_object(Asset, id=asset_id)
+        logger.debug('%s %s ' % (asset.ip,asset.password))
         # self.termlog = TermLogRecorder(User.objects.get(id=self.user_id))
         if asset:
             logger.debug('Websocket: request web terminal Host: %s User: %s' % (asset.hostname, asset.username))
@@ -314,11 +328,15 @@ class WebTerminalHandler(tornado.websocket.WebSocketHandler):
             self.close()
             return
         self.term = WebTty(asset, login_type='web')
+        # logger.debug('test webtty can')
+        # aa = self.term.get_log()
         # self.term.remote_ip = self.request.remote_ip
         self.term.remote_ip = self.request.headers.get("X-Real-IP")
         if not self.term.remote_ip:
             self.term.remote_ip = self.request.remote_ip
+        # logger.debug('remote_ip_0: %s' % self.term.remote_ip)
         self.ssh = self.term.get_connection()
+        # logger.debug('remote_ip: %s' % self.term.remote_ip)
         self.channel = self.ssh.invoke_shell(term='xterm')
         WebTerminalHandler.tasks.append(MyThread(target=self.forward_outbound))
         WebTerminalHandler.clients.append(self)
@@ -338,13 +356,13 @@ class WebTerminalHandler(tornado.websocket.WebSocketHandler):
             return
 
         if 'resize' in jsondata.get('data'):
-            self.termlog.write(message)
+            # self.termlog.write(message)
             self.channel.resize_pty(
                 width=int(jsondata.get('data').get('resize').get('cols', 100)),
                 height=int(jsondata.get('data').get('resize').get('rows', 35))
             )
         elif jsondata.get('data'):
-            self.termlog.recoder = True
+            # self.termlog.recoder = True
             self.term.input_mode = True
             if str(jsondata['data']) in ['\r', '\n', '\r\n']:
                 match = re.compile(r'\x1b\[\?1049', re.X).findall(self.term.vim_data)
@@ -364,6 +382,8 @@ class WebTerminalHandler(tornado.websocket.WebSocketHandler):
 
     def on_close(self):
         logger.debug('Websocket: Close request')
+        end = '*'*30
+        logger.debug(end)
         if self in WebTerminalHandler.clients:
             WebTerminalHandler.clients.remove(self)
         try:

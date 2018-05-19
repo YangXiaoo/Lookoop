@@ -121,3 +121,19 @@ def require_login(func):
         else:
             return func(request, *args, **kwargs)
     return _deco
+
+class ServerError(Exception):
+    """
+    自定义异常
+    """
+    pass
+
+def mkdir(dir_name, username='', mode=755):
+    """
+    insure the dir exist and mode ok
+    目录存在，如果不存在就建立，并且权限正确
+    """
+    cmd = '[ ! -d %s ] && mkdir -p %s && chmod %s %s' % (dir_name, dir_name, mode, dir_name)
+    bash(cmd)
+    if username:
+        chown(dir_name, username)

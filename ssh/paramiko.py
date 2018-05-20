@@ -30,7 +30,7 @@ from django.contrib.sessions.models import Session
 from ssh.api import * 
 from ssh.settings import LOG_DIR, NAV_SORT_BY
 from ssh.ansible_api import MyRunner
-
+from run_server import Tty
 from ssh.models import User, UserPar, Log
 
 login_user = get_object(UserPar, username=getpass.getuser()) 
@@ -47,194 +47,6 @@ except ImportError:
     print '\033[1;31m仅支持类Unix系统 Only unix like supported.\033[0m'
     time.sleep(3)
     sys.exit()
-
-
-class Tty(object):
-    """
-    A virtual tty class
-    一个虚拟终端类，实现连接ssh和记录日志，基类
-    """
-    def __init__(self,asset,login_type='ssh'):
-        self.username = asset.username
-        self.asset_name = asset.hostname
-        self.ip = asset.ip
-        self.port = asset.port
-        self.passwd = asset.password
-        self.ssh_key = asset.ssh_key
-        self.ssh = None
-        self.channel = None
-        # self.asset = asset
-        self.remote_ip = ''
-        self.login_type = login_type
-        self.vim_flag = False
-        self.vim_end_pattern = re.compile(r'\x1b\[\?1049', re.X)
-        self.vim_data = ''
-        self.stream = None
-        self.screen = None
-        self.__init_screen_stream()
-
-    def __init_screen_stream(self):
-        """
-        初始化虚拟屏幕和字符流
-        """
-        self.stream = pyte.ByteStream()
-        self.screen = pyte.Screen(80, 24)
-        self.stream.attach(self.screen)
-
-    @staticmethod
-    def is_output(strings):  #有换行符就输出
-        newline_char = ['\n', '\r', '\r\n']
-        for char in newline_char:
-            if char in strings:
-                return True
-        return False
-
-    @staticmethod
-    def command_parser(command):
-        """
-        处理命令中如果有ps1或者mysql的特殊情况,极端情况下会有ps1和mysql
-        :param command:要处理的字符传
-        :return:返回去除PS1或者mysql字符串的结果
-        PS1：prompt sign 命令提示符
-        """
-        result = None
-        match = re.compile('\[?.*@.*\]?[\$#]\s').split(command) #[root@yangxiao ~]# 
-        if match:
-            # 只需要最后的一个PS1后面的字符串
-            result = match[-1].strip()
-        else:
-            # PS1没找到,查找mysql
-            match = re.split('mysql>\s', command)
-            if match:
-                # 只需要最后一个mysql后面的字符串
-                result = match[-1].strip()
-        return result
-
-    def deal_command(self, data):
-        """
-        处理截获的命令
-        :param data: 要处理的命令
-        :return:返回最后的处理结果
-        """
-        command = ''
-        try:
-            self.stream.feed(data)
-            # 从虚拟屏幕中获取处理后的数据
-            for line in reversed(self.screen.buffer):
-                line_data = "".join(map(operator.attrgetter("data"), line)).strip()
-                if len(line_data) > 0:
-                    parser_result = self.command_parser(line_data)
-                    if parser_result is not None:
-                        # 2个条件写一起会有错误的数据
-                        if len(parser_result) > 0:
-                            command = parser_result
-                    else:
-                        command = line_data
-                    break
-        except Exception:
-            pass
-        # 虚拟屏幕清空
-        self.screen.reset()
-        return command
-
-    def get_log(self):
-        """
-        记录用户的日志
-        """
-        tty_log_dir = os.path.join(LOG_DIR, 'tty')
-        if not os.path.isfile(tty_log_dir):
-            try:
-                mkdir(tty_log_dir, mode=777)
-            except:
-                logger.debug('创建目录 %s 失败' % tty_log_dir)
-        date_today = datetime.datetime.now()
-        date_start = date_today.strftime('%Y%m%d')
-        time_start = date_today.strftime('%H%M%S')
-        today_connect_log_dir = os.path.join(tty_log_dir, date_start)
-        log_file_path = os.path.join(today_connect_log_dir, '%s_%s_%s' % (self.username, self.asset_name, time_start))
-
-        try:
-            mkdir(os.path.dirname(today_connect_log_dir), mode=777)
-            mkdir(today_connect_log_dir, mode=777)
-        except OSError:
-            logger.debug('创建目录 %s 失败，请修改%s目录权限' % (today_connect_log_dir, tty_log_dir))
-            raise ServerError('创建目录 %s 失败，请修改%s目录权限' % (today_connect_log_dir, tty_log_dir))
-
-        try:
-            log_file_f = open(log_file_path + '.log', 'a')
-            log_time_f = open(log_file_path + '.time', 'a')
-        except IOError:
-            logger.debug('创建tty日志文件失败, 请修改目录%s权限' % today_connect_log_dir)
-            raise ServerError('创建tty日志文件失败, 请修改目录%s权限' % today_connect_log_dir)
-
-        if self.login_type == 'ssh':  # 如果是ssh连接过来，记录connect.py的pid，web terminal记录为日志的id
-            pid = os.getpid()
-            self.remote_ip = remote_ip  # 获取远端IP
-        else:
-            pid = 0
-
-        log = Log(user=self.username, host=self.asset_name, remote_ip=self.remote_ip, login_type=self.login_type,
-                  logfile_path=log_file_path, start_time=date_today, pid=pid)
-        log.save()
-        if self.login_type == 'web':
-            log.pid = log.id  # 设置log id为websocket的id, 然后kill时干掉websocket
-            log.save()
-
-        log_file_f.write('Start at %s\r\n' % datetime.datetime.now())
-        return log_file_f, log_time_f, log
-
-    def get_connect_info(self):
-        """
-        获取需要登陆的主机的信息和映射用户的账号密码
-        """
-        # passwd = CRYPTOR.decrypt(self.passwd)
-        connect_info = {'user': self.username, 'asset_hostname': self.asset_name, 'ip': self.ip, 'port': self.port,'ssh_passwd': self.passwd, 'role_key': self.ssh_key}
-        logger.debug(connect_info)
-        # logger.debug('get_connection_info successful')
-        return connect_info
-
-    def get_connection(self):
-        """
-        获取连接成功后的ssh
-        """
-        # logger.debug('start connection')
-        connect_info = self.get_connect_info()
-
-        # 发起ssh连接请求 Make a ssh connection
-        ssh = paramiko.SSHClient()
-        # ssh.load_system_host_keys()
-        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-        try:
-            role_key = connect_info.get('role_key')
-            if role_key and os.path.isfile(role_key):
-                try:
-                    ssh.connect(connect_info.get('ip'),
-                                port=connect_info.get('port'),
-                                username=connect_info.get('user'),
-                                password=connect_info.get('ssh_passwd'),
-                                key_filename=role_key,
-                                look_for_keys=False)
-                    return ssh
-                except (paramiko.ssh_exception.AuthenticationException, paramiko.ssh_exception.SSHException):
-                    logger.warning(u'使用ssh key %s 失败, 尝试只使用密码' % role_key)
-                    pass
-
-            ssh.connect(connect_info.get('ip'),
-                        port=connect_info.get('port'),
-                        username=connect_info.get('user'),
-                        password=connect_info.get('ssh_passwd'),
-                        allow_agent=False,
-                        look_for_keys=False)
-
-        except (paramiko.ssh_exception.AuthenticationException, paramiko.ssh_exception.SSHException):
-            raise ServerError('认证失败 Authentication Error.')
-        except socket.error:
-            raise ServerError('端口可能不对 Connect SSH Socket Port Error, Please Correct it.')
-        else:
-            self.ssh = ssh
-            return ssh
-        # logger.debug('connect successful')
-
 
 
 
@@ -346,8 +158,6 @@ class SshTty(Tty):
                         elif not self.vim_flag:
                             self.vim_flag = False
                             data = self.deal_command(data)[0:200]
-                            if data is not None:
-                                TtyLog(log=log, datetime=datetime.datetime.now(), cmd=data).save()
                         data = ''
                         self.vim_data = ''
                         input_mode = False
@@ -404,62 +214,34 @@ class Nav(object):
     """
     def __init__(self, user):
         self.user = user
-        self.user_perm = get_group_user_perm(self.user)
-        if NAV_SORT_BY == 'ip':
-            self.perm_assets = sorted(self.user_perm.get('asset', []).keys(),
-                                      key=lambda x: [int(num) for num in x.ip.split('.') if num.isdigit()])
-        elif NAV_SORT_BY == 'hostname':
-            self.perm_assets = self.natural_sort_hostname(self.user_perm.get('asset', []).keys())
-        else:
-            self.perm_assets = tuple(self.user_perm.get('asset', []))
-        self.search_result = self.perm_assets
-        self.perm_asset_groups = self.user_perm.get('asset_group', [])
-
-    def natural_sort_hostname(self, list):
-        convert = lambda text: int(text) if text.isdigit() else text.lower()
-        alphanum_key = lambda x: [ convert(c) for c in re.split('([0-9]+)', x.hostname) ]
-        return sorted(list, key = alphanum_key)
+        self.user_id = user_id
+        self.assets = get_object(AssetGroup, user_id=user_id)
+        self.search_result = self.assets
 
     @staticmethod
     def print_nav():
         """
-        Print prompt
         打印提示导航
         """
-        msg = """\n\033[1;32m###    欢迎使用Jumpserver开源跳板机系统   ### \033[0m
+        msg = """\n\033[1;32m###    简易堡垒机   ### \033[0m
 
         1) 输入 \033[32mID\033[0m 直接登录 或 输入\033[32m部分 IP,主机名,备注\033[0m 进行搜索登录(如果唯一).
         2) 输入 \033[32m/\033[0m + \033[32mIP, 主机名 or 备注 \033[0m搜索. 如: /ip
-        3) 输入 \033[32mP/p\033[0m 显示您有权限的主机.
-        4) 输入 \033[32mG/g\033[0m 显示您有权限的主机组.
-        5) 输入 \033[32mG/g\033[0m\033[0m + \033[32m组ID\033[0m 显示该组下主机. 如: g1
-        6) 输入 \033[32mE/e\033[0m 批量执行命令.
-        7) 输入 \033[32mU/u\033[0m 批量上传文件.
-        8) 输入 \033[32mD/d\033[0m 批量下载文件.
-        9) 输入 \033[32mH/h\033[0m 帮助.
-        0) 输入 \033[32mQ/q\033[0m 退出.
+        3) 输入 \033[32mP/p\033[0m 显示你有权限的主机.
+        4) 输入 \033[32mE/e\033[0m 批量执行命令.
+        5) 输入 \033[32mH/h\033[0m 帮助.
+        6) 输入 \033[32mQ/q\033[0m 退出.
         """
         print textwrap.dedent(msg)
 
-    def get_asset_group_member(self, str_r):
-        gid_pattern = re.compile(r'^g\d+$')
 
-        if gid_pattern.match(str_r):
-            gid = int(str_r.lstrip('g'))
-            # 获取资产组包含的资产
-            asset_group = get_object(AssetGroup, id=gid)
-            if asset_group and asset_group in self.perm_asset_groups:
-                self.search_result = list(asset_group.asset_set.all())
-            else:
-                color_print('没有该资产组或没有权限')
-                return
 
     def search(self, str_r=''):
         # 搜索结果保存
         if str_r:
             try:
                 id_ = int(str_r)
-                if id_ < len(self.search_result):
+                if id_ < len(self.assets):
                     self.search_result = [self.search_result[id_]]
                     return
                 else:
@@ -468,13 +250,13 @@ class Nav(object):
             except (ValueError, TypeError):
                 # 匹配 ip, hostname, 备注
                 str_r = str_r.lower()
-                self.search_result = [asset for asset in self.perm_assets if str_r == str(asset.ip).lower()] or \
-                                     [asset for asset in self.perm_assets if str_r in str(asset.ip).lower() \
-                                      or str_r in str(asset.hostname).lower() \
-                                      or str_r in str(asset.comment).lower()]
+                self.search_result = AssetGroup.objects.filter(
+                    Q(ip__contains=str_r) |
+                    Q(hostname__contains=str_r) |
+                    Q(comment__contains=str_r) |
+                    )
         else:
-            # 如果没有输入就展现所有
-            self.search_result = self.perm_assets
+            self.search_result = self.assets
 
     @staticmethod
     def truncate_str(str_, length=30):
@@ -493,60 +275,26 @@ class Nav(object):
 
     def print_search_result(self):
         hostname_max_length = self.get_max_asset_property_length(self.search_result)
-        line = '[%-3s] %-16s %-5s  %-' + str(hostname_max_length) + 's %-10s %s'
-        color_print(line % ('ID', 'IP', 'Port', 'Hostname', 'SysUser', 'Comment'), 'title')
+        line = '[%-3s] %-16s %-5s  %-' + str(hostname_max_length) + 's  %s'
+        color_print(line % ('ID', 'IP', 'Port', 'Hostname', 'Comment'), 'title')
         if hasattr(self.search_result, '__iter__'):
-            for index, asset in enumerate(self.search_result):
-                # 获取该资产信息
-                asset_info = get_asset_info(asset)
-                # 获取该资产包含的角色
-                role = [str(role.name) for role in self.user_perm.get('asset').get(asset).get('role')]
-                print line % (index, asset.ip, asset_info.get('port'),
-                              self.truncate_str(asset.hostname), str(role).replace("'", ''), asset.comment)
-        print
+            for index, ip, port, hostname,comment in enumerate(self.search_result):
+                print line % (index, ip, port,self.truncate_str(asset.hostname),comment)
+                print
+        else:
+            print line % (index, ip, port,self.truncate_str(asset.hostname),comment)
+            print
 
     def try_connect(self):
         try:
             asset = self.search_result[0]
-            roles = list(self.user_perm.get('asset').get(asset).get('role'))
-            if len(roles) == 1:
-                role = roles[0]
-            elif len(roles) > 1:
-                print "\033[32m[ID] 系统用户\033[0m"
-                for index, role in enumerate(roles):
-                    print "[%-2s] %s" % (index, role.name)
-                print
-                print "授权系统用户超过1个，请输入ID, q退出"
-                try:
-                    role_index = raw_input("\033[1;32mID>:\033[0m ").strip()
-                    if role_index == 'q':
-                        return
-                    else:
-                        role = roles[int(role_index)]
-                except IndexError:
-                    color_print('请输入正确ID', 'red')
-                    return
-            else:
-                color_print('没有映射用户', 'red')
-                return
-
             print('Connecting %s ...' % asset.hostname)
-            ssh_tty = SshTty(login_user, asset, role)
+            ssh_tty = SshTty(asset)
             ssh_tty.connect()
         except (KeyError, ValueError):
             color_print('请输入正确ID', 'red')
         except ServerError, e:
             color_print(e, 'red')
-
-    def print_asset_group(self):
-        """
-        打印用户授权的资产组
-        """
-        user_asset_group_all = get_group_user_perm(self.user).get('asset_group', [])
-        color_print('[%-3s] %-20s %s' % ('ID', '组名', '备注'), 'title')
-        for asset_group in user_asset_group_all:
-            print '[%-3s] %-15s %s' % (asset_group.id, asset_group.name, asset_group.comment)
-        print
 
     def exec_cmd(self):
         """
@@ -620,120 +368,12 @@ class Nav(object):
                     print "~o~ Task finished ~o~"
                     print
 
-    def upload(self):
-        while True:
-            try:
-                print "进入批量上传模式"
-                print "请输入主机名或ansible支持的pattern, 多个主机:分隔 q退出"
-                pattern = raw_input("\033[1;32mPattern>:\033[0m ").strip()
-                if pattern == 'q':
-                    break
-                else:
-                    assets = self.user_perm.get('asset').keys()
-                    res = gen_resource({'user': self.user, 'asset': assets}, perm=self.user_perm)
-                    runner = MyRunner(res)
-                    asset_name_str = ''
-                    print "匹配主机:"
-                    for inv in runner.inventory.get_hosts(pattern=pattern):
-                        print inv.name
-                        asset_name_str += '%s ' % inv.name
-
-                    if not asset_name_str:
-                        color_print('没有匹配主机')
-                        continue
-                    tmp_dir = get_tmp_dir()
-                    logger.debug('Upload tmp dir: %s' % tmp_dir)
-                    os.chdir(tmp_dir)
-                    bash('rz')
-                    filename_str = ' '.join(os.listdir(tmp_dir))
-                    if not filename_str:
-                        color_print("上传文件为空")
-                        continue
-                    logger.debug('上传文件: %s' % filename_str)
-
-                    runner = MyRunner(res)
-                    runner.run('copy', module_args='src=%s dest=%s directory_mode'
-                                                     % (tmp_dir, '/tmp'), pattern=pattern)
-                    ret = runner.results
-                    FileLog(user=self.user.name, host=asset_name_str, filename=filename_str,
-                            remote_ip=remote_ip, type='upload', result=ret).save()
-                    logger.debug('Upload file: %s' % ret)
-                    if ret.get('failed'):
-                        error = '上传目录: %s \n上传失败: [ %s ] \n上传成功 [ %s ]' % (tmp_dir,
-                                                                             ', '.join(ret.get('failed').keys()),
-                                                                             ', '.join(ret.get('ok').keys()))
-                        color_print(error)
-                    else:
-                        msg = '上传目录: %s \n传送成功 [ %s ]' % (tmp_dir, ', '.join(ret.get('ok').keys()))
-                        color_print(msg, 'green')
-                    print
-
-            except IndexError:
-                pass
-
-    def download(self):
-        while True:
-            try:
-                print "进入批量下载模式"
-                print "请输入主机名或ansible支持的pattern, 多个主机:分隔,q退出"
-                pattern = raw_input("\033[1;32mPattern>:\033[0m ").strip()
-                if pattern == 'q':
-                    break
-                else:
-                    assets = self.user_perm.get('asset').keys()
-                    res = gen_resource({'user': self.user, 'asset': assets}, perm=self.user_perm)
-                    runner = MyRunner(res)
-                    asset_name_str = ''
-                    print "匹配主机:\n"
-                    for inv in runner.inventory.get_hosts(pattern=pattern):
-                        asset_name_str += '%s ' % inv.name
-                        print ' %s' % inv.name
-                    if not asset_name_str:
-                        color_print('没有匹配主机')
-                        continue
-                    print
-                    while True:
-                        tmp_dir = get_tmp_dir()
-                        logger.debug('Download tmp dir: %s' % tmp_dir)
-                        print "请输入文件路径(不支持目录)"
-                        file_path = raw_input("\033[1;32mPath>:\033[0m ").strip()
-                        if file_path == 'q':
-                            break
-
-                        if not file_path:
-                            color_print("文件路径为空")
-                            continue
-
-                        runner.run('fetch', module_args='src=%s dest=%s' % (file_path, tmp_dir), pattern=pattern)
-                        ret = runner.results
-                        FileLog(user=self.user.name, host=asset_name_str, filename=file_path, type='download',
-                                remote_ip=remote_ip, result=ret).save()
-                        logger.debug('Download file result: %s' % ret)
-                        os.chdir('/tmp')
-                        tmp_dir_name = os.path.basename(tmp_dir)
-                        if not os.listdir(tmp_dir):
-                            color_print('下载全部失败')
-                            continue
-                        bash('tar czf %s.tar.gz %s && sz %s.tar.gz' % (tmp_dir, tmp_dir_name, tmp_dir))
-
-                        if ret.get('failed'):
-                            error = '文件名称: %s \n下载失败: [ %s ] \n下载成功 [ %s ]' % \
-                                    ('%s.tar.gz' % tmp_dir_name, ', '.join(ret.get('failed').keys()), ', '.join(ret.get('ok').keys()))
-                            color_print(error)
-                        else:
-                            msg = '文件名称: %s \n下载成功 [ %s ]' % ('%s.tar.gz' % tmp_dir_name, ', '.join(ret.get('ok').keys()))
-                            color_print(msg, 'green')
-                        print
-            except IndexError:
-                pass
-
 
 def main():
     """
-    he he
     主程序
     """
-    if not login_user:  # 判断用户是否存在
+    if not login_user:
         color_print('没有该用户', exits=True)
 
     if not login_user.is_active:
@@ -759,19 +399,9 @@ def main():
             if option.startswith('/'):
                 nav.search(option.lstrip('/'))
                 nav.print_search_result()
-            elif gid_pattern.match(option):
-                nav.get_asset_group_member(str_r=option)
-                nav.print_search_result()
-            elif option in ['G', 'g']:
-                nav.print_asset_group()
-                continue
             elif option in ['E', 'e']:
                 nav.exec_cmd()
                 continue
-            elif option in ['U', 'u']:
-                nav.upload()
-            elif option in ['D', 'd']:
-                nav.download()
             elif option in ['H', 'h']:
                 nav.print_nav()
             elif option in ['Q', 'q', 'exit']:

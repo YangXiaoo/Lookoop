@@ -71,3 +71,18 @@ class UserPar(models.Model):
 
     def __unicode__(self):
         return self.name
+
+class AssetGroup(models.Model):
+    user_id = models.IntegerField(blank=True, null=True, verbose_name=u"关联用户id")
+    ip = models.CharField(max_length = 32, blank=True, null=True, verbose_name=u"主机ip")
+    port = models.IntegerField(blank=True, null=True, verbose_name=u"端口号")
+    username = models.CharField(max_length = 100, verbose_name=u"登录名")
+    password = models.CharField(max_length = 100, verbose_name=u"登录密码")
+    hostname = models.CharField(max_length = 100, verbose_name=u"主机名")
+    status = models.IntegerField(choices=ASSET_STATUS, blank=True, null=True, default=1, verbose_name=u"主机状态")
+    is_active = models.BooleanField(default=True, verbose_name=u"是否激活")
+    date_add = models.DateTimeField(auto_now=True, null=True, verbose_name=u"创建时间")
+    comment = models.CharField(max_length=100, blank=True, null=True, verbose_name=u"备注")
+
+    def __unicode__(self):
+        return self.username

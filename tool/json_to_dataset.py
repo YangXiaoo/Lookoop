@@ -186,11 +186,12 @@ def handle_json(json_file, out_dir):
 
 
 def main():
-    string1 = "\n\n**********   Author(yangxiao)   **********\n\n"
-    string2 = "Hello, old brother(sister)!\n\n\n"
-    # color_print(string1,color='green') 
+    string1 = "\n\n**********   Author：yangxiao   **********\n\n"
+    string2 = "\n\n**********     date：2018-5-6   **********\n\n"
+    string3 = "Hello, old brother(sister)!\n\n\n"
     printGreen(string1)
-    printYellow(string2)
+    printGreen(string2)
+    printYellow(string3)
     dirpath = raw_input("Please input direction of files:")
     # dirpath = r"D:\STUDY\cu\re"
     # out_dir = raw_input("Please input save direction(default path is direction of files):")

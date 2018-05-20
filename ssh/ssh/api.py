@@ -17,14 +17,19 @@ from settings import *
 from django.core.paginator import Paginator, EmptyPage, InvalidPage
 from django.http import HttpResponse, Http404
 from django.template import RequestContext
-from ssh.models import User, Asset, UserPar
-from ssh.settings import BASE_DIR, EMAIL_HOST_USER as MAIL_FROM
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.core.mail import send_mail
-import smtplib
 from django.core.urlresolvers import reverse
 
+from ssh.models import User, Asset, UserPar
+from ssh.settings import *
+
+from django.core.mail import send_mail
+from email.mime.text import MIMEText
+from email.utils import formataddr
+from smtplib import SMTP, SMTP_SSL, SMTPAuthenticationError, SMTPConnectError, SMTPSenderRefused
+
+URL = 'http://www.lxa.kim'
 os.environ['DJANGO_SETTINGS_MODULE'] = 'ssh.settings'
 
 def color_print(msg, color='red', exits=False):
@@ -246,38 +251,45 @@ def server_add_user(username, ssh_key_pwd=''):
     bash("useradd -s '%s' '%s'" % (os.path.join(BASE_DIR, 'init.sh'), username))
     gen_ssh_key(username, ssh_key_pwd)
 
-def user_add_mail(user, kwargs):
+def user_add_mail(user, password='', ssh_key_pwd=''):
     """
     add user send mail
     发送用户添加邮件
     """
-    mail_title = u'用户 %s 添加成功' % user.name
-    mail_msg = u"""
+    mail_title = 'User %s add successful' % user.name
+    mail_msg = """
     Hi, %s
-        您的用户名： %s
-        您的web登录密码： %s
-        您的ssh密钥文件密码： %s
-        密钥下载地址： %s/key_down/?uuid=%s
-        说明： 下载密钥，使用密钥密码登录
-    """ % (user.name, user.username,kwargs.get('password'), kwargs.get('ssh_key_pwd'), URL, user.uuid)
+        Your name: %s 
+        Your web password: %s 
+        Your Public Key password: %s 
+        Public Key file address: %s/key_down/?uuid=%s
+        Please don't reply, this is send automatically.
+        My blog: http://www.lxxx.site
+    """ % (user.name, user.username, password , ssh_key_pwd, URL, user.uuid)
+    msg=MIMEText(mail_msg,'plain','utf-8')
+    msg['From']=formataddr(['sshweb',EMAIL_HOST_USER])
+    msg['To']=formataddr([user.name,user.email])             
+    msg['Subject']= mail_title 
     try:
-        send_mail(mail_title, mail_msg, MAIL_FROM, [user.email], fail_silently=False)
+        smtp = SMTP_SSL('smtp.qq.com', port=465, timeout=2)
+        smtp.login(EMAIL_HOST_USER, EMAIL_HOST_PASSWORD)
+        smtp.sendmail(EMAIL_HOST_USER, (user.email, ), msg.as_string())
+        smtp.quit()
+        # return True
     except:
         pass
-
-
 
 def get_display_msg(user, password='', ssh_key_pwd='', send_mail_need=False):
     if send_mail_need:
         msg = u'添加用户 %s 成功！ 用户密码已发送到 %s 邮箱！' % (user.name, user.email)
     else:
         msg = u"""
-        堡垒机地址： %s <br />
-        用户名：%s <br />
-        密码：%s <br />
-        密钥密码：%s <br />
-        密钥下载url: %s/key_down/?uuid=%s <br />
-        该账号密码可以登陆堡垒机。
+        web address: %s .\n\r
+        username: %s  .\n\r
+        password: %s  .\n\r
+        publick key password: %s  .\n\r
+        publick key file download url: %s/key_down/?uuid=%s  .\n\r
+        You can use this count!\n\r
         """ % (URL, user.username, password, ssh_key_pwd, URL, user.uuid)
     return msg
 
@@ -304,3 +316,12 @@ def gen_ssh_key(username, password='',
                 auth_f.write(pub_f.read())
         os.chmod(authorized_key_file, 0600)
         chown(authorized_key_file, username)
+
+def ssh_del_user(username):
+    """
+    删除系统上的用户
+    """
+    bash('userdel -r -f %s' % username)
+    logger.debug('rm -f %s/%s_*.pem' % (os.path.join(KEY_DIR, 'user'), username))
+    bash('rm -f %s/%s_*.pem' % (os.path.join(KEY_DIR, 'user'), username))
+    bash('rm -f %s/%s.pem*' % (os.path.join(KEY_DIR, 'user'), username))

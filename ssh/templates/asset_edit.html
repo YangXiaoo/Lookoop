@@ -11,7 +11,7 @@
 
 <body class="gray-bg">
 
-	<div class="row asset_add container">
+	<div class="asset_add container">
 
 		<div  align="center">
 		   <h3 class="title">填写资料</h3>
@@ -25,34 +25,34 @@
 		</div>
 
 		<form id="asset_form" method="POST">
-			<div class="form-group">
+			<div class="row">
 				<label class="col-sm-3 control-label">IP地址</label>
 				<div class="col-sm-7"><input class="form-control" name="ip" value="{{ asset.ip }}" placeholder="IP Address"></div>
 			</div>
-			<div class="form-group">
+			<div class="row">
 				<label class="col-sm-3 control-label">端口号</label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.port }}" name="port" placeholder="port">
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="row">
 				<label class="col-sm-3 control-label">主机名</label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.hostname }}" name="hostname" placeholder="hostname">
 				</div>
 			</div>
 					
-			<div class="form-group">
+			<div class="row">
 				<label class="col-sm-3 control-label">登录名</label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.username }}" name="username" placeholder="username"></div>
 			</div>
-			<div class="form-group">
+			<div class="row">
 				<label class="col-sm-3 control-label">密码</label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.password }}" name="password" placeholder="password"></div>
 			</div>                    
-			<div class="form-group">
+			<div class="row">
 				<label class="col-sm-3 control-label">密匙</label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.ssh_key }}" name="ssh_key" placeholder="ssh key"></div>
 			</div>
-			<div class="form-group">
+			<div class="row">
 				<label class="col-sm-3 control-label">是否激活</label>
 				<div  class="col-sm-7">
 					<div class="radio i-checks">
@@ -65,7 +65,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="form-group">
+			<div class="row">
 				<label class="col-sm-3 control-label">备注</label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.comment }}" name="comment" placeholder="comment"></div>
 			</div>                                        

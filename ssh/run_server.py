@@ -218,14 +218,14 @@ class Tty(object):
         # passwd = CRYPTOR.decrypt(self.passwd)
         connect_info = {'user': self.username, 'asset_hostname': self.asset_name, 'ip': self.ip, 'port': self.port,'ssh_passwd': self.passwd, 'role_key': self.ssh_key}
         logger.debug(connect_info)
-        # logger.debug('get_connection_info successful')
+        logger.debug('get_connection_info successful')
         return connect_info
 
     def get_connection(self):
         """
         获取连接成功后的ssh
         """
-        # logger.debug('start connection')
+        logger.debug('start connection')
         connect_info = self.get_connect_info()
 
         # 发起ssh连接请求 Make a ssh connection
@@ -261,7 +261,6 @@ class Tty(object):
         else:
             self.ssh = ssh
             return ssh
-        # logger.debug('connect successful')
 
 
 class WebTty(Tty):
@@ -334,9 +333,9 @@ class WebTerminalHandler(tornado.websocket.WebSocketHandler):
         self.term.remote_ip = self.request.headers.get("X-Real-IP")
         if not self.term.remote_ip:
             self.term.remote_ip = self.request.remote_ip
-        # logger.debug('remote_ip_0: %s' % self.term.remote_ip)
+        logger.debug('remote_ip_0: %s' % self.term.remote_ip)
         self.ssh = self.term.get_connection()
-        # logger.debug('remote_ip: %s' % self.term.remote_ip)
+        logger.debug('remote_ip: %s' % self.term.remote_ip)
         self.channel = self.ssh.invoke_shell(term='xterm')
         WebTerminalHandler.tasks.append(MyThread(target=self.forward_outbound))
         WebTerminalHandler.clients.append(self)
@@ -475,12 +474,5 @@ def main():
     tornado.ioloop.IOLoop.instance().start()
 
 if __name__ == '__main__':
-    # tornado.options.parse_command_line()
-    # app = Application()
-    # server = tornado.httpserver.HTTPServer(app)
-    # server.bind(options.port, options.host)
-    # #server.listen(options.port)
-    # server.start(num_processes=5)
-    # tornado.ioloop.IOLoop.instance().start()
     print "Run server on %s:%s" % (options.host, options.port)
     main()

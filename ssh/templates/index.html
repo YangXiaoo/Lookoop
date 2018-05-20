@@ -20,15 +20,31 @@
             font-size: 400%;
             padding: 20px;
         }
+        .app{
+            padding: 20px 20px 40px 20px;
+        }
     </style>
 <body class="gray-bg">
 
     <div class="index_center">
         <h1 align="center">
-	        <a href="{% url 'user_add' %}"><i class=" fa fa-user"><br><small>用户</small></i></a>&nbsp;&nbsp;
-	        <a href="{% url 'asset_add' %}"><i class=" fa fa-paper-plane-o"><br><small>增加</small></i></a>&nbsp;&nbsp;
-	        <a href="{% url 'asset_list' %}"><i class=" fa fa-database"><br><small>主机</small></i></a>&nbsp;&nbsp;
-	        <a href="{% url 'logout' %}"><i class=" fa fa-power-off"><br><small>注销</small></i></a>
+            <div class="row">
+                <div class="col-sm-4 col-xs-6 app">
+                    <a href="{% url 'user_add' %}"><i class=" fa fa-user"><br><small>添加用户</small></i></a>
+                </div>
+                <div class="col-sm-4 col-xs-6 app">
+                    <a href="{% url 'user_list' %}"><i class=" fa fa-tty"><br><small>ssh列表</small></i></a>
+                </div>
+                <div class="col-sm-4 col-xs-6 app">
+                    <a href="{% url 'asset_add' %}"><i class=" fa fa-paper-plane-o"><br><small>添加主机</small></i></a>
+                </div>
+                <div class="col-sm-4 col-xs-6 app">
+                    <a href="{% url 'asset_list' %}"><i class=" fa fa-database"><br><small>主机列表</small></i></a>
+                </div>
+                <div class="col-sm-4 col-xs-6 app">
+                    <a href="{% url 'logout' %}"><i class=" fa fa-power-off"><br><small>用户注销</small></i></a>
+                </div>
+            </div>
         </h1>
     </div>
 

@@ -15,6 +15,7 @@ import paramiko
 from ssh.api import *
 from ssh.models import *
 from ssh.forms import *
+from ssh.settings import MAIL_ENABLE
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
@@ -223,7 +224,7 @@ def user_add(request):
         uuid_r = uuid.uuid4().get_hex()
         ssh_key_pwd = PyCrypt.gen_rand_pass(16)
         is_active = True if request.POST.get('is_active') == '1' else False
-        send_mail_need = True
+        send_mail_need = False
 
         try:
             if '' in [username, password, ssh_key_pwd, name]:
@@ -253,8 +254,7 @@ def user_add(request):
                 except Exception:
                     pass
             else:
-                if MAIL_ENABLE and send_mail_need:
-                    user_add_mail(user, kwargs=locals())
+                user_add_mail(user, password=password, ssh_key_pwd=ssh_key_pwd)
                 msg = get_display_msg(user, password=password, ssh_key_pwd=ssh_key_pwd, send_mail_need=send_mail_need)
     return render_to_response('user_add.html', locals(),context_instance=RequestContext(request))
 
@@ -276,3 +276,49 @@ def key_down(request):
                 response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(private_key_file)
                 return response
     return HttpResponse('No Key File. Contact Admin.')
+
+
+@require_login
+def user_list(request):
+    '''
+    堡垒机用户列表
+    '''
+    keyword = request.GET.get('keyword', '')
+    export = request.GET.get('export', '')
+    user = UserPar.objects.all()
+    if keyword:
+        user = UserPar.objects.filter(
+            Q(name__contains=keyword) |
+            Q(password__contains=keyword) |
+            Q(username__contains=keyword) |
+            Q(ssh_key_pwd__contains=keyword) 
+            )
+    if user:
+        pass
+    else:
+        msg = u'没有匹配到'
+        user = UserPar.objects.all()
+    if isinstance(user,Iterable) is False:
+        iters = 0
+    if export:
+        pass # excel文件下载
+    return render_to_response('user_list.html', locals(), context_instance=RequestContext(request))
+
+
+@require_login
+def user_del(request):
+    '''
+    删除ssh登录用户
+    '''
+    if request.method == "GET":
+        user_id = request.GET.get('id','')
+    elif request.method == "POST":
+        user_id = request.POST.get('id','')
+    else:
+        return HttpResponse('Error request')
+
+    user = get_object(UserPar, id=user_id)
+    logger.debug(u"删除用户 %s 成功" % user.username)
+    ssh_del_user(user.username)
+    user.delete()
+    return HttpResponse('删除成功')

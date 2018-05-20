@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> 主机列表 | SshWeb</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+</head>
+
+<body class="gray-bg container">
+    <div  align="center">
+        {% if error %}
+        <div class="alert alert-warning text-center">{{ error }}</div>
+        {% endif %}
+        {% if msg %}
+        <div class="alert alert-success text-center">{{ msg }}</div>
+        {% endif %}
+    </div>
+    <hr>
+    <div class="search row">
+        <div class="col-sm-6">
+           {# <a href="{% url 'user_add' %}" class="btn btn-xs btn-info">增加</a> #}
+        </div>
+        <div class="col-sm-6">
+            <form class="form-horizontal" method="GET">
+                <div class="input-group">
+                    <input type="text" class="form-control"  name="keyword" value="{{ keyword }}" id="search_input" placeholder="搜索">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default"  id="search-btn" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>  
+            </form>          
+        </div>
+    </div><hr>
+    <div class="center">
+        <table class="table table-condensed table-responsive">
+        <tr class="success">
+            <td>用户名</td>
+            <td>登录名</td>
+            <td>登录密码</td>
+            <td>Publick key 密码</td>
+            <td>秘钥下载</td>
+            <td>创建时间</td>
+            <td>操作</td>
+        </tr>
+        {% ifequal iters 0 %}
+        <tr>
+            <td>{{ user.name }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.password }}</td>
+            <td>{{ user.ssh_key_pwd }}</td>
+            <td><a href="{% url 'key_down' %}?uuid={{ asset.uuid }}">下载</a></td>
+            <td>{{ user.date_joined }}</td>
+            <td>
+                <a value="{% url 'user_del' %}?id={{ user.id }}" class="btn btn-xs btn-danger user_del">删除</a>
+        </td>
+        </tr>
+        {% else %}        
+        {% for u in user %}
+        <tr>
+            <td>{{ u.name }}</td>
+            <td>{{ u.username }}</td>
+            <td>{{ u.password }}</td>
+            <td>{{ u.ssh_key_pwd }}</td>
+            <td><a href="{% url 'key_down' %}?uuid={{ u.uuid }}">下载</a></td>
+            <td>{{ u.date_joined }}</td>
+            <td>
+                <a value="{% url 'user_del' %}?id={{ u.id }}" class="btn btn-xs btn-danger user_del">删除</a>
+            </td>
+        </tr>
+        {% endfor %}
+        {% endifequal %}
+        </table>
+     
+    </div>
+
+    <script src="/static/js/jquery-2.1.1.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+</body>
+
+<script>
+    $(document).ready(function(){
+        $('.user_del').click(function(){
+            var row = $(this).closest('tr');
+            if (confirm("确定删除")) {
+            $.get(
+                    $(this).attr('value'),
+                    {},
+                    function(data){
+                        row.remove();
+                        alert(data);
+                    }
+            )}
+        });
+    })
+</script>
+</html>
+

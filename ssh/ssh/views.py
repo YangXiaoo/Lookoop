@@ -311,9 +311,9 @@ def user_del(request):
     删除ssh登录用户
     '''
     if request.method == "GET":
-        user_id = request.GET.get('id','')
+        user_id = request.GET.get('user_id','')
     elif request.method == "POST":
-        user_id = request.POST.get('id','')
+        user_id = request.POST.get('user_id','')
     else:
         return HttpResponse('Error request')
 
@@ -321,4 +321,87 @@ def user_del(request):
     logger.debug(u"删除用户 %s 成功" % user.username)
     ssh_del_user(user.username)
     user.delete()
+    return HttpResponse('删除成功')
+
+
+@require_login
+def host_add(request):
+    '''
+    堡垒机用户主机绑定
+    '''
+    if request.method == 'GET':
+        username = request.GET.get('username', '')
+        user = get_object(UserPar, username=username)
+        user_id = user.id
+    if request.method == 'POST':
+        user_id = request.POST.get('user_id', '')
+        ip = request.POST.get('ip', '')
+        port = request.POST.get('port', '22')
+        hostname = request.POST.get('hostname', '')
+        asset = get_object(AssetGroup, id=user_id)
+        af = AssetGroupForm(instance=asset)
+        af_post = AssetGroupForm(request.POST, instance=asset)
+        is_active = True if request.POST.get('is_active') == '1' else False
+        try:
+            if len(hostname) > 54:
+                emg = u'主机名长度不能超过54位!'
+                raise ServerError(emg)
+            else:
+                if af_post.is_valid():
+                    af_save = af_post.save(commit=False)
+                    af_save.is_active = True if is_active else False
+                    af_save.port = port
+                    af_save.save()
+                    af_post.save_m2m()
+                    smg = u'主机 %s 添加成功' % ip
+                else:
+                    emg = u'主机 %s 添加失败' % ip
+                    raise ServerError(emg)
+        except ServerError as e:
+            error = e.message
+        return HttpResponseRedirect(reverse('user_list'))
+    return render_to_response('host_add.html', locals(),context_instance=RequestContext(request))
+
+
+
+@require_login
+def host_list(request):
+    '''
+    资产列表
+    '''
+    if request.method == "GET":
+        user_id = request.GET.get('user_id', '')
+        asset = AssetGroup.objects.filter(user_id=user_id)
+        user = get_object(UserPar, id=user_id)
+        if isinstance(asset,Iterable) is False:
+            iters = 0
+    else:
+        asset = AssetGroup.objects.all()
+        if instance(asset,Iterable) is False:
+            iters = 0
+    return render_to_response('host_list.html', locals(), context_instance=RequestContext(request))
+
+
+@require_login
+def host_edit(request):
+    '''
+    资产编辑
+    '''
+    pass
+
+
+@require_login
+def host_del(request):
+    '''
+    资产删除
+    '''
+    if request.method == "GET":
+        host_id = request.GET.get('id','')
+    elif request.method == "POST":
+        host_id = request.POST.get('id','')
+    else:
+        return HttpResponse('Error request')
+    host = get_object(AssetGroup, id=host_id)
+    logger.debug(u"删除主机 %s 成功" % host.hostname)
+    host.delete()
     return HttpResponse('删除成功')

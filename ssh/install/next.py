@@ -102,7 +102,7 @@ class Setup(object):
     @staticmethod
     def _chmod_file():
         os.chdir(ssh_dir) #工作路径移动到当前目录下
-        # os.chmod('init.sh', 0755)
+        os.chmod('init.sh', 0755)
         # os.chmod('connect.py', 0755)
         os.chmod('manage.py', 0755)
         os.chmod('run_server.py', 0755)

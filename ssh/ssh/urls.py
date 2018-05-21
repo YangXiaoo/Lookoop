@@ -16,4 +16,8 @@ urlpatterns = patterns('ssh.views',
     url(r'^key_down/$', 'key_down', name='key_down'),
     url(r'^user_list/$', 'user_list', name='user_list'),
     url(r'^user_del/$', 'user_del', name='user_del'),
+    url(r'^host_add/$', 'host_add', name='host_add'),
+    url(r'^host_list/$', 'host_list', name='host_list'),
+    url(r'^host_edit/$', 'host_edit', name='host_edit'),
+    url(r'^host_del/$', 'host_del', name='host_del'),
 )

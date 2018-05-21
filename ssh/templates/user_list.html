@@ -37,6 +37,7 @@
     <div class="center">
         <table class="table table-condensed table-responsive">
         <tr class="success">
+            <td>用户id</td>
             <td>用户名</td>
             <td>登录名</td>
             <td>登录密码</td>
@@ -47,19 +48,23 @@
         </tr>
         {% ifequal iters 0 %}
         <tr>
+            <td>{{ user.id }}</td>
             <td>{{ user.name }}</td>
             <td>{{ user.username }}</td>
             <td>{{ user.password }}</td>
             <td>{{ user.ssh_key_pwd }}</td>
-            <td><a href="{% url 'key_down' %}?uuid={{ asset.uuid }}">下载</a></td>
+            <td><a href="{% url 'key_down' %}?uuid={{ user.uuid }}">下载</a></td>
             <td>{{ user.date_joined }}</td>
             <td>
-                <a value="{% url 'user_del' %}?id={{ user.id }}" class="btn btn-xs btn-danger user_del">删除</a>
+                <a href="{% url 'host_add' %}?user_name={{ user.username }}" class="btn btn-xs btn-info">增添</a>
+                <a href="{% url 'host_list' %}?user_id={{ user.id }}" class="btn btn-xs btn-success">资产</a>
+                <a value="{% url 'user_del' %}?user_id={{ user.id }}" class="btn btn-xs btn-danger user_del">删除</a>
         </td>
         </tr>
         {% else %}        
         {% for u in user %}
         <tr>
+            <td>{{ u.id }}</td>
             <td>{{ u.name }}</td>
             <td>{{ u.username }}</td>
             <td>{{ u.password }}</td>
@@ -67,7 +72,9 @@
             <td><a href="{% url 'key_down' %}?uuid={{ u.uuid }}">下载</a></td>
             <td>{{ u.date_joined }}</td>
             <td>
-                <a value="{% url 'user_del' %}?id={{ u.id }}" class="btn btn-xs btn-danger user_del">删除</a>
+                <a href="{% url 'host_add' %}?username={{ u.username }}" class="btn btn-xs btn-info">增添</a>
+                <a href="{% url 'host_list' %}?user_id={{ u.id }}" class="btn btn-xs btn-success">资产</a>
+                <a value="{% url 'user_del' %}?user_id={{ u.id }}" class="btn btn-xs btn-danger user_del">删除</a>
             </td>
         </tr>
         {% endfor %}

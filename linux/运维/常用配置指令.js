@@ -45,6 +45,9 @@ AllowUsers:yangxiao
 [root]# usermod -g root yangxiao
 
 
+
+ssh登录查看信息
+[root]# service sshd status -l
 --------------------------------------------------------
 系统网络服务关闭
 [root]# killall php-fpm 
@@ -65,3 +68,4 @@ Django 基本操作命令
 查看用户
 [root]# cat /etc/passwd
 [root]# cat /etc/group
+

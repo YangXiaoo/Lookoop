@@ -79,6 +79,7 @@ class AssetGroup(models.Model):
     username = models.CharField(max_length = 100, verbose_name=u"登录名")
     password = models.CharField(max_length = 100, verbose_name=u"登录密码")
     hostname = models.CharField(max_length = 100, verbose_name=u"主机名")
+    ssh_key = models.CharField(max_length = 100, blank=True, null=True, verbose_name=u"密匙")
     status = models.IntegerField(choices=ASSET_STATUS, blank=True, null=True, default=1, verbose_name=u"主机状态")
     is_active = models.BooleanField(default=True, verbose_name=u"是否激活")
     date_add = models.DateTimeField(auto_now=True, null=True, verbose_name=u"创建时间")

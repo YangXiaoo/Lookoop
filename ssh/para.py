@@ -18,7 +18,6 @@ import pyte
 import operator 
 import getpass
 import struct, fcntl, signal, socket, select
-
 from io import open as copen
 import uuid
 
@@ -27,11 +26,12 @@ if not django.get_version().startswith('1.6'):
     setup = django.setup()
 
 from django.contrib.sessions.models import Session
+from django.db.models import Q
 from ssh.api import * 
 from ssh.settings import LOG_DIR, NAV_SORT_BY
 from ssh.ansible_api import MyRunner
-from run_server import Tty
-from ssh.models import User, UserPar, Log
+from ssh.tty_api import Tty
+from ssh.models import User, UserPar, Log, AssetGroup
 
 login_user = get_object(UserPar, username=getpass.getuser()) 
 
@@ -214,8 +214,8 @@ class Nav(object):
     """
     def __init__(self, user):
         self.user = user
-        self.user_id = user_id
-        self.assets = get_object(AssetGroup, user_id=user_id)
+        self.user_id = user.id
+        self.assets = AssetGroup.objects.filter(user_id=self.user_id)
         self.search_result = self.assets
 
     @staticmethod
@@ -248,12 +248,11 @@ class Nav(object):
                     raise ValueError
 
             except (ValueError, TypeError):
-                # 匹配 ip, hostname, 备注
                 str_r = str_r.lower()
                 self.search_result = AssetGroup.objects.filter(
                     Q(ip__contains=str_r) |
                     Q(hostname__contains=str_r) |
-                    Q(comment__contains=str_r) |
+                    Q(comment__contains=str_r)
                     )
         else:
             self.search_result = self.assets
@@ -270,7 +269,7 @@ class Nav(object):
     def get_max_asset_property_length(assets, property_='hostname'):
         try:
             return max([len(getattr(asset, property_)) for asset in assets])
-        except ValueError:
+        except:
             return 30
 
     def print_search_result(self):
@@ -278,11 +277,12 @@ class Nav(object):
         line = '[%-3s] %-16s %-5s  %-' + str(hostname_max_length) + 's  %s'
         color_print(line % ('ID', 'IP', 'Port', 'Hostname', 'Comment'), 'title')
         if hasattr(self.search_result, '__iter__'):
-            for index, ip, port, hostname,comment in enumerate(self.search_result):
-                print line % (index, ip, port,self.truncate_str(asset.hostname),comment)
-                print
+            for re in self.search_result:
+                print line % (re.id, re.ip, re.port, self.truncate_str(re.hostname), re.comment)
+            print
         else:
-            print line % (index, ip, port,self.truncate_str(asset.hostname),comment)
+            if self.search_result:
+                print line % (self.search_result.id, self.search_result.ip, self.search_result.port, self.truncate_str(self.search_result.hostname), self.search_result.comment)
             print
 
     def try_connect(self):
@@ -413,6 +413,7 @@ def main():
                     nav.try_connect()
                 else:
                     nav.print_search_result()
+                    nav.try_connect()
 
     except IndexError, e:
         color_print(e)

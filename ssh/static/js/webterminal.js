@@ -1,5 +1,5 @@
 /**
- * 2018-5-19
+ * Created by liuzheng on 3/3/16.
  */
 var rowHeight = 1;
 var colWidth = 1;
@@ -19,7 +19,7 @@ WSSHClient.prototype._generateEndpoint = function (options) {
 WSSHClient.prototype.connect = function (options) {
     var endpoint = this._generateEndpoint(options);
 
-    if (window.WebSocket) {
+    if (window.WebSocket) { //客户端地址
         this._connection = new WebSocket(endpoint);
     }
     else if (window.MozWebSocket) {
@@ -107,8 +107,20 @@ function openTerminal(options) {
             term.write(data);
         }
     }));
+    //rowHeight = 0.0 + 1.00 * $('.terminal').height() / 24;
+    //colWidth = 0.0 + 1.00 * $('.terminal').width() / 80;
     return {'term': term, 'client': client};
 }
+
+//function resize() {
+//    $('.terminal').css('width', window.innerWidth - 25);
+//    console.log(window.innerWidth);
+//    console.log(window.innerWidth - 10);
+//    var rows = Math.floor(window.innerHeight / rowHeight) - 2;
+//    var cols = Math.floor(window.innerWidth / colWidth) - 1;
+//
+//    return {rows: rows, cols: cols};
+//}
 
 $(document).ready(function () {
     var options = {};
@@ -116,6 +128,14 @@ $(document).ready(function () {
     $('#ssh').show();
     var term_client = openTerminal(options);
     console.log(rowHeight);
+    // by liuzheng712 because it will bring record bug
+    //window.onresize = function () {
+    //    var geom = resize();
+    //    console.log(geom);
+    //    term_client.term.resize(geom.cols, geom.rows);
+    //    term_client.client.send({'resize': {'rows': geom.rows, 'cols': geom.cols}});
+    //    $('#ssh').show();
+    //}
     try {
         $('#term-row')[0].value = localStorage.getItem('term-row');
         $('#term-col')[0].value = localStorage.getItem('term-col');

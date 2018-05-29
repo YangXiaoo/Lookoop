@@ -12,7 +12,7 @@
 <body class="gray-bg">
 
 	<div class="asset_add container">
-
+		{% include 'head.html' %}<hr>
 		<div  align="center">
 		   <h3 class="title">填写资料</h3>
 
@@ -26,34 +26,34 @@
 
 		<form id="asset_form" method="POST">
 			<div class="row">
-				<label class="col-sm-3 control-label">IP地址</label>
+				<label class="col-sm-3 control-label" align="right">IP地址<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" name="ip" value="{{ asset.ip }}" placeholder="IP Address"></div>
 			</div>
+			<br>
 			<div class="row">
-				<label class="col-sm-3 control-label">端口号</label>
+				<label class="col-sm-3 control-label" align="right">端口号<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.port }}" name="port" placeholder="port">
 				</div>
 			</div>
+			<br>
 			<div class="row">
-				<label class="col-sm-3 control-label">主机名</label>
+				<label class="col-sm-3 control-label" align="right">主机名<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.hostname }}" name="hostname" placeholder="hostname">
 				</div>
 			</div>
-					
+			<br>		
 			<div class="row">
-				<label class="col-sm-3 control-label">登录名</label>
+				<label class="col-sm-3 control-label" align="right">登录名<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.username }}" name="username" placeholder="username"></div>
 			</div>
+			<br>
 			<div class="row">
-				<label class="col-sm-3 control-label">密码</label>
+				<label class="col-sm-3 control-label" align="right">密码<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.password }}" name="password" placeholder="password"></div>
-			</div>                    
+			</div>   
+			<br>                 
 			<div class="row">
-				<label class="col-sm-3 control-label">密匙</label>
-				<div class="col-sm-7"><input class="form-control" value="{{ asset.ssh_key }}" name="ssh_key" placeholder="ssh key"></div>
-			</div>
-			<div class="row">
-				<label class="col-sm-3 control-label">是否激活</label>
+				<label class="col-sm-3 control-label" align="right">是否激活</label>
 				<div  class="col-sm-7">
 					<div class="radio i-checks">
 						<label> 
@@ -65,10 +65,12 @@
 					</div>
 				</div>
 			</div>
+			<br>
 			<div class="row">
-				<label class="col-sm-3 control-label">备注</label>
+				<label class="col-sm-3 control-label" align="right">备注</label>
 				<div class="col-sm-7"><input class="form-control" value="{{ asset.comment }}" name="comment" placeholder="comment"></div>
-			</div>                                        
+			</div>  
+			<br>                                      
 			<div class="row">
 				<div class="col-sm-3"></div>
 					<div class="col-sm-7">
@@ -86,52 +88,5 @@
     <script src="/static/js/jquery-2.1.1.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
 
-    <script>
-       $('#asset_form').validator({
-        timely: 2,
-        theme: "yellow_right_effect",
-        rules: {
-            check_ip: [/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/, 'ip地址不正确'],
-            check_port: [/^\d{1,5}$/, '端口号不正确'],
-        },
-        fields: {
-            "ip": {
-                rule: "check_ip;",
-                tip: "输入IP",
-                ok: "",
-                msg: {required: "必须填写!"}
-            },
-            "hostname": {
-                rule: "required;length[0~53]",
-                tip: "填写主机名",
-                ok: "",
-                msg: {required: "必须填写!"}
-            },
-            "port": {
-                rule: "required",
-                tip: "输入端口号",
-                ok: "",
-                msg: {required: "必须填写!"}
-            },
-            "username": {
-                rule: "required",
-                tip: "输入用户名",
-                ok: "",
-                msg: {required: "必须填写!"}
-            },
-            "password": {
-                rule: "length[0~64]",
-                tip: "输入密码",
-                ok: "",
-                msg: {required: "必须填写!"}
-            }
-        },
-        valid: function(form) {
-            form.submit();
-        }
-    });
-
-</script>
-    </script>
 </body>
 </html>

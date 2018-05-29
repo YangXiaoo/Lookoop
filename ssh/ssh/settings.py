@@ -76,6 +76,7 @@ INSTALLED_APPS = (
     'django_crontab',
     'bootstrapform',
     'ssh',
+    'scrapys'
 )
 
 MIDDLEWARE_CLASSES = (

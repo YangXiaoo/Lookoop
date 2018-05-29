@@ -95,8 +95,15 @@ def asset_list(request):
         asset_find = Asset.objects.all()
     if isinstance(asset_find,Iterable) is False:
         iters = 0
+
+    # excel文件下载
     if export:
-        pass # excel文件下载
+        re = write_excel(asset_find)
+        if re[0]:
+            file_name = re[1]
+        msg = u'excel文件已生成，点击下载！'
+        return render_to_response('asset_excel_download.html', locals(), context_instance=RequestContext(request)) 
+    assets_list, p, assets, page_range, current_page, show_first, show_end = pages(asset_find, request)
     return render_to_response('asset_list.html', locals(), context_instance=RequestContext(request))
 
 
@@ -133,6 +140,7 @@ def asset_add(request):
                 msg = u'主机 %s 添加成功' % hostname
             else:
                 msg = u'主机 %s 添加失败' % hostname
+        return HttpResponseRedirect(reverse('asset_list')) 
     return render_to_response('asset_add.html', locals(), context_instance=RequestContext(request))
 
 
@@ -259,7 +267,6 @@ def user_add(request):
     return render_to_response('user_add.html', locals(),context_instance=RequestContext(request))
 
 
-@require_login
 def key_down(request):
     uuid_r = request.GET.get('uuid', '')
     if uuid_r:
@@ -405,3 +412,116 @@ def host_del(request):
     logger.debug(u"删除主机 %s 成功" % host.hostname)
     host.delete()
     return HttpResponse('删除成功')
+
+
+def asset_excel_download(request):
+    pass
+
+
+@require_login
+def upload(request):
+    if request.method == "GET":
+        return render_to_response('upload.html', locals(), context_instance=RequestContext(request))
+    else:
+        upload_files = request.FILES.getlist('file',None)
+        msg = upload_files
+        date_now = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+        upload_dir, filename_path = get_tmp_dir()
+        ip = get_client_ip(request)
+        tmp_file = []
+        try:
+            for upload_file in upload_files:
+                file_path = '%s/%s' % (upload_dir, upload_file.name)
+                file_dir = '%s/%s' % (filename_path, upload_file.name)
+                size = upload_file.size
+                up_file = UpFiles(ip=ip,file_name=upload_file.name,file_path=file_dir, dirs=file_path, size=size)
+                up_file.save()
+                with open(file_path,'w') as f:
+                    for chunk in upload_file.chunks():
+                        f.write(chunk)
+        except:
+            file_path = '%s/%s' % (upload_dir, upload_files.name)
+            file_dir = '%s/%s' % (filename_path, upload_files.name)
+            size = upload_files.size
+            up_file = UpFiles(ip=ip,file_name=upload_files.name,file_path=file_dir, dirs=file_path, size=size)
+            up_file.save()
+            with open(file_path,'w') as f:
+                for chunk in upload_files.chunks():
+                    f.write(chunk)
+        return render_to_response('upload.html', locals(), context_instance=RequestContext(request))       
+
+
+@require_login
+def download(request):
+    '''
+    文件下载
+    '''
+    files = UpFiles.objects.all()
+    if request.method == "GET":
+        keyword = request.GET.get('keyword', '')
+        file_dir = request.GET.get('download', '')
+        file_path = os.path.join(BASE_DIR, 'static/files', file_dir)
+        if os.path.isfile(file_path):
+            f = open(file_path)
+            data = f.read()
+            f.close()
+            response = HttpResponse(data, content_type='application/octet-stream')
+            response['Content-Disposition'] = 'attachment; filename=%s' % os.path.basename(file_path)
+            return response
+    elif request.method == "POST":
+        file_id = request.POST.get('id', '')
+    if keyword:
+        files = UpFiles.objects.filter(
+            Q(file_name__contains=keyword)  
+            )
+    if isinstance(files,Iterable) is False:
+        iters = 0
+    files_list, p, file, page_range, current_page, show_first, show_end = pages(files, request)
+    return render_to_response('download.html', locals(), context_instance=RequestContext(request))
+
+
+@require_login
+def file_del(request):
+    '''
+    文件删除
+    '''
+    if request.method == "GET":
+        file_id = request.GET.get('id','')
+    elif request.method == "POST":
+        file_id = request.POST.get('id','')
+    else:
+        return HttpResponse('Error request')
+    file = get_object(UpFiles, id=file_id)
+    logger.debug(u"删除文件 %s 成功" % file.file_name)
+    try:
+        file_delete(file)
+    except:
+        msg = '删除失败'
+    file.delete()
+    msg = '删除成功'
+    return HttpResponse(msg)    
+
+@require_login
+def file_edit(request):
+    if request.method == "GET":
+        file_id = request.GET.get('id','')
+        file_name = request.GET.get('name','')
+    elif request.method == "POST":
+        file_name = request.POST.get('name', '')
+        file_id = request.POST.get('id','')
+    else:
+        return HttpResponse('Error request')
+    file = get_object(UpFiles, id=file_id)
+    file.file_name = file_name
+    try:
+        file.save()
+        status = 1
+        info = 'ok'
+    except:
+        status = 0
+        info = 'fail'
+    return HttpResponse(json.dumps({
+                "status": status,
+                "info": info
+            })) 
+

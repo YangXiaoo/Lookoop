@@ -13,7 +13,7 @@
 <body class="gray-bg">
 
 	<div class="asset_add container">
-
+		{% include 'head.html' %}<hr>
 		<div  align="center">
 		   <h3 class="title">填写资料</h3>
 
@@ -27,23 +27,27 @@
 
 		<form id="asset_form" method="POST">
 			<div class="row">
-				<label class="col-sm-3 control-label">姓名</label>
+				<label class="col-sm-3 control-label"  align="right">姓名<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" name="name" placeholder="your name"></div>
-			</div>	
+			</div>
+			<br>	
 			<div class="row">
-				<label class="col-sm-3 control-label">登录名</label>
+				<label class="col-sm-3 control-label" align="right">登录名<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" name="username" placeholder="username"></div>
 			</div>
+			<br>
 			<div class="row">
-				<label class="col-sm-3 control-label">密码</label>
+				<label class="col-sm-3 control-label" align="right">密码<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" name="password" placeholder="password"></div>
 			</div>  
+			<br>
 			<div class="row">
-				<label class="col-sm-3 control-label">邮箱</label>
+				<label class="col-sm-3 control-label" align="right">邮箱<span class="text-danger">*</span></label>
 				<div class="col-sm-7"><input class="form-control" name="email" placeholder="email"></div>
-			</div>                    
+			</div>     
+			<br>               
 			<div class="row">
-				<label class="col-sm-3 control-label">是否激活</label>
+				<label class="col-sm-3 control-label" align="right">是否激活</label>
 				<div  class="col-sm-7">
 					<div class="radio i-checks">
 						<label> 
@@ -54,7 +58,8 @@
 						</label>
 					</div>
 				</div>
-			</div>                                      
+			</div>  
+			<br>                                    
 			<div class="row">
 				<div class="col-sm-3"></div>
 					<div class="col-sm-7">
@@ -69,45 +74,11 @@
 		</form>
 
 	</div>
+	
     <script src="/static/js/jquery-2.1.1.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
 	<script src="/static/js/validator/jquery.validator.js"></script>
 	<script src="/static/js/validator/zh_CN.js"></script>
-    <script>
-       $('#asset_form').validator({
-        timely: 2,
-        theme: "yellow_right_effect",
-        rules: {
-            check_ip: [/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])(\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])){3}$/, 'ip地址不正确'],
-            check_port: [/^\d{1,5}$/, '端口号不正确'],
-        },
-        fields: {
-            "name": {
-                rule: "required;length[0~53]",
-                tip: "填写姓名",
-                ok: "",
-                msg: {required: "必须填写!"}
-            },
 
-            "username": {
-                rule: "required;length[0~53]",
-                tip: "输入用户名",
-                ok: "",
-                msg: {required: "必须填写!"}
-            },
-            "password": {
-                rule: "required;length[0~64]",
-                tip: "输入密码",
-                ok: "",
-                msg: {required: "必须填写!"}
-            }
-        },
-        valid: function(form) {
-            form.submit();
-        }
-    });
-
-</script>
-    </script>
 </body>
 </html>

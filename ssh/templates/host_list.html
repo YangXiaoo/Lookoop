@@ -3,13 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1, user-scalable=no">
     <title> 资产列表 | SshWeb</title>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
 </head>
 
 <body class="gray-bg container">
+{% include 'head.html' %}
     <div  align="center">
         {% if error %}
         <div class="alert alert-warning text-center">{{ error }}</div>
@@ -34,7 +35,7 @@
             </form>          
         </div>
     </div><hr>
-    <div class="center">
+    <div class="center table-responsive">
         <table class="table table-condensed">
         <tr class="success">
             <td>所属用户ID</td>

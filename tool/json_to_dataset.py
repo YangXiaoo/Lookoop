@@ -186,8 +186,8 @@ def handle_json(json_file, out_dir):
 
 
 def main():
-    string1 = "\n\n**********   Author：yangxiao   **********\n\n"
-    string2 = "\n\n**********     date：2018-5-6   **********\n\n"
+    string1 = "\n\n**********   Author: yangxiao   **********\n\n"
+    string2 = "\n\n**********     date: 2018-5-6   **********\n\n"
     string3 = "Hello, old brother(sister)!\n\n\n"
     printGreen(string1)
     printGreen(string2)

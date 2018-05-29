@@ -7,9 +7,11 @@
     <title> 主机列表 | SshWeb</title>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <script src="/static/js/jquery-2.1.1.js"></script>
 </head>
 
 <body class="gray-bg container">
+    {% include 'head.html' %}
     <div  align="center">
         {% if error %}
         <div class="alert alert-warning text-center">{{ error }}</div>
@@ -20,10 +22,15 @@
     </div>
     <hr>
     <div class="search row">
-        <div class="col-sm-6">
-           {# <a href="{% url 'asset_add' %}" class="btn btn-xs btn-info">增加</a> #}
+        <div class="col-sm-6 col-xs-6">
+           <button type="button" href="{% url 'asset_add' %}" name="asset_add" class="btn btn-sm btn-info asset_add" onclick="return false">
+                                        - 添加 -
+                                    </button>
+           <button type="button" href="{% url 'asset_list' %}?export=true" name="export" class="btn btn-sm btn-success search-btn-excel" onclick="return false">
+                                        - 导出 -
+                                    </button>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 col-xs-6">
             <form class="form-horizontal" method="GET">
                 <div class="input-group">
                     <input type="text" class="form-control"  name="keyword" value="{{ keyword }}" id="search_input" placeholder="搜索">
@@ -34,7 +41,8 @@
             </form>          
         </div>
     </div><hr>
-    <div class="center">
+    <div id="export"></div>
+    <div class="center table-responsive">
         <table class="table table-condensed">
         <tr class="success">
             <td>主机名</td>
@@ -60,7 +68,7 @@
             </td>
         </tr>
         {% else %}        
-        {% for asset in asset_find %}
+        {% for asset in assets.object_list %}
         </tr>
             <td>{{ asset.hostname }}</td>
             <td>{{ asset.ip }}</td>
@@ -77,10 +85,16 @@
         {% endfor %}
         {% endifequal %}
         </table>
-     
     </div>
+        <div class="row">
+            <div class="col-sm-6 col-xs-6">
+                <input type="button" id="asset_update" class="btn btn-info btn-sm"  name="update_button" value="更新"/>
+            </div>
+            {% include 'paginator.html' %}
+        </div>        
+        <br>
+     
 
-    <script src="/static/js/jquery-2.1.1.js"></script>
     <script src="/static/js/bootstrap.min.js"></script>
 
 </body>
@@ -91,6 +105,10 @@ $(document).ready(function(){
     $('.conn').click(function(){
         var url = '{% url "web_terminal" %}?id=' + $(this).attr('value');
         window.open(url, '_blank');
+    });
+    $('.asset_add').click(function(){
+        var url= $(this).attr("href");
+        window.open(url, '_self');
     });
 
         
@@ -105,7 +123,18 @@ $(document).ready(function(){
                     alert(data);
                 }
             )}
-        });    
+        }); 
+    $('body').off('click', '.search-btn-excel');
+    $('body').on("click", '.search-btn-excel', function(event){
+        var url= $(this).attr("href");
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                $("#export").html(data);
+            }
+        });
+    });       
 });
 </script>
 </html>

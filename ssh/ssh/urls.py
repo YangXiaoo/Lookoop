@@ -5,6 +5,7 @@ admin.autodiscover()
 
 urlpatterns = patterns('ssh.views',
     url(r'^$', 'index', name='index'),
+    url(r'^admin/', include(admin.site.urls)),
     url(r'^login/$', 'Login', name='login'),
     url(r'^logout/$', 'Logout', name='logout'),
     url(r'^asset_list$', 'asset_list', name='asset_list'),
@@ -20,4 +21,10 @@ urlpatterns = patterns('ssh.views',
     url(r'^host_list/$', 'host_list', name='host_list'),
     url(r'^host_edit/$', 'host_edit', name='host_edit'),
     url(r'^host_del/$', 'host_del', name='host_del'),
+    url(r'^asset_excel_download/$', 'asset_excel_download', name='asset_excel_download'),
+    url(r'^upload/$', 'upload', name='upload'),
+    url(r'^download/$', 'download', name='download'),
+    url(r'^file_del/$', 'file_del', name='file_del'),
+    url(r'^file_edit/$', 'file_edit', name='file_edit'),
+    url(r'^scrapys/', include('scrapys.urls')),
 )

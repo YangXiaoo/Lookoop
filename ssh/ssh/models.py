@@ -72,6 +72,7 @@ class UserPar(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class AssetGroup(models.Model):
     user_id = models.IntegerField(blank=True, null=True, verbose_name=u"关联用户id")
     ip = models.CharField(max_length = 32, blank=True, null=True, verbose_name=u"主机ip")
@@ -87,3 +88,15 @@ class AssetGroup(models.Model):
 
     def __unicode__(self):
         return self.username
+
+
+class UpFiles(models.Model):
+    ip = models.CharField(max_length=32, blank=True, null=True)
+    file_name = models.CharField(max_length=100, blank=False, null=False)
+    date_add = models.DateTimeField(auto_now=True, null=True)
+    file_path = models.CharField(max_length=200)
+    dirs = models.CharField(max_length=500)
+    size = models.CharField(max_length=30, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.file_name

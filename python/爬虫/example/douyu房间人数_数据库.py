@@ -16,11 +16,11 @@ import MySQLdb
 class douyuSelenium(unittest.TestCase):
     # 初始化方法
     def setUp(self):
-        self.driver = webdriver.PhantomJS("/usr/local/src/phantomjs-2.1.1-linux-x86_64/bin/phantomjs")
+        self.driver = webdriver.PhantomJS()
         self.counts = 0
 
         db_host = '127.0.0.1'
-        db_name = 'scrapy'
+        db_name = 'ssh'
         user_name = 'root'
         pass_word = 'Ab127000'
         self.tablename = 'dy_count'

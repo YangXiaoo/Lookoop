@@ -3,13 +3,14 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1, user-scalable=no">
     <title> 主机列表 | SshWeb</title>
     <link href="/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet">
 </head>
 
 <body class="gray-bg container">
+    {% include 'head.html' %}
     <div  align="center">
         {% if error %}
         <div class="alert alert-warning text-center">{{ error }}</div>
@@ -20,10 +21,10 @@
     </div>
     <hr>
     <div class="search row">
-        <div class="col-sm-6">
-           {# <a href="{% url 'user_add' %}" class="btn btn-xs btn-info">增加</a> #}
+        <div class="col-sm-6 col-xs-6">
+           <button type="button" href="{% url 'user_add' %}" name="user_add" class="btn btn-sm btn-info user_add" onclick="return false">- 添加 -</button>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 col-xs-6">
             <form class="form-horizontal" method="GET">
                 <div class="input-group">
                     <input type="text" class="form-control"  name="keyword" value="{{ keyword }}" id="search_input" placeholder="搜索">
@@ -34,8 +35,8 @@
             </form>          
         </div>
     </div><hr>
-    <div class="center">
-        <table class="table table-condensed table-responsive">
+    <div class="center table-responsive">
+        <table class="table table-condensed">
         <tr class="success">
             <td>用户id</td>
             <td>用户名</td>
@@ -101,6 +102,11 @@
                         alert(data);
                     }
             )}
+        });
+
+        $('.user_add').click(function(){
+            var url = $(this).attr("href");
+            window.open(url,'_self');
         });
     })
 </script>

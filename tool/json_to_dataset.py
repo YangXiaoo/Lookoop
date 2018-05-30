@@ -91,7 +91,6 @@ def get_filename(dirpath):
         printRed("Existing system...\n")
         printRed("Goodbye, old brother...\n")
         sys.exit(0)
-
     try:
         files
     except:
@@ -247,7 +246,7 @@ def main():
         out_dir = out_dir_back
         printSkyBlue("%s  compiled.\n" % json_file)
 
-    printYellow("\n%s files compiled successful.\n" % count)
+    printYellow("%s files compiled successful.\n" % count)
     printRed("%s files skip.\n" % fail)
     printYellow("Results show in  %s \n"  % out_dir)
     os.startfile(out_dir)

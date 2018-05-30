@@ -95,7 +95,4 @@ def main():
     print("\n**************************")
     print("Total: [ %s ]" % i )
     print("Time: [ %s ]" % expend)
-
-    
-if __name__ == '__main__':
-    main()
+main()

@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# -*- coding: UTF-8 -*- 
+# -*- coding: utf-8 -*- 
 
 import re
 import urllib2
@@ -83,7 +82,7 @@ for  j in range(1,40):
     except:
         pass
 df = pd.DataFrame(final)  
-df.to_csv('51job-data_analysis.csv', mode = 'a',encoding = 'gbk')
+df.to_csv('51job-data_analysis.csv', mode = 'a',encoding = 'utf8')
 
 
 

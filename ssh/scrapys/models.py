@@ -80,3 +80,15 @@ class WorkExp(models.Model):
 
     def __unicode__(self):
         return self.title,self.exp
+
+class AnsysFile(models.Model):
+    title = models.CharField(max_length = 100, null=True)
+    data_txt = models.CharField(max_length = 100, null=True)
+    data_analy = models.CharField(max_length = 20, null=True)
+    data_tran = models.CharField(max_length = 20, null=True)
+    data_final = models.CharField(max_length = 20, null=True)
+    search_count = models.CharField(max_length = 20, null=True,default=0)
+    date = models.DateTimeField(auto_now=True, null=True, verbose_name=u"创建时间")
+
+    def __unicode__(self):
+        return self.title

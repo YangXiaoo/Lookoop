@@ -47,7 +47,7 @@ def address(url):
     return address   
 
 final = []
-for  j in range(1,40):
+for  j in range(1,2):
     print("正在爬取第"+str(j)+"页数据...")
     try:
         html=get_content(j)

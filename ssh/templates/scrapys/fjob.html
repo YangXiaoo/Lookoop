@@ -24,7 +24,7 @@
     </div>
     <hr>
     <div align="center">
-        <h2>python需求前10城市</h2>
+        <h2>{{ search_name|safe }}需求前10城市</h2>
         <div id="top_city" style="height: 300%"></div>
     </div>
     <hr>
@@ -213,7 +213,7 @@ var app = {};
 option = null;
 option = {
     title : {
-        text: '岗位类型',
+        text: '岗位类型(前10)',
         subtext: '来源于51JOB',
         x:'center'
     },

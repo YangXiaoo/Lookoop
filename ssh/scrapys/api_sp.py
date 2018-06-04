@@ -10,6 +10,7 @@ import sys
 
 import re
 import pandas as pd 
+from ssh.settings import *
 
 def location(address): 
     url = 'http://api.map.baidu.com/geocoder/v2/'  
@@ -28,31 +29,36 @@ def location(address):
 def changeCode(name):
     return name
 
-class scrap(object):
+class Scrapy(object):
     '''
-    爬取数据，保存为csv格式，返回文件名
+    爬取数据，40页，两层结构
+    共请求1640个页面
+    应考虑使用线程
     '''
+    def __init__(self,title):
+        self.title = title
+        self.file_name = os.path.join(BASE_DIR,'scrapys/files/', title + "_data_analysis.csv")
+        self.data_name = os.path.join(BASE_DIR,'scrapys/files/', title+ '.txt')
 
-    def __init__(self, title):
-    self.title = title
-    self.file_name = title + 'data_analysis.csv'
-
-    def get_content(self, page):
+    @staticmethod
+    def get_content(page,title):
         headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
         'Accept-Language': 'zh-CN,zh;q=0.8'}
-        url ='http://search.51job.com/list/000000,000000,0000,00,9,99,'+ str(self.title) +',2,'+ str(page)+'.html'
+        url ='http://search.51job.com/list/000000,000000,0000,00,9,99,'+ str(title) +',2,'+ str(page)+'.html'
         req = urllib2.Request(url, headers=headers)  
         res = urllib2.urlopen(req)  
         html = res.read() 
         re= unicode(html, "gbk").encode("utf8")
         return re
 
+    @staticmethod
     def get(html):
         reg = re.compile(r'class="t1 ">.*? href="(.*?)".*? <a target="_blank" title="(.*?)".*? <span class="t2"><a target="_blank" title="(.*?)" href="(.*?)".*?<span class="t3">(.*?)</span>.*?<span class="t4">(.*?)</span>.*? <span class="t5">(.*?)</span>',re.S)
         items=re.findall(reg,html)
         return items
 
+    @staticmethod
     def info_get(url):
         headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
@@ -67,6 +73,7 @@ class scrap(object):
         kind = re.findall(reg_p,html)
         return based_info,kind
 
+    @staticmethod
     def address(url):
         headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
@@ -79,21 +86,19 @@ class scrap(object):
         address = re.findall(reg_a,html)
         return address   
 
+
     def get_data(self):
         final = []
-        title = self.title
         for j in range(1,40):
-            #print("正在爬取第"+str(j)+"页数据...")
             try:
-                html = self.get_content(j,title)
+                html = self.get_content(j,self.title)
                 for i in self.get(html):
                     result = {}
-                    data_name = title + '.txt'
-                    with open (data_name,'a') as f:
+                    with open (self.data_name,'a') as f:
                         f.write(i[0]+'\t'+i[1]+'\t'+i[2]+'\t'+i[3]+'\t'+i[4]+'\t'+i[5]+'\t'+i[6]+'\n')
                         f.close()
                     result['info_link'] = i[0]
-                    info,kind = info_get(i[0])
+                    info,kind = self.info_get(i[0])
                     count = 1
                     for n in info:
                         if count == 1:
@@ -119,19 +124,19 @@ class scrap(object):
                 pass
         df = pd.DataFrame(final)  
         df.to_csv(self.file_name, mode = 'a',encoding = 'utf8')
-        return self.file_name,data_name
+        return self.file_name,self.data_name
 
 
-class handle(object):
+class HandleData(object):
     '''
     处理爬虫数据，过滤，分离。返回excel文件名，返回过滤后的文件名
     '''
     def __init__(self, title, file_name):
-    self.title = title
-    self.data_tran = 'data_' + title + '.xlsx'
-    self.file_name = file_name
-    self.data_final = 'final_' + title + '.xlsx'
-    self.clean_data = []
+        self.title = title
+        self.data_tran = os.path.join(BASE_DIR,'scrapys/files/', title + '_tran.xlsx')
+        self.file_name = file_name
+        self.data_final = os.path.join(BASE_DIR,'scrapys/files/', title + '_final.xlsx')
+        self.clean_data = []
   
     def select_dataposition(self):  
         data = pd.read_csv(self.file_name, header = 0, encoding= 'utf8')  
@@ -198,6 +203,8 @@ class handle(object):
                     continue
                 elif not file['address'][i]:
                     continue
+                elif len(file['address'][i])>200:
+                    continue
                 else:
                     raw_data['address'] = file['address'][i].strip('[\[\]]')
                 raw_data['work_type'] = file['work_type'][i]
@@ -206,7 +213,15 @@ class handle(object):
                 else:
                     raw_data['educational'] = file['educational'][i] 
                 raw_data['company_link'] = file['company_link'][i]  
-                raw_data['publish_time'] = file['publish_time'][i]  
+                raw_data['publish_time'] = file['publish_time'][i]
+
+                # In case of error:'ascii' codec can't decode byte ... in position ...: ordinal not in range(128)
+                # self.fh.write("""<si><t%s>%s</t></si>""" % (attr, string))
+                try: 
+                    test = """%s %s %s %s %s %s %s %s %s %s %s %s %s"""  % (raw_data['company'],raw_data['name'],raw_data['city'],raw_data['address'],raw_data['work_type'],raw_data['educational'],raw_data['company_link'],raw_data['publish_time'],raw_data['info_link'],raw_data['low_exp'],raw_data['high_exp'],raw_data['low_salary'],raw_data['high_salary'])
+                except:
+                    continue
+
                 self.clean_data.append(raw_data)  
             except Exception,e:
                 pass
@@ -219,6 +234,6 @@ class handle(object):
     def get_result(self):  
         self.select_dataposition() 
         clean_data = self.get_file_elements() 
-        save_clean_data(self.clean_data) 
+        self.save_clean_data() 
 
         return self.data_tran,self.data_final 

@@ -51,7 +51,7 @@
         <tr>
             <td>{{ files.id }}</td>
             <td>{{ files.file_name }}</td>
-            <td>{{ files.size }} KB</td>
+            <td>{{ files.size|filesizeformat }} </td>
             <td><a href="/static/files/{{ files.file_path }}" target="_blank" class="alert-link">下载</a></td>
             <td>{{ files.date_add }}</td>
             <td>
@@ -63,7 +63,7 @@
         <tr>
             <td>{{ files.id }}</td>
             <td><span class="editable" data-pk="{{ files.id  }}" data-name="{{ files.file_name  }}" data-url="{% url 'file_edit' %}" >{{ files.file_name }}</span></td>
-            <td>{{ files.size }} KB</td>
+            <td>{{ files.size|filesizeformat }} </td>
             <td><a href="{% url 'download' %}?download={{ files.file_path }}" target="_blank" class="alert-link">下载</a></td>
             <td>{{ files.date_add }}</td>
             <td>

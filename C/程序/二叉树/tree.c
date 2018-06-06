@@ -237,3 +237,11 @@ static void DeleteAllNodes(Trnode * root)
 		DeleteAllNode(pright);
 	}
 }
+
+void DeleteAll(Tree * ptree)
+{
+	if (ptree != NULL)
+		DeleteAllNodes(ptree->root);
+	ptree->root = NULL;
+	ptree->size = 0;
+}

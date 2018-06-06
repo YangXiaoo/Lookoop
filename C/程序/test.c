@@ -1,7 +1,10 @@
 #include <stdio.h>
 int main()
 {
-	int f;
-	f = 2;
-	printf("%d\n",f);
+	int p;
+	p = 23;
+	printf("%d\n",p);
+	printf("%d\n",*(&p));
+	printf("%d\n",&p);
+	return 0;
 }

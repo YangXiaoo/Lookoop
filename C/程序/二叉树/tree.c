@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include "tree.h"
 
+/*
+ * Tree pets; //不是指向指针 *(&pets) == pets
+ * TreeItemCount(&pets);
+ * 
+ */
 
 typeof struct pair
 {

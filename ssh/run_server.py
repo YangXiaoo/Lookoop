@@ -55,13 +55,14 @@ try:
     remote_ip = os.environ.get('SSH_CLIENT').split()[0]
 except (IndexError, AttributeError):
     remote_ip = os.popen("who -m | awk '{ print $NF }'").read().strip('()\n')
+    # NF : the number of the list
 
 from ssh.models import *
 from ssh.settings import IP, PORT, LOG_DIR, NAV_SORT_BY
 
 from tornado.options import options, define as _define
     
-    
+# Not need , just in case of repeat defined   
 def define(name, default=None, type=None, help=None, metavar=None,
            multiple=False, group=None, callback=None):
     if name not in options._options:

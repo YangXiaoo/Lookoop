@@ -74,7 +74,7 @@ stop() {
 }
 
 status(){
-    ps axu | grep 'run_server' | grep -v 'grep' &> /dev/null  #successful 0, fail 1
+    ps axu | grep 'run_server' | grep -v 'grep' &> /dev/null  # successful 0, fail 1
     if [ $? == '0' ];then
         echo -n "sshserver is running..."
         success

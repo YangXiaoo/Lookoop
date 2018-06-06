@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include "queue.h"
 
+/*
+ * Queue line;
+ * Item temp;
+ */
+
 void InitializeQueue(Queue * qu)
 {
 	qu->front = NULL;

@@ -22,8 +22,8 @@ static Pair SeekItem(Tree * ptree, Item * pi);
 static bool ToLeft(Item * i1, Item * i2);
 static bool ToRight(Item * i1, Item * i2);
 static void DeleteNode(Trnode **ptree);
-static void DeleteAllNodes(Trnode * root);
-static void Inorder(Trnode * root, void(*pfun)(Item item));
+static void DeleteAllNodes(Trnode * root); // 中序
+static void Inorder(Trnode * root, void(*pfun)(Item item)); // 中序
 
 
 //函数定义

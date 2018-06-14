@@ -25,7 +25,6 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
-        max_str = ''
         chars = []
         res = []
         for char in s:

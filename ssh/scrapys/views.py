@@ -53,26 +53,29 @@ def index(request):
                 old = Job.objects.filter(company=file['company'][2],title=data_)
 
                 # save in table Job
-                for i in range(1, rows):               
-                    raw_data = {}
-                    title = data_
-                    company = changeCode(file['company'][i]) 
-                    name = changeCode(file['name'][i])  
-                    city = changeCode(file['city'][i])
-                    low_salary = changeCode(file['low_salary'][i])
-                    high_salary = changeCode(file['high_salary'][i])
-                    avg_salary = (float(high_salary)+ float(low_salary))/2            
-                    low_exp = changeCode(file['low_exp'][i])
-                    high_exp = changeCode(file['high_exp'][i])
-                    educational = file['educational'][i]
-                    address = changeCode(file['address'][i])
-                    work_type = changeCode(file['work_type'][i])
-                    company_link = changeCode(file['company_link'][i])
-                    info_link = changeCode(file['info_link'][i]) 
-                    publish_time = changeCode(file['publish_time'][i])
+                for i in range(1, rows):
+                    try:               
+                        raw_data = {}
+                        title = data_
+                        company = changeCode(file['company'][i]) 
+                        name = changeCode(file['name'][i])  
+                        city = changeCode(file['city'][i])
+                        low_salary = changeCode(file['low_salary'][i])
+                        high_salary = changeCode(file['high_salary'][i])
+                        avg_salary = (float(high_salary)+ float(low_salary))/2            
+                        low_exp = changeCode(file['low_exp'][i])
+                        high_exp = changeCode(file['high_exp'][i])
+                        educational = file['educational'][i]
+                        address = changeCode(file['address'][i])
+                        work_type = changeCode(file['work_type'][i])
+                        company_link = changeCode(file['company_link'][i])
+                        info_link = changeCode(file['info_link'][i]) 
+                        publish_time = changeCode(file['publish_time'][i])
 
-                    jobs = Job(name=name,title=title,company=company,educational=educational,city=city,low_salary=low_salary,high_salary=high_salary,low_exp=low_exp,avg_salary=avg_salary,high_exp=high_exp,address=address,company_link=company_link,info_link=info_link,work_type=work_type,publish_time=publish_time)
-                    jobs.save()
+                        jobs = Job(name=name,title=title,company=company,educational=educational,city=city,low_salary=low_salary,high_salary=high_salary,low_exp=low_exp,avg_salary=avg_salary,high_exp=high_exp,address=address,company_link=company_link,info_link=info_link,work_type=work_type,publish_time=publish_time)
+                        jobs.save()
+                    except:
+                        continue
 
                 new = Job.objects.filter(title=search_name)
 
@@ -172,8 +175,8 @@ def index(request):
                         p = WorkExp(title=title,exp=exp,total_salary=total_salary,iter_count=iter_count)
                         p.save()
 
-            except:
-                error = "爬取出错，联系站长"
+            except Exception,e:
+                error = "爬取出错，联系站长<br>"
             datas = AnsysFile.objects.all()
             return render_to_response('scrapys/index.html',locals(),context_instance=RequestContext(request))
     else:

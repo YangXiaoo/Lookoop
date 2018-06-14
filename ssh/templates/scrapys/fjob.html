@@ -23,18 +23,18 @@
         {% endif %}
     </div>
     <hr>
-    <div align="center">
-        <h2>{{ search_name|safe }}需求前10城市</h2>
-        <div id="top_city" style="height: 300%"></div>
-    </div>
-    <hr>
+{#     <div align="center">#}
+{#       <h2>{{ search_name|safe }}需求前10城市</h2> #}
+{#        <div id="top_city" style="height: 300%"></div> #}
+{#   </div> #}
+{#    <hr> #}
     <div align="center">
         <h1>Top City</h1>
         <div id="city_list" style="height: 400%"></div>
     </div>
     <hr>
     <div align="center">
-        <h1>薪水排名前十个城市</h1>
+        <h1>{{ search_name|safe }} 薪水排名前十个城市</h1>
         <div id="top_salary" style="height: 300%"></div>
     </div>
     <hr>
@@ -47,7 +47,7 @@
     </div>
     <hr>
     <div align="center">
-        <div id="exp_funnel" style="height: 300%"></div>
+        <div id="experience" style="height: 300%"></div>
     </div>
     <hr>
     <div align="center">
@@ -249,80 +249,42 @@ if (option && typeof option === "object") {
 }
        </script>
 
-       <script type="text/javascript">
-var dom = document.getElementById("exp_funnel");
+<script type="text/javascript">
+var dom = document.getElementById("experience");
 var myChart = echarts.init(dom);
-var app = {};
 var exp_title = {{ exp_title|safe }};
 var exp_data = {{ exp_list|safe }};
-var exp_min = {{ exp_min|safe }};
-var exp_max = {{ exp_max|safe }};
-var max_size = exp_max + '%';
-var min_size = exp_min + '%';
+var app = {};
 option = null;
 option = {
-    title: {
-        text: '工作经验',
-        subtext: '数据来源于51job'
+    title : {
+        text: '工作经验要求',
+        subtext: '来源于51JOB',
+        x:'center'
     },
-    tooltip: {
+    tooltip : {
         trigger: 'item',
-        formatter: "{a} <br/>{b} : {c}%"
-    },
-    toolbox: {
-        feature: {
-            dataView: {readOnly: false},
-            restore: {},
-            saveAsImage: {}
-        }
+        formatter: "{a} <br/>{b} : {c} ({d}%)"
     },
     legend: {
+        orient: 'vertical',
+        left: 'left',
         data: exp_title
     },
-    calculable: true,
-    series: [
+    series : [
         {
-            name:'所占百分比',
-            type:'funnel',
-            left: '10%',
-            top: 60,
-            //x2: 80,
-            bottom: 60,
-            width: '80%',
-            // height: {totalHeight} - y - y2,
-            min: exp_min,
-            max: exp_max,
-            minSize: '0%',
-            maxSize: '100%',
-            sort: 'descending',
-            gap: 2,
-            label: {
-                normal: {
-                    show: true,
-                    position: 'inside'
-                },
-                emphasis: {
-                    textStyle: {
-                        fontSize: 20
-                    }
-                }
-            },
-            labelLine: {
-                normal: {
-                    length: 10,
-                    lineStyle: {
-                        width: 1,
-                        type: 'solid'
-                    }
-                }
-            },
+            name: '经验要求',
+            type: 'pie',
+            radius : '55%',
+            center: ['50%', '60%'],
+            data: exp_data,
             itemStyle: {
-                normal: {
-                    borderColor: '#fff',
-                    borderWidth: 1
+                emphasis: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
                 }
-            },
-            data: exp_data
+            }
         }
     ]
 };
@@ -330,7 +292,7 @@ option = {
 if (option && typeof option === "object") {
     myChart.setOption(option, true);
 }
-       </script>
+</script>
 
 <script type="text/javascript">
 var exp_x = {{ exp_x|safe }};
@@ -339,7 +301,6 @@ var yA = new Array();
 for(j = 0; j < exp_y.length; j++) {
    yA.push(parseInt(exp_y[j]))
 } 
-console.log(yA);
 var chart = Highcharts.chart('exp_h', {
         chart: {
                 type: 'column'
@@ -358,7 +319,7 @@ var chart = Highcharts.chart('exp_h', {
                         x: -15
                 },
                 title: {
-                        text: '工作经验'
+                        text: '工资'
                 }
         },
         series: [{

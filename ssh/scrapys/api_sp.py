@@ -89,7 +89,7 @@ class Scrapy(object):
 
     def get_data(self):
         final = []
-        for j in range(1,40):
+        for j in range(1,50):
             try:
                 html = self.get_content(j,self.title)
                 for i in self.get(html):
@@ -181,6 +181,8 @@ class HandleData(object):
                     raw_data['low_salary'] = float(low_salary) * 30
                     raw_data['high_salary'] = float(high_salary) * 30
                 elif '时' in file['salary'][i].encode("utf8"):
+                    continue
+                elif '以' in file['salary'][i].encode("utf8"):
                     continue
                 else:
                     raw_data['low_salary'] = file['salary'][i]

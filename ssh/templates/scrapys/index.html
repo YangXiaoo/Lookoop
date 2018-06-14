@@ -30,7 +30,7 @@
         <div id="msg">
             <hr>
             <div class="alert alert-info" role="alert">
-                正在爬取数据，总共需要爬取约1600个页面，请耐心等待！<br>
+                正在爬取数据，总共需要爬取约2000个页面，请耐心等待！<br>
                 数据来源：51job网<br>
             </div>
             <div align="center"><h1><i class="fa fa-spinner faa-spin animated"></i></h1></div>
@@ -57,7 +57,7 @@
                     <h1>
                         <a href="{% url 'fjob' %}?keyword={{ k.title }}"><strong>{{ k.title | slice:"0:1"}}</strong><br></a>
                     </h1>
-                    <small>{{ k.title }}</small>
+                    <small>{{ k.title|safe }}</small>
                         </div>
             {% endfor %}
             </div>

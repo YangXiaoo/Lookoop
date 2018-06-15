@@ -25,6 +25,7 @@ class Solution(object):
         :type s: str
         :rtype: int
         """
+        max_str = ''
         chars = []
         res = []
         for char in s:
@@ -57,7 +58,7 @@ class Solution(object):
             max_str += m
         return m_l,max_str
 
-strs="pdw4gfffs"
+strs="ccdfdc"
 test = Solution()
 leng,res = test.lengthOfLongestSubstring(strs)
 print("Given \"%s\", the answer is \"%s\", with the length of %s." % (strs,res,leng))

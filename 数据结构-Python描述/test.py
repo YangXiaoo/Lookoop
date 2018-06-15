@@ -5,6 +5,6 @@ r = 7 // 2
 # print(lists)
 strs="Answer to Life,the Universe,and Everything"
 # for j,char in enumerate(strs):
-ary = [['a', 'b', 'c'], ['a', 'b', 'c'], ['b']]
-print(max(ary))
+ary = ['dddd', ['a', 'b', 'c'], ['b']]
+print(ary[0][0])
 

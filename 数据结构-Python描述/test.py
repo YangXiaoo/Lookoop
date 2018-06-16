@@ -6,6 +6,11 @@ r = 7 // 2
 strs="PINALSIGYAHRPI"
 # for j,char in enumerate(strs):
 ary = ['dddd', ['a', 'b', 'c'], ['b']]
-for i in range(numRows):
-	for j in range(i, str_length, node_length):
+i = -3456
+i = str(i)
+for n in i:
+	print(n)
+print(len(i))
 
+import sys
+print(2**32)

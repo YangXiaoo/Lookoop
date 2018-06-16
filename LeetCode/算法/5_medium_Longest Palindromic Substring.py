@@ -170,3 +170,38 @@ s = "ccabcbaewdf"
 test = Solution2()
 re = test.longestPalindrome(s)
 print (re)
+
+
+# practice
+start = 0
+maxl = 0
+lens = len(s)
+for i in range(lens):
+    if i - maxl >= 0 and s[i-maxl:i+1] == s[i-maxl:i+1][::-1]:
+        start = i -maxl
+        maxl += 1        
+    if i - maxl -1 >= 0 and s[i-maxl-1:i+1] == s[i-maxl-1:i+1][::-1]:
+        start = i - maxl -1
+        maxl += 2
+print (s[start:start+maxl])
+
+
+# Manacher's Algorithm
+s = "#" + "#".join(s) + "#"
+id = 0
+mx = 0
+p = []
+lens = len(s)
+
+for i in range(lens):
+    if mx > i:
+        count = min(p[2*id -i],mx-i)
+    else:
+        count = 1
+    while i - count >= 0 and i + count < lens and s[i+count] == s[i-count]:
+        count += 1
+    if i - count +1 > mx:
+        mx = i - count + 1
+        id = i
+    p.append(2*count - 1)
+print (p)

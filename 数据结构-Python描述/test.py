@@ -3,8 +3,9 @@ l = len(lists)
 r = 7 // 2
 # print(lists.pop(0))
 # print(lists)
-strs="Answer to Life,the Universe,and Everything"
+strs="PINALSIGYAHRPI"
 # for j,char in enumerate(strs):
 ary = ['dddd', ['a', 'b', 'c'], ['b']]
-print(ary[0][0])
+for i in range(numRows):
+	for j in range(i, str_length, node_length):
 

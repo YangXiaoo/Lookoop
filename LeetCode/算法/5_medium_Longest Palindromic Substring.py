@@ -82,7 +82,7 @@ class Solution2(object):
         lens = len(s)
         p = []                      # 辅助列表：p[i]表示i作中心的最长回文子串的长度
         id = 0                      # 最大回文子串中心位置
-        mx = 0                      # 最大回文子串边界 mx = id + p[id]
+        mx = 0                      # 最大回文子串边界(右边界) mx = id + p[id]
         
         for i in range(lens):       # 遍历字符串
             if mx > i:
@@ -95,7 +95,7 @@ class Solution2(object):
             # i - count: 最大长度不得超过左边边界
             while i-count >= 0 and i+count < lens and s[i-count] == s[i+count]:
                 count += 1
-            if(i-1+count) > mx:    # 更新影响范围最大的字符j及其右边界
+            if(i-1+count) > mx:    # 更新影响范围最大的字符的右边界
                 mx = i-1+count     # 当前id影响
                 id = i
             p.append(count*2-1)
@@ -136,6 +136,7 @@ class Solution3(object):
         return s[minStart: minStart + maxLen]
 
 
+# 动态规划法
 '''
 基本思路是对任意字符串，如果头和尾相同，那么它的最长回文子串一定是去头去尾之后的部分的最长回文子串加上头和尾。如果头和尾不同，那么它最的长回文子串是去头的部分的最长回文子串和去尾的部分的最长回文子串的较长的那一个。 
 P[i,j]表示第i到第j个字符的回文子串数 
@@ -143,7 +144,6 @@ dp[i,i]=1
 dp[i,j]=dp[i+1,j−1]+2|s[i]=s[j]
 dp[i,j]=max(dp[i+1,j],dp[i,j−1])|s[i]!=s[j]
 '''
-# 动态规划法
 class Solution4(object):
     def longestPalindrome(self, s):
         """

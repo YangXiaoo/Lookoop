@@ -10,4 +10,4 @@ i = -3456
 i = str(i)
 def d():
 	return False or 3
-print(d())
+print(100//1000)

@@ -5,10 +5,6 @@ r = 7 // 2
 # print(lists)
 strs="PINALSIGYAHRPI"
 # for j,char in enumerate(strs):
-ary = ['dddd', ['a', 'b', 'c'], ['b']]
-i = -3456
-i = str(i)
-dicts = {"I":1,"V":5,"X":10,"L":50,"C":100,"D":500,"M":1000}
-def d():
-	return False or 3
-print(dicts["I"])
+ary = [[-1, 0, 1], [-1, 2, -1], [0, 1, -1]]
+a = [-1,1,0,1,-1,0,-1,1,-1]
+print(sorted(a))

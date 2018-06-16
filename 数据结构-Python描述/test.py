@@ -8,6 +8,7 @@ strs="PINALSIGYAHRPI"
 ary = ['dddd', ['a', 'b', 'c'], ['b']]
 i = -3456
 i = str(i)
+dicts = {"I":1,"V":5,"X":10,"L":50,"C":100,"D":500,"M":1000}
 def d():
 	return False or 3
-print(100//1000)
+print(dicts["I"])

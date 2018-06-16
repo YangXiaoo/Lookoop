@@ -8,9 +8,6 @@ strs="PINALSIGYAHRPI"
 ary = ['dddd', ['a', 'b', 'c'], ['b']]
 i = -3456
 i = str(i)
-for n in i:
-	print(n)
-print(len(i))
-
-import sys
-print(2**32)
+def d():
+	return False or 3
+print(d())

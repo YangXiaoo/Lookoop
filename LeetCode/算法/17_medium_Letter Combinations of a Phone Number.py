@@ -22,18 +22,32 @@ Although the above answer is in lexicographical order, your answer could be in a
 
 # 2018-6-17
 # Letter Combinations of a Phone Number
+# 使用递归，可以改进
 class Solution:
     def letterCombinations(self, digits):
         """
         :type digits: str
         :rtype: List[str]
         """
-        dicts = {"2":"abc","3":"def","4":"ghi","5":"jkl","6":"mno","7":"pqrs","8":"tuv","9":"wxyz"}
-        while i < len(digits) - 1:
-            j = i + 1
-            while j < len(digits):
-                dicts
-        for i in digits:
-            for j in dicts[i]:
+        dicts = {"0":"","1":"","2":"abc","3":"def","4":"ghi","5":"jkl","6":"mno","7":"pqrs","8":"tuv","9":"wxyz"}
+        res = []
+        if len(digits) == 0:
+            return []
+        for i in dicts[digits[0]]:
+            res.append(i)
+        return self.handle(res,digits[1:],dicts)
 
-        
+    def handle(self,res,digits,dicts):
+        if not digits:
+            return res
+        r = []
+        for i in dicts[digits[0]]:
+            for j in range(len(res)):
+                r.append(res[j] + i)
+        return self.handle(r,digits[1:],dicts)
+
+# test
+d = "23"
+test = Solution()
+res = test.letterCombinations(d)
+print(res)

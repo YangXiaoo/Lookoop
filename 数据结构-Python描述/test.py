@@ -7,4 +7,5 @@ strs="PINALSIGYAHRPI"
 # for j,char in enumerate(strs):
 ary = [[-1, 0, 1], [-1, 2, -1], [0, 1, -1]]
 a = [-1,1,0,1,-1,0,-1,1,-1]
-print(sorted(a))
+di = {"1":"abc"}
+print(di["1"][1]+di["1"][0])

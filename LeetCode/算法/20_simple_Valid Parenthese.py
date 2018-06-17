@@ -30,7 +30,7 @@ Output: true
 
 # 2018-6-17
 # Valid Parenthese
-
+# 栈
 class Solution:
     def isValid(self, s):
         """
@@ -48,7 +48,7 @@ class Solution:
         return len(pars) == 1
 
 # test
-s = "()[]{}"
+s = ")(([])[]{}"
 test = Solution()
 res = test.isValid(s)
 print(res)

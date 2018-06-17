@@ -8,8 +8,5 @@ strs="PINALSIGYAHRPI"
 ary = [[-1, 0, 1], [-1, 2, -1], [0, 1, -1]]
 a = [-1]
 di = {"1":"abc"}
-re = []
-re.append("1")
-re.append("2")
-# re.pop()
-print(re)
+re = [None]
+print(len(re))

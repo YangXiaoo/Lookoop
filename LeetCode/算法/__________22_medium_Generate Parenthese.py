@@ -26,13 +26,15 @@ class Solution:
         self.generateParenthesisIter('',n, n)
         return self.res
 
-    def generateParenthesisIter(self, mstr, r, l):
+    def generateParenthesisIter(self, mstr, r, l,i="f"):
+        print(mstr,r,l,i)
         if r ==0 and l==0:
             self.res.append(mstr)
         if l>0:
-            self.generateParenthesisIter(mstr+'(',r,l-1)
+            self.generateParenthesisIter(mstr+'(',r,l-1,i="s")
         if r>0 and r>l:
-            self.generateParenthesisIter(mstr+')',r-1,l)
+            self.generateParenthesisIter(mstr+')',r-1,l,i="t")
+        print(mstr,r,l,i)
 
 # test
 n = 3

@@ -35,12 +35,12 @@ class Solution:
             return lists
         res = self.toLists(res,lists)
         res = sorted(res)
-        h = l = ListNode(0)
+        dummy = l = ListNode(0)
         for i in res:
             cur = ListNode(i)
             l.next = cur
             l = cur
-        return h.next
+        return dummy.next
 
     def toLists(self,res,lists):
         if len(lists) == 0:

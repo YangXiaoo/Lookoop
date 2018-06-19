@@ -9,4 +9,4 @@ ary = [[-1, 0, 1], [-1, 2, -1], [0, 1, -1]]
 a = [-1]
 di = {"1":"abc"}
 re = [None]
-print(len(re))
+print(strs.index("PI"))

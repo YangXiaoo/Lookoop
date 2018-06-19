@@ -65,13 +65,13 @@ class Solution2:
         while dividend >= divisor:
             k = 0
             tmp = divisor
-            print(tmp,dividend,"----")
+            # print(tmp,dividend,"----")
             while dividend >= tmp:
                 dividend -= tmp
                 quotient += 1 << k # quotient = quotient + (1 << k)
                 tmp <<= 1
                 k += 1
-                print(k,quotient,dividend,tmp)
+                # print(k,quotient,dividend,tmp)
         quotient  = sign * quotient
         if quotient > MAX_INT:
             quotient = MAX_INT

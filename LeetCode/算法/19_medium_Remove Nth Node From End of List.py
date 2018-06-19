@@ -15,6 +15,8 @@ Follow up:
 Could you do this in one pass?
 '''
 
+# 2018-6-18
+# Remove Nth Node From End of List
 # Definition for singly-linked list.
 class ListNode(object):
     def __init__(self, x):

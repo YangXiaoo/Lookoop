@@ -39,7 +39,7 @@ class Solution:
         word_len = len(words[0])
         word_size = len(words)
         ans = []
-        for i in range(len(s) - word_len * word_size + 1):
+        for i in range(len(s) - word_len * word_size + 1): # words中的字符串必须在s中
             j = 0
             cur_dict = {}
             while j < word_size:
@@ -50,15 +50,50 @@ class Solution:
                     cur_dict[word] = 1
                 else:
                     cur_dict[word] += 1
-                if cur_dict[word] > wordsMap[word]:
+                if cur_dict[word] > wordsMap[word]: # 字符串重复了
                     break
                 j += 1
-            if j == word_size:
+            if j == word_size: # 全部都在s中
                 ans.append(i)
         return ans
 
+# test
 s = "barfoothefoobarman"
 words = ["foo","bar"]
-test = Solution()
-res = test.findSubstring(s,words)
+# test = Solution()
+# res = test.findSubstring(s,words)
+# print(res)
+
+if len(words) == 0:
+	print("[]")
+words_map = {}
+words_lens = len(words[0])
+words_size = len(words)
+for i in words:
+	if i in words_map:
+		words_map[i] += 1
+	else:
+		words_map[i] = 1
+print(words_map)
+res = []
+n = 0
+while n < (len(s)-words_lens*words_size +1):
+	j = 0
+	cur = {}
+	while  j < words_size:
+		word = s[n+j*words_lens:n + words_lens + j*words_lens]
+		print(word)
+		if word not in words_map:
+			break
+		if word not in cur:
+			cur[word] = 1
+		else:
+			cur[word] += 1
+		if cur[word] > words_map[word]:
+			break
+		j += 1
+		if j ==  words_size:
+			res.append(n)
+	n += 1
 print(res)
+

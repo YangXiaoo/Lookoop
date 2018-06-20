@@ -34,7 +34,7 @@ class Solution:
         :rtype: List[List[int]]
         """
         candidates.sort()
-        print(candidates)
+        # print(candidates)
         return self.dfs(candidates,target,[],[],0)
         
         

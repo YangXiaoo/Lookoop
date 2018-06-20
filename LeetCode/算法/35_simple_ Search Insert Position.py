@@ -30,11 +30,11 @@ class Solution:
         """
         i = 0
         while i < len(nums):
-        	if nums[i] == target:
-        		return i
-        	if nums[i] > target:
-        		return i
-        	i += 1
+            if nums[i] == target:
+                return i
+            if nums[i] > target:
+                return i
+            i += 1
         return i
         
 nums = [1,3,4,5,6]

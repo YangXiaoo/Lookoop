@@ -9,7 +9,5 @@ ary = [[-1, 0, 1], [-1, 2, -1], [0, 1, -1]]
 a = [-1]
 di = {"1":"abc"}
 re = [None]
-f = 1
-s = 2
-f,s = s,f
-print(f,s)
+s = "ww"
+print(s[3])

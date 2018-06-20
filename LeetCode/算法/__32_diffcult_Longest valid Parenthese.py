@@ -81,7 +81,7 @@ class Solution2:
         return longest
 # s = ")()((()()(())"
 # s = ""
-s = "())))())(())()(("
+s = "())))((())(())()(("
 test = Solution2()
 res = test.longestValidParentheses(s)
 print(res)

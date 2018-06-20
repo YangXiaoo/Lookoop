@@ -23,6 +23,7 @@ Output: "1211"
 '''
 # 2018-6-20
 # Count and Say
+# it can also use loop to resolve
 class Solution:
     def countAndSay(self, n):
         """

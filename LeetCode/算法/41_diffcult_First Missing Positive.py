@@ -52,6 +52,8 @@ class Solution1:
                     return nums[i-1] + 1
             i += 1
         return nums[-1] + 1
+
+# So Smart Solution!!
 class Solution2:
     def firstMissingPositive(self, nums):
         """

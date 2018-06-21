@@ -45,10 +45,7 @@ class Solution1:
         if len(intervals) == 1 or len(intervals) == 0:
             return intervals
         i = 1
-        res = []
-        first = []
-        second = []
-        tmp = []
+        res,first,second,tmp = [],[],[],[]
         intervals = sorted(intervals, key=lambda i: i.start)
         while i < len(intervals):
             first.append(intervals[i-1].start)

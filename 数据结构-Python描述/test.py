@@ -11,7 +11,9 @@ di = {"1":"abc"}
 re = [None]
 s = "bat"
 s2 = ['a', 'b', 't']
-s1 = sorted(s)
-print(s1==s2)
+s1 = [-1]*4
+for i in range(0):
+	print(i)
+print(s1)
 
 

@@ -47,15 +47,21 @@ class Solution:
         """
         :type matrix: List[List[int]]
         :rtype: void Do not return anything, modify matrix in-place instead.
+        :example
         """
         L = len(matrix) - 1
         for s in range((L+1)//2): # Number of squares to rotate. E.g. A 4x4 matrix has 2 squares to rotate
             for i in range(s,L-s,1): # Loop on rotating 4 points at a time to get a 90-degree rotation
-                print(matrix[i][L-s], matrix[s][i])
+                # print(matrix[i][L-s], matrix[s][i])
+                # the colum of point 2 in a i loop will not change
+                # the row of point 1 in a i loop will not change
                 matrix[s][i], matrix[i][L-s] = matrix[i][L-s], matrix[s][i] # Swapping corresponding 1 & 2
-                print(matrix[L-i][s], matrix[L-s][L-i])
+
+                # the colum of point 4 in a i loop will not change
+                # the row of point 3 in a i loop will not change
+                # print(matrix[L-i][s], matrix[L-s][L-i])
                 matrix[L-s][L-i], matrix[L-i][s] = matrix[L-i][s], matrix[L-s][L-i] # Swapping corresponding 3 & 4
-                print(matrix[L-s][L-i], matrix[s][i])
+                # print(matrix[L-s][L-i], matrix[s][i])
                 matrix[s][i], matrix[L-s][L-i] = matrix[L-s][L-i], matrix[s][i] # Swapping corresponding 4 & 1
                 # Combination of these 3 swaps is equivalent to 90 degree rotation for 4 points
                 # Will repeate this for Length - 1 on each square 

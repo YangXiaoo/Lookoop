@@ -65,21 +65,15 @@ class Solution1:
                 add = Interval(tmp[0],tmp[-1])
                 intervals[i] = add
                 intervals.pop(i-1)   
-                tmp = []
-                first = []
-                second = [] 
+                tmp,first,second = [],[],[]
             elif tmp[0:2] != first and tmp[0:2] != second:
                 add = Interval(tmp[0],tmp[-1])
                 intervals[i] = add
                 intervals.pop(i-1)   
-                tmp = []
-                first = []
-                second = []             
+                tmp,first,second = [],[],[]             
             else:
                 i += 1
-                tmp = []
-                first = []
-                second = []
+                tmp,first,second = [],[],[]
         return intervals
 
 

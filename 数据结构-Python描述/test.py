@@ -12,8 +12,8 @@ re = [None]
 s = "bat"
 s2 = ['a', 'b', 't']
 s1 = [-1]*4
-for i in range(0):
-	print(i)
-print(s1)
+n = 4
+r = [[0]*n for _ in range(n)]
+print(r)
 
 

@@ -87,24 +87,40 @@ class Solution(object):
 
         
 """
+description:
+Validate if a given string is numeric.
+
+Some examples:
+"0" => true
+" 0.1 " => true
+"abc" => false
+"1 a" => false
+"2e10" => true
+".1" => true
+
+Note: It is intended for the problem statement to be ambiguous. You should gather all requirements up front before implementing one.
+
+--------------------------------------------------------------------
+aqin said:
 title: The worst problem i have ever met in this oj
 content: The description do not give a clear explantion of the definition of a valid Number, we just use more and more trick to get the right solution. It's too bad, it's waste of my time
+--------------------------------------------------------------------
 f1:
 sherry4869 0  2 days agoReport
 can not agree more Can anyone adjust the test case?
 f2:
-csyfuzhou 0  April 14, 2018 4:56 PMReport
+csyfuzhou 0  April 14, 2018 4:56 
 Exactly !!!!
 
 How could "48." is a valid number !!!
 f3:
-annibalVox 4  April 8, 2018 4:22 PMReport
+annibalVox 4  April 8, 2018 4:22 
 "You should gather all requirements." Great, post your cell phone number.
 f4:
 We should use python to f*ck this problem.
 f5:
 
-ArrivaL 1  January 15, 2018 4:28 PMReport
+ArrivaL 1  January 15, 2018 4:28 
 I agree with you.Nobody knows how many "if else" I've used but god！I submitted at least 10 times.
 f:
 cdai 914  January 29, 2017 9:51 AMReport

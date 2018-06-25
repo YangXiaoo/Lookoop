@@ -1,4 +1,10 @@
-# Dynamic programing
+class Solution:
+    def climbStairs(self, n):
+        """
+        :type n: int
+        :rtype: int
+        """
+        # Dynamic programing
 # 2018-6-22
 """
 动态规划

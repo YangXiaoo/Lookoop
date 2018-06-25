@@ -6,7 +6,8 @@ r = 7 // 2
 strs="PINALSIGYAHRPI"
 # for j,char in enumerate(strs):
 ary = [[-1, 0, 1], [-1, 2, -1], [0, 1, -1]]
-lists[-2:-3]
-print(lists[:-1])
+s = []
+p = "/a/./b/..//../c/"
+print(s.pop())
 
 

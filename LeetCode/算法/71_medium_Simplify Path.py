@@ -26,7 +26,7 @@ class Solution:
         :rtype: str
         """
         arr = path.split("/")
-        print(arr)
+        # print(arr)
         i = 0
         tmp = []
         while i < len(arr):
@@ -46,11 +46,11 @@ class Solution:
         	else:
         		tmp.append(arr[i])
         		i += 1
-        print(tmp)
+        # print(tmp)
         res = ""
         if tmp == []:
         	return "/"
-        print(tmp)
+        # print(tmp)
         for j in range(len(tmp)):
         	res += "/" + tmp[j]
        	return res

@@ -98,7 +98,7 @@ class Solution:
                 for kk in l_t:
                     s += kk + " "
                 if len(s) > maxWidth:
-                    s.rstrip(" ")
+                    s = s[:len(s)-1]
                 else:
                     s += " "*(maxWidth-len(s)) 
                 handle_line.append(s)

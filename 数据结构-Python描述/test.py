@@ -8,6 +8,10 @@ strs="PINALSIGYAHRPI"
 ary = [[-1, 0, 1], [-1, 2, -1], [0, 1, -1]]
 s = []
 p = "/a/./b/..//../c/"
-print(s.pop())
+m = 4
+m -= 1>0
+m -= 2>0
+m -= -1>0
+print(m)
 
 

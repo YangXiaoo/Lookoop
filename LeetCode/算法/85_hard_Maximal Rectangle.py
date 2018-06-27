@@ -27,7 +27,7 @@ class Solution:
         max_area = -1
         height = [0]*len(matrix[0])
         area = []
-        print(height)
+        # print(height)
 
         for i in range(len(matrix)):
             for j in range(len(matrix[0])):

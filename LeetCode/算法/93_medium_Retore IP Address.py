@@ -53,7 +53,7 @@ class Solution1:
                 return False
         return True  
 
-
+# https://blog.csdn.net/wzy_1988/article/details/23137589
 class Solution2:
     def restoreIpAddresses(self, s):
         """

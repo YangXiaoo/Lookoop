@@ -30,7 +30,6 @@ class Solution:
         flag = 0
         k = 1
         while head:
-            # print(head.val,k)
             if k < m or k > n:
                 cu = ListNode(head.val)
                 l1.next = cu

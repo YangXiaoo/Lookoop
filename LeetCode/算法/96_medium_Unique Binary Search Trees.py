@@ -40,7 +40,7 @@ Given a sequence 1…n, we pick a number i out of the sequence as the root, then
 
 i.e.
 
-F(i, n) = G(i-1) * G(n-i)	1 <= i <= n 
+F(i, n) = G(i-1) * G(n-i)   1 <= i <= n 
 Combining the above two formulas, we obtain the recursive formula for G(n). i.e.
 
 G(n) = G(0) * G(n-1) + G(1) * G(n-2) + … + G(n-1) * G(0) 
@@ -53,9 +53,9 @@ public int numTrees(int n) {
     G[0] = G[1] = 1;
     
     for(int i=2; i<=n; ++i) {
-    	for(int j=1; j<=i; ++j) {
-    		G[i] += G[j-1] * G[i-j];
-    	}
+        for(int j=1; j<=i; ++j) {
+            G[i] += G[j-1] * G[i-j];
+        }
     }
 
     return G[n];
@@ -73,8 +73,8 @@ class Solution:
         G[0] = G[1] = 1
 
         for i in range(2,n+1):
-        	for j in range(1,n+1):
-        		G[i] += G[j-1] * G[i-j]
+            for j in range(1,n+1):
+                G[i] += G[j-1] * G[i-j]
 
         return G[n]
 

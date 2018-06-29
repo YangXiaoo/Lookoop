@@ -1,4 +1,4 @@
-lists = ['255', '255', '111', '35']
+lists = [False,True]
 l = len(lists)
 r = 7 // 2
 # print(lists.pop(0))
@@ -12,6 +12,6 @@ m = 4
 m -= 1>0
 m -= 2>0
 m -= -1>0
-print(".".join(lists))
+print(lists[1]+lists[0])
 
 

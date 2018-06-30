@@ -81,7 +81,6 @@ class Solution:
         return root
 
 
-
     def FindTwoNodes(self, root):
             if root:
                 self.FindTwoNodes(root.left)

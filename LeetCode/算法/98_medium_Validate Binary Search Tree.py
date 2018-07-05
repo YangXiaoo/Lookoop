@@ -34,7 +34,6 @@ class TreeNode:
         self.left = None
         self.right = None
 
-
 # LTE
 class Solution1:
     def __init__(self):
@@ -65,7 +64,7 @@ class Solution1:
                 return True
 
 
-                
+
 # root.left.val < root.val and root.right.val > root.val
 # https://leetcode.com/problems/validate-binary-search-tree/discuss/32178/Clean-Python-Solution
 class Solution2:

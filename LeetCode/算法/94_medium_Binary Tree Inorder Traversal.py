@@ -34,7 +34,8 @@ class Solution1:
         :rtype: List[int]
         """
         if root == None:
-            return 
+            # self.res.append("null")
+            return
         self.inorderTraversal(root.left)
         self.res.append(root.val)
         self.inorderTraversal(root.right)
@@ -72,6 +73,6 @@ s = TreeNode(2)
 s.left = TreeNode(3)
 root.right = s
 
-test = Solution2()
+test = Solution1()
 res = test.inorderTraversal(root)
 print(res)

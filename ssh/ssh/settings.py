@@ -56,7 +56,7 @@ except (ConfigParser.NoSectionError, ConfigParser.NoOptionError):
 SECRET_KEY = '%&gytros3@xgd8+*ifw8mvdqfn(2-oumafc^oz3=(ga&b&^m57'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 TEMPLATE_DEBUG = True
 

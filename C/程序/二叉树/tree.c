@@ -186,7 +186,7 @@ static void DeleteNode(Trnode **ptree)
 	}
 	else
 	{
-		for (tmp = (*ptree)->left, tmp->right != NULL, tmp = tmp->left)
+		for (tmp = (*ptree)->left, tmp->right != NULL, tmp = tmp->right)
 			continue;
 		tmp->right = (*ptree)->right;
 		tmp = *ptree;

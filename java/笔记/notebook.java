@@ -392,3 +392,79 @@
 	多态是一个行为具有多个不同表现形式或形态的能力，多态就是同一个接口使用不同的实例而执行的不同操作。同一件事情发生在不同的对象上会产生不同的结果 。
 	优点：消除类型之间的耦合性，可替换性，可扩充性，接口性，灵活性，简化性
 	多态存在的三个必要条件：继承，重写，父类引用指向子类对象。
+
+25. 泛型
+
+	泛型三种：
+	          [1]ArrayList<T> al=new ArrayList<T>();指定集合元素只能是T类型
+	          [2]ArrayList<?> al=new ArrayList<?>();集合元素可以是任意类型，这种没有意义，一般是方法中，只是为了说明用法
+	          [3]ArrayList<? extends E> al=new ArrayList<? extends E>();
+	            泛型的限定：
+	               ? extends E:接收E类型或者E的子类型。
+	               ？super E:接收E类型或者E的父类型。
+
+26. List 列表
+	https://www.cnblogs.com/111testing/p/6602603.html
+	List:元素是有序的(怎么存的就怎么取出来，顺序不会乱)，元素可以重复（角标1上有个3，角标2上也可以有个3）因为该集合体系有索引，
+
+	ArrayList：底层的数据结构使用的是数组结构（数组长度是可变的百分之五十延长）（特点是查询很快，但增删较慢）线程不同步
+
+	LinkedList：底层的数据结构是链表结构（特点是查询较慢，增删较快）
+	Vector：底层是数组数据结构 线程同步（数组长度是可变的百分之百延长）（无论查询还是增删都很慢，被ArrayList替代了）
+	List接口的常用实现类有ArrayList和LinkedList，在使用List集合时，通常情况下声明为List类型，实例化时根据实际情况的需要，实例化为ArrayList或LinkedList，例如：
+	List<String> l = new ArrayList<String>();// 利用ArrayList类实例化List集合
+	List<String> l2 = new LinkedList<String>();// 利用LinkedList类实例化List集合
+
+	// 实例
+	String a = "A", b = "B", c = "C";
+	List<String> list = new LinkedList<String>();
+	list.add(a);
+	list.size();
+	list.contains("a,b,c");
+	list.clear();
+	list.set(1, b);// 将索引位置为1的对象e修改为对象b
+	list.add(2, c);// 将对象c添加到索引位置为2的位置
+	for (int i = 0; i < list.size(); i++) {
+	System.out.println(list.get(i));// 利用get(int index)方法获得指定索引位置的对象
+	}
+
+27. Queue
+	https://www.cnblogs.com/lemon-flm/p/7877898.html
+	Queue: FIFO 数据结构，与 Set, List 同一级别，都是继承 Collection, 用 LinkedList 实现 Queue 接口
+
+	列队的方法，不全都是 Queue 的
+　　add      增加一个元索                     如果队列已满，则抛出一个IIIegaISlabEepeplian异常
+　　remove   移除并返回队列头部的元素    如果队列为空，则抛出一个NoSuchElementException异常
+　　element  返回队列头部的元素             如果队列为空，则抛出一个NoSuchElementException异常
+　　offer    添加一个元素并返回true       如果队列已满，则返回false
+　　poll     移除并返回队列头部的元素    如果队列为空，则返回null
+　　peek     返回队列头部的元素             如果队列为空，则返回null
+　　put      添加一个元素                      如果队列满，则阻塞
+　　take     移除并返回队列头部的元素     如果队列为空，则阻塞
+
+	remove、element、offer 、poll、peek,isEmpty() 其实是属于Queue接口。 
+28. Deque
+	https://www.cnblogs.com/bushi/p/6681543.html
+	修饰符和返回值	方法名	描述
+	添加功能
+	void	push(E)	向队列头部插入一个元素,失败时抛出异常 
+	void	addFirst(E)	向队列头部插入一个元素,失败时抛出异常
+	void 	addLast(E)	向队列尾部插入一个元素,失败时抛出异常
+	boolean 	offerFirst(E)	向队列头部加入一个元素,失败时返回false
+	boolean 	offerLast(E)	向队列尾部加入一个元素,失败时返回false
+	获取功能
+	E	getFirst()	获取队列头部元素,队列为空时抛出异常
+	E 	getLast()	获取队列尾部元素,队列为空时抛出异常
+	E 	peekFirst()	获取队列头部元素,队列为空时返回null
+	E 	peekLast()	获取队列尾部元素,队列为空时返回null
+	删除功能
+	boolean	removeFirstOccurrence(Object)	删除第一次出现的指定元素,不存在时返回false
+	boolean 	removeLastOccurrence(Object)	删除最后一次出现的指定元素,不存在时返回false
+	弹出功能
+	E	pop()	弹出队列头部元素,队列为空时抛出异常
+	E	removeFirst()	弹出队列头部元素,队列为空时抛出异常
+	E 	removeLast()	弹出队列尾部元素,队列为空时抛出异常
+	E 	pollFirst()	弹出队列头部元素,队列为空时返回null 
+	E 	pollLast()	弹出队列尾部元素,队列为空时返回null 
+
+	同Queue一样Deque的实现也可以划分成通用实现和并发实现.通用实现主要有两个实现类ArrayDeque和LinkedList.

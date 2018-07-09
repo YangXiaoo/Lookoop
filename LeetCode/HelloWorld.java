@@ -1,6 +1,6 @@
 import java.io.*;
 
-public class Test {
+public class HelloWorld {
     public static void main(String []args) throws IOException {
         System.out.println("文件流操作");
 

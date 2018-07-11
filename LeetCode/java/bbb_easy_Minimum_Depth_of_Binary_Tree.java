@@ -35,10 +35,10 @@ class bbb_easy_Minimum_Depth_of_Binary_Tree {
         int l = minDepth(root.left);
         int r = minDepth(root.right);
 
-        if (!l) {
+        if (l == 0) {
             return r+1;
         }
-        if (!r) {
+        if (r == 0) {
             return l+1;
         }
 

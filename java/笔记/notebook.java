@@ -419,7 +419,7 @@
 	String a = "A", b = "B", c = "C";
 	List<String> list = new LinkedList<String>();
 	list.add(a);
-	list.size();
+	list.size(); // int[] s  --->  s.length;
 	list.contains("a,b,c");
 	list.clear();
 	list.set(1, b);// 将索引位置为1的对象e修改为对象b

@@ -48,7 +48,9 @@ class bbd_medium_Path_Sum {
         if (root.left == null && root.right == null) {
             tmp.add(root.val);
             if (isEqual(tmp, sum)) {
-                res.add(new ArrayList(tmp));
+                res.add(new ArrayList(tmp)); 
+                // res.add(tmp); 结果为[[],[]]
+                // res.append(tmp[:]) 与python类似
             }
             tmp.remove(tmp.size()-1);
             return;

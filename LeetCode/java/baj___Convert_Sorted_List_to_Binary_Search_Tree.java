@@ -16,7 +16,7 @@ One possible answer is: [0,-3,9,-10,null,5], which represents the following heig
  -10  5
 */
 
-// 2018-7-10
+// 2018-7-11
 // 109. Convert Sorted List to Binary Search Tree
 
 //Definition for singly-linked list.
@@ -33,33 +33,6 @@ public class ListNode {
     TreeNode(int x) { val = x;}
 }
 class baj_Convert_Sorted_List_to_Binary_Search_Tree {
-    public TreeNode sortedListToBST(ListNode head) {
-        ListNode node = head;
-        List<Integer> nums = new ArrayList<Integer>();
-        while (node != null) {
-            nums.add(node.val);
-            node = node.next;
-        }
-
-        return buildTree(nums, 0, nums.length-1);
-    }
-
-    public TreeNode buildTree(int[] nums, int low, int hight) {
-        // 使用递归添加节点
-        if (low > hight) {
-            return null;
-        }
-
-        int mid = (low + hight) / 2;
-        TreeNode root = new TreeNode(nums[mid]);
-        root.left = buildTree(nums, low, mid-1);
-        root.right = buildTree(nums, mid+1, hight);
-
-        return root;
-    }
-}
-
-public class Solution {
     static ListNode currentHead = null;
     TreeNode buildTree(int start, int end) {
         if(start>end) {
@@ -81,6 +54,7 @@ public class Solution {
         currentHead = head;
         int len = 0;
         while(head!=null) {
+            // 记录长度
             len++;
             head = head.next;
         }

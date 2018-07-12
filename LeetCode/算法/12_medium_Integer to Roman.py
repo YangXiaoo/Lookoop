@@ -85,7 +85,7 @@ class Solution:
         return res                           
 
 # test
-num = 1994
+num = 114
 test = Solution()
 res = test.intToRoman(num)
 print(res)

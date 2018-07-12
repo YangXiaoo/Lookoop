@@ -45,6 +45,33 @@ public class TreeLinkNode {
 }
 public class bbh_medium_Populating_Next_Right_Pointers_in_Each_Node_II {
     public void connect(TreeLinkNode root) {
+        if (root == null)
+            return;
+            
+        TreeLinkNode cur = root;
+        TreeLinkNode q = null;
+        TreeLinkNode nextNode = null;
         
+        while (cur != null) {
+            if (cur.left != null) {
+                if (q != null)
+                    q.next = cur.left;                
+                q = cur.left;
+                if (nextNode == null)
+                    nextNode = q;
+            }
+            
+            if (cur.right != null) {
+                if (q != null)
+                    q.next = cur.right;
+                q = cur.right;
+                if (nextNode == null)
+                    nextNode = q;
+            }
+            
+            cur = cur.next;
+        }
+        
+        connect(nextNode);
     }
 }

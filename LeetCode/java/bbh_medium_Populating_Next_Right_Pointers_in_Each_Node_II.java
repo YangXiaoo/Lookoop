@@ -48,16 +48,16 @@ public class bbh_medium_Populating_Next_Right_Pointers_in_Each_Node_II {
         if (root == null)
             return;
             
-        TreeLinkNode cur = root;
-        TreeLinkNode q = null;
-        TreeLinkNode nextNode = null;
+        TreeLinkNode cur = root; // 记录每一层的根节点
+        TreeLinkNode q = null; // 接头
+        TreeLinkNode nextNode = null; //记录每一层节点下一层的孩子，以此来遍历所有节点
         
         while (cur != null) {
             if (cur.left != null) {
-                if (q != null)
-                    q.next = cur.left;                
-                q = cur.left;
-                if (nextNode == null)
+                if (q != null)  // 如果根节点左边根节点的孩子q存在则将当前根节点的左子树cur.left与q连接
+                    q.next = cur.left;               
+                q = cur.left;  // 改变接头 
+                if (nextNode == null) // 当前节点层遍历完后，下一层从nextNode节点开始遍历，只记录一次。
                     nextNode = q;
             }
             

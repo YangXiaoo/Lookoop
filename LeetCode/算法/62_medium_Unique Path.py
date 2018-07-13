@@ -42,6 +42,7 @@ class Solution1:
 
 
 #对于起点到点(i,j)的路径总数：ways[j]= 起点到点(i-1, j) 的路径总数：ways[j] + 起点到点(i, j-1)的路径总数 ways[j-1]，于是我们就得到递推式：ways[j] = ways[j] + ways[j-1]
+# O(n) space
 class Solution2(object):  
     def uniquePaths(self, m, n):  
         """ 

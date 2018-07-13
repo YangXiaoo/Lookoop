@@ -18,6 +18,7 @@ Bonus point if you are able to do this using only O(n) extra space, where n is t
 */
 /**
 解题思路：
+动态规划方法，建立转移方程
 【1】自顶向下：
 MP[i][j] = min(MP[i][j],MP[i][j+1]+triangle[i][j])
 需要n^2 space

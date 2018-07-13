@@ -75,3 +75,32 @@ public class bbh_medium_Populating_Next_Right_Pointers_in_Each_Node_II {
         connect(nextNode);
     }
 }
+    //对列
+    /*
+    public void connect(TreeLinkNode root) {
+        Queue<TreeLinkNode> cur_layer = new LinkedList<>();
+        Queue<TreeLinkNode>  next_layer = new LinkedList<>();
+        TreeLinkNode cur_node;
+        TreeLinkNode next_node;
+        int cur_index = 0;
+        if(root!=null) cur_layer.add(root);
+    
+        while(!cur_layer.isEmpty()){
+            cur_node = cur_layer.poll();
+            if(cur_node.left != null) next_layer.add(cur_node.left);
+            if(cur_node.right != null) next_layer.add(cur_node.right);
+            while(!cur_layer.isEmpty()){
+                next_node = cur_layer.poll();
+                cur_node.next = next_node;
+                cur_node = next_node;
+                if(cur_node.left != null) next_layer.add(cur_node.left);
+                if(cur_node.right != null) next_layer.add(cur_node.right);
+            }
+            cur_node.next = null;
+            Queue<TreeLinkNode> tmp = cur_layer;
+            tmp = cur_layer;
+            cur_layer = next_layer;
+            next_layer = tmp;
+        }
+        
+    }*/

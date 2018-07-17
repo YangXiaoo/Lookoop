@@ -24,6 +24,17 @@ fall-through behavior 落空行为
 operation associativity 操作符结合规范
 operation precedence 操作符优先级
 short-circuit evaluation 短路运算
+input redirection 输入重定向
+nested loop 嵌套循环
+off-by-one error 差一错误
+posttest loop 后测循环
+pretest loop 前侧循环
+sentinel value 标志值
+anonynous object 匿名对象
+getter 访问器
+immutable 不可变量
+setter (or mutator) 设置方法(修改器)
+
 
 2. 第二章 基本程序设计
  1) 基本语法
@@ -47,3 +58,14 @@ short-circuit evaluation 短路运算
 	ASCII码：'0'-'9': 48-57 //十进制表示
 			 'A'-'z': 65-90
 			 'a'-'z': 97-122
+4. String
+	%b 布尔值
+	%c 字符
+	%d 十进制整数
+	%f 浮点数
+	%e 标准科学计数法
+	%s 字符串
+5. 数组
+	double[] array = {1.2, 3.4, 1.8};
+	for (double e: array) // foreach 循环u8m
+		System.out.println(e);

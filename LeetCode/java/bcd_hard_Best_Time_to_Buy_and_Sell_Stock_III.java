@@ -50,13 +50,13 @@ class bcd_hard_Best_Time_to_Buy_and_Sell_Stock_III {
         int min = prices[0];  
         int[] arrayA = new int[len];  
         
-        for(int i=1;i<prices.length;i++){
+        for(int i=1;i<prices.length;i++){ 
             min=Math.min(min,prices[i]); // if (min > prices[i]) min = prices[i];
             arrayA[i]=Math.max(arrayA[i-1],prices[i]-min);
         }
         
         int max = prices[len-1];  
-        int arrayB[] = new int[len];  
+        int[] arrayB = new int[len];  
         for(int i = len-2; i >= 0; i--){
             max = Math.max(prices[i],max);
             arrayB[i] = Math.max(max-prices[i],arrayB[i+1]);

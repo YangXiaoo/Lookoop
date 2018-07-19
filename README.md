@@ -15,7 +15,7 @@
 - 图片，文件批量操作
 >## LeetCode
 
-- LeetCode算法题解析
+- LeetCode算法题解析 By Python, Java
 >## C
 
 - 二叉树

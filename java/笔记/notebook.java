@@ -250,6 +250,7 @@
 	Character.isUpperCase('E'); // true
 	Character.isLowerCase('c'); // true
 	Character.toUpperCase('c'); // 'C'
+	Character.isLetterOrDigit(tail)
 	Character.toLowerCase('E'); // 'e'
 
 17. String
@@ -277,6 +278,7 @@
 	s.startWith('Y') // true
 
 	s.subSequence(1,3); // "-X-"
+
 
 	String substring(int beginIndex, int endIndex) // 包含起始位置，不包括结束索引位置
 

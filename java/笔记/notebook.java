@@ -470,3 +470,10 @@
 	E 	pollLast()	弹出队列尾部元素,队列为空时返回null 
 
 	同Queue一样Deque的实现也可以划分成通用实现和并发实现.通用实现主要有两个实现类ArrayDeque和LinkedList.
+29. HashMap
+	HashMap<String, Integer> map = new HashMap<>();
+	map.put("sss", 1);
+
+30. Set
+	set.contains(xx);
+	set.remove(xx);

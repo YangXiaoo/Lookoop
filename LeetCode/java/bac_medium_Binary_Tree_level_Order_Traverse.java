@@ -22,6 +22,7 @@ return its level order traversal as:
 // bac_medium_Binary_Tree_level_Order_Traverse 
 
 // Definition for a binary tree node.
+// 类似于BFS
  public class TreeNode {
     int val;
     TreeNode left;

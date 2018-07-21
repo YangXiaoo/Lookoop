@@ -4,8 +4,9 @@
 % 下载好的数据集分别为训练train和test文件， 将图片分别复制到caffe/data/mydata/train 和 caffe/data/mydata/test中
 %% 1
 % 数据标签生成
-% caffe/data/mydata/generator.py
-% 放在caffe/data/mydata/ 下 
+% 本机caffe安装路径 C:/software/caffe
+% 脚本存放路径： C:/software/caffe/caffe-master/data/mydata/generator.py
+
 
 import os
 if __name__ == "__main__":
@@ -33,16 +34,16 @@ if __name__ == "__main__":
     print("Successful")
 
 %% 2
-% 在caffe目录下创建mybat/mydata，以下bat脚本文件均保存在该目录下
+% 在caffe目录下创建mybat/mydata，以下bat脚本文件均保存在该目录下 
 %数据转换 data_transfer.bat
-% 全路径 caffe/mybat/mydata/data_trnsfer.bat
+% 脚本路径 C:/software/caffe/caffe-master/mybat/mydata/data_trnsfer.bat
 ..\..\Build\x64\Release\convert_imageset.exe --resize_height=32 --resize_width=32  --backend=leveldb ..\..\data\mydata\ ..\..\data\mydata\train\train.txt ..\..\data\mydata\trainldb
 ..\..\Build\x64\Release\convert_imageset.exe --resize_height=32 --resize_width=32  --backend=leveldb ..\..\data\mydata\ ..\..\data\mydata\test\test.txt ..\..\data\mydata\valldb
 pause
 
 %% 3
 % 均值生成 mean_generator.bat
-% 全路径 caffe/mybat/mydata/mean_generator.bat
+% 脚本路径 C:/software/caffe/caffe-master/mybat/mydata/mean_generator.bat
 ..\..\Build\x64\Release\compute_image_mean.exe ..\..\data\mydata\trainldb --backend=leveldb ..\..\data\mydata\train_mean.binaryproto
 ..\..\Build\x64\Release\compute_image_mean.exe ..\..\data\mydata\valldb --backend=leveldb ..\..\data\mydata\val_mean.binaryproto
 pause

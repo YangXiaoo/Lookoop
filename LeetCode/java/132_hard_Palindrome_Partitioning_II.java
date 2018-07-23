@@ -15,19 +15,20 @@ Explanation: The palindrome partitioning ["aa","b"] could be produced using 1 cu
 // LTE
 class 132_hard_Palindrome_Partitioning_II {
     public int minCut(String s) {
-        int res = s.length();
-        List<String> tmp = ArrayList<String>();
+        List<Integer> res = new ArrayList<>();
+        res.add(s.length() - 1);
+        List<String> tmp = new ArrayList<String>();
 
         dfs(res, s, tmp, 0);
 
-        return res;
+        return res.get(res.size() - 1);
     }
 
-    public void dfs(int res, String s, List<String> tmp, int index) {
+    public void dfs(List<Integer> res, String s, List<String> tmp, int index) {
         if (s.length() == index) {
-            if (tmp.size() < res) {
-                res = tmp.size();
-                return;
+            if (tmp.size() - 1 < res.get(res.size() - 1)) {
+                res.add(tmp.size() - 1);
+                //System.out.println(res);
             }
         }
 
@@ -38,6 +39,7 @@ class 132_hard_Palindrome_Partitioning_II {
             dfs(res, s, tmp, i);
             tmp.remove(tmp.size() - 1);
         }
+        
     }
 
     private boolean isPalindrome(String s) {

@@ -26,22 +26,22 @@ class 131_medium_Palindrome_Partitioning {
     }
 
     public void dfs(String s, int index, List<List<String>> res, List<String> tmp) {
-    	if (index == s.length) {
+    	if (index == s.length()) {
     		res.add(new ArrayList<String>(tmp));
     		return;
     	}
-    	for (int i = index + 1; i <= s.length; i++) {
-    		String sub = s.substring(index, i)
+        
+    	for (int i = index + 1; i <= s.length(); i++) {
+    		String sub = s.substring(index, i);
     		if (!isPalidrome(sub)) continue;
     		tmp.add(sub);
-    		dfs(s, index, res, tmp);
+    		dfs(s, i, res, tmp);
     		tmp.remove(tmp.size() - 1);
     	}
     }
 
     public boolean isPalidrome(String s) {
-    	int left = 0;
-    	int right = s.length - 1;
+    	int left = 0, right = s.length() - 1;
 
     	while ( left < right) {
     		if (s.charAt(left) != s.charAt(right)) return false;

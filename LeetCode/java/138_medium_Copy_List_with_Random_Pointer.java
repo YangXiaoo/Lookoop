@@ -19,6 +19,52 @@ Return a deep copy of the list.
  */
 public class 138_medium_Copy_List_with_Random_Pointer {
     public RandomListNode copyRandomList(RandomListNode head) {
-        
+        if (head == null) return head;
+
+        // 1. 插入节点
+        insertNode(head);
+        // 2. 将random指向对应元素的next元素
+        linkRandom(head);
+        // 3. 分离新链表与旧链表
+        return splitList(head);
+    }
+
+    private void insertNode(RandomListNode head) {
+    	RandomListNode node = head;
+    	while (node != null) {
+    		RandomListNode newNode = new RandomListNode(node.label);
+    		newNode.next = node.next;
+    		newNode.random = node.random;
+    		node.next = newNode;
+    		node = newNode.next;
+    	}
+    }
+
+    private void linkRandom(RandomListNode head) {
+    	RandomListNode node = head;
+    	while (node != null) {
+    		RandomListNode newNode = node.next;
+    		if (newNode.random != null) {
+    			newNode.random = newNode.random.next;
+    		}
+    		node = newNode.next;
+    	}
+    }
+
+    private RandomListNode splitList(RandomListNode head) {
+    	RandomListNode dummy = head.next;
+    	RandomListNode node = head;
+    	RandomListNode cur;
+
+    	while (node != null) {
+    		cur = node.next;
+    		node.next = cur.next; // 旧链表连接
+    		node = cur.next;
+    		if (node != null) {
+    			cur.next = node.next;
+    		}
+    	}
+
+    	return dummy;
     }
 }

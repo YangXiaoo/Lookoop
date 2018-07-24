@@ -1,0 +1,17 @@
+# https://www.cnblogs.com/denny402/p/5074049.html
+net: "../../data/mydata/train_val.prototxt"
+test_iter: 2 # 迭代步数
+test_interval: 50 # 迭代步长
+base_lr: 0.001
+lr_policy: "step"
+gamma: 0.1
+stepsize: 100
+display: 20
+max_iter: 500
+momentum: 0.9
+weight_decay: 0.0005
+# save train data interval time
+snapshot: 500
+# 快照保存地址
+snapshot_prefix: "../../data/mydata/cafenet_train" 
+solver_mode: CPU

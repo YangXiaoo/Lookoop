@@ -53,19 +53,19 @@ class 139_medium_Word_Break {
 class Solution2 {
     public boolean wordBreak(String s, List<String> wordDict) {
         if (wordDict.contains(s)) return true;
-        List<Integer> queue = new ArrayList<>();
+        Queue<Integer> queue = new LinkedList<Integer>();
         queue.offer(0);
-        Set<Integer> visit = new HashMap<>();
+        Set<Integer> visit = new HashSet<Integer>();
         visit.add(0);
 
-        while (!queue.isEmpty) {
+        while (!queue.isEmpty()) {
             int curIndex = queue.poll();
 
             for (int i = curIndex + 1; i <= s.length(); i++) {
                 if (visit.contains(i)) continue;
 
                 if (wordDict.contains(s.substring(curIndex, i ))) {
-                    if (i == s.length) return true;
+                    if (i == s.length()) return true;
                     queue.offer(i);
                     visit.add(i);
                 }

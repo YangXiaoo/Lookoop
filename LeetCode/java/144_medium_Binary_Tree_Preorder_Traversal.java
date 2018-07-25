@@ -73,6 +73,8 @@ class Solution(object):
 
         return res        
 */
+
+        // Another solution by ___
     public List<Integer> preorderTraversal2(TreeNode root) {
         if (root == null) {
             return list;

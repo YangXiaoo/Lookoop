@@ -473,7 +473,17 @@
 29. HashMap
 	HashMap<String, Integer> map = new HashMap<>();
 	map.put("sss", 1);
+	map.containsKey(xx);
+	map.constains(xx);
+	map.remove(xx);
 
 30. Set
+	Set<ListNode> set = new HashSet<>();
 	set.contains(xx);
 	set.remove(xx);
+	set.add(xx)
+
+31. Stack
+	Stack<Integer> stack = new Stack<>();
+	stack.push(xx);
+	stack.pop(xx);

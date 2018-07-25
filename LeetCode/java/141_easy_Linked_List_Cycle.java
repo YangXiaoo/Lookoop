@@ -37,3 +37,21 @@ public class 141_easy_Linked_List_Cycle {
 }
 
 // 使用双指针法，若有环则慢的会追赶上快的指针
+
+public class Solution {
+   public boolean hasCycle(ListNode head) {
+        if (head == null) return null;
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while  (fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+            if (fast == null) return null;
+
+            if (fast == slow) return true;
+        }
+
+        return false;
+    }
+}

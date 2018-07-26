@@ -10,7 +10,7 @@ def merge_sort(lists):
         return lists
     middle = len(lists) // 2
     left = merge_sort(lists[:middle])
-    right =merge_sort(lists[middle:])
+    right = merge_sort(lists[middle:])
     return merge(left, right)
 
 def merge(left, right):

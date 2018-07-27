@@ -41,6 +41,7 @@ Explanation:
  *     Point(int a, int b) { x = a; y = b; }
  * }
  */
+// 错误
 class 149_hard_Max_Points_on_a_Line {
     public int maxPoints(Point[] points) {
         int lens = points.length;
@@ -76,6 +77,53 @@ class 149_hard_Max_Points_on_a_Line {
             }
         }
 
+        return max;
+    }
+}
+
+class Solution {
+    public int maxPoints(Point[] points) {
+        int lens = points.length;
+        if (lens < 3) return lens;
+        int max = 0;
+        for (int i = 0; i < lens; i++) {
+            HashMap<Double, Integer> map = new HashMap<Double, Integer>();
+            int cur = 1;
+            for (int j = 0; j < lens; j++) {
+                if (i == j) continue;
+
+                Point p1 = points[i];
+                Point p2 = points[j];
+                double k = 0.0;
+                if (p1.x == p2.x) {
+                    if (p1.y == p2.y) {
+                        cur++;
+                        continue;
+                    } else {
+                        k = Double.MAX_VALUE;
+                    }
+                } else {
+                    if (p1.x > p2.x) {
+                        k = ((double) (p1.y - p2.y) / (p1.x - p2.x));
+                    } else {
+                        k = ((double) (p2.y - p1.y) / (p2.x - p1.x));
+                    }
+                }
+
+                if (map.contiansKey(k)) {
+                    map.put(k, map.get(k) + 1);
+                } else {
+                    map.put(k, 1)
+                }
+            }
+
+            double key;
+            if(map.size() == 0) max = max>cur?max:cur;
+            for(Double d:map.keySet())
+            {
+                max = max > cur + map.get(d)?max:dup+map.get(d);
+            }
+        }
         return max;
     }
 }

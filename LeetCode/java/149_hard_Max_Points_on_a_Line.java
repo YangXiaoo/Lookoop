@@ -31,6 +31,7 @@ Explanation:
 // 2018-7-27
 // 149. Max Points on a Line
 // https://leetcode-cn.com/problems/max-points-on-a-line/description/
+// https://blog.csdn.net/tingting256/article/details/49647407
 /**
  * Definition for a point.
  * class Point {

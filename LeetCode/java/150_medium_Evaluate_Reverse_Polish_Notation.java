@@ -31,13 +31,13 @@ Explanation:
 = 22
  */
 
-// 2018-7-27
+// 2018-7-28
 // 150. Evaluate Reverse Polish Notation
 class 150_medium_Evaluate_Reverse_Polish_Notation {
     public int evalRPN(String[] tokens) {
         Stack<Integer> stack = new Stack<>();
         int fir,sec;
-        String token,thir;
+        String token,thir,result;
         int lens = tokens.length;
         for (int i = 0; i <  lens; i++) {
             token = tokens[i];
@@ -75,5 +75,7 @@ class 150_medium_Evaluate_Reverse_Polish_Notation {
                     break;
             }
         }
+        thir = stack.pop();
+        return Integer.parseInt(thir);
     }
 }

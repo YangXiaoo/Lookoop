@@ -41,9 +41,9 @@ Explanation:
  *     Point(int a, int b) { x = a; y = b; }
  * }
  */
-// 错误
+// 结果溢出。可以考虑将Double转换为String类型，这样就不会溢出
 class 149_hard_Max_Points_on_a_Line {
-    public int maxPoints(Point[] points) {
+    public int maxPoints(Point[] points) {  
         int lens = points.length;
         if (lens < 3) return lens;
         int max = 0;

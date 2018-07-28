@@ -45,50 +45,11 @@ Explanation:
 class 149_hard_Max_Points_on_a_Line {
     public int maxPoints(Point[] points) {
         int lens = points.length;
-        int max = 2;
-        if (lens < 3 ) return lens;
-        for (int i = 0; i < lens - 2; i++) {
-            for (int j = i + 1; j < lens - 1; j++) {
-                Point m = points[j];
-                Point n = points[i];
-                int a = m.x - n.x;
-                int x1 = m.x;
-                int b = m.y - n.y;
-                int y1 = m.y;
-                int length = 2;
-                for (int k = j + 1; k < lens; k++) {
-                    Point p = points[k];
-                    if (a == 0 && b != 0) {
-                        if (x1 == p.x) length++;
-                        continue;
-                    }
-
-                    if (b == 0 && a != 0) {
-                        if (y1 == p.y) length++;
-                        continue;
-                    }
-                    
-                    if (a*(p.x - x1) - b*(p.y - y1) == 0) {
-                        length++;
-                    }
-                }
-
-                if (length > max) max = length;
-            }
-        }
-
-        return max;
-    }
-}
-
-class Solution {
-    public int maxPoints(Point[] points) {
-        int lens = points.length;
         if (lens < 3) return lens;
         int max = 0;
         for (int i = 0; i < lens; i++) {
             HashMap<Double, Integer> map = new HashMap<Double, Integer>();
-            int cur = 1;
+            int dup = 1;
             for (int j = 0; j < lens; j++) {
                 if (i == j) continue;
 
@@ -97,7 +58,7 @@ class Solution {
                 double k = 0.0;
                 if (p1.x == p2.x) {
                     if (p1.y == p2.y) {
-                        cur++;
+                        dup++;
                         continue;
                     } else {
                         k = Double.MAX_VALUE;
@@ -118,10 +79,10 @@ class Solution {
             }
 
             double key;
-            if(map.size() == 0) max = max>cur?max:cur;
+            if(map.size() == 0) max = max>dup?max:dup;
             for(Double d:map.keySet())
             {
-                max = max > cur + map.get(d)?max:dup+map.get(d);
+                max = max >dup + map.get(d)?max:dup+map.get(d);
             }
         }
         return max;

@@ -35,6 +35,45 @@ Explanation:
 // 150. Evaluate Reverse Polish Notation
 class 150_medium_Evaluate_Reverse_Polish_Notation {
     public int evalRPN(String[] tokens) {
-        
+        Stack<Integer> stack = new Stack<>();
+        int fir,sec;
+        String token,thir;
+        int lens = tokens.length;
+        for (int i = 0; i <  lens; i++) {
+            token = tokens[i];
+            switch (token) {
+                case "+":
+                    sec = stack.pop();
+                    fir = stack.pop();
+                    result = Integer.parseInt(fir) + Integer.parseInt(sec);
+                    thir = Integer.toString(result);
+                    stack.push(thir);
+                    break;
+                case "-":
+                    sec = stack.pop();
+                    fir = stack.pop();
+                    result = Integer.parseInt(fir) - Integer.parseInt(sec);
+                    thir = Integer.toString(result);
+                    stack.push(thir);
+                    break;
+                case "*":
+                    sec = stack.pop();
+                    fir = stack.pop();
+                    result = Integer.parseInt(fir) * Integer.parseInt(sec);
+                    thir = Integer.toString(result);
+                    stack.push(thir);
+                    break;
+                case "/":
+                    sec = stack.pop();
+                    fir = stack.pop();
+                    result = Integer.parseInt(fir) / Integer.parseInt(sec);
+                    thir = Integer.toString(result);
+                    stack.push(thir);
+                    break;
+                default:
+                    stack.push(token);
+                    break;
+            }
+        }
     }
 }

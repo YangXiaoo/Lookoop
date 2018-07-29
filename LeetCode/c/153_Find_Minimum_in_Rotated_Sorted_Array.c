@@ -16,13 +16,16 @@ Example 2:
 Input: [4,5,6,7,0,1,2]
 Output: 0
 */
+
 // 2018-7-29
 // 153. Find Minimum in Rotated Sorted Array
 // https://leetcode-cn.com/submissions/detail/4813199/
+
 #include <stdio.h>
 
 int findMin(int* nums, int numsSize);
 int solution2(int * nums, int numsSize);
+int solution3(int * nums, int numsSize);
 
 int main()
 {

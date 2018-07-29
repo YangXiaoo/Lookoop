@@ -17,11 +17,15 @@ minStack.getMin();   --> Returns -2.
 */
 
 // 2018-7-29
-// 155. Min Stack
+//  
 // https://leetcode-cn.com/problems/min-stack/description/
 
 #include <stdio.h>
 
+typedef struct {
+    int head;
+    int stack[2000];
+} MinStack;
 MinStack* minStackCreate(int maxSize);
 void minStackPush(MinStack* obj, int x);
 void minStackPop(MinStack* obj);
@@ -29,21 +33,16 @@ int minStackTop(MinStack* obj);
 int minStackGetMin(MinStack* obj);
 void minStackFree(MinStack* obj);
 
-typedef struct {
-    int * base;
-    int * top;
-    int * min_top;
-    int * min_base;
-    int size;
-} MinStack;
-
 int main()
 {
+    // not declare
     struct MinStack* obj = minStackCreate(maxSize);
-    minStackPush(obj, x);
+    minStackPush(obj, 2);
+    minStackPush(obj, 3);
     minStackPop(obj);
-    int param_3 = minStackTop(obj);
+    int t = minStackTop(obj);
     minStackFree(obj);
+    printf("%d\n", t);
     return 0;
 
 }
@@ -51,43 +50,38 @@ int main()
 MinStack* minStackCreate(int maxSize) {
     MinStack * stack = (MinStack *)malloc(sizeof(MinStack));
     if (!stack) return NULL;
-    stack->base = (int * )malloc(sizeof(int) * maxSize);
-    if (!stack->base)
-    {
-        free(stack);
-        return NULL;
-    }
-    stack->top = stack->base;
-    stack->min_base = (int *)malloc(sizeof(int) * maxSize);
-    if (!stack->min_base) {
-        free(stack->min_base);
-        free(stack);
-        return NULL;
-    }
-    stack->min_top = stack->min_base;
-    stack->size = maxSize;
+    stack->head = -1;
 
     return stack;
 }
 
 void minStackPush(MinStack* obj, int x) {
-    
+    (obj->head)++;
+    obj->stack[obj->head] = x;
+
 }
 
 void minStackPop(MinStack* obj) {
-    
+    if (obj->head != -1) (obj->head)--;
 }
 
 int minStackTop(MinStack* obj) {
-    
+    return obj->stack[obj->head];
 }
 
 int minStackGetMin(MinStack* obj) {
-    
+    long min = 2147473648;
+    if (obj_>head == -1)
+        return;
+    for (int i = 0; i <= obj->head; i++)
+    {
+        if (obj->stack[i] < min) min = obj->stack[i];
+    }
+    return min;
 }
 
 void minStackFree(MinStack* obj) {
-    
+    free(obj);
 }
 
 /**

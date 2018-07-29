@@ -18,7 +18,6 @@ Yes. However, your reversed string should not contain leading or trailing spaces
 How about multiple spaces between two words?
 Reduce them to a single space in the reversed string.
 */
-
 // 2018-7-29
 // 151. Reverse Words in a String
 #include <stdio.h>

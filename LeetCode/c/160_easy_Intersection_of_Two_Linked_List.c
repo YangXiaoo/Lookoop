@@ -22,13 +22,13 @@ Credits:
 Special thanks to @stellari for adding this problem and creating all test cases.
 */
 
-// 2018-7-29
+// 2018-7-30
 // 160. Intersection of Two Linked Lists
 // https://leetcode-cn.com/problems/intersection-of-two-linked-lists/description/
 
 #include <stdio.h>
 
-int findMin(int* nums, int numsSize);
+int findMin(int *nums, int numsSize);
 
 int main()
 {
@@ -42,6 +42,42 @@ int main()
  *     struct ListNode *next;
  * };
  */
+int lens(struct ListNode *head)
+{
+    int length = 0;
+    struct ListNode *p = head;
+    while (p != NULL)
+    {
+        length++;
+        p = p->next;
+    }
+
+    return length;
+}
 struct ListNode *getIntersectionNode(struct ListNode *headA, struct ListNode *headB) {
-    
+    int A_lens = lens(headA);
+    int B_lens = lens(headB);
+    int gap = A_lens - B_lens > 0 ? A_lens - B_lens : B_lens - A_lens;
+
+    struct ListNode *plong = headA;
+    struct ListNode *pshort = headB;
+
+    if (A_lens < B_lens) 
+    {
+        plong = headB;
+        pshort = headA;
+    }
+
+    for (int i = 0; i < gap; i++)
+    {
+        plong = plong->next;
+    }
+
+    while (plong && pshort && plong->val != pshort->val)
+    {
+        plong = plong->next;
+        pshort = pshort->next;
+    }
+
+    return pshort;
 }

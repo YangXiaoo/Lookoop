@@ -69,6 +69,7 @@ class Solution1(object):
 
 # Manacher’s Algorithm
 # 复杂度o(n) 
+# https://www.cnblogs.com/grandyang/p/4475985.html
 '''
 将所有可能的奇数/偶数长度的回文子串都转换成了奇数长度：在每个字符的两边都插入一个特殊的符号。abba => #a#b#b#a#， aba => #a#b#a#
 '''
@@ -167,7 +168,7 @@ class Solution4(object):
 # test
 # s = "rxabaabahiherereretmjk"
 s = "ccabcbaewdf"
-test = Solution2()
+test = Solution4()
 re = test.longestPalindrome(s)
 print (re)
 

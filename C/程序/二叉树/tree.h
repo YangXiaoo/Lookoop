@@ -7,21 +7,21 @@
 #include <stdbool.h>
 
 #define LEN 20
-typeof struct item
+typedef struct item
 {
 	char petname[LEN];
 	char petkind[LEN];
 } Item;
 
 #define MAXITEMS 10
-typeof struct trnode
+typedef struct trnode
 {
 	Item item;
 	struct trnode * left;
 	struct trnode * right;
 } Trnode;
 
-typeof struct tree 
+typedef struct tree 
 {
 	Tronde * root;
 	int size;

@@ -16,15 +16,15 @@ struct film
 	int rating;
 };
 
-typeof struct film Item;
+typedef struct film Item;
 
-typeof struct node
+typedef struct node
 {
 	Item item;
 	struct node * next;
 } Node;
 
-typeof Node * List;
+typedef Node * List;
 
 
 void InitializeList(List * plist);

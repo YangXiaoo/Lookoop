@@ -55,7 +55,7 @@ class BinHeap(object):
                 return k * 2
 
     """
-    # Delete Min use another way
+    # Delete Min by percloate down
     def delMin(self):
         m = self.heapList[1]
         self.percolateDown(1)

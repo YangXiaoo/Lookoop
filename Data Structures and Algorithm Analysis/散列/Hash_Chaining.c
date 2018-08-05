@@ -73,7 +73,7 @@ static int NextPrime(int TableSize)
 	{
 		for (i = 3; i * i <= N; i += 2)
 			if (N % i == 0)
-			{
+			{吧
 				flag = 1;
 				break;
 			}

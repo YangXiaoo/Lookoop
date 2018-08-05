@@ -12,6 +12,8 @@ m = 4
 m -= 1>0
 m -= 2>0
 m -= -1>0
-print(lists[1]+lists[0])
+a = ary[1]
+a.pop(1)
+print(a)
 
 

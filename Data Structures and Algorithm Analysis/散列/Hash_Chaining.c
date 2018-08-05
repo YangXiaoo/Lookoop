@@ -102,14 +102,14 @@ HashTable Initialize(int TableSize)
 
 	H->TableSize = NextPrime(TableSize);
 
-	H->Lists = malloc( sizeof( List ) * H->TableSize );
+	H->Lists = (List *)malloc( sizeof( List ) * H->TableSize );
 	if (H->Lists == NULL)
 		return NULL;
 
 	// 定义链表
 	for (int i = 0; i < H->TableSize; i++)
 	{
-		H->Lists[i] = (Node *)malloc(sizeof(Node));
+		H->Lists[i] = (List *)malloc(sizeof(List));
 		if (H->Lists[i] == NULL)
 			return NULL;
 		H->Lists[i]->key = i;
@@ -127,43 +127,49 @@ int Hash(int key, int TableSize)
 }
 
 
-ElementType Get(int key, HashTable *H)
+List Get(int key, HashTable *H)
 {
 	ElementType value;
-	List *L, *P;
+	List L, P;
 
 	int k = Hash(key, H->TableSize);
 
 	L = H->Lists[k];
 	P = L->next;
 
-	while (P != NULL && P->key != key)
+	while (P != NULL && P->key != key && P->value != NULL)
 		P = P->next;
 
-	return P->value;
+	return P;
 }
 
 
 void Insert(int key, ElementType value, HashTable *H)
 {
 	int k = Hash(key, H->TableSize);
-	List *L, *newList;
+	List L, newList, P;
 	ElementType val;
 
 	// 查看是否已经存在
-	// val = Get(key, H);
-	// 插入的时候检查重复
+	P = Get(key, H);
 
+
+	if (P != NULL)
+		return NULL;
 	L = H->Lists[k];
 
 	while (L->next != NULL)
 	{
-		if (L->key == key)
+		if (L->key == key && L->value != NULL)
+		{
+			L->value = value;
 			return NULL;
+		}		
+
 		L = L->next;
 	}
 
-	newList = (List *)malloc(sizeof(Node));
+	newList = (List *)malloc(sizeof(List));
 	newList->key = key;
 	newList->value = value;
 	newList->next = NULL;

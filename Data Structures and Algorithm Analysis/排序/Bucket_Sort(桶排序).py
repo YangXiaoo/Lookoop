@@ -1,4 +1,4 @@
-# 2018-8-5
+# 2018-8-5 ~ 2018-8-6
 # Bucket Sort
 
 # Reference

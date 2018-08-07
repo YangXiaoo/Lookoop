@@ -7,24 +7,26 @@
 
 >## tool 
 
-- 几个简单的windows文件操作脚本
 - 图片，文件批量操作
+- 数据处理
 
 >## LeetCode
 
-- LeetCode算法题解析 By Python, Java
+- LeetCode算法题解析 Python, Java, C
 
 >## C
 
-- 二叉树
-- 链表
-- 列队
-
 >## Python
-
-- 排序
-- 搜索
 
 >## Linux
 
-- Linux基本操作
+>## Data Structures and Algorithm Analysis
+
+- 算法导论
+- 排序
+- 树
+- 动态规划
+- 贪婪
+- 散列
+- 堆(二叉堆)
+

@@ -14,11 +14,8 @@
 
 - LeetCode算法题解析 Python, Java, C
 
->## C
+>## C Python Linux
 
->## Python
-
->## Linux
 
 >## Data Structures and Algorithm Analysis
 

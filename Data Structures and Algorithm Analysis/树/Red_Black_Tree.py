@@ -46,7 +46,7 @@ class RedBlackTree(object):
 		"""
 	def inorder(self):
 		"""
-		Inorder traversal.
+		Inorder traversal. 
 		"""
 		node = self.root
 		self.traversal(node)

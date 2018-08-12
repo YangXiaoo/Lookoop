@@ -35,6 +35,7 @@ class BtreeNode(object):
         return self.__degree
     def isleaf(self):
         return len(self.clist)==0
+
     def traversal(self):
         result=[]
         def get_value(n):
@@ -47,6 +48,7 @@ class BtreeNode(object):
                 get_value(n.clist[-1])
         get_value(self)
         return result
+
     def show(self):
         q=deque()
         h=0
@@ -57,23 +59,26 @@ class BtreeNode(object):
             except IndexError:
                 return
             else:
-                print ([v.key for v in w.vlist],'the height is',hei)
+                print ([v for v in w.vlist],'the height is',hei)
                 if w.clist==[]:
                     continue
                 else:
                     if hei==h:
                         h+=1
                     q.extend([[v,h] for v in w.clist])
+
     def getmax(self):
         n=self
         while not n.isleaf():
             n=n.clist[-1]
         return (n.vlist[-1],n)
+
     def getmin(self):
         n=self
         while not n.isleaf():
             n=n.clist[0]
         return (n.vlist[0],n)
+
 class IndexFile(object):
     def __init__(fname,cellsize):
         f=open(fname,'wb')
@@ -174,7 +179,8 @@ class Btree(object):
     def insert(self,key_value):
         node=self.__root
         full=self.degree*2-1
-        mid=full/2+1
+        mid=int(full/2+1)
+        print("insert: ", key_value)
         def split(n):
             new_node=BtreeNode(self.degree,parent=n.parent)
             new_node.vlist=n.vlist[mid:]
@@ -208,6 +214,7 @@ class Btree(object):
                         p=bisect_left(n.vlist,key_value)
                         insert_node(n.clist[p])
         insert_node(node)
+
     def delete(self,key_value):
         node=self.__root
         mini=self.degree-1
@@ -287,10 +294,11 @@ def test():
     for i in range(1,1001):
         key=randint(1,1000)
         #key=i
-        value=choice('abcdefg')
-        testlist.append(KeyValue(key,value))
+        value=4
+        testlist.append(key)
     mybtree=Btree(5)
     for x in testlist:
+        # print(x)
         mybtree.insert(x)
     print ('my btree is:\n')
     mybtree.show()
@@ -298,7 +306,7 @@ def test():
     #print '\n the newtree is:\n'
     #mybtree.show()
     print ('\nnow we are searching item between %d and %d\n\n'%(mini,maxi))
-    print ([v.key for v in mybtree.search(mini,maxi)])
+    print ([v for v in mybtree.search(mini,maxi)])
     #for x in mybtree.traversal():
     #    print x
 if __name__=='__main__':

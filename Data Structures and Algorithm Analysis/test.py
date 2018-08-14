@@ -1,9 +1,4 @@
-i = 3
-if i < 3:
-	i += 2
-else:
-	if i<1:
-		i += 2
-	i += 7
-	#  
-print(i)
+from bisect import bisect_left
+c = [1,2,3,4]
+p = bisect_left(c,2)
+print(p)

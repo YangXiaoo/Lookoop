@@ -1,4 +1,2 @@
-from bisect import bisect_left
-c = [1,2,3,4]
-p = bisect_left(c,2)
+p = 431*431 % 2537
 print(p)

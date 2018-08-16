@@ -1,7 +1,7 @@
-# 
 # 2018-8-15 ~ 2018-8-16
 # https://blog.csdn.net/bian_h_f612701198412/article/details/79358771
 # https://blog.csdn.net/rentenglong2012/article/details/68944518
+
 
 """
 Create public and secret keys with the following procedure
@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     pubkey, seckey = genKey(p, q)
 
-    M = 2344 # message M
+    M = 2345 # message M
 
     print("pubkey: ", pubkey,"\n", "seckey: ", seckey)
 
@@ -105,6 +105,5 @@ if __name__ == "__main__":
     D = decrypt(C, seckey)
 
     print(C, D)
-
 
     # End!

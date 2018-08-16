@@ -41,8 +41,8 @@ class BinHeap(object):
     def Down(self, k):
         while (k * 2) < self.size:
             minc = self.minChild(k)
-            if self.heapList[k] > self.heapList[minChild]:
-                self.swap(self.heapList[k], self.heapList[minChild])
+            if self.heapList[k] > self.heapList[minc]:
+                self.swap(self.heapList[k], self.heapList[minc])
             k = minc
 
     def minChild(self, k):

@@ -1,2 +1,2 @@
-p = 431*431 % 2537
-print(p)
+b = "dddd"
+print(bin(b))

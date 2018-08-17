@@ -15,8 +15,8 @@ class Node(object):
         self.pre = None
         self.next = None
 
+class DoubleList(object):
 """初始化双向链表"""
-
     def __init__(self):
         """
         设置头尾，操作比较容易

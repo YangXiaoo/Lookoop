@@ -1,4 +1,4 @@
-# 2018-8-17
+# 2018-8-17 ~ 2018-8-18
 # 斐波那锲堆(Fibonacci heap data structure)
 # 算法导论 P290
 # https://www.cnblogs.com/junyuhuang/p/4463758.html
@@ -11,19 +11,21 @@
 每个节点x都包含一个指向它父节点的指针x.p 和一个指向它的某一个孩子指针x.child. 孩子表中每个孩子y均有y.left和y.right。
 """
 
+# 有问题
 class Node(object):
 	"""
 	定义节点
 	"""
-	__slots__ = ['key', 'left', 'right', 'p', 'c', 'degree', 'mark']
+	# __slots__ = ['key', 'left', 'right', 'p', 'c', 'degree', 'mark']
 	def __init__(self, data=None):
 		self.key = data
 		self.left = None
 		self.right = None
 		self.p = None
 		self.c = None
-		self.degree = 0
+		self.degree = 1
 		self.mark = False
+		
 MIN_INT = -2147483648 # -32768
 class FibHeap(object):
 	def __init__(self):
@@ -59,7 +61,7 @@ class FibHeap(object):
 		if self.min.left == self.min:
 			self.min.left = x
 			x.right = self.min
-			self.right = x
+			self.min.right = x
 			x.left = self.min
 		else:
 			r_left = self.min.left
@@ -76,14 +78,27 @@ class FibHeap(object):
 
 		if z != None:
 			child = z.c # 孩子
-			old = child
-			mark = 0
-			while child != old and mark != 0:
-				self.addToRootList(child)
+			mark = child
+			if child != None:
+				old = child
+				c = 1
 				child = child.right
-				mark = 1
-			z_right == z.right:
-			if z_right == z:
+				while old != child:
+					c += 1
+					if c > self.n:
+						print("Something wrong, exceed max iterations: ", c)
+						return 
+					# print("child values: ", child.key)
+					child = child.right
+				# print("c = ", c)
+				while c != 0:
+					addnode = child
+					child = child.right
+					self.addToRootList(addnode)
+					# print(child.key)
+					c -= 1
+			z_right = z.right
+			if z_right == z and mark == None:
 				self.min = None
 			else:
 				self.deleteNode(self.min)
@@ -110,22 +125,32 @@ class FibHeap(object):
 			a. 在根链表中找到两个具有相同度的根x, y。不失一般性假定x.key <= y.key
 			b. 把y链接到x：从根链表中移除y, 调用link()函数，使得y称为x的孩子, 该过程中x.degree的属性加1， 并清除y上的标记
 		"""
-		A = [0] * self.n #用A来记录根节点对应的度数的轨迹, 若A[i] = y, 则 y.degree == i
-		mark = 0
+		A = [None] * (self.n) #用A来记录根节点对应的度数的轨迹, 若A[i] = y, 则 y.degree == i
 		cur = self.min
 		old = cur
-		while old != cur and mark != 0:
+		d = cur.degree
+		A[d] = cur
+		cur = cur.right
+		while old != cur:
+			if cur == None:
+				break
 			x = cur
+			cur = cur.right
 			d = x.degree
+			# print("consolidate probe_0:",x.key, d, self.n)
 			while A[d] != None:
+				# print("consolidate probe_A arrary: ", A)
 				y = A[d] # 另一个有相同度数的节点
+				# print("consolidate probe_1:",y.key, x.key)
+				if x.p == None: # 此处应该判断是否在根链表
+					self.deleteNode(x)
+				flag = 0
 				if x.key > y.key:
 					# 交换x,y节点
-					x, y = self.swap(x, y)
-				self.link(x, y) # y成为x的孩子
+					x,y = y,x
+				self.link(x, y)
 				A[d] = None # 此度数的节点已经改变，所以置为空
-				d += 1 # 加上一个节点度数加1
-			cur = cur.right
+				d += 1 # 加上一个节点后度数加1
 
 			A[d] = x # 跟新节点记录
 
@@ -133,18 +158,26 @@ class FibHeap(object):
 		n = self.n # insert()函数使用的过程中self.n被改变了
 		for i in range(len(A)):
 			if A[i] != None:
+				# print("degree-------",A[i].degree)
 				self.insert(A[i])
 		self.n = n
-
+		# print("consolidate probe_2:",self.min.key, A)
 
 	def link(self, x, y):
 		"""
 		移除根链表上y，然后将y成为x的孩子。 x.degree加1，将y.mark标记为False，
 		"""
-		self.deleteNode(y)
+		# print("link() probe_1: ", x,y, x.key, y.key)
 		x_child = x.c 
 		if x_child == None:
 			x.c = y
+			y.left = y
+			y.right = y
+		elif x_child == x_child.right:
+			x_child.right = y
+			x_child.left = y
+			y.right = x_child
+			y.left = x_child
 		else:
 			x_child_left = x_child.left
 			x_child_left.right = y
@@ -152,9 +185,9 @@ class FibHeap(object):
 			x_child.left = y
 			y.right = x_child
 		y.p = x
-		x.degree += y.degree
+		x.degree += 1
 		y.mark = False
-
+		# print("link() probe_2 x.key ,x.degree: ", x.key, x.degree)
 
 	def decreaseKey(self, x, k):
 		"""
@@ -208,3 +241,40 @@ class FibHeap(object):
 		self.decreaseKey(x, MIN_INT)
 		self.extractMin()
 
+def test():
+	fb = FibHeap()
+	for i in range(20):
+		fb.insert(Node(i))
+
+	print("最小值：", fb.min.key)
+	print("H的n值：", fb.n)
+	print()
+
+	node = fb.min
+	for i in range(20):
+		# print("Each node key:", node.key)
+		node = node.right
+
+	for i in range(8):
+		mins = fb.extractMin()
+		print("移除最小值： ", mins.key)
+
+	print("\n当前最小值：", fb.min.key)
+
+	node = fb.min
+	old = node
+	print("\n根链表上的结点: ", node.key)
+	node = node.right
+	while node != old:
+		print("根链表上的结点: ", node.key)
+		if node.c != None:
+			# print("child is: ", node.c.key,node.c.right.key)
+			pass
+		node = node.right
+
+
+if __name__ == "__main__":
+	"""
+	Test!
+	"""	
+	test()

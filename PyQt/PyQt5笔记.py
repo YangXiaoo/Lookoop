@@ -16,3 +16,42 @@ setStatusBar() # 设置状态栏
 statusBar() # 获得状态栏对象后，通过状态栏对象的showMessage(m,essage, int timeout=0)方法现实状态栏信息。第一个参数状态栏信息，第二个参数为信息停留时间，单位为毫秒，默认为0，表示一直显示
 QMainWindow不能设置布局
 
+
+
+# 输入框
+f = QFormLayout() # 设置行
+pNormalLineEdit = QLineEdit( )
+f.addRow("Normal", pNormalLineEdit)
+pNormalLineEdit.setEchoMode(QLineEdit.Normal)
+pNoEchoLineEdit.setEchoMode(QLineEdit.NoEcho)
+pPasswordLineEdit.setEchoMode(QLineEdit.Password)
+pPasswordEchoOnEditLineEdit.setEchoMode(QLineEdit.PasswordEchoOnEdit)
+
+
+#设置验证器
+pIntLineEdit.setPlaceholderText("整形");
+pDoubleLineEdit.setPlaceholderText("浮点型");
+pValidatorLineEdit.setPlaceholderText("字母和数字");
+
+# 整形 范围：[1, 99]
+pIntValidator = QIntValidator(self)
+pIntValidator.setRange(1, 99)
+
+# 浮点型 范围：[-360, 360] 精度：小数点后2位
+pDoubleValidator = QDoubleValidator(self)
+pDoubleValidator.setRange(-360, 360)
+pDoubleValidator.setNotation(QDoubleValidator.StandardNotation)
+pDoubleValidator.setDecimals(2)
+
+# 字符和数字
+reg = QRegExp("[a-zA-Z0-9]+$")
+pValidator = QRegExpValidator(self)
+pValidator.setRegExp(reg)	
+
+# 设置验证器
+pIntLineEdit.setValidator(pIntValidator)
+pDoubleLineEdit.setValidator(pDoubleValidator)
+pValidatorLineEdit.setValidator(pValidator)
+
+from PyQt5.QtCore import Qt
+e1.setAlignment( Qt.AlignRight ) # 输入内容靠右

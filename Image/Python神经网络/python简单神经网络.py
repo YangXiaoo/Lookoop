@@ -1,7 +1,7 @@
 # coding: utf-8
 # 2018-8-19
 # 神经网络
-
+# jupyter notebook 查看ipynd格式
 import os
 try:
 	import numpy
@@ -24,7 +24,7 @@ c. 测试
 class neuralNetwork(object):
 	def __init__(self, inputNodes, hiddenNodes, outputNodes, learningRate):
 		"""
-		初始化网络参数
+		初始化网络参数, 共三层网络
 		"""
 		self.in_nodes = inputNodes
 		self.hide_nodes = hiddenNodes
@@ -34,6 +34,7 @@ class neuralNetwork(object):
 		# 将input层与hidden层权重用矩阵表示
 		# 同理表示 hidden层与output层
 		# pow(self.hide_nodes, -0.5) 标准方差为传入链接数目的开方
+		# 矩阵规模： hidden x in
 		self.weight_in_hide = numpy.random.normal(0.0, pow(self.hide_nodes, -0.5), (self.hide_nodes, self.in_nodes))
 		self.weight_hide_out = numpy.random.normal(0.0, pow(self.out_nodes, -0.5), (self.out_nodes, self.hide_nodes))
 
@@ -52,9 +53,10 @@ class neuralNetwork(object):
 		final_inputs = numpy.dot(self.weight_hide_out, hidden_outputs)
 		final_outputs = self.active_function(final_inputs)
 
-		output_errors = (targets - final_outputs)
-		hidden_error = numpy.dot(self.weight_hide_out.T, output_errors)
+		output_errors = (targets - final_outputs) # 期望差值
+		hidden_error = numpy.dot(self.weight_hide_out.T, output_errors) # 误差反向传播
 
+		# 根据误差修改各层权重
 		self.weight_hide_out += self.l_rate * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)), numpy.transpose(hidden_outputs))
 		self.weight_in_hide += self.l_rate * numpy.dot((hidden_error * hidden_outputs * (1.0 - hidden_outputs)), numpy.transpose(inputs))
 
@@ -79,7 +81,7 @@ class neuralNetwork(object):
 def test():
 
 	inputNodes = 784
-	hiddenNodes = 200
+	hiddenNodes = 1000
 	outputNodes = 10
 	learningRate = 0.1
 

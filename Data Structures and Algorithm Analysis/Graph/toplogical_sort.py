@@ -12,6 +12,7 @@ class Vertex(object):
 		self.c = None
 		self.sortNum = None
 
+
 def topSort(G):
 	"""
 	使用BFS实现拓扑排序。
@@ -69,8 +70,6 @@ def test():
 	v7.p = [v4,v5]
 	v7.c = [v6]
 	G = [v1,v2,v3,v4,v5,v6,v7]
-
-
 
 	test = topSort(G)
 

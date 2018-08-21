@@ -9,5 +9,6 @@ N = [
 	{f,h},
 	{f,g}
 ]
+m = {2:[44]}
 N.pop(0)
-print(N)
+print(m )

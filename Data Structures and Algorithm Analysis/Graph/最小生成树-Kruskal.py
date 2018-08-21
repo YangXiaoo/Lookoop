@@ -37,10 +37,12 @@ def Krustal(G):
 	# H = weightSort(G) # 按权值排序边
 	H = G
 	tree = [] # 存储最小树
+	tmp = []
 
 	while edgesAc < len(H):
 		s = E.pop(0)
-		if s not in tree:
+		if s not in tmp:
+			tmp.extend
 			union(tree, s) # 将边添加到树中
 		edgesAc += 1
 

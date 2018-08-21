@@ -9,3 +9,5 @@ N = [
 	{f,h},
 	{f,g}
 ]
+N.pop(0)
+print(N)

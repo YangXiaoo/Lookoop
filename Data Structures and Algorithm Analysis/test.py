@@ -9,6 +9,6 @@ N = [
 	{f,h},
 	{f,g}
 ]
-m = {2:[44]}
 N.pop(0)
+m = [([0] * 3) for i in range(4)]
 print(m )

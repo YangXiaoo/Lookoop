@@ -10,5 +10,8 @@ N = [
 	{f,g}
 ]
 N.pop(0)
-m = [([0] * 3) for i in range(4)]
-print(m )
+i = 0
+for i in range(10):
+	pass
+
+print(i)

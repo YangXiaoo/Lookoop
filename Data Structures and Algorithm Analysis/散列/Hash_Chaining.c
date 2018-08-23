@@ -50,7 +50,7 @@ typedef struct node
 typedef struct Hash
 {
 	int TableSize; // 散列大小
-	List *Lists[TableSize]; // 数据存储
+	List *Lists; // 数据存储
 } HashTable;
 
 HashTable Initialize(int TableSize); // 初始化哈希表

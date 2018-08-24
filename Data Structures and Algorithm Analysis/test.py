@@ -1,4 +1,4 @@
 a,b,c,d,e,f,g,h = range(8)
 N = [1]
 m = {1:'w'}
-print(m.get(2))
+print(id(m))

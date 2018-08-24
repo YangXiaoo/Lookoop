@@ -1,7 +1,7 @@
 <?php
-$dbhost = 'localhost:3306';  // mysql服务器主机地址
-$dbuser = 'root';            // mysql用户名
-$dbpass = 'Ab127000';          // mysql用户名密码
+$dbhost = 'xxx';  // mysql服务器主机地址
+$dbuser = 'xxx';            // mysql用户名
+$dbpass = 'xxx';          // mysql用户名密码
 $conn = mysqli_connect($dbhost, $dbuser, $dbpass);
 if(! $conn )
 {

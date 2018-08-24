@@ -1,4 +1,4 @@
-
+![](dijkstra.jpg)
 >## 个人博客
 
 - [链接](http://www.lxxx.site)，初建于2017年12月

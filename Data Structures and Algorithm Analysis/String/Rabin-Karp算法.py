@@ -5,7 +5,12 @@
 # https://blog.csdn.net/chenhanzhun/article/details/39895077
 
 def RabinKarpMatcher(T, P, d, q):
-
+	"""
+	T = "345123586"
+	P = "358"
+	P 表示为十进制数的话为 p = 3E^2 + 5E + 8
+	第一次与345进行匹配，345 --> t = 3E^2 + 4E + 5,下一次 t 为 (t - 3E^2)E + 1
+	"""
 	n = len(T) # 被搜索字符串
 	m = len(P) # 匹配字符串
 	h = 1 # d**(m-1) % q
@@ -31,7 +36,7 @@ def RabinKarpMatcher(T, P, d, q):
 			for i in range(m):
 				if T[s + i] != P[i]:
 					break
-				if i == m-1:
+				if i == m - 1:
 					print("Index: ", s)
 					return 
 		if s < (n - m):

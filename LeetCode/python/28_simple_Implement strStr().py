@@ -21,6 +21,7 @@ For the purpose of this problem, we will return 0 when needle is an empty string
 # 2018-6-19
 #  Implement strStr()
 # 超过内存限制
+# KMP，自动机等可以实现
 class Solution:
     def strStr(self, haystack, needle):
         """

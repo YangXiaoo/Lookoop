@@ -69,7 +69,7 @@ class Solution2:
             while dividend >= tmp:
                 dividend -= tmp
                 quotient += 1 << k # quotient = quotient + (1 << k)
-                tmp <<= 1
+                tmp <<= 1 # tmp = tmp * 2
                 k += 1
                 # print(k,quotient,dividend,tmp)
         quotient  = sign * quotient

@@ -74,7 +74,7 @@ class Solution2:
                     val = stack.pop()
                     stack[-1] += val + 2
                     longest = max(longest, stack[-1])
-                else:
+                else: # 可以不需要else判断
                     stack = [0]
             # print(c,longest,stack)
 

@@ -20,7 +20,7 @@ Output: []
 
 # 2018-6-19
 # Substring with concatenation of all words
-# words里的字符串长度可能不一致，有问题
+# words里的字符串长度可能不一致，有问题 
 class Solution:
     def findSubstring(self, s, words):
         """

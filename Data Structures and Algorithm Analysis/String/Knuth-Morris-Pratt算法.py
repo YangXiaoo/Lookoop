@@ -37,3 +37,44 @@ int ViolentMatch(char* s, char* p)
 这种方法i需要回溯到最开始位置，然而P[0]!=P[1]所以i还需要前进，浪费时间
 
 """
+def getNext(P):
+	plen = len(P)
+	next = [0] * plen
+	next[0] = -1
+	k = -1
+	j = 0
+	while j < plen - 1:
+		if k == -1 or P[j] == P[k]:
+			"""
+			如果P[j] == P[k] 则next[j] = k + 1 = next[j] + 1
+			"""
+			k += 1
+			j += 1
+			next[j] = k
+		else:
+			"""
+			否则查看next[k]位是否与P[j]相等
+			"""
+			k = next[k] # 尽可能多的匹配而不是从头开始匹配
+	return next
+
+def KMP(S, P):
+	next = getNext(P)
+	s_len = len(S)
+	p_len = len(P)
+	i = 0
+	j = 0
+
+	while i < s_len and j < p_len:
+		if j == -1 or S[i] == P[j]:
+			i += 1
+			j += 1
+		else:
+			j = next[j]
+	if j == p_len:
+		return i - j
+	return -1
+
+S = "EERWEDABCDABD"
+P = "DABCDABD"
+print(KMP(S, P))

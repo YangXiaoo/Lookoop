@@ -21,7 +21,7 @@ Try to solve it in linear time/space.
 */
 
 // 2018-7-30
-// 164. Maximum Gap
+//  
 // https://leetcode-cn.com/problems/intersection-of-two-linked-lists/description/
 
 

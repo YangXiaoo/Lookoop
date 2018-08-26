@@ -41,7 +41,8 @@ int main()
   printf("%d\n", gap); 
   return 0;
 }
- 
+
+// Last executed input: [1,10000000]
 int maximumGap(int* nums, int numsSize) {
     if (numsSize < 2) return 0;
 

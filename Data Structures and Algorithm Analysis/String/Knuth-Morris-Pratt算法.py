@@ -55,7 +55,7 @@ def getNext(P):
 			"""
 			否则查看next[k]位是否与P[j]相等
 			"""
-			k = next[k] # 尽可能多的匹配而不是从头开始匹配
+			k = next[k] # 尽可能多的从后往前匹配而不是从头往后匹配
 	return next
 
 def KMP(S, P):

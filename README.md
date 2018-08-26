@@ -1,4 +1,4 @@
-<div align=center>![](dijkstra.jpg)
+<div align=center>![](dijkstra.jpg)</div>
 >## 个人博客
 
 - [链接](http://www.lxxx.site)

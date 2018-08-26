@@ -18,7 +18,8 @@ int i = sizeof(str)/sizeof(str[0]) // i = 10
 
 // 字符串转换为数字
 #include<stldlib.h>
+char c = '9';
 atoi(); // 把字符串转化为整形
 atol(); // 把字符串转化为长整形
 atof(); // 把字符串转化为双精度浮点型
-int(c - '0'); // 直接减去'0'即可
+int(c - '0'); // 直接减去'0'即可,可以不要int

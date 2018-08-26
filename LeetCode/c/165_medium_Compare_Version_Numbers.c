@@ -30,8 +30,8 @@ int compareVersion(char* version1, char* version2);
 
 int main()
 {
-  char version1[] = "7.5.2.4";
-  char version2[] = "7.5.3";
+  char version1[] = "1";
+  char version2[] = "01";
   char *v1 = version1;
   char *v2 = version2; 
   int res;
@@ -58,8 +58,7 @@ int compareVersion(char* version1, char* version2) {
     		num1 = num1 * 10 + int(version1[i] - '0');// num1 = num1 * 10 + atoi(version1[i]);
     		i++;
     	}
-
-    	while (version2[j] != '0' && j < len2)
+    	while (version2[j] != '.' && j < len2)
     	{
     		num2 = num2 * 10 + int(version2[j] - '0');
     		j++;

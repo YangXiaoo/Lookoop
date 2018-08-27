@@ -20,7 +20,7 @@ Explanation: Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","
 
 // 2018-8-27
 // 332. Reconstruct Itinerary
-// 遍历有向图的每一条边，且不重复。 欧拉图
+// 遍历有向图的每一条边，且不重复, 欧拉图
 // https://leetcode.com/problems/reconstruct-itinerary/discuss/78768/Short-Ruby-Python-Java-C++
 #include <stdio.h>
 class Solution {

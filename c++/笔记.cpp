@@ -116,6 +116,7 @@ for(vector<int>::iterator it=b.begin();it!=b.end();it++)
 
 
 // map
+#include <map>
 map<string, string> myMap;
 myMap.insert(pair(key, value)); // pair为结构体
 myMap.find(key)->second;

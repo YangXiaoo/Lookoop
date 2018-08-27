@@ -23,6 +23,12 @@ Explanation: Another possible reconstruction is ["JFK","SFO","ATL","JFK","ATL","
 // 遍历有向图的每一条边，且不重复, 欧拉图
 // https://leetcode.com/problems/reconstruct-itinerary/discuss/78768/Short-Ruby-Python-Java-C++
 #include <stdio.h>
+#include<vector>
+#include<stdlib.h>
+#include <map>
+using namespace std;
+
+
 class Solution {
 public:
     map<string, multiset<string>> targets;
@@ -38,7 +44,7 @@ public:
     {
         while (targets[airport].size())
         {
-            string next = *targets[airport].begin(); // xx.begin()为 指针
+            string next = *targets[airport].begin(); // xx.begin()为指针
             targets[airport].erase(targets[airport].begin());
             visit(next);
         }
@@ -55,15 +61,15 @@ int main()
     vector<string> res;
 
     vector<string>::iterator it;
-    for(T=ticket.begin();T<ticket.end();T++)
+    for (T = ticket.begin(); T<ticket.end(); T++)
     {
-        for (it=(*T).begin();it<(*T).end();it++)
+        for (it = (*T).begin(); it < (*T).end(); it++)
         {
-            tickets.insert(pair(*((*T).begin()), *((*T).end())));
+            tickets.insert(pair(*(it), *(it)));
         }
 
     Solution test;
     res = test.findItinerary(tickets);
-    for (vector<string>::iterator it=res.begin(); it != res.end; it++)
+    for (vector<string>::iterator it = res.begin(); it != res.end; it++)
         cout << *it << endl;
 }

@@ -38,7 +38,7 @@ public:
     {
         while (targets[airport].size())
         {
-            string next = *targets[airport].begin(); // .begin()为 指针
+            string next = *targets[airport].begin(); // xx.begin()为 指针
             targets[airport].erase(targets[airport].begin());
             visit(next);
         }

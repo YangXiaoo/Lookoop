@@ -31,39 +31,51 @@ Output: "0.(6)"
 
 
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
 
 char* fractionToDecimal(int numerator, int denominator);
 
 int main()
 {
-  int numerator = 2;
-  int denominator = 1;
+  int numerator = 50;
+  int denominator = 7;
   char *res;
   res = fractionToDecimal(numerator, denominator);
   printf("%s\n", res); 
   return 0;
 }
 
+// 未解决
 char* fractionToDecimal(int numerator, int denominator) {
 	int map[100]; // 使用hash列表最好
 	char tmp[100];
 	int intPart = 0;
 	int decimalPart = 0;
 	int dummyInt = 0;
+	int p = 0; // 标记结束位置
+
 	int sign = (numerator < 0) ^ (denominator < 0);
+	numerator = numerator < 0 ? -(numerator) : numerator;
+	denominator = denominator < 0 ? -(denominator) : denominator;
+
 	if (sign && numerator)
-		tmp
+		tmp[p++] = '-';
+
 	intPart = numerator / denominator; // 获得整数部分
 	decimalPart = numerator % denominator;
+	tmp[p++] = intPart;
+	tmp[p++] = '.';
 	int tens = 10;
-	int p = 0; // 标记结束位置
 	int repeatIndex = 0; // 标记重复的开始位置
 	bool find = false;
+	int d = 0;
 	while (decimalPart != 0)
 	{
 		decimalPart *= tens;
 		dummyInt = decimalPart / denominator;
-		for (int i; i < p; i++)
+		for (int i; i < d; i++)
 		{
 			if (map[i] == dummyInt)
 			{
@@ -81,15 +93,34 @@ char* fractionToDecimal(int numerator, int denominator) {
 		}
 		else
 		{
-			map[p] = dummyInt;
+			map[d++] = dummyInt;
 		}
-		p++;
 		decimalPart = decimalPart % denominator;
 	}
-	totalSize = 20 + p;
-    char *res = (char *)malloc(sizeof(char) * totalSize); 
+
+	int totalSize = p + d;
+	if (find)
+		totalSize += 2;
+
+    // char *res = (char *)malloc(sizeof(char) * totalSize); 
     if (find)
     {
-    	strncpy()
+    	for (int j = 0; j < repeatIndex; j++)
+    	{
+    		tmp[p++] = map[j];
+    	}
+    	tmp[p++] = '(';
+    	for (int j = 0; j < d; j++)
+    		tmp[p++] = map[j];
+    	tmp[p++] = ')';
+    	tmp[p++] = '\0';
+    	return tmp;
+    }
+    else
+    {
+    	for (int j = 0; j < d; j++)
+    		tmp[p++] = map[j];
+    	tmp[p++] = '\0';
+    	return tmp;
     }
 }

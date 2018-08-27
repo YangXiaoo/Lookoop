@@ -20,7 +20,7 @@ class ListNode(object):
         self.val = x
         self.next = None
 
-class Solution:
+class Solution1:
     def deleteDuplicates(self, head):
         """
         :type head: ListNode
@@ -54,10 +54,31 @@ class Solution:
 
         return dummy.next
 
+class Solution2:
+    def deleteDuplicates(self, head):
+        """
+        :type head: ListNode
+        :rtype: ListNode
+        """
+        map = []
+        h = dummy = ListNode(0)
+        pre = head
 
+        while head:
+            if head.val not in map:
+                map.append(head.val)
+                dummy.next = head
+                pre = dummy
+                dummy = dummy.next
+
+            else:
+                pre.next = None
+                dummy = pre
+            head = head.next
+        return h.next
         
 
-l1 = [1,2,2,1,3]
+l1 = [1,2,2,3]
 head = lists = ListNode(0)
 for i in l1:
     cur = ListNode(i)
@@ -66,7 +87,7 @@ for i in l1:
 head = head.next    
 
 
-test = Solution()
+test = Solution2()
 res = test.deleteDuplicates(head)
 # show lists
 while res:

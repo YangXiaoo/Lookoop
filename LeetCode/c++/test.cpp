@@ -1,18 +1,24 @@
-vector<string> findItinerary(vector<pair<string, string>> tickets) {
-    for (auto ticket : tickets)
-        targets[ticket.first].insert(ticket.second);
-    visit("JFK");
-    return vector<string>(route.rbegin(), route.rend());
-}
-
-map<string, multiset<string>> targets;
-vector<string> route;
-
-void visit(string airport) {
-    while (targets[airport].size()) {
-        string next = *targets[airport].begin();
-        targets[airport].erase(targets[airport].begin());
-        visit(next);
+class Solution {
+private:
+    ListNode* head;
+public:
+    /** @param head The linked list's head. Note that the head is guanranteed to be not null, so it contains at least one node. */
+    Solution(ListNode* head) {
+        this->head = head;
     }
-    route.push_back(airport);
-}
+    
+    /** Returns a random node's value. */
+    int getRandom() {
+        int res = head->val;
+        ListNode* node = head->next;
+        int i = 2;
+        while(node){
+            int j = rand()%i;
+            if(j==0)
+                res = node->val;
+            i++;
+            node = node->next;
+        }
+        return res;
+    }
+};

@@ -20,6 +20,6 @@ Explanation: If there are 4 stones in the heap, then you will never win the game
 class Solution {
 public:
     bool canWinNim(int n) {
-        
+        return (n % 4) != 0;
     }
 };

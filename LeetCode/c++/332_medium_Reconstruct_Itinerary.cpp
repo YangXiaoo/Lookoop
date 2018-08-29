@@ -72,4 +72,5 @@ int main()
     res = test.findItinerary(tickets);
     for (vector<string>::iterator it = res.begin(); it != res.end; it++)
         cout << *it << endl;
+    return 0;
 }

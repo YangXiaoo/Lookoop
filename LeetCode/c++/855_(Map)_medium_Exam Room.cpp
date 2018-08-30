@@ -32,18 +32,38 @@ Calls to ExamRoom.leave(p) are guaranteed to have a student currently sitting in
 // 855. Exam Room
 // https://leetcode.com/problems/exam-room/description/
 
+// 未解决
 class ExamRoom {
 public:
+    int last_seat;
+    set<int> room_seat;
     ExamRoom(int N) {
-        
+        last_seat = N - 1;
     }
     
     int seat() {
-        
+        if(room_seat.size() == 0){
+            room_seat.insert(0);
+            return 0;
+        }
+        int i = 0;
+        auto it = room_seat.begin();
+        int pre_seat = *it;
+        int distance = pre_seat - i;
+        for(; it != room_seat.end(); it++){
+            if((*it - pre_seat) / 2 > distance) {
+                    distance = (*it - pre_seat) / 2;
+                    i = pre_seat + distance;
+                }
+            pre_seat = *it;
+        }
+        if(last_seat - pre_seat > distance) i = last_seat;
+        room_seat.insert(i);
+        return i;
     }
     
     void leave(int p) {
-        
+        room_seat.erase(p);
     }
 };
 

@@ -49,6 +49,7 @@ public:
         int i = 0;
         auto it = room_seat.begin();
         int pre_seat = *it;
+        // 如果位置0被移除了,则最大距离就是 pre_seat - i。 若没有被移除则距离为0
         int distance = pre_seat - i;
         for(; it != room_seat.end(); it++){
             if((*it - pre_seat) / 2 > distance) {
@@ -57,6 +58,7 @@ public:
                 }
             pre_seat = *it;
         }
+        // 最后一个位置没有坐人的情况则distance不会超过 last_seat - pre_seat
         if(last_seat - pre_seat > distance) i = last_seat;
         room_seat.insert(i);
         return i;

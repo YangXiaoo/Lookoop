@@ -117,9 +117,14 @@ for(vector<int>::iterator it=b.begin();it!=b.end();it++)
 
 // map
 #include <map>
-map<string, string> myMap;
+map<string, string> myMap; // 基于红黑树，已排序
 myMap.insert(pair(key, value)); // pair为结构体
 myMap.find(key)->second;
+for (auto it : myMap)
+{
+	cout << it.first << endl; // it.first表示key值 
+	cout << it.second << endl; // it.second 表示value值 
+}
 
 map<string, multiset<string>>
 multiset多重集合容器和set集合容器的使用方法大多相同，不同的是multiset多重集合容器允许重复的元素键值插入。

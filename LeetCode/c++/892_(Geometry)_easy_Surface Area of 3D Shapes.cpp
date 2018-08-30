@@ -58,7 +58,7 @@ public:
                 // 第一行时只能j - 1
                 // 第一列时只能i - 1
                 if (i) res -= min(grid[i][j], grid[i - 1][j]) * 2;
-                if (j) res -= min(grid[i][j]m grid[i][j - 1]) * 2;
+                if (j) res -= min(grid[i][j], grid[i][j - 1]) * 2;
             }
         }
 

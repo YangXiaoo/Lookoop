@@ -32,7 +32,6 @@ Calls to ExamRoom.leave(p) are guaranteed to have a student currently sitting in
 // 855. Exam Room
 // https://leetcode.com/problems/exam-room/description/
 
-// 未解决
 class ExamRoom {
 public:
     int last_seat;

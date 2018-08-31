@@ -33,8 +33,7 @@ Input points have NO order. No order required for output.
 
 // 使用 Andrew's Monotone Chain Algorithm 算法实现
 // 算法介绍： http://geomalgorithms.com/a10-_hull-1.html
-// 算法程序： http://www.algorithmist.com/index.php/Monotone_Chain_Convex_Hull.cpp
-
+// 算法程序： http://www.algorithmist.com/index.php/Monotone_Chain_Convex_Hull.cpp  
 /*
 Andrew's Monotone Chain Algorithm
 [Andrew, 1979] discovered an alternative to the Graham scan that uses a linear lexographic sort of the point set by the x and y-coordinates. This is an advantage if this ordering is already known for a set, which is sometimes the case. But even if sorting is required, this is a faster sort than the angular Graham-scan sort with its more complicated comparison function. The "Monotone Chain" algorithm computes the upper and lower hulls of a monotone chain of points, which is why we refer to it as the "Monotone Chain" algorithm. Like the Graham scan, it runs in O(nlog-n) time due to the sort time. After that, it only takes O(n) time to compute the hull. This algorithm also uses a stack in a manner very similar to Graham's algorithm.
@@ -104,8 +103,48 @@ Pseudo-Code: Andrew's Monotone Chain Algorithm
  * };
  */
 class Solution {
-public:
-    vector<Point> outerTrees(vector<Point>& points) {
-        
+ public:
+  typedef int coord_t;  // coordinate type
+  typedef long long coord2_t;  // must be big enough to hold 2*max(|coordinate|)^2
+  // 2D cross product of OA and OB vectors, i.e. z-component of their 3D cross
+  // product. Returns a positive value, if OAB makes a counter-clockwise turn,
+  // negative for clockwise turn, and zero if the points are collinear.
+  coord2_t cross(const Point &O, const Point &A, const Point &B) {
+    return (A.x - O.x) * (coord2_t)(B.y - O.y) -
+           (A.y - O.y) * (coord2_t)(B.x - O.x);
+  }
+
+  static bool cmp(Point &p1, Point &p2) {
+    return p1.x < p2.x || (p1.x == p2.x && p1.y < p2.y);
+  }
+
+  static bool equ(Point &p1, Point &p2) { return p1.x == p2.x && p1.y == p2.y; }
+  // Returns a list of points on the convex hull in counter-clockwise order.
+  // Note: the last point in the returned list is the same as the first one.
+  vector<Point> outerTrees(vector<Point> &P) {
+    int n = P.size(), k = 0;
+    vector<Point> H(2 * n);
+
+    // Sort points lexicographically
+    sort(P.begin(), P.end(), cmp);
+
+    // Build lower hull
+    for (int i = 0; i < n; i++) {
+      while (k >= 2 && cross(H[k - 2], H[k - 1], P[i]) < 0) k--;
+      H[k++] = P[i];
     }
+
+    // Build upper hull
+    for (int i = n - 2, t = k + 1; i >= 0; i--) {
+      while (k >= t && cross(H[k - 2], H[k - 1], P[i]) < 0) k--;
+      H[k++] = P[i];
+    }
+
+    // Remove duplicates
+    H.resize(k);
+    // return H;
+    sort(H.begin(), H.end(), cmp);
+    H.erase(unique(H.begin(), H.end(), equ), H.end());
+    return H;
+  }
 };

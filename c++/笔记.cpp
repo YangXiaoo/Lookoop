@@ -120,6 +120,8 @@ for(vector<int>::iterator it=b.begin();it!=b.end();it++)
 map<string, string> myMap; // 基于红黑树，已排序
 myMap.insert(pair(key, value)); // pair为结构体
 myMap.find(key)->second;
+
+
 for (auto it : myMap)
 {
 	cout << it.first << endl; // it.first表示key值 
@@ -128,3 +130,18 @@ for (auto it : myMap)
 
 map<string, multiset<string>>
 multiset多重集合容器和set集合容器的使用方法大多相同，不同的是multiset多重集合容器允许重复的元素键值插入。
+
+
+
+// resize()
+vector<int> H;
+H.resize(k); // 重新分配大小若H大于k则删除多余
+
+// 删除重复元素
+// unique()
+// Letcode 587题
+new_end = unique(it_1,it_2); //注意unique的返回值
+a.erase(new_end,it_2);
+// 另一种写法
+sort(H.begin(), H.end(), cmp);
+H.erase(unique(H.begin(), H.end(), equ), H.end());

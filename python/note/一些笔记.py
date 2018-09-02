@@ -22,3 +22,33 @@ heap = [] #创建了一个空堆
 heappush(heap,item) #往堆中插入一条新的值 
 item = heappop(heap) #从堆中弹出最小值 
 item = heap[0] #查看堆中最小值，不弹出 
+
+
+\ from queue import PriorityQueue
+import time
+q = PriorityQueue()
+
+# 自定义函数判断谁是最小值
+# class Comp:                  # 可比较对象，放入优先队列中
+#     def __init__(self, priority, description):
+#         self.priority = priority
+#         self.description = description
+#         return 
+
+#     def __cmp__(self, other):         # 比较规则的指定，谁做根（大顶堆，小顶堆）
+#                                       # 返回的是布尔类型
+#         if self.priority >= other.priority:
+#             return True
+#         else:
+#             return False
+
+# q.put(Comp(1, 'code'))
+
+q.put((1, 'code'))
+q.put((1, 'eat'))
+q.put((1, 'sleep'))
+
+while not q.empty():
+    next_item = q.get()
+    print(next_item)
+    time.sleep(1)

@@ -52,7 +52,42 @@ class Solution:
         return self.toLists(res,lists[1:])
 
 
+#######################################################################
+from queue import PriorityQueue
 
+# class Comp:                  # 可比较对象，放入优先队列中
+#     def __init__(self, priority, description):
+#         self.priority = priority
+#         self.description = description
+#         return 
+
+#     def __cmp__(self, other):         # 比较规则的指定，谁做根（大顶堆，小顶堆）
+#                                       # 返回的是布尔类型
+#         if self.priority >= other.priority:
+#             return True
+#         else:
+#             return False
+
+class Solution2(object):
+    def mergeKLists(self, lists):
+        dummy = ListNode(None)
+        curr = dummy
+        q = PriorityQueue()
+
+        for index, node in enumerate(lists):
+            if node:
+                # print(node.val)
+                # 有问题 unorderable types: ListNode() < ListNode()
+                # q.put((node.val, node))
+                q.put((node.val, index, node))
+
+        while q.qsize() > 0:
+            cur = q.get()
+            curr.next, index = cur[2], cur[1]
+            curr = curr.next
+            if curr.next: 
+                q.put((curr.next.val, index, curr.next))
+        return dummy.next
 
 
 
@@ -66,10 +101,9 @@ for j in lis:
         lists = cur
     l.append(head.next)    
 
-
-test = Solution()
+test = Solution2()
 res = test.mergeKLists(l)
 # show lists
 while res:
-    print(res,res.val,res.next)
+    print(res.val)
     res = res.next

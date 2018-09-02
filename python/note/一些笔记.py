@@ -15,3 +15,10 @@ def f(x, y):
 
 \  cmp(x, y)
 cmp(x,y) 函数用于比较2个对象，如果 x < y 返回 -1, 如果 x == y 返回 0, 如果 x > y 返回 1。
+
+
+\heappush heappop
+heap = [] #创建了一个空堆 
+heappush(heap,item) #往堆中插入一条新的值 
+item = heappop(heap) #从堆中弹出最小值 
+item = heap[0] #查看堆中最小值，不弹出 

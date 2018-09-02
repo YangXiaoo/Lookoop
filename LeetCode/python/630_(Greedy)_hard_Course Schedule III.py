@@ -20,18 +20,38 @@ You can't take two courses simultaneously.
 # 2018-9-2
 # 630. Course Schedule III
 
-
+# TLE
 class Solution:
     def scheduleCourse(self, courses):
         """
         :type courses: List[List[int]]
         :rtype: int
         """
+        courses.sort(key = lambda x: x[1])
+        sumTime = 0
+        maxQueue = []
+
+        for course in courses:
+            t = course[0]
+            d = course[1]
+
+            maxQueue.append(t)
+            sumTime += t
+
+            if sumTime > d:
+                curMax = max(maxQueue)
+                maxIndex = maxQueue.index(curMax)
+                maxQueue.pop(maxIndex)
+
+                sumTime -= curMax
+
+        return len(maxQueue)
+
+
 
 
 
 test = Solution()
-numCourses = 4
-prerequisites = [[1,0],[2,0],[3,1],[3,2]]
-res = test.findOrder(numCourses, prerequisites)
+courses = [[100, 200], [200, 1300], [1000, 1250], [2000, 3200]]
+res = test.scheduleCourse(courses)
 print(res)

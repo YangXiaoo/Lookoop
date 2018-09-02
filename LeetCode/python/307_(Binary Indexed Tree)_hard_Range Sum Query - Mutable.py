@@ -19,6 +19,8 @@ You may assume the number of calls to update and sumRange function is distribute
 # 2018-9-2
 # 307. Range Sum Query - Mutable
 # Binary Indexed Tree
+
+# 关键在于 k -= (k & -k) 和 k += (k & -k), 前者用于update后者用于sum
 class NumArray:
 
     def __init__(self, nums):

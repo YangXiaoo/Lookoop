@@ -28,6 +28,7 @@ You may assume that there are no duplicate edges in the input prerequisites.
 # 207. Course Schedule
 # topological sort
 
+# https://www.khanacademy.org/computing/computer-science/algorithms/graph-representation/a/representing-graphs
 class Solution:
     def canFinish(self, numCourses, prerequisites):
         """

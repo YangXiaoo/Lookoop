@@ -145,3 +145,12 @@ a.erase(new_end,it_2);
 // 另一种写法
 sort(H.begin(), H.end(), cmp);
 H.erase(unique(H.begin(), H.end(), equ), H.end());
+
+
+//下面两种优先队列的定义是等价的
+priority_queue<int> q;
+priority_queue<int,vector<int>,less<int> >;//后面有一个空格
+// 默认情况下数值最大的在首列
+只能通过 top() 函数来访问队首元素
+q.push()
+q.top()

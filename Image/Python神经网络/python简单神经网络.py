@@ -7,7 +7,7 @@ try:
 	import numpy
 except:
 	print("Automate excute: pip install numpy ....")
-	sleep(5)
+	sleep(3)
 	os.system("pip install numpy")
 	import numpy
 # import scipy.special # 有sigmoid函数
@@ -34,7 +34,7 @@ class neuralNetwork(object):
 		# 将input层与hidden层权重用矩阵表示
 		# 同理表示 hidden层与output层
 		# pow(self.hide_nodes, -0.5) 标准方差为传入链接数目的开方
-		# 矩阵规模： hidden x in
+		# 矩阵规模： hidden x in 这样表示是因为 weight_in_hide x inputs 才能正确相乘
 		self.weight_in_hide = numpy.random.normal(0.0, pow(self.hide_nodes, -0.5), (self.hide_nodes, self.in_nodes))
 		self.weight_hide_out = numpy.random.normal(0.0, pow(self.out_nodes, -0.5), (self.out_nodes, self.hide_nodes))
 
@@ -80,9 +80,9 @@ class neuralNetwork(object):
 
 def test():
 
-	inputNodes = 784
+	inputNodes = 784 # 28 x 28
 	hiddenNodes = 1000
-	outputNodes = 10
+	outputNodes = 10 # 输出的值个数
 	learningRate = 0.1
 
 	net = neuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate)
@@ -93,7 +93,7 @@ def test():
 	train_data_file.close()
 
 	######## 训练 #########
-	iteration = 100 # 迭代次数
+	iteration = 50 # 迭代次数
 	for i in range(iteration):
 		for record in train_data_list:
 			values = record.split(',') # 转化为数组, values[0] 为标签

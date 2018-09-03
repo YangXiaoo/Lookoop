@@ -14,7 +14,9 @@ To the right of 1 there is 0 smaller element.
 
 # 2018-9-3
 # 315. Count of Smaller Numbers After Self
+# https://leetcode.com/problems/count-of-smaller-numbers-after-self/submissions/1
 # Binary Indexed Tree
+# 还需掌握线段树
 class BSTNode(object):
     def __init__(self, index, x):
         self.val = x
@@ -25,8 +27,12 @@ class BSTNode(object):
         self.leftSize = 0
 
 class BinarySearchTree(object):
+    """
+    构造二叉搜索树
+    """
     def __init__(self, lens):
         self.root = None
+        # self.hash = {} 
         self.res = [0] * lens # 直接加入此项，避免重新遍历
 
     def insert(self, x, root, pre=None, left=False):
@@ -41,14 +47,13 @@ class BinarySearchTree(object):
                 pre.right = x
             self.res[x.index] = x.count
             return 
-        if x.val < root.val:
-            pre = root
-            root.leftSize += 1
-            self.insert(x, root.left, pre, True)
-        elif x.val == root.val:
+
+        # 小于或等于当前节点时，当前节点左size+1
+        if x.val <= root.val:
             root.leftSize += 1
             self.insert(x, root.left, root, True)
         else:
+            # x大于当前节点时本身超过的数为当前节点1 + 当前节点的左子树大小(因为x大于当前节点所以大于当前节点的所有左节点)
             x.count += root.leftSize + 1
             self.insert(x, root.right, root)
 
@@ -65,6 +70,9 @@ class BinarySearchTree(object):
 
 
 class Solution1:
+    """
+    使用二叉搜索树实现
+    """
     def countSmaller(self, nums):
         """
         :type nums: List[int]
@@ -81,8 +89,13 @@ class Solution1:
         #     res[i] = tree.hash[i]
         # return res[::-1]
 
+
+###############################################################################
 import bisect
 class Solution2:
+    """
+    自带库实现
+    """
     def countSmaller(self, nums):
         """
         :type nums: List[int]
@@ -96,9 +109,29 @@ class Solution2:
             tmp.insert(index, i)
         return res[::-1]
 
+###############################################################################
+class Solution3:
+    """
+    Binary Indexed tree 实现
+    """
+    def countSmaller(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[int]
+        """
+
+
+
+
+
+
+
+
+
 
 nums = [5,2,0,2,1, 7,7,5,4,3,2]
-test = Solution1()
+test = Solution2()
 res = test.countSmaller(nums)
 print(res)
+# [7, 2, 0, 1, 0, 4, 4, 3, 2, 1, 0]
 # [7, 2, 0, 1, 0, 4, 4, 3, 2, 1, 0]

@@ -93,9 +93,9 @@ def traversal(tree,nums):
 			# print(code,"-----", cur, cur.freq,"---------",pre, pre.freq)
 			stack.append(cur)
 			dummy = cur
-			if cur not in code:
-				code[cur] = code[pre].copy()
-				code[cur].append(0)
+			# if cur not in code:
+			# 	code[cur] = code[pre].copy()
+			# 	code[cur].append(0)
 			cur = cur.left
 			if cur not in code:
 				code[cur] = code[dummy].copy()
@@ -105,8 +105,8 @@ def traversal(tree,nums):
 		cur = stack.pop()
 		# 遇到叶子的时候生成编码
 		if cur.right == None:
-			# print("result=======>", code[cur],cur.freq)
-			res[nums.index(cur.freq)]=code[cur]
+			# print("result=======>", code[cur], cur.freq)
+			res[nums.index(cur.freq)] = code[cur]
 		pre = cur
 		cur = cur.right
 		if cur not in code:

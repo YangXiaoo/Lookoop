@@ -43,7 +43,7 @@ q = PriorityQueue()
 #             return False
 
 # q.put(Comp(1, 'code'))
-
+# leetCode 23
 q.put((1, 'code'))
 q.put((1, 'eat'))
 q.put((1, 'sleep'))

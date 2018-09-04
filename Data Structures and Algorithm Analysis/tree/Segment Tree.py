@@ -1,7 +1,7 @@
 # 2018-9-4
 # Segment Tree
 # https://www.cnblogs.com/xiaoyao24256/p/6590885.html
-
+# https://blog.csdn.net/icyday/article/details/50778104
 
 """
 线段树又名区间树， 是一种二叉搜索树。
@@ -39,7 +39,6 @@ class ST(object):
         self.sum = self.left.sum + self.right.sum
 
     def query(self, x, y):
-        print ("query",x,y,'\t',(self.l + self.r)//2,'\t',self.l,self.r,self.sum)
         if x <= self.l and y >= self.r:
             return self.sum
 

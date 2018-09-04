@@ -1,79 +1,61 @@
-#include<bits/stdc++.h>
-#define LL long long
-using namespace std;
-LL op,n,m,x,y,k,a[300005],low_bit,tempt;
-struct fkt{
-    LL left;
-    LL right;
-    LL tot;
-    LL add;
-}tree[300005];
-namespace qaq{
-    LL change(LL test){LL ans=0;while(test){test>>=1;ans++;}test=1;while(ans--)test*=2;return test;} 
-    void build(LL lef,LL rig,LL root){        
-tree[root].left=lef;
-        tree[root].right=rig;
-        tree[root].add=0;
-        if(lef==rig){tree[root].tot=a[lef];}
-        else{
-            LL mid=(lef+rig)>>1;
-            build(lef,mid,root<<1);
-            build(mid+1,rig,root<<1|1);
-            tree[root].tot=tree[root<<1].tot+tree[root<<1|1].tot;
-        }
-    }
-    void pushdown(LL root){
-        if(tree[root].add){
-            tree[root<<1].add+=tree[root].add;
-            tree[root<<1|1].add+=tree[root].add;
-            tree[root<<1].tot+=tree[root].add*(tree[root<<1].right-tree[root<<1].left+1);
-            tree[root<<1|1].tot+=tree[root].add*(tree[root<<1|1].right-tree[root<<1|1].left+1);
-            tree[root].add=0;
-        }
-    } 
-    void pushup(LL root){
-        tree[root].tot=tree[root<<1].tot+tree[root<<1|1].tot;
-    }     
-    void update(LL nl,LL nr,LL root,LL c){
-        if(tree[root].left>nr||tree[root].right<nl)    return;
-        if(tree[root].left>=nl&&tree[root].right<=nr){
-            tree[root].add+=c;
-            tree[root].tot+=c*(tree[root].right-tree[root].left+1);
-            return;
-        }
-        pushdown(root);
-        LL mid=(tree[root].left+tree[root].right)>>1;
-        if(nl<=mid)        update(nl,nr,root<<1,c);
-        if(mid+1<=nr)    update(nl,nr,root<<1|1,c);
-        pushup(root);
-    } 
-    LL query(LL nl,LL nr,LL root){
-        if(tree[root].left>nr||tree[root].right<nl)    return 0; 
-        if(tree[root].left>=nl&&tree[root].right<=nr)    return tree[root].tot;
-        pushdown(root); 
-        return query(nl,nr,root<<1)+query(nl,nr,root<<1|1);
-    }
-    
-    int main(){
-        scanf("%lld%lld",&n,&m);
-        for(LL i=1;i<=n;i++)    scanf("%lld",&a[i]);
-        tempt=change(n);
-        build(1,tempt,1);
-        while(m--){
-            scanf("%lld",&op);
-            if(op==1){
-                scanf("%lld%lld%lld",&x,&y,&k);
-                update(x,y,1,k);
-            }
-            else{
-                scanf("%lld%lld",&x,&y);
-                printf("%lld\n",query(x,y,1));
-            }
-        }
-        return 0;
+const int MAXN=100000+100;
+typedef long long LL;
+#define lson i*2,l,m
+#define rson i*2+1,m+1,r
+LL sum[MAXN*4];
+LL addv[MAXN*4];
+void PushDown(int i,int num)//这就是延迟操作，更新当前结点的叶子
+{
+    if(addv[i])
+    {
+        sum[i*2] +=addv[i]*(num-(num/2));//每个点的需要更新的值乘以的个数
+        sum[i*2+1] +=addv[i]*(num/2);//同上
+        addv[i*2] +=addv[i];//这个区间需要更新的个数
+        addv[i*2+1]+=addv[i];
+        addv[i]=0;
     }
 }
-int main(){
-    qaq::main();
-    return 0;
+void PushUp(int i)
+{
+    sum[i]=sum[i*2]+sum[i*2+1];
+}
+void build(int i,int l,int r)
+{
+    addv[i]=0;//将延迟操作更改的值需要记录到addv数组中，现在将它初始化
+    if(l==r)
+    {
+        scanf("%I64d",&sum[i]);
+        return ;
+    }
+    int m=(l+r)/2;
+    build(lson);
+    build(rson);
+    PushUp(i);
+}
+void update(int ql,int qr,int add,int i,int l,int r)
+{
+    if(ql<=l&&r<=qr)
+    {
+        addv[i]+=add;
+        sum[i] += (LL)add*(r-l+1);
+        return ;
+    }
+    PushDown(i,r-l+1);//向下更新枝叶的值
+    int m=(l+r)/2;
+    if(ql<=m) update(ql,qr,add,lson);
+    if(m<qr) update(ql,qr,add,rson);
+    PushUp(i);
+}
+LL query(int ql,int qr,int i,int l,int r)
+{
+    if(ql<=l&&r<=qr)
+    {
+        return sum[i];
+    }
+    PushDown(i,r-l+1);
+    int m=(l+r)/2;
+    LL res=0;
+    if(ql<=m) res+=query(ql,qr,lson);
+    if(m<qr) res+=query(ql,qr,rson);
+    return res;
 }

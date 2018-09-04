@@ -1,7 +1,7 @@
 # 2018-8-5
 # Binary_Heap.py
 
-# Reference
+# Reference 
 # Introduction to Algorithms [P84]
 # Data Structures and Algorithm Analysis in C [P133]
 # http://python.jobbole.com/85338/
@@ -12,9 +12,9 @@ class BinHeap(object):
         self.size = 0
 
     def swap(self, k1, k2):
-        tmp = k1
-        k1 = k2
-        k2 = tmp
+        tmp = self.heapList[k1]
+        self.heapList[k1] = self.heapList[k2]
+        self.heapList[k2] = tmp
 
 
     def insert(self, value):
@@ -25,7 +25,7 @@ class BinHeap(object):
     def Up(self, k):
         while k // 2 > 0:
             if self.heapList[k] < self.heapList[k // 2]:
-                self.swap(self.heapList[k], self.heapList[k // 2])
+                self.swap(k, k // 2)
             k = k // 2
 
     def delMin(self):
@@ -42,7 +42,7 @@ class BinHeap(object):
         while (k * 2) < self.size:
             minc = self.minChild(k)
             if self.heapList[k] > self.heapList[minc]:
-                self.swap(self.heapList[k], self.heapList[minc])
+                self.swap(k, minc)
             k = minc
 
     def minChild(self, k):
@@ -75,4 +75,22 @@ class BinHeap(object):
     """
 
 
+
+if __name__ == "__main__":
+    # TEST 
+    from random import *
+    test = BinHeap()
+    for i in range(1, 20):
+        # seek(i)
+        #random.randint(1,10)
+        k = randint(0, i)
+        test.insert(k)
+
+    print(test.heapList)
+
+    for i in range(5):
+        m = test.delMin()
+        print(m)
+
+    print(test.heapList)
 

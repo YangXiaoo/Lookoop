@@ -16,7 +16,7 @@ To the right of 1 there is 0 smaller element.
 # 315. Count of Smaller Numbers After Self
 # https://leetcode.com/problems/count-of-smaller-numbers-after-self/submissions/1
 # Binary Indexed Tree
-# 还需掌握线段树
+# 还需掌握线段树 -- 2018-9-4
 class BSTNode(object):
     def __init__(self, index, x):
         self.val = x

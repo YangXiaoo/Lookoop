@@ -25,11 +25,10 @@ s = """
 There are some people who think love is sex and marriage and six o'clock-kisses and children, and perhaps it is, Miss Lester.
 But do you know what I think? I think love is a touch and yet not a touch.""" 
 s2 = """
-Kyviv riv jfdv gvfgcv nyf kyzeb cfmv zj jvo reu driizrxv reu jzo f'tcftb-bzjjvj reu tyzcuive, reu gviyrgj zk zj, Dzjj Cvjkvi.
-Slk uf pfl befn nyrk Z kyzeb? Z kyzeb cfmv zj r kflty reu pvk efk r kflty.""" # 17
+Khah""" # 17
 
 test = CodeWord(33)
 r1 = test.code(s)
-r2 = test.deCode(r1)
+r2 = test.deCode(s2)
 print(r1)
 print(r2)

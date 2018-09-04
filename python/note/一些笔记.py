@@ -52,3 +52,8 @@ while not q.empty():
     next_item = q.get()
     print(next_item)
     time.sleep(1)
+
+
+\setdefault
+dic = dict()
+dic = dic.setdefault(key, default=None) # 如果 key 在 字典中，返回对应的值。如果不在字典中，则插入 key 及设置的默认值 default，并返回 default ，default 默认值为 None。

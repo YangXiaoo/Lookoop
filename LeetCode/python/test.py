@@ -35,4 +35,8 @@ class Solution:
             b.u(r[n], 1)
         return a
 
-
+dic = {'b': {'a': {'c': {None: None}}}, 'd': {'a': {'d': {None: None}}}, 'm': {'a': {'d': {None: None}}}}
+# for i in dic:
+#     print(i)
+n = []
+print("".join(n))

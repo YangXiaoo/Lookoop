@@ -1,4 +1,5 @@
 # 2018-9-5
+# update in 2018-9-7 : 跳过test和笔记文件
 # 统计LeetCode已做题目数量
 import os
 def file(dirpath):
@@ -30,15 +31,23 @@ def sortFile(files):
 
 def printFile(files):
     dic = {}
+    excp = []
     for f in files:
         s = f.split("_")[0]
-        dic[s] = f
+        if len(s) < 4:
+            dic[s] = f
+        else:
+            excp.append(s)
 
     res = sorted(dic.keys())
-    # print(res)
+    print("Total：", len(res), "\n\nList:")
     for i in res:
         t = dic[i]
         print(t)
+
+    print()
+    for s in excp:
+        print("Skip: ", s)
         
 
 
@@ -47,7 +56,7 @@ def main():
     dirs = "C:\\Study\\github\\Lookoop\\LeetCode"
     files = file(dirs)
     res = handle(files)
-    print("共计：", len(res), "题")
+
     printFile(sortFile(res))
 
 

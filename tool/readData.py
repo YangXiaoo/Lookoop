@@ -84,11 +84,12 @@ class ReadData(object):
 		else:
 			print("Fail to get average.")
 			return False
-
-file = "read_test.txt"
-test = ReadData(file)
-res = test.getData()
-r1 = test.getKCol(3,True)
-avg = test.getKAvg(3)
-col = test.getCol()
-print(res,"----", col,"----", r1, "----", avg)
+			
+if __name__ == "__main__":
+	file = "read_test.txt"
+	test = ReadData(file)
+	res = test.getData()
+	r1 = test.getKCol(3,True)
+	avg = test.getKAvg(3)
+	col = test.getCol()
+	print(res,"----", col,"----", r1, "----", avg)

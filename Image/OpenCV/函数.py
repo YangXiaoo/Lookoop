@@ -8,6 +8,13 @@ cv2.imread(filepath,flags)
 # cv2.IMREAD_COLOR：默认参数，读入一副彩色图片，忽略alpha通道
 # cv2.IMREAD_GRAYSCALE：读入灰度图片
 # cv2.IMREAD_UNCHANGED：顾名思义，读入完整图片，包括alpha通道
+# IMREAD_ANYCOLOR = 4
+# IMREAD_ANYDEPTH = 2
+# IMREAD_COLOR = 1
+# IMREAD_GRAYSCALE = 0
+# IMREAD_LOAD_GADL = 8
+# IMREAD_UNCHANGED = -1
+
 
 cv2.imshow('image',img)
 cv2.waitKey(0)

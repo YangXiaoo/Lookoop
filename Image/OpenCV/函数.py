@@ -139,3 +139,12 @@ cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
 # bdgModel, fgdModel 算法内部是用的数组，只需要创建两个大小为(1,65）np.float64的数组。
 # iterCount 迭代次数
 # mode cv2.GC_INIT_WITH_RECT 或 cv2.GC_INIT_WITH_MASK，使用矩阵模式还是蒙板模式。
+
+
+
+# 检测角点
+dst = cv2.cornerHarris(gray, 2, 23, 0.04)
+# 输入图像必须是 float32
+# 第二个参数越小，标记角点的记号越小
+# 第三个参数限制了Sobel算子的中孔(aperture), 该参数定义了角点检测的敏感度，其值必须是介于3和31之间的奇数
+# 最后一个参数在 0.04 到 0.05 之间

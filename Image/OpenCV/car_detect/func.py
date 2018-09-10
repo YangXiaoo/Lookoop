@@ -7,7 +7,7 @@ def resize(img, scale_factor):
     """
     缩小图像尺寸
     """
-    return cv2.resize(img, (int(img.shape[0] * (1 / scale_factor)), int(img.shape[1] * (1 / scale_factor))), interpolation=cv2.INTER_AREA)
+    return cv2.resize(img, (int(img.shape[1] * (1 / scale_factor)), int(img.shape[0] * (1 / scale_factor))), interpolation=cv2.INTER_AREA)
 
 
 def pyramid(image, scale=1.5, min_size=(200, 80)):
@@ -96,6 +96,6 @@ def nonMaxSuppressionFast(boxes, overlapThresh):
         overlap = (w * h) / area[idxs[:last]]
 
         idxs = np.delete(idxs, np.concatenate(([last], np.where(overlap > overlapThresh)[0])))
-
-    return boxes[pick].astype("int")
+    print("pick:  ",pick)
+    return boxes[pick[:1]].astype("int")
 

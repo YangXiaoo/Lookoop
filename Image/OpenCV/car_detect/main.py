@@ -4,7 +4,7 @@ import os
 import cv2
 from func import *
 from detector import *
-
+import math
 def main(test_image, data_path, data_path2, simple_size, label):
 	svm, extractor, exist = car_detector(data_path, data_path2, simple_size, label)
 	# if exist:
@@ -18,6 +18,7 @@ def main(test_image, data_path, data_path2, simple_size, label):
 	img = cv2.imread(test_image)
 	w , h, d = img.shape
 	w, h = w//2, h//4
+	print(w,h)
 	rectangles = [] # 记录标识结果的矩形数据
 	counter = 1
 	scale_factor = 1.25 # 金字塔缩小比例
@@ -41,24 +42,33 @@ def main(test_image, data_path, data_path2, simple_size, label):
 				if result[0][0] == 1:
 					# 所有小于-1.0的窗口被认为是好的窗口
 					if score < -1.0:
+						
 						# 根据比例值scale获得矩形坐标
-						rx, ry, rw, rh = int(x * scale), int(y * scale), int((x + w) * sacle), int((y + h) * scale)
+						rx, ry, rw, rh = int(x * scale), int(y * scale), int((x + w) * scale), int((y + h) * scale)
+						# print([rx, ry, rw, rh, abs(score)])
+						print("ok!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 						rectangles.append([rx, ry, rw, rh, abs(score)])
+						
 			except:
-				pass
+				print("fail!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 			counter += 1
 
-
+	print("rectangles: ",rectangles)
 	label_window = np.array(rectangles)
 
 	# 非最大抑制。
 	# 图像中可能包含被检测多次的对象, 若将这些检测作为结果则不准确, 这时需要采取非最大抑制来解决。
-	boxes = nonMaxSuppressionFast(label_window, 0.25)
+	boxes = nonMaxSuppressionFast(label_window, 0.6)
 
 	print("boxes: ", boxes)
 	for x, y, w, h, score in boxes:
-		cv2.rectangle(img, x, y, w, h, (0, 255, 0), 2)
-		cv2.putText(img, "%f" % score, x, y, 2, 1, (0, 255, 0))
+		print(x,y,w,h)
+		try:
+			cv2.rectangle(img, int(x), int(y), int(w), int(h), (0, 255, 0), 2)
+			cv2.putText(img, "%f" % score, x, y, 2, 1, (0, 255, 0))
+		except:
+			cv2.rectangle(img, x, int(y), int(w), int(h), (0, 255, 0), 2)
+			cv2.putText(img, "%f" % score, x, y, 2, 1, (0, 255, 0))
 
 	cv2.imshow("test result", img)
 	cv2.waitKey()

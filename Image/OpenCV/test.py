@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import os
 import cv2
 from skimage import transform
-
+import math
 
 # # 图像裁剪
 # img = cv2.imread("image/m_5.jpg", 0) # 0表示以对读入图像灰度处理
@@ -34,4 +34,4 @@ n = [[1,2,3,5,65,7], [55,233,44,66,8798,2], [55444,233,44,66,8798,2]]
 p = np.asarray(n)
 t = [0, 2,2]
 r = p[t[:2]]
-print(r)
+print(math.abs(-1))

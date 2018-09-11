@@ -4,13 +4,10 @@
 import os
 def file(dirpath):
     file = []
-    direction = []
     for root, dirs, files in os.walk(dirpath, topdown=False):
         for name in files:
             path = os.path.join(root, name)
             file.append(path)
-        for p in dirs:
-            direction.append(p)
     return file
 
 def handle(files):

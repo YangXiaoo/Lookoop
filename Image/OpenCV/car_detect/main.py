@@ -17,7 +17,8 @@ def main(test_image, data_path, data_path2, simple_size, label):
 
 	img = cv2.imread(test_image)
 	w , h, d = img.shape
-	w, h = w//2, h//4
+	print(w, h)
+	w, h = int(w//1.5), int(h//2)
 	print(w,h)
 	rectangles = [] # 记录标识结果的矩形数据
 	counter = 1
@@ -58,17 +59,13 @@ def main(test_image, data_path, data_path2, simple_size, label):
 
 	# 非最大抑制。
 	# 图像中可能包含被检测多次的对象, 若将这些检测作为结果则不准确, 这时需要采取非最大抑制来解决。
-	boxes = nonMaxSuppressionFast(label_window, 0.6)
+	boxes = nonMaxSuppressionFast(label_window, 0.25)
 
 	print("boxes: ", boxes)
 	for x, y, w, h, score in boxes:
-		print(x,y,w,h)
-		try:
-			cv2.rectangle(img, int(x), int(y), int(w), int(h), (0, 255, 0), 2)
-			cv2.putText(img, "%f" % score, x, y, 2, 1, (0, 255, 0))
-		except:
-			cv2.rectangle(img, x, int(y), int(w), int(h), (0, 255, 0), 2)
-			cv2.putText(img, "%f" % score, x, y, 2, 1, (0, 255, 0))
+		print(x,y,w,h, score)
+		cv2.rectangle(img, (int(x), int(y)), (int(w), int(h)), (0, 255, 0), 2)
+		cv2.putText(img, "%f" % score, (int(x), int(y)), 2, 1, (0, 255, 0))
 
 	cv2.imshow("test result", img)
 	cv2.waitKey()
@@ -76,9 +73,11 @@ def main(test_image, data_path, data_path2, simple_size, label):
 
 
 if __name__ == '__main__':
-	test_image = "C:\\Study\\ImageHandle\\data\\cars_test\\00248.jpg"#  "C:\\Study\\ImageHandle\\data\\CarData\\TestImages\\test-161.pgm" # "C:\\Study\\ImageHandle\\data\\cars_test\\00248.jpg"
-	data_path = "C:\\Study\\ImageHandle\\data\\cars_test"  # "C:\\Study\\ImageHandle\\data\\CarData\\TrainImages" # "C:\\Study\\ImageHandle\\data\\cars_test"
+	test_image = "C:\\Study\\ImageHandle\\data\\cars_test\\00249.jpg"
+	data_path = "C:\\Study\\ImageHandle\\data\\cars_test"  
+	# test_image = "C:\\Study\\ImageHandle\\data\\CarData\\TestImages\\test-161.pgm" 
+	# data_path = "C:\\Study\\ImageHandle\\data\\CarData\\TrainImages"
 	data_path2 = "C:\\Study\\ImageHandle\\re\\train\\3"
-	simple_size = 10
+	simple_size = 100
 	label = 1
 	main(test_image, data_path, data_path2, simple_size, label)

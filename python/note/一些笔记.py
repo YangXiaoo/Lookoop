@@ -97,3 +97,8 @@ popitem()
 ## 
 filter
 dummy = filter(function, iterable) # 根据 function的返回值过滤掉 iterable中的数据, 最终结果返回给dummy
+
+
+
+# os
+print(os.path.dirname(__file__)) # 打印出当前工作路径

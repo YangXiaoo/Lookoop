@@ -56,7 +56,7 @@ class Solution:
             else:
                 i += 1
         return len(nums)
-        
+print "dsds个回复"
 nums = [0,0]
 test = Solution()
 res = test.removeElement(nums,0)

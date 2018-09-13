@@ -24,6 +24,8 @@ def readFace(file, sz=None):
 
     return [X, y]
 
+
+
 def faceDetect(train):
 
     # 读取标签姓名

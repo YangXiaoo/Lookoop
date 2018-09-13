@@ -51,44 +51,97 @@ plt.show()
 
 
 
-# #################################################################################################
-# # 分水岭算法
-# img = cv2.imread('image/m_4.jpg')
-# gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # 已经是灰度图
-# ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU) # 将图像分为两个部分，黑色和白色
+#################################################################################################
+# 分水岭算法
+img = cv2.imread('image/m_4.jpg')
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # 已经是灰度图
+ret, thresh = cv2.threshold(gray, 0, 255, cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU) # 将图像分为两个部分，黑色和白色
 
-# # cv2.imshow("thresh", thresh)
+# cv2.imshow("thresh", thresh)
 
-# # 去除噪音
-# kernel = np.zeros((3,3), np.uint8)
-# opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+# 去除噪音
+kernel = np.zeros((3,3), np.uint8)
+opening = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
 
 
-# # 通过 morphologyEx()变换之后对图像进行膨胀操作, 可以得到大部分都是背景的区域
-# sure_bg = cv2.dilate(opening,kernel,iterations=3)
-# # cv2.imshow("s", sure_bg)
+# 通过 morphologyEx()变换之后对图像进行膨胀操作, 可以得到大部分都是背景的区域
+sure_bg = cv2.dilate(opening,kernel,iterations=3)
+# cv2.imshow("s", sure_bg)
 
-# # 确定前景区域，使用阈值来确定哪些是前景区域
-# dist_transform = cv2.distanceTransform(opening,cv2.DIST_L2,5)
-# ret, sure_fg = cv2.threshold(dist_transform,0.5*dist_transform.max(),255,0)
+# 确定前景区域，使用阈值来确定哪些是前景区域
+dist_transform = cv2.distanceTransform(opening, cv2.DIST_L2,5)
+ret, sure_fg = cv2.threshold(dist_transform,0.5*dist_transform.max(),255,0)
 
-# # 前景背景有重合区域，相减
-# sure_fg = np.uint8(sure_fg)
-# unknown = cv2.subtract(sure_bg,sure_fg)
+# 前景背景有重合区域，相减
+sure_fg = np.uint8(sure_fg)
+unknown = cv2.subtract(sure_bg,sure_fg)
 
-# # Marker labelling
-# ret, markers = cv2.connectedComponents(sure_fg)
+# Marker labelling
+ret, markers = cv2.connectedComponents(sure_fg)
 
-# # 将背景区域加1， unknown区域设置为0
-# markers = markers+1
-# markers[unknown==255] = 0
+# 将背景区域加1， unknown区域设置为0
+markers = markers+1
+markers[unknown==255] = 0
 
-# # 让水漫起来并把栅栏绘制成红色
-# markers = cv2.watershed(img,markers)
-# img[markers == -1] = [255,0,0]
+# 让水漫起来并把栅栏绘制成红色
+markers = cv2.watershed(img,markers)
+img[markers == -1] = [255,0,0]
 
-# plt.imshow(img)
-# plt.show()
+plt.imshow(img)
+plt.show()
 
+cv2.waitKey()
+cv2.destroyAllWindows()
+
+
+
+
+# Python2
+# import os
+# import urllib2
+# try:
+# 	import cv2
+# 	import numpy as np
+# 	# from matplotlib import pyplot as plt
+# 	import scipy
+# except:
+# 	os.system("pip install numpy")
+# 	os.system("pip install opencv-python")
+# 	# os.system("pip install matplotlib")
+# 	os.system("pip install scipy")
+# 	# os.system("pip install urllib")
+# 	import numpy as np
+# 	import cv2
+# 	# from matplotlib import pyplot as plt
+# 	import scipy
+
+# # GrabCut
+# url = "http://lxa.kim/download/?download=20180911-211843-8890/m_2.jpg"
+# req = urllib2.Request(url)
+# ff = urllib2.urlopen(url)
+# data = ff.read()
+# name = "m_2.jpg"
+# with open(name, "wb") as f:
+# 	f.write(data)
+# img = cv2.imread(name)
+# print(img.shape) # (500, 500, 3)
+# mask = np.zeros(img.shape[:2],np.uint8) # mask
+
+
+# bgdModel = np.zeros((1,65),np.float64)
+# fgdModel = np.zeros((1,65),np.float64)
+# print(bgdModel)  
+# """
+# [[0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+#   0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.
+#   0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0. 0.]]
+# """
+# rect = (60,90,970,1360)
+
+# cv2.grabCut(img,mask,rect,bgdModel,fgdModel,5,cv2.GC_INIT_WITH_RECT)
+
+# mask2 = np.where((mask==2)|(mask==0),0,1).astype('uint8')
+# img = img*mask2[:,:,np.newaxis] # np.newaxis = None
+# cv2.imshow("img", img)
 # cv2.waitKey()
 # cv2.destroyAllWindows()

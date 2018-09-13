@@ -1,4 +1,4 @@
-# 2018-9-8
+# 2018-9-10
 # OpenCV3 计算机视觉 Python语言实现
 # Github : https://github.com/techfort/pycv
 # 英文教程： https://docs.opencv.org/3.2.0/d6/d00/tutorial_py_root.html

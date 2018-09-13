@@ -9,7 +9,9 @@ def generateFace(name, end=200):
 
     camera = cv2.VideoCapture(0)
     count = 0 # 图片计数
-    dirs = "C:\\Study\\github\\Lookoop\\Image\\OpenCV\\face_detect\\face\\" + str(name) +'\\'
+    file_name = os.path.join(os.path.dirname(__file__), "face")
+    dirs = os.path.join(file_name, str(name))
+    # dirs = "C:\\Study\\github\\Lookoop\\Image\\OpenCV\\face_detect\\face\\" + str(name) +'\\'
     while True:
         ret, frame = camera.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -34,8 +36,9 @@ def generateFace(name, end=200):
 
     camera.release()
     cv2.destroyAllWindows()
+    return file_name
 
 if __name__ == "__main__":
-    generateFace("tes", 50)
-    dirs = "C:\\Study\\github\\Lookoop\\Image\\OpenCV\\face_detect\\face"
+    dirs = generateFace("tes", 50)
+    # dirs = "C:\\Study\\github\\Lookoop\\Image\\OpenCV\\face_detect\\face"
     generateCSV(dirs)

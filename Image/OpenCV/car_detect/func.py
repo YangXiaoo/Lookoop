@@ -18,6 +18,8 @@ def pyramid(image, scale=1.5, min_size=(200, 80)):
 
     while True:
         image = resize(image, scale)
+        # 使用高斯模糊
+        # image = cv2.GaussianBlur(img, (11, 11), 0)
         if image.shape[0] < min_size[1] or image.shape[1] < min_size[0]:
             break
 

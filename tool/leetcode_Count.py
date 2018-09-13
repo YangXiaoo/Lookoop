@@ -1,6 +1,6 @@
 # 2018-9-5
 # update on 2018-9-7 : 跳过test和笔记文件
-# update on 2018-9-13: 统计easy, medium, hard
+# update on 2018-9-13 : 统计easy, medium, hard
 # 统计LeetCode已做题目数量
 import os
 __easy_tag = ["easy", "simple"]

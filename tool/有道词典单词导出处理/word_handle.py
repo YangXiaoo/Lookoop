@@ -1,4 +1,5 @@
 # 2018-9-13
+# update: 2018-9-14
 import time
 def main(path, word_file, translate_file):
 	file = open(path, encoding="utf-8")
@@ -12,14 +13,15 @@ def main(path, word_file, translate_file):
 				s[0] += '.'
 				w = s[1].split('[')
 				if len(w) == 2:
-					w[0] += '\t'
-					w[1] = '[' + w[1]
+					# w[0] += '\n' + "  "
+					# w[1] = '[' + w[1]
+					w = w[0] + '\n'
 				s[1] = "".join(w)
 				f.write("".join(s))
 				continue
 		f.close()
 	with open(translate_file, "w", encoding="utf-8") as f:
-		pre = "********** 导出时间 %s **********" % str(time.asctime( time.localtime(time.time()) ))
+		pre = "** 导出时间 %s **" % str(time.asctime( time.localtime(time.time()) ))
 		first = False
 		for i in data:
 			s = i.split(",")

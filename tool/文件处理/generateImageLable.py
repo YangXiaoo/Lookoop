@@ -11,7 +11,7 @@ def main(dirs, data_dir, handle=True, preffix=True):
     preffix=True : 添加所在目录val\m-10-10.4 (2).png, 默认参数True
     preffix=False : 不添加所在目录m-10-10.4 (2).png
 
-    生成的标签分别保存在dirs中的目录下
+    生成的标签分别保存在dirs中的目录下["train", "val"]即C:/software/caffe/caffe-master/data/xunlian/val/val.txt
     """
     count = 0
     for d in dirs:

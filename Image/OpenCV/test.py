@@ -7,9 +7,12 @@ import cv2
 # import math
 
 # 图像裁剪
+img = cv2.imread("image/m_5.jpg")
+print(img.shape)
 img = cv2.imread("image/m_5.jpg", 0) # 0表示以对读入图像灰度处理
 w, h= img.shape
 # print(img.shape)
+
 s = min(w, h)  # 取最小值裁剪成sxs大小
 pre = dummy = img
 dummy = cv2.resize(dummy, (200, 200), interpolation=cv2.INTER_LINEAR)

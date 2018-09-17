@@ -238,24 +238,29 @@ class RedBlackTree(object):
 		y = z
 		y_original_color = y.color
 		if z.left == self.nil:
+			x = z.right
 			self.transplant(z, z.right)
 		elif z.right == self.nil:
+			x = z.left
 			self.transplant(z, z.left)
 		else:
 			y = self.treeMinimum(z.right)
 			y_original_color = y.color
 			x = y.right
 
+
 			if y.parent == z:
-				x.p = y
+				# if x:
+				x.parent = y
 			else:
+				# if x:
 				self.transplant(y, x)
 				y.right = z.right
 				y.right.parent = y
-				self.transplant(z, y)
-				y.left = z.left
-				z.left.parent = y
-				y.color = z.color
+			self.transplant(z, y)
+			y.left = z.left
+			z.left.parent = y
+			y.color = z.color
 		print("delete--->", "key: ",z.key, "color : ",z.color)
 
 		"""
@@ -343,6 +348,7 @@ def main():
 		del node
 	test.inorder()
 	test.delete(test.root)
+	test.delete(test.root.right)
 	test.inorder()
 
 if __name__ == "__main__":

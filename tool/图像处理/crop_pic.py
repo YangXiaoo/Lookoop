@@ -17,7 +17,7 @@ def file(dirpath):
             	file.append(path)
     return file
 
-def main(dirs, out_dir):
+def cropPic(dirs, out_dir):
 	if not os.path.isdir(out_dir):
 		os.mkdir(out_dir)
 	files = file(dirs)
@@ -49,4 +49,4 @@ def main(dirs, out_dir):
 if __name__ == '__main__':
 	dirs = "C:\\Study\\test\\image" 
 	out_dir = "C:\\Study\\test\\out_pic" # 存储路径
-	main(dirs, out_dir)
+	cropPic(dirs, out_dir)

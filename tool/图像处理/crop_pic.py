@@ -17,6 +17,7 @@ def file(dirpath):
             	file.append(path)
     return file
 
+
 def cropPic(dirs, out_dir):
 	if not os.path.isdir(out_dir):
 		os.mkdir(out_dir)

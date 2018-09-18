@@ -1,34 +1,53 @@
 # 2018-9-14
 import numpy as np
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import os
 import cv2
 # from skimage import transform
 # import math
 
-# 图像裁剪
-img = cv2.imread("image/m_5.jpg")
-print(img.shape)
-img = cv2.imread("image/m_5.jpg", 0) # 0表示以对读入图像灰度处理
-w, h= img.shape
+# # 图像裁剪
+# img = cv2.imread("image/m3.png", 0)
 # print(img.shape)
+# # img = cv2.imread("image/m3.png") # 0表示以对读入图像灰度处理
+# w, h= img.shape
+# # print(img.shape)
+# img = cv2.cvtColor(img, cv2.COLOR_GRAY2BGR)
+# s = min(w, h)  # 取最小值裁剪成sxs大小
+# # np.c_[a,b]
+# # img=np.zeros([400,400,3],np.uint8)  
+# # 修改通道值  
+# # img[:,:,0]=np.ones([400,400])*255  
+# # img[:, :, 2] = np.ones([400, 400]) * 255
+  
+# pre = dummy = img
+# # dummy = cv2.resize(dummy, (200, 200,3), interpolation=cv2.INTER_LINEAR)
+# # plt.subplot(121)
+# # plt.imshow(dummy)
+# # cv2.imshow("0", dummy[:,:,0])
+# # cv2.imshow("1", dummy[:,:,1])
+# # cv2.imshow("2", dummy[:,:,2])
+# # size = [z,w,h]
+# # k=np.zeros(size, np.uint8)
+# # print(k)
+# # k[:,:,0] = img[:,:,0]
+# # k[:,:,1] = img[:,:,1]
+# # k[:,:,2] = img[:,:,2]
 
-s = min(w, h)  # 取最小值裁剪成sxs大小
-pre = dummy = img
-dummy = cv2.resize(dummy, (200, 200), interpolation=cv2.INTER_LINEAR)
-# plt.subplot(121)
-# plt.imshow(dummy)
-cv2.imshow("orignal", dummy)
-img = img[:s, :s]
+# cv2.imshow("IMG", img)
+# cv2.imwrite("img.png", np.asarray(img, np.uint8))
+# print(dummy[:,:,1].shape)
+# # print(img)
+# img = img[:s, :s]
 
-img = cv2.resize(img, (200, 200), interpolation=cv2.INTER_LINEAR)
-cv2.imwrite("xx.jpg", np.asarray(img, np.uint8))
-# plt.subplot(122)
-# plt.imshow(img)
-# plt.show()
-cv2.imshow("new", img)
-cv2.waitKey()
-cv2.destroyAllWindows()
+# img = cv2.resize(img, (200, 200), interpolation=cv2.INTER_LINEAR)
+# cv2.imwrite("xx.jpg", np.asarray(img, np.uint8))
+# # plt.subplot(122)
+# # plt.imshow(img)
+# # plt.show()
+# cv2.imshow("new", img)
+# cv2.waitKey()
+# cv2.destroyAllWindows()
 
 
 

@@ -1,5 +1,4 @@
 # 2018-9-14
-# generateImageLable
 import os
 import math
 def main(dirs, data_dir, handle=True, preffix=True):

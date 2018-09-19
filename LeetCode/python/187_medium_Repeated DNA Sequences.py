@@ -36,10 +36,6 @@ class Solution(object):
         return res
 
         
-        
-
-
-
 s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
 # s = "AAAAAAAAAAA"
 test = Solution()

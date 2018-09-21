@@ -28,16 +28,18 @@ Explanation: Buy on day 2 (price = 2) and sell on day 3 (price = 6), profit = 6-
 参考博客: https://blog.csdn.net/smile_watermelon/article/details/47445981
 
 
-维护两个数组，local[][]和global[][]，其中global[i][j]表示到第i天时完成j次交易的最大收益，local[i][j]表示到第i天时完成j次交易并且最后一次交易发生在第i天时的最大收益。
+维护两个数组，local[][]和global[][]，其中
+global[i][j]表示到第i天时完成j次交易的最大收益，
+local[i][j]表示到第i天时完成j次交易并且最后一次交易发生在第i天时的最大收益。
 
 global的推导公式如下：
 
-global[i][j] = max(local[i][j], global[i-1][j]); 
+global[i][j] = max(local[i][j], global[i-1][j]); # 最后一日不做交易或最后一日完成第j次交易
 即，到第i天完成j次交易的最大收益，要么是第j次交易发生在第i天时的最大收益，要么是到第i-1天完成j次交易时的最大收益。
 
 local的推导公式如下：
 
-local[i][j] = max(global[i-1][j-1]+max(diff,0), local[i-1][j]+diff); 
+local[i][j] = max(global[i-1][j-1]+max(diff,0), local[i-1][j]+diff); # 倒数第二次完成第j次交易，或倒数第二日不做任何交易
 需要看两个量，第一个是全局global到i-1天进行j-1次交易，然后加上今天的交易，如果今天是赚钱的话（也就是前面只要j-1次交易，最后一次交易取当前天）；第二个量则是取local第i-1天j次交易，然后加上今天的差值（这里因为local[i-1][j]比如包含第i-1天卖出的交易，所以现在变成第i天卖出，并不会增加交易次数，而且这里无论diff是不是大于0都一定要加上，因为否则就不满足local[i][j]必须在最后一天卖出的条件了）。
 """
 
@@ -49,7 +51,7 @@ class Solution(object):
         :rtype: int
         """
         lens = len(prices)
-        if lens < 1 or k < 1: return 0
+        if lens < 2 or k < 1: return 0
         if k >= (lens // 2):
             res = 0
             for i in range(lens-1):

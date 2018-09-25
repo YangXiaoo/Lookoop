@@ -21,7 +21,7 @@ def file(dirpath):
     return file
 
 
-def tranPic(dirs, out_dir, thresh_value, iscrop=True):
+def tranPic(dirs, out_dir, thresh_value=None, iscrop=True):
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
     files = file(dirs)
@@ -99,7 +99,7 @@ def tranPic(dirs, out_dir, thresh_value, iscrop=True):
     print("\n\ntotal: %d\nsuccessful: %d\nfailed: %d" %(total, success, fail))
 
 
-def crop(img, img_name, f, thresh_value=80):
+def crop(img, img_name, f, thresh_value=None):
     """
     Img: 原图
     img_name: 图像存储路径
@@ -107,11 +107,15 @@ def crop(img, img_name, f, thresh_value=80):
     thresh_value： 阈值
     """
     img_w, img_h = img.shape
+
+
+
+
     img_contour, max_contour = findMaxContour(img, thresh_value)
     # cv2.imshow("mask", img_contour) # test
 
     # 漫水法对轮廓进行处理
-    print("\n漫水法...")
+    print("漫水法...")
     # print(max_contour[0][0][1], max_contour[0][0][1] + 2) # 不可控
     seed_pt = (1, 1) # 种子放到外面, 最后处理的时候翻转
     # cv2.imwrite(img_name, img_contour) # test
@@ -174,17 +178,36 @@ def water(img, old_image, seed_pt, fn, is_write=False):
 
 
 def findMaxContour(img, thresh_value=100):
+
     img_w, img_h = img.shape
 
-    # 模板，存储轮廓
+
     mask = np.zeros((img.shape[0], img.shape[1]), np.uint8)
 
-    # 阈值
-    ret, thresh = cv2.threshold(img.copy() , thresh_value, 255, cv2.THRESH_BINARY)
+    # 中值滤波处理
+    img_med = cv2.medianBlur(img, 5)
 
-    # 去噪
+    # 去噪, 腐蚀膨胀开运算
     kernel = np.zeros((3,3), np.uint8)
-    thresh = cv2.morphologyEx(thresh, cv2.MORPH_OPEN, kernel)
+    thresh = cv2.morphologyEx(img_med, cv2.MORPH_OPEN, kernel)
+    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
+    # 阈值
+    if not thresh_value:
+        sums = 0
+        for i in range(img_w):
+            for j in range(img_h):
+                sums += thresh[i][j]
+        thresh_value = sums // (img_w * img_h) * 0.86
+    print("\nthresh_value: ",thresh_value)
+    # 模板，存储轮廓
+    # 阈值
+    ret, thresh = cv2.threshold(thresh , thresh_value, 255, cv2.THRESH_BINARY)
+
+    # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(4,4))
+    # thresh = clahe.apply(thresh)
+
+
+
 
     # 找轮廓
     image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE )
@@ -246,8 +269,9 @@ if __name__ == '__main__':
     dirs = "C:\\Study\\test\\image" # 原图片存储路径
     out_dir = "C:\\Study\\test\\out_pic" # 存储路径
 
-    thresh_value = 70
-    tranPic(dirs, out_dir, thresh_value)
+    # thresh_value = 70
+    # tranPic(dirs, out_dir, thresh_value)
+    tranPic(dirs, out_dir, thresh_value=190) # 不输入thresh_value时会自动计算阈值, 下面调参时则需要输入
     # a. 在out_dir路径中查看结果
     # b. 删除质量不好的图像
     # c. 修改thresh_value的值(每次减小10， 60时质量已经不怎好)

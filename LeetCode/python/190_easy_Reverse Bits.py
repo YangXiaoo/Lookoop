@@ -11,7 +11,7 @@ Follow up:
 If this function is called many times, how would you optimize it?
 '''
 
-# 2018-9-22
+# 2018-9-23
 # 190. Reverse Bits
 # https://leetcode.com/problems/reverse-bits/description/
 

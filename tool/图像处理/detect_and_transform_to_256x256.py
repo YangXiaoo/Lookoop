@@ -1,6 +1,6 @@
 # 2018-9-18
 # update: 2018-9-24 # 使用漫水法
-# update: 2018-9-25 # 优化一些代码
+# update: 2018-9-25 # 优化一些代码, 增加边缘切片，中值滤波，等前处理
 # 提取手掌并裁剪为256x256
 
 # from matplotlib import pyplot as plt
@@ -21,7 +21,7 @@ def file(dirpath):
     return file
 
 
-def tranPic(dirs, out_dir, thresh_value=None, iscrop=True):
+def tranPic(dirs, out_dir, thresh_value=None, iscrop=True, clip=None):
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
     files = file(dirs)
@@ -37,9 +37,17 @@ def tranPic(dirs, out_dir, thresh_value=None, iscrop=True):
             continue
         try:
             img = cv2.imread(f, 0)
+
+            # 切边处理
+            if clip:
+                x,w,y,h = clip
+                img = img[x:w,y:h]
+
             # ret, img = cv2.threshold(img, 50, 255, 0)
             old_size = img.shape
             w, h = img.shape
+
+            # 裁剪
             if iscrop:
                 img, w, h = crop(img, img_name, f, thresh_value)
                 if (h, w) == old_size: # 若没有找到轮廓则跳过
@@ -53,6 +61,7 @@ def tranPic(dirs, out_dir, thresh_value=None, iscrop=True):
                         
             img = np.array(img)
 
+            # 将图片扩充为正方形
             if w > h:
                 gap = w - h
                 fill = np.zeros([1, w], np.uint8)
@@ -107,9 +116,6 @@ def crop(img, img_name, f, thresh_value=None):
     thresh_value： 阈值
     """
     img_w, img_h = img.shape
-
-
-
 
     img_contour, max_contour = findMaxContour(img, thresh_value)
     # cv2.imshow("mask", img_contour) # test
@@ -206,9 +212,6 @@ def findMaxContour(img, thresh_value=100):
     # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(4,4))
     # thresh = clahe.apply(thresh)
 
-
-
-
     # 找轮廓
     image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE )
 
@@ -266,12 +269,17 @@ if __name__ == '__main__':
     # dirs = "C:\\Study\\ImageHandle\\fail_to_trans\\fail\\" 
     # dirs = "C:\\Study\\test\\failed"
 
-    dirs = "C:\\Study\\test\\image" # 原图片存储路径
+    dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
     out_dir = "C:\\Study\\test\\out_pic" # 存储路径
 
     # thresh_value = 70
     # tranPic(dirs, out_dir, thresh_value)
-    tranPic(dirs, out_dir, thresh_value=190) # 不输入thresh_value时会自动计算阈值, 下面调参时则需要输入
+    tranPic(dirs, out_dir, thresh_value=None, clip=(30,-30,30,-30)) 
+
+    # tranPic()使用:
+    # 有白边：clip=(30,-30,30,-30) 若生成图片两边有白边则增大前两个参数(35,-35,30,-30)， 若上下有白边则增大后两个参数(30,-30,35,-35) 
+    # 无白边则可以省略这个参数或者clip=None
+    # 不输入thresh_value时会自动计算阈值, 下面调参时则需要输入
     # a. 在out_dir路径中查看结果
     # b. 删除质量不好的图像
     # c. 修改thresh_value的值(每次减小10， 60时质量已经不怎好)

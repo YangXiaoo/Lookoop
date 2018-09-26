@@ -118,25 +118,17 @@ def crop(img, img_name, f, thresh_value=None):
     f: 原图像路径
     thresh_value： 阈值
     """
+    # 获得图像长宽
     img_w, img_h = img.shape
 
+    # 得到绘制在0矩阵上的轮廓和 最大轮廓矩阵
     img_contour, max_contour = findMaxContour(img, thresh_value)
-    # cv2.imshow("mask", img_contour) # test
-
-    # # 漫水法对轮廓进行处理
-    # print("漫水法...")
-    # # print(max_contour[0][0][1], max_contour[0][0][1] + 2) # 不可控
-    # seed_pt = (1, 1) # 种子放到外面, 最后处理的时候翻转
-    # # cv2.imwrite(img_name, img_contour) # test
-    # res = water(img_contour, img, seed_pt, img_name) 
-    # print("漫水法完成")
 
     # BFS
     print("BFS...")
     res = waterBfs(img_contour, img)
 
 
-    # print(max_contour.shape) # test
     # 寻找轮廓的外接矩形
     x, y, w, h = cv2.boundingRect(max_contour)
     if x >= 10 and y >= 10 and x+w <= img_w and y+h <= img_h:
@@ -144,55 +136,28 @@ def crop(img, img_name, f, thresh_value=None):
         y -= 10
         w += 20
         h += 20
+
+    # 切片
     img_new = res[y:y+h, x:x+w]
-    # print(x,y,w,h, img_new.shape, "----- old img: ", img_w, img_h) # test
+
     return img_new, img_new.shape[1], img_new.shape[0]
-
-# 超过stack最大深度
-# DFS
-# def water(img, old_image, seed_pt, fn, is_write=False):
-#     def dfs(img, m, n):
-#         if m < 0 or (m > row - 1) or n < 0 or (n > col - 1) or img[m][n] != 0:
-#             return
-
-#         img[m][n] =  1
-#         dfs(img, m - 1, n)
-#         dfs(img, m + 1, n)
-#         dfs(img, m, n - 1)
-#         dfs(img, m, n + 1)
-
-#     row, col = img.shape[:2]
-#     for r in range(row):
-#         dfs(img, r, 0)
-#         dfs(img, r, col - 1)
-
-#     for c in range(col):
-#         dfs(img, 0, c)
-#         dfs(img, row - 1, c)
-
-#     for i in range(w):
-#         for j in range(h):
-#             if img[i][j] != 0:
-#                 img[i][j] = 0
-#             else:
-#                 img[i][j] = 1
-
-#     res = np.multiply(img, old_image)
-#     return res
 
 
 def waterBfs(img, old_image):
     row, col = img.shape
-    visited = [[False for _ in range(col)] for _ in range(row)]
-    # print(visited)
-    queue = []
+
+    # 得到rowxcol的矩阵[[False, False...], ..., [False, False...]]
+    visited = [[False for _ in range(col)] for _ in range(row)] 
+    queue = [] # 存放每一次遍历的起点
     def bfs(img, row, col, visited):
         m, n = img.shape
         queue.append([row, col])
         visited[row][col] = True 
+
         while len(queue) != 0:
             row, col = queue.pop()
             # print(len(queue))
+            
             # 往左搜索
             if row > 1 and not visited[row - 1][col] and img[row - 1][col] == 0:
                 queue.append([row - 1, col])
@@ -238,53 +203,8 @@ def waterBfs(img, old_image):
     return res
 
 
-
-# def water1(img, old_image, seed_pt, fn, is_write=False):
-#     """
-#     漫水法，BFS
-#     """
-#     print(img)
-#     h, w = img.shape[:2]    # 得到图像的高和宽  
-
-#     # 掩码单通道8比特，长和宽都比输入图像多两个像素点，满水填充不会超出掩码的非零边缘 
-#     mask = np.zeros((h+2, w+2), np.uint8) 
-
-#     fixed_range = True  
-#     connectivity = 4  
-
-#     # 两个值可以更改
-#     lo = 20
-#     hi = 40
-    
-#     flooded = img.copy()
-#     mask[:] = 0 # 掩码初始为全0    
-#     flags = connectivity    # 低位比特包含连通值, 4 (缺省) 或 8  
-#     if fixed_range:  
-#         flags |= cv2.FLOODFILL_FIXED_RANGE  # 考虑当前象素与种子象素之间的差（高比特也可以为0）  
-#     # 以白色进行漫水填充  
-#     cv2.floodFill(flooded, mask, seed_pt, (255, 255, 255), 
-#                  (lo,)*3, (hi,)*3, flags)  
-      
-#     original = old_image
-
-#     # 将模板二值化0,1
-#     w, h = flooded.shape
-#     for i in range(w):
-#         for j in range(h):
-#             if flooded[i][j] != 0:
-#                 flooded[i][j] = 0
-#             else:
-#                 flooded[i][j] = 1
-
-#     res = np.multiply(flooded, original)
-#     # cv2.imwrite(fn, res)
-#     return res
-
-
 def findMaxContour(img, thresh_value=100):
-
     img_w, img_h = img.shape
-
 
     mask = np.zeros((img.shape[0], img.shape[1]), np.uint8)
 
@@ -303,12 +223,11 @@ def findMaxContour(img, thresh_value=100):
                 sums += thresh[i][j]
         thresh_value = sums // (img_w * img_h) * 0.86
     print("\nthresh_value: ",thresh_value)
+
     # 模板，存储轮廓
     # 阈值
     ret, thresh = cv2.threshold(thresh , thresh_value, 255, cv2.THRESH_BINARY)
 
-    # clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(4,4))
-    # thresh = clahe.apply(thresh)
 
     # 找轮廓
     image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE )
@@ -327,41 +246,6 @@ def findMaxContour(img, thresh_value=100):
     img_contour = cv2.drawContours(mask, max_contour, -1, (255 , 0,0), 1)
     cv2.imwrite("C:\\Study\\test\\out_pic\\t.jpg", img_contour)
     return img_contour, max_contour
-
-
-def checkContour(dirs, out_dir):
-    """
-    先对图像轮廓进行判断，这样更加快速
-    未单独对轮廓进行处理，后续代码暂无
-    测试使用!
-    """
-    if not os.path.isdir(out_dir):
-        os.mkdir(out_dir)
-    files = file(dirs)
-
-    total = len(files)
-    fail = 0
-    success = 0
-
-    for f in files:
-        img_name = os.path.join(out_dir, f.split("\\")[-1])
-        if os.path.isfile(img_name):
-            print("Skip %s, because it was already processed." % f)
-            continue
-        img = cv2.imread(f, 0)
-
-        thresh_value = 100 # 更改此值对轮廓进行处理
-        mask, max_contour = findMaxContour(img, thresh_value)
-        img_contour = cv2.drawContours(mask, max_contour, -1, (255 , 255,255), 1)
-        # cv2.imshow("mask", img_contour) # test
-
-        cv2.imwrite(img_name, img_contour)
-
-def checkAndCompute(dirs, out_dir):
-    """
-    确保out_dir目录下面的文件已经备份并且轮廓质量较好
-    """
-    pass
 
 
 if __name__ == '__main__':

@@ -214,7 +214,7 @@ def findMaxContour(img, thresh_value=100):
     # 去噪, 腐蚀膨胀开运算
     kernel = np.zeros((3,3), np.uint8)
     thresh = cv2.morphologyEx(img_med, cv2.MORPH_OPEN, kernel)
-    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
+
     # 阈值
     if not thresh_value:
         sums = 0
@@ -227,6 +227,9 @@ def findMaxContour(img, thresh_value=100):
     # 模板，存储轮廓
     # 阈值
     ret, thresh = cv2.threshold(thresh , thresh_value, 255, cv2.THRESH_BINARY)
+    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
+    print(np.max(thresh))
+    cv2.imwrite("C:\\Study\\test\\out_pic\\thresh.jpg", thresh)
 
 
     # 找轮廓

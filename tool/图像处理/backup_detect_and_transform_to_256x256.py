@@ -159,7 +159,7 @@ def waterBfs(img, old_image):
             # print(len(queue))
             
             # 往左搜索
-            if row > 1 and not visited[row - 1][col] and img[row - 1][col] == 0:
+            if row >= 1 and not visited[row - 1][col] and img[row - 1][col] == 0:
                 queue.append([row - 1, col])
                 visited[row - 1][col] = True
 
@@ -228,6 +228,7 @@ def findMaxContour(img, thresh_value=100):
     # 阈值
     ret, thresh = cv2.threshold(thresh , thresh_value, 255, cv2.THRESH_BINARY)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
+    thresh = cv2.blur(thresh, (5,5))
     print(np.max(thresh))
     cv2.imwrite("C:\\Study\\test\\out_pic\\thresh.jpg", thresh)
 

@@ -1,95 +1,277 @@
-row = 5
-col = 6
-img =  [[0, 0, 0, 1, 1, 0],
-        [0, 1, 1, 2, 3,0],
-        [5, 1, 0, 0, 4, 2],
-        [0, 8, 7, 8, 5, 0],
-        [0, 0, 0, 0, 0, 0]]
-visited = [[False for _ in range(col)] for _ in range(row)] 
-print(visited)
-queue = [] # 存放每一次遍历的起点
-def bfs(img, row, col, visited):
-    m, n = row, col
-    queue.append([row, col])
-    visited[row][col] = True 
+# 2018-9-27
+import cv2
+import numpy as np
 
-    while len(queue) != 0:
-        print(queue)
-        row, col = queue.pop()
-        # print(len(queue))
-        
-        # 往左搜索
-        if row > 1 and not visited[row - 1][col] and img[row - 1][col] == 0:
-            queue.append([row - 1, col])
-            visited[row - 1][col] = True
+cv2.imwrite("C:\\Study\\test\\out_pic\\res.jpg", res)
+# 2018-9-18
+# update: 2018-9-24 # 使用漫水法
+# update: 2018-9-25 # 优化一些代码, 增加边缘切片，中值滤波，等前处理
+# update: 2018-9-26 # 使用BFS实现轮廓填充
+# 提取手掌并裁剪为256x256
 
-        # 往右搜索
-        if row + 1 < m and not visited[row + 1][col] and img[row + 1][col] == 0:
-            queue.append([row + 1, col])
-            visited[row + 1][col] = True
+# from matplotlib import pyplot as plt
+import numpy as np
+import os
+import cv2
 
-        # 往上搜索
-        if col - 1 >= 0 and not visited[row][col - 1] and img[row][col - 1] == 0:
-            queue.append([row, col -1])
-            visited[row][col - 1] = True
-
-        # 往下搜搜
-        if col + 1 < n and not visited[row][col + 1] and img[row][col + 1] == 0:
-            queue.append([row, col + 1])
-            visited[row][col + 1] = True
-
-# 第一行与最后一行开始
-for c in range(col):
-    if not visited[0][c] and img[0][c] == 0:
-        bfs(img, 0, c, visited)
-    if not visited[-1][c] and img[-1][c] == 0:
-        bfs(img, row - 1, c, visited)
+__suffix = ["png", "jpg"]
 
 
-for r in range(row):
-    if not visited[r][0] and img[r][0] == 0:
-        bfs(img, r, 0, visited)
-    if not visited[r][-1] and img[r][-1] == 0:
-        bfs(img, r, col - 1, visited)
-
-# 将模板二值化0,1
-for i in range(row):
-    for j in range(col):
-        if not visited[i][j]:
-            img[i][j] = 1
-print(img)
-print(visited)
-# 原img
-# [[0, 0, 0, 1, 1, 0],
-#  [0, 1, 1, 2, 3,0],
-#  [5, 1, 0, 0, 4, 2],
-#  [0, 8, 7, 8, 5, 0],
-#  [0, 0, 0, 0, 0, 0]]
-
-# 处理过后的img
-# [[0, 0, 0, 1, 1, 0], 
-#  [0, 1, 1, 1, 1, 0], 
-#  [1, 1, 1, 1, 1, 1], 
-#  [0, 1, 1, 1, 1, 0], 
-#  [0, 0, 0, 0, 0, 0]]
+def file(dirpath):
+    file = []
+    for root, dirs, files in os.walk(dirpath, topdown=False):
+        for name in files:
+            path = os.path.join(root, name)
+            if name.split(".")[-1] in __suffix:
+                file.append(path)
+    return file
 
 
-# # 原visited
-# [[False, False, False, False, False, False], 
-#  [False, False, False, False, False, False], 
-#  [False, False, False, False, False, False], 
-#  [False, False, False, False, False, False], 
-#  [False, False, False, False, False, False]]
+def tranPic(dirs, out_dir, thresh_value=None, iscrop=True, clip=None):
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+    files = file(dirs)
 
-# # visited
-# [[True, True, True, False, False, True], 
-#  [True, False, False, False, False, True], 
-#  [False, False, False, False, False, False], 
-#  [True, False, False, False, False, True], 
-#  [True, True, True, True, True, True]]
+    total = len(files)
+    fail = 0
+    success = 0
+    skip = 0
+
+    for f in files:
+        img_name = os.path.join(out_dir, f.split("\\")[-1])
+        if os.path.isfile(img_name):
+            # print("Skip %s, because it was already processed." % f)
+            skip += 1
+            continue
+        try:
+            img = cv2.imread(f, 0)
+
+            # 切边处理
+            if clip:
+                x,w,y,h = clip
+                img = img[x:w,y:h]
+
+            # ret, img = cv2.threshold(img, 50, 255, 0)
+            old_size = img.shape
+            w, h = img.shape
+
+            # 裁剪
+            if iscrop:
+                img, w, h = crop(img, img_name, f, thresh_value)
+                if (h, w) == old_size: # 若没有找到轮廓则跳过
+                    print("Error: Fail to find contours.")
+            else:
+                # 默认不裁剪时若遇到长宽大于2的图形自动裁剪
+                if w//h > 2:
+                    img, w, h = crop(img, img_name, f, thresh_value)
+                    if (h, w) == old_size:
+                        print("Error: Fail to find contours.")
+                        
+            img = np.array(img)
+
+            # 将图片扩充为正方形
+            if w > h:
+                gap = w - h
+                fill = np.zeros([1, w], np.uint8)
+                print(f, ", old image size:", old_size, ", fill_size:", fill.shape, ", new imgae size:", img.shape, ", w>h:", w, h)
+                for i in range(gap//2):
+                    img = np.concatenate((img,fill), axis = 0)
+                for i in range(gap//2):
+                    img = np.concatenate((fill, img), axis = 0)
+                # gap = w - h
+                # fill = np.zeros([w,gap//2], np.uint8)
+                # img = np.concatenate((img,fill), axis = 0)
+                # img = np.concatenate((fill, img), axis = 0)
+            elif w < h:
+                gap = h - w
+                fill = np.zeros([h, 1], np.uint8)
+                print(f, ", old image size:", old_size, ", fill_size:", fill.shape, ", new imgae size:", img.shape, ", w<h:", w, h)
+                for i in range(gap//2):
+                    img = np.concatenate((img,fill), axis = 1)
+                for i in range(gap//2):
+                    img = np.concatenate((fill, img), axis = 1)
+            else:
+                pass
+
+            img_new = cv2.resize(img, (256, 256), interpolation=cv2.INTER_LINEAR)
+            img_new = cv2.cvtColor(img_new, cv2.COLOR_GRAY2BGR)
+
+            cv2.imwrite(img_name, img_new)
+            print("handled: ", f.split("\\")[-1])
+            success += 1
+
+        except Exception as e:
+            # 图片处理失败, 跳过图片保存目录: ./failed
+            print("Error: " + str(e))
+            
+            failed_dir = os.path.join("\\".join(f.split("\\")[:-2]), "failed")
+            print("failed to handle %s, skiped.\nsaved in %s" % (f,failed_dir))
+            if not os.path.isdir(failed_dir):
+                os.mkdir(failed_dir)
+            print(os.path.join(failed_dir, f.split("\\")[-1]))
+            os.system("copy %s %s" % (f, os.path.join(failed_dir, f.split("\\")[-1])))
+            fail += 1
+            print()
+
+    print("\n\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d" %(total, success, skip, fail))
+
+
+def crop(img, img_name, f, thresh_value=None):
+    """
+    Img: 原图
+    img_name: 图像存储路径
+    f: 原图像路径
+    thresh_value： 阈值
+    """
+    # 获得图像长宽
+    img_w, img_h = img.shape
+
+    # 得到绘制在0矩阵上的轮廓和 最大轮廓矩阵
+    img_contour, max_contour = findMaxContour(img, thresh_value)
+
+    # BFS
+    print("BFS...")
+    res = waterBfs(img_contour, img)
+
+
+    # 寻找轮廓的外接矩形
+    x, y, w, h = cv2.boundingRect(max_contour)
+    if x >= 10 and y >= 10 and x+w <= img_w and y+h <= img_h:
+        x -= 10
+        y -= 10
+        w += 20
+        h += 20
+
+    # 切片
+    img_new = res[y:y+h, x:x+w]
+
+    return img_new, img_new.shape[1], img_new.shape[0]
+
+
+def findMaxContour(img, thresh_value=100):
+    img_w, img_h = img.shape
+
+    mask = np.zeros((img.shape[0], img.shape[1]), np.uint8)
+
+    # 中值滤波处理
+    img_med = cv2.medianBlur(img, 5)
+
+    # 去噪, 腐蚀膨胀开运算
+    kernel = np.zeros((3,3), np.uint8)
+    thresh = cv2.morphologyEx(img_med, cv2.MORPH_OPEN, kernel)
+
+    # 阈值
+    if not thresh_value:
+        sums = 0
+        for i in range(img_w):
+            for j in range(img_h):
+                sums += thresh[i][j]
+        thresh_value = sums // (img_w * img_h) * 0.86
+    print("\nthresh_value: ",thresh_value)
+
+    # 模板，存储轮廓
+    # 阈值
+    ret, thresh = cv2.threshold(thresh , thresh_value, 255, cv2.THRESH_BINARY)
+    thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
+    # print(np.max(thresh))
+    # cv2.imwrite("C:\\Study\\test\\out_pic\\thresh.jpg", thresh)
+
+
+    def bfs(img, row, col, visited):
+        m, n = img.shape
+        queue = []
+        queue.append([row, col])
+        visited[row][col] = True 
+
+        while len(queue) != 0:
+            row, col = queue.pop()
+            # print(len(queue))
+            
+            # 往左搜索
+            if row > 1 and not visited[row - 1][col] and img[row - 1][col] != 0:
+                queue.append([row - 1, col])
+                visited[row - 1][col] = True
+
+            # 往右搜索
+            if row + 1 < m and not visited[row + 1][col] and img[row + 1][col] != 0:
+                queue.append([row + 1, col])
+                visited[row + 1][col] = True
+
+            # 往上搜索
+            if col - 1 >= 0 and not visited[row][col - 1] and img[row][col - 1] != 0:
+                queue.append([row, col -1])
+                visited[row][col - 1] = True
+
+            # 往下搜搜
+            if col + 1 < n and not visited[row][col + 1] and img[row][col + 1] != 0:
+                queue.append([row, col + 1])
+                visited[row][col + 1] = True
 
 
 
 
+    
+    row, col = img.shape
+    visited = [[False for _ in range(col)] for _ in range(row)]
+
+    s_r = row // 2 # 起始点高度坐标
+    x = col // 2
+    if img[s_r][x] == 0:
+        isout = True
+    else:
+        isout = False
 
 
+    while x >= 0:
+    # 若从手掌外开始则遇到第一个非0值即为手掌边缘轮廓
+        if isout:
+            if img[s_r][x] != 0:
+                s_c = x
+                break
+            else:
+                pass
+        else:
+    # 否则起始点为手掌内，当遍历到手掌边缘轮廓时img[s_r][x] == 0
+            if img[s_r][x] == 0:
+                s_c = x + 1 # 起始点坐标
+                break
+        x -= 1
+
+    # print(s_c, s_r)
+    # center = s_r, s_c
+    bfs(img, s_r, s_c, visited)
+    mask = np.zeros((row, col), np.uint8)
+    # 将模板二值化0,1
+    for i in range(row):
+        for j in range(col):
+            if visited[i][j]:
+                mask[i][j] = 1
+
+    # 原图与模板相乘
+    res = np.multiply(mask, old_image)
+    return res
+
+
+if __name__ == '__main__':
+    # dirs = "C:\\Study\\ImageHandle\\fail_to_trans\\fail\\" 
+    # dirs = "C:\\Study\\test\\failed"
+
+    dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
+    out_dir = "C:\\Study\\test\\out_pic" # 存储路径
+
+    # thresh_value = 70
+    # tranPic(dirs, out_dir, thresh_value)
+    tranPic(dirs, out_dir, thresh_value=None, clip=(30,-30,30,-30)) 
+
+    # tranPic()使用:
+    # 有白边：clip=(30,-30,30,-30) 若生成图片两边有白边则增大前两个参数(35,-35,30,-30)， 若上下有白边则增大后两个参数(30,-30,35,-35) 
+    # 无白边则可以省略这个参数或者clip=None
+    # 不输入thresh_value时会自动计算阈值, 下面调参时则需要输入
+    # a. 在out_dir路径中查看结果
+    # b. 删除质量不好的图像
+    # c. 修改thresh_value的值(每次减小10， 60时质量已经不怎好)
+    # d. 运行
+    # e. 重复a-d操作直到out_dir目录中的图片质量变好
+
+    # # 检查轮廓质量
+    # checkContour(dirs, out_dir)  

@@ -73,10 +73,6 @@ def tranPic(dirs, out_dir, thresh_value=None, iscrop=True, clip=None):
                     img = np.concatenate((img,fill), axis = 0)
                 for i in range(gap//2):
                     img = np.concatenate((fill, img), axis = 0)
-                # gap = w - h
-                # fill = np.zeros([w,gap//2], np.uint8)
-                # img = np.concatenate((img,fill), axis = 0)
-                # img = np.concatenate((fill, img), axis = 0)
             elif w < h:
                 gap = h - w
                 fill = np.zeros([h, 1], np.uint8)
@@ -212,7 +208,7 @@ def findMaxContour(img, thresh_value=100):
     img_med = cv2.medianBlur(img, 5)
 
     # 去噪, 腐蚀膨胀开运算
-    kernel = np.zeros((3,3), np.uint8)
+    kernel = np.zeros((7,7), np.uint8)
     thresh = cv2.morphologyEx(img_med, cv2.MORPH_OPEN, kernel)
 
     # 阈值
@@ -227,8 +223,10 @@ def findMaxContour(img, thresh_value=100):
     # 模板，存储轮廓
     # 阈值
     ret, thresh = cv2.threshold(thresh , thresh_value, 255, cv2.THRESH_BINARY)
+    kernel = np.zeros((20,20), np.uint8)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
-    thresh = cv2.blur(thresh, (5,5))
+    thresh = cv2.medianBlur(thresh, 5)
+    # thresh = cv2.blur(thresh, (5,5))
     print(np.max(thresh))
     cv2.imwrite("C:\\Study\\test\\out_pic\\thresh.jpg", thresh)
 

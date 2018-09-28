@@ -1,8 +1,4 @@
-# 2018-9-27
-import cv2
-import numpy as np
 
-cv2.imwrite("C:\\Study\\test\\out_pic\\res.jpg", res)
 # 2018-9-18
 # update: 2018-9-24 # 使用漫水法
 # update: 2018-9-25 # 优化一些代码, 增加边缘切片，中值滤波，等前处理

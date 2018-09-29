@@ -90,27 +90,6 @@ while len(queue) != 0:
             queue.append([r, c + 1])
             visited[r][c + 1] = True
 
-
-    # if isValidPoint(img, r - 1, c - 1) and not visited[r - 1][c - 1]:
-    #     if isMargin(img, r - 1, c - 1):
-    #         queue.append([r - 1, c - 1])
-    #         visited[r - 1][c - 1] = True
-            
-    # if isValidPoint(img, r + 1, c + 1) and not visited[r + 1][c + 1]:
-    #     if isMargin(img, r + 1, c + 1):
-    #         queue.append([r + 1, c + 1])
-    #         visited[r + 1][c + 1] = True
-
-    # if isValidPoint(img, r + 1, c - 1) and not visited[r][c - 1]:
-    #     if isMargin(img, r + 1, c - 1):
-    #         queue.append([r + 1, c - 1])
-    #         visited[r + 1][c - 1] = True
-
-    # if isValidPoint(img, r - 1, c + 1) and not visited[r][c + 1]:
-    #     if isMargin(img, r - 1, c + 1):
-    #         queue.append([r - 1, c + 1])
-    #         visited[r - 1][c + 1] = True
-
 for i in range(row):
     for j in range(col):
         if visited[i][j]:

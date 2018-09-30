@@ -102,3 +102,7 @@ dummy = filter(function, iterable) # 根据 function的返回值过滤掉 iterab
 
 # os
 print(os.path.dirname(__file__)) # 打印出当前工作路径
+
+
+np.sum(mat, axis=1) # 按行相加
+np.sum(mat, axis=0) # 按列相加

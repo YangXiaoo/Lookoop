@@ -106,3 +106,20 @@ print(os.path.dirname(__file__)) # 打印出当前工作路径
 
 np.sum(mat, axis=1) # 按行相加
 np.sum(mat, axis=0) # 按列相加
+
+# 关于sum, repeat函数的用法
+weight = np.mat(np.ones((3, 2)))
+print(weight)
+# [[1. 1.]
+#  [1. 1.]
+#  [1. 1.]]
+weight = weight.sum(axis=1)
+print(weight)
+# [[2.]
+#  [2.]
+#  [2.]]
+weight = weight.repeat(3, axis=1)
+print(weight)
+# [[2. 2. 2.]
+#  [2. 2. 2.]
+#  [2. 2. 2.]]

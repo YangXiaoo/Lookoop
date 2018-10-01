@@ -136,14 +136,14 @@ if __name__ == "__main__":
 
     plt.show()
 
-    # k = 4
-    # # 2、训练Softmax模型
-    # weights = train(feature, label, k, 10000, 0.4)
-    # print(weights)
+    k = 4
+    # 2、训练Softmax模型
+    weights = train(feature, label, k, 10000, 0.4)
+    print(weights)
 
-    # # 3. 预测   
-    # m, n = np.shape(weights)
-    # data = load_data(4000, m)
-    # res = predict(data, weights)
-    # print(res)
+    # 3. 预测   
+    m, n = np.shape(weights)
+    data = load_data(4000, m)
+    res = predict(data, weights)
+    print(res)
 

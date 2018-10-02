@@ -89,7 +89,7 @@ def main():
     # easy, medium, hard = classFile(res)
     clas = classFile(res)
 
-    for i,r in enumerate(clas):
+    for i, r in enumerate(clas):
         print(__tag[i])
         printFile(r, False)
 

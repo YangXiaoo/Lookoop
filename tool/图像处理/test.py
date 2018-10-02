@@ -1,8 +1,6 @@
 import numpy as np 
-
-weight = [[-3.57268659e+00,2.61248778e+01,-3.36100450e+01,1.50578537e+01]
- [ 2.39949197e+00,4.01757724e-01,-4.38123321e-01 , 1.63687363e+00]
- [ 2.44049589e+00,-3.91083002e+00,5.43746480e+00 , 3.28693338e-02]]
-weight = np.mat(weight)
-h = weight.argmax(axis=1)
-print(h)
+n = 10
+# visited = [0 for _ in range(n)]
+visited = [0] * n
+visited[2] = 1
+print(visited)

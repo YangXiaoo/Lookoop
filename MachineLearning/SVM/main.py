@@ -1,9 +1,10 @@
+# coding:UTF-8
 # 2018-10-3
 # Support Vector Machines
 # python 机器学习算法
 # 拉格朗日对偶问题 https://blog.csdn.net/blackyuanc/article/details/67640844
 import numpy as np
-# import cPickle as pickle
+import pickle
 
 def loadDate(file_name):
     feature = []
@@ -63,7 +64,7 @@ def calcKernelValue(train_x, train_x_i, kernel_option):
     # 径向基函数——Radial Basis Function
     if kernel_type == "rbf":
         sigma = kernel_option[1]
-        if int(sigma) == 0:
+        if sigma == 0:
             sigma = 1.0
         for i in range(m):
             # print(train_x[i, :] , train_x_i)
@@ -163,7 +164,7 @@ def chooseAndUpdate(svm, alpha_i):
 
         # 3. 计算eta
         eta = svm.kernel_mat[alpha_i, alpha_i] + svm.kernel_mat[alpha_j, alpha_j] - \
-            2 * svm.kernel_mat[alpha_i, alpha_j]
+            2.0 * svm.kernel_mat[alpha_i, alpha_j]
 
         if eta <= 0:
             return 0
@@ -213,7 +214,7 @@ def chooseAndUpdate(svm, alpha_i):
 
 
 
-def svmTrain(train_x, label, C, toler, max_iter, kernel_option = ('rbf', 0.431029)):
+def svmTrain(train_x, label, C, toler, max_iter, kernel_option = ('rbf', 0.4)):
     # 1. 初始化SVM分类器
     svm = SVM(train_x, label, C, toler, kernel_option)
 
@@ -257,7 +258,7 @@ def svmPredict(svm, test_data):
 
 def calcAccurancy(svm, test_x, test_label):
     n_sample = np.shape(test_x)[0]
-    correct = 0
+    correct = 0.0
     for i in range(n_sample):
         prediction = svmPredict(svm, test_x[i, :])
         if np.sign(prediction) == np.sign(test_label[i]):
@@ -267,8 +268,14 @@ def calcAccurancy(svm, test_x, test_label):
     return accurancy
 
 
-def saveModle(svm_model, model_file):
-    pass
+def saveModel(svm_model, model_file):
+    with open(model_file, 'wb') as f:
+        pickle.dump(svm_model, f)
+
+def loadModel(model_file):
+    with open(model_file, 'rb') as f:
+        model = pickle.load(f)
+    return model
 
 
 if __name__ == "__main__":
@@ -283,4 +290,6 @@ if __name__ == "__main__":
     accuracy = calcAccurancy(svm_model, dataSet, labels)  
     print ("The training accuracy is: %.3f%%" % (accuracy * 100))
     # 4、保存最终的SVM模型
-    saveModle(svm_model, "model_file")
+    saveModel(svm_model, "model_file")
+
+    # model = loadModel("model_file")

@@ -28,7 +28,7 @@ class Solution(object):
         lists = dummy = ListNode(0)
         while head:
             if head.val != val:
-                dummy.next = ListNode(head)
+                dummy.next = ListNode(head.val)
                 dummy = dummy.next
             head = head.next
         return lists.next
@@ -63,7 +63,7 @@ for i in nums:
     dummy = dummy.next
 List = List.next
 
-test = Solution()
+test = Solution2()
 res = test.removeElements(List, val)
 r = []
 while res:

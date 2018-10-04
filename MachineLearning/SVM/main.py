@@ -16,6 +16,8 @@ def loadDate(file_name):
         for i in line_data[1:]:
             i = i.split(":")
             feature_tmp.append(float(i[-1]))
+        while len(feature_tmp) < 13:
+            feature_tmp.append(0)
         feature.append(feature_tmp[:])
     f.close()
 
@@ -64,6 +66,7 @@ def calcKernelValue(train_x, train_x_i, kernel_option):
         if int(sigma) == 0:
             sigma = 1.0
         for i in range(m):
+            # print(train_x[i, :] , train_x_i)
             diff = train_x[i, :] - train_x_i # 1 x n
             kernel_value[i] = np.exp(diff * diff.T / (-2.0 * sigma**2))
     else:
@@ -131,6 +134,9 @@ def chooseAndUpdate(svm, alpha_i):
     error_i = calcError(svm, alpha_i)
 
     # 判断选择出的第一个变量是否违反了KKT条件
+    # 1. 若yE < 0, 即yg < 1时，此时若a < C则违反KKT条件
+    # 2. 若yE > 0, 即yg > 1时，此时若a > 0则违反KKT条件
+    # 3. 若yE = 0, 即yg = 1时，表明是支持向量, 无序优化
     if (svm.label[alpha_i] * error_i < - svm.toler) and \
         (svm.alphas[alpha_i] < svm.C) or \
         (svm.label[alpha_i] * error_i > svm.toler) and \

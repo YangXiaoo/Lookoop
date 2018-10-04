@@ -1,5 +1,5 @@
 # coding:UTF-8
-# 2018-10-3
+# 2018-10-3 - 2018-10-4
 # Support Vector Machines
 # python 机器学习算法
 # 拉格朗日对偶问题 https://blog.csdn.net/blackyuanc/article/details/67640844

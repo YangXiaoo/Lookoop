@@ -8,11 +8,12 @@
 import numpy as np
 import os
 import cv2
+import datetime
 
 __suffix = ["png", "jpg"]
 
 
-def file(dirpath):
+def loadPic(dirpath):
     file = []
     for root, dirs, files in os.walk(dirpath, topdown=False):
         for name in files:
@@ -23,15 +24,18 @@ def file(dirpath):
 
 
 def tranPic(dirs, out_dir, thresh_value=None, iscrop=True, clip=None):
+    start_time = datetime.datetime.now()
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
-    files = file(dirs)
+    # 1. 加载数据
+    files = loadPic(dirs)
 
     total = len(files)
     fail = 0
     success = 0
     skip = 0
 
+    # 遍历图片
     for f in files:
         img_name = os.path.join(out_dir, f.split("\\")[-1])
         if os.path.isfile(img_name):
@@ -104,7 +108,9 @@ def tranPic(dirs, out_dir, thresh_value=None, iscrop=True, clip=None):
             fail += 1
             print()
 
-    print("\n\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d" %(total, success, skip, fail))
+    end_time = datetime.datetime.now()
+    expend = end_time - start_time
+    print("\n\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d\nExpend time: %s" %(total, success, skip, fail, expend))
 
 
 def crop(img, img_name, f, thresh_value=None):
@@ -223,7 +229,7 @@ def findMaxContour(img, thresh_value=100):
     # 模板，存储轮廓
     # 阈值
     ret, thresh = cv2.threshold(thresh , thresh_value, 255, cv2.THRESH_BINARY)
-    kernel = np.zeros((20,20), np.uint8)
+    kernel = np.zeros((7,7), np.uint8)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
     thresh = cv2.medianBlur(thresh, 5)
     # thresh = cv2.blur(thresh, (5,5))

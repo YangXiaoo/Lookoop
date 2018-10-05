@@ -115,12 +115,12 @@ def crop(img, img_name, f, thresh_value=None):
     f: 原图像路径
     thresh_value： 阈值
     """
+    # 获得处理后的二值图像
+    thresh = getThresh(img)
+    # 使用区域生长
+    return  maxRegionGrowing(img, thresh)
 
-    return  regionGrowing(img)
-
-
-
-def regionGrowing(img, thresh_value=None):
+def getThresh(img, thresh_value=None):
     img_w, img_h = img.shape
 
     mask = np.zeros((img.shape[0], img.shape[1]), np.uint8)
@@ -147,6 +147,9 @@ def regionGrowing(img, thresh_value=None):
     kernel = np.zeros((7,7), np.uint8)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
     thresh = cv2.medianBlur(thresh, 5)
+    return thresh
+
+def maxRegionGrowing(img, thresh):
 
     # 最大连通区域
     m, n = thresh.shape

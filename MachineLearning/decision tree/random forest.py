@@ -50,4 +50,4 @@ def chooseSample(data, k):
 
 def randomForestTraining(data_train, trees_num):
 	trees_result = []
-	trees_feature = []
+	trees_feature = []	`

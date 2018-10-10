@@ -56,13 +56,13 @@ def tranPic(dirs, out_dir, thresh_value=None, iscrop=True, clip=None):
 
             # 裁剪
             if iscrop:
-                img, w, h = crop(img, img_name, f, thresh_value)
+                img, w, h, angle = crop(img, img_name, f, thresh_value)
                 if (h, w) == old_size: # 若没有找到轮廓则跳过
                     print("Error: Fail to find contours.")
             else:
                 # 默认不裁剪时若遇到长宽大于2的图形自动裁剪
                 if w//h > 2:
-                    img, w, h = crop(img, img_name, f, thresh_value)
+                    img, w, h, angle = crop(img, img_name, f, thresh_value)
                     if (h, w) == old_size:
                         print("Error: Fail to find contours.")
                         
@@ -99,7 +99,7 @@ def tranPic(dirs, out_dir, thresh_value=None, iscrop=True, clip=None):
             # 图片处理失败, 跳过图片保存目录: ./failed
             print("Error: " + str(e))
             
-            failed_dir = os.path.join("\\".join(f.split("\\")[:-2]), "failed")
+            failed_dir = os.path.join("\\".join(out_dir.split("\\")[:-1]), out_dir.split("\\")[-1] + "_failed")
             print("failed to handle %s, skiped.\nsaved in %s" % (f,failed_dir))
             if not os.path.isdir(failed_dir):
                 os.mkdir(failed_dir)
@@ -126,13 +126,62 @@ def crop(img, img_name, f, thresh_value=None):
     # 得到绘制在0矩阵上的轮廓和 最大轮廓矩阵
     img_contour, max_contour = findMaxContour(img, thresh_value)
 
+    # max_contour 记录轮廓的点
+    # print("find maxmium distance...")
+    # start_time = datetime.datetime.now()
+    # print("length: %s" % len(max_contour))
+    # # print(max_contour)
+    # distance, first, second = 0, 0, 0
+    # for i in max_contour:
+    #     for j in max_contour:
+    #         dis = ((j[0][1] - i[0][1])**2 + (j[0][0] - i[0][0])**2)
+    #         if dis > distance:
+    #             first = i[0] 
+    #             second = j[0]
+    #             distance = dis
+    # end_time = datetime.datetime.now()
+    # expend = end_time - start_time
+    # print("Time sumption: ", expend, first, second)
+    # k = (first[1] - second[1]) / (first[0] - second[0])
+    # print("slope: ", k)
+
+
+    width, height = cv2.minAreaRect(max_contour)[1]
+
+    rect = cv2.minAreaRect(max_contour)
+    box = cv2.boxPoints(rect)  # 获取最小外接矩形的4个顶点
+    box = np.int0(box)
+
+    if 0 not in box.ravel():
+
+        '''绘制最小外界矩形
+        for i in range(4):
+            cv2.line(image, tuple(box[i]), tuple(box[(i+1)%4]), 0)  # 5
+        '''
+        # 旋转角度
+        theta = cv2.minAreaRect(max_contour)[2]
+        # if abs(theta) <= 45:
+        print('图片的旋转角度为%s.'%theta)
+        sign = 1
+        if theta < 0:
+            sign = -1
+        if abs(theta) > 45:
+            angle = sign * (abs(theta) - 90)
+        else:
+            angle = theta
+
+
+    # 仿射变换,对图片旋转angle角度
+
     # BFS
     print("BFS...")
     res = waterBfs(img_contour, img)
-
+    center = (img_w//2, img_h//2)
+    M = cv2.getRotationMatrix2D(center, angle, 1.0)
+    res = cv2.warpAffine(res, M, (img_w, img_h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
 
     # 寻找轮廓的外接矩形
-    x, y, w, h = cv2.boundingRect(max_contour)
+    x, y, w, h = cv2.boundingRect(res)
     if x >= 10 and y >= 10 and x+w <= img_w and y+h <= img_h:
         x -= 10
         y -= 10
@@ -142,7 +191,7 @@ def crop(img, img_name, f, thresh_value=None):
     # 切片
     img_new = res[y:y+h, x:x+w]
 
-    return img_new, img_new.shape[1], img_new.shape[0]
+    return img_new, img_new.shape[1], img_new.shape[0], angle
 
 
 def waterBfs(img, old_image):
@@ -199,6 +248,7 @@ def waterBfs(img, old_image):
         for j in range(col):
             if not visited[i][j]:
                 img[i][j] = 1
+
 
     # 原图与模板相乘
     res = np.multiply(img, old_image)
@@ -294,24 +344,24 @@ if __name__ == '__main__':
 # （2） 将模板二值化，轮廓内的像素值为1，将原图与模板相乘即可获得手骨图像
 # d.  对手掌进行适当裁剪(使其居中)、填充为正方形，按比例缩放，将图片大小全部统一为256X256；
 
-# 区域生长
-a. 去除白色边框 
-b. 预处理
-    1. 中值滤波
-    2. 腐蚀膨胀开运算
-    3. 公式求得阈值,将图像二值化
-    4. 闭运算
-    5. 得到预处理图像IMG
-c. 区域生长
-    1. row, col = size(IMG), 种子为 (row//2, col//2)
-    2. False矩阵V=[row x col]
-    3. 以手掌边缘为边界进行生长，手掌内像素值不为0的点(i, j      )进行标记V[i, j] = True
-    4. 根据V, 将V[i, j]不为True的点IMG[i,j]置为0，得到新图NEW_IMG
-d. 裁剪
-    1. 根据NEW_IMG得到手掌轮廓外接矩形的长宽
-    2. 裁剪NEW_IMG，使其居中，得到NEW_IMG_1
-    3. 将NEW_IMG_1扩充为正方形(保证缩小为256x256时不失真)NEW_IMG_2
-    4. 将NEW_IMG_2缩小为256x256大小
+# # 区域生长
+# a. 去除白色边框 
+# b. 预处理
+#     1. 中值滤波
+#     2. 腐蚀膨胀开运算
+#     3. 公式求得阈值,将图像二值化
+#     4. 闭运算
+#     5. 得到预处理图像IMG
+# c. 区域生长
+#     1. row, col = size(IMG), 种子为 (row//2, col//2)
+#     2. False矩阵V=[row x col]
+#     3. 以手掌边缘为边界进行生长，手掌内像素值不为0的点(i, j      )进行标记V[i, j] = True
+#     4. 根据V, 将V[i, j]不为True的点IMG[i,j]置为0，得到新图NEW_IMG
+# d. 裁剪
+#     1. 根据NEW_IMG得到手掌轮廓外接矩形的长宽
+#     2. 裁剪NEW_IMG，使其居中，得到NEW_IMG_1
+#     3. 将NEW_IMG_1扩充为正方形(保证缩小为256x256时不失真)NEW_IMG_2
+#     4. 将NEW_IMG_2缩小为256x256大小
 
 
 
@@ -332,3 +382,43 @@ d. 裁剪
 #     2. 裁剪NEW_IMG，使其居中，得到NEW_IMG_1
 #     3. 将NEW_IMG_1扩充为正方形(保证缩小为256x256时不失真)NEW_IMG_2
 #     4. 将NEW_IMG_2缩小为256x256大小
+
+
+
+
+# # 旋转
+# imagepath = 'F://CHN_Char/char_after_bin.png'
+# img = cv2.imread(imagepath, -1)
+# image, contours, _ = cv2.findContours(img, 2, 2)
+
+# for cnt in contours:
+
+#     # 最小外界矩形的宽度和高度
+#     width, height = cv2.minAreaRect(cnt)[1]
+
+#     if width* height > 100:
+#         # 最小的外接矩形
+#         rect = cv2.minAreaRect(cnt)
+#         box = cv2.boxPoints(rect)  # 获取最小外接矩形的4个顶点
+#         box = np.int0(box)
+
+#         if 0 not in box.ravel():
+
+#             '''绘制最小外界矩形
+#             for i in range(4):
+#                 cv2.line(image, tuple(box[i]), tuple(box[(i+1)%4]), 0)  # 5
+#             '''
+#             # 旋转角度
+#             theta = cv2.minAreaRect(cnt)[2]
+#             if abs(theta) <= 45:
+#                 print('图片的旋转角度为%s.'%theta)
+#                 angle = theta
+
+# # 仿射变换,对图片旋转angle角度
+# h, w = img.shape
+# center = (w//2, h//2)
+# M = cv2.getRotationMatrix2D(center, angle, 1.0)
+# rotated = cv2.warpAffine(img, M, (w, h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+
+# # 保存旋转后的图片
+# cv2.imwrite('F://CHN_Char/after_rotated.png', rotated)

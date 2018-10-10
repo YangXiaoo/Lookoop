@@ -5,7 +5,7 @@
 # https://blog.csdn.net/gamer_gyt/article/details/51372309
 
 class node(object):
-	def __init__(self, fea = -1, value = None, results = None, right = None):
+	def __init__(self, fea = -1, value = None, results = None, right = None, left = None):
 		self.fea = fea
 		self.value = value
 		self.results = results

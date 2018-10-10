@@ -1,2 +1,4 @@
-nums = [2,3,1,2,4,3]
-print(sum(nums[1:1]))
+s = "aacecaaa"
+i = 1
+j = 1
+print(s[i-j:i+j+1])

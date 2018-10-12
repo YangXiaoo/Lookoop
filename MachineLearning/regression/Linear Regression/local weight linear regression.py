@@ -1,4 +1,5 @@
 # coding:UTF-8
+# 2018-10-11
 # local Weight Linear Regression
 
 import numpy as np

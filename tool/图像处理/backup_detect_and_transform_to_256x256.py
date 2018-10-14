@@ -56,13 +56,13 @@ def tranPic(dirs, out_dir, thresh_value=None, iscrop=True, clip=None):
 
             # 裁剪
             if iscrop:
-                img, w, h, angle = crop(img, img_name, f, thresh_value)
+                img, w, h = crop(img, img_name, f, thresh_value)
                 if (h, w) == old_size: # 若没有找到轮廓则跳过
                     print("Error: Fail to find contours.")
             else:
                 # 默认不裁剪时若遇到长宽大于2的图形自动裁剪
                 if w//h > 2:
-                    img, w, h, angle = crop(img, img_name, f, thresh_value)
+                    img, w, h = crop(img, img_name, f, thresh_value)
                     if (h, w) == old_size:
                         print("Error: Fail to find contours.")
                         
@@ -124,7 +124,7 @@ def crop(img, img_name, f, thresh_value=None):
     img_w, img_h = img.shape
 
     # 得到绘制在0矩阵上的轮廓和 最大轮廓矩阵
-    img_contour, max_contour = findMaxContour(img, thresh_value)
+    img_contour, max_contour, thresh = findMaxContour(img, thresh_value)
 
     # max_contour 记录轮廓的点
     # print("find maxmium distance...")
@@ -148,37 +148,48 @@ def crop(img, img_name, f, thresh_value=None):
 
     width, height = cv2.minAreaRect(max_contour)[1]
 
-    rect = cv2.minAreaRect(max_contour)
-    box = cv2.boxPoints(rect)  # 获取最小外接矩形的4个顶点
-    box = np.int0(box)
+    # rect = cv2.minAreaRect(max_contour)
+    # box = cv2.boxPoints(rect)  # 获取最小外接矩形的4个顶点
+    # box = np.int0(box)
 
-    if 0 not in box.ravel():
+    # if 0 not in box.ravel():
 
-        '''绘制最小外界矩形
-        for i in range(4):
-            cv2.line(image, tuple(box[i]), tuple(box[(i+1)%4]), 0)  # 5
-        '''
-        # 旋转角度
-        theta = cv2.minAreaRect(max_contour)[2]
-        # if abs(theta) <= 45:
-        print('图片的旋转角度为%s.'%theta)
-        sign = 1
-        if theta < 0:
-            sign = -1
-        if abs(theta) > 45:
-            angle = sign * (abs(theta) - 90)
-        else:
-            angle = theta
+    #     '''绘制最小外界矩形
+    #     for i in range(4):
+    #         cv2.line(image, tuple(box[i]), tuple(box[(i+1)%4]), 0)  # 5
+    #     '''
+    #     # 旋转角度
+    #     theta = cv2.minAreaRect(max_contour)[2]
+    #     # if abs(theta) <= 45:
+    #     print('图片的旋转角度为%s.'%theta)
+    #     sign = 1
+    #     if theta < 0:
+    #         sign = -1
+    #     if abs(theta) > 45:
+    #         angle = sign * (abs(theta) - 90)
+    #     else:
+    #         angle = theta
 
 
     # 仿射变换,对图片旋转angle角度
 
     # BFS
     print("BFS...")
+    basename = os.path.basename(img_name)
+    file = os.path.splitext(basename)
+    file_prefix = file[0]
+    suffix = file[-1]
+    # print(file_prefix, suffix)
+    countor = os.path.join("\\".join(img_name.split("\\")[:-1]), file_prefix + "_contour" + suffix)
+    thresh_file = os.path.join("\\".join(img_name.split("\\")[:-1]),  file_prefix + "_thrsh" + suffix)
+    # print(res_image)
+    cv2.imwrite(countor, img_contour)
+    cv2.imwrite(thresh_file, thresh)
     res = waterBfs(img_contour, img)
-    center = (img_w//2, img_h//2)
-    M = cv2.getRotationMatrix2D(center, angle, 1.0)
-    res = cv2.warpAffine(res, M, (img_w, img_h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+
+    # center = (img_w//2, img_h//2)
+    # M = cv2.getRotationMatrix2D(center, angle, 1.0)
+    # res = cv2.warpAffine(res, M, (img_w, img_h), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
 
     # 寻找轮廓的外接矩形
     x, y, w, h = cv2.boundingRect(res)
@@ -191,7 +202,7 @@ def crop(img, img_name, f, thresh_value=None):
     # 切片
     img_new = res[y:y+h, x:x+w]
 
-    return img_new, img_new.shape[1], img_new.shape[0], angle
+    return img_new, img_new.shape[1], img_new.shape[0]
 
 
 def waterBfs(img, old_image):
@@ -283,8 +294,8 @@ def findMaxContour(img, thresh_value=100):
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
     thresh = cv2.medianBlur(thresh, 5)
     # thresh = cv2.blur(thresh, (5,5))
-    print(np.max(thresh))
-    cv2.imwrite("C:\\Study\\test\\out_pic\\thresh.jpg", thresh)
+    # print(np.max(thresh))
+    # cv2.imwrite("C:\\Study\\test\\out_pic\\thresh.jpg", thresh)
 
 
     # 找轮廓
@@ -302,8 +313,8 @@ def findMaxContour(img, thresh_value=100):
 
     # 将轮廓绘制在模板上
     img_contour = cv2.drawContours(mask, max_contour, -1, (255 , 0,0), 1)
-    cv2.imwrite("C:\\Study\\test\\out_pic\\t.jpg", img_contour)
-    return img_contour, max_contour
+    # cv2.imwrite("C:\\Study\\test\\out_pic\\t.jpg", img_contour)
+    return img_contour, max_contour, thresh
 
 
 if __name__ == '__main__':

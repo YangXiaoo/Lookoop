@@ -112,7 +112,19 @@ def crop(img, img_name, f, thresh_value=None):
     # 获得处理后的二值图像
     thresh = getThresh(img)
     # 使用区域生长
-    return  regionGrowing(img, thresh)
+    img_new, growing =  regionGrowing(img, thresh)
+    
+    basename = os.path.basename(img_name)
+    file = os.path.splitext(basename)
+    file_prefix = file[0]
+    suffix = file[-1]
+    print(file_prefix, suffix)
+    growing_file = os.path.join("\\".join(img_name.split("\\")[:-1]), file_prefix + "_growing_region" + suffix)
+    thresh_file = os.path.join("\\".join(img_name.split("\\")[:-1]),  file_prefix + "_thresh" + suffix)
+    # print(res_image)
+    cv2.imwrite(growing_file, growing)
+    cv2.imwrite(thresh_file, thresh)
+    return img_new, img_new.shape[1], img_new.shape[0]
 
 def getThresh(img, thresh_value=None):
     img_w, img_h = img.shape
@@ -132,7 +144,7 @@ def getThresh(img, thresh_value=None):
         for i in range(img_w):
             for j in range(img_h):
                 sums += thresh[i][j]
-        thresh_value = sums // (img_w * img_h) * 0.86
+        thresh_value = sums // (img_w * img_h) * 0.8
     print("\nthresh_value: ",thresh_value)
 
     # 模板，存储轮廓
@@ -177,6 +189,7 @@ def regionGrowing(img, thresh):
         for j in range(n):
             if not visited[i][j]:
                 img[i][j] = 0
+                thresh[i][j] = 0
 
     x, y, w, h = cv2.boundingRect(img)
     if x >= 10 and y >= 10 and x+w <= n and y+h <= m:
@@ -185,7 +198,7 @@ def regionGrowing(img, thresh):
         w += 20
         h += 20
     img_new = img[y:y+h, x:x+w]
-    return img_new, img_new.shape[1], img_new.shape[0]
+    return img_new, thresh
 
 
 if __name__ == '__main__':

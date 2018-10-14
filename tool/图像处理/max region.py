@@ -115,10 +115,24 @@ def crop(img, img_name, f, thresh_value=None):
     f: 原图像路径
     thresh_value： 阈值
     """
+    print(f)
     # 获得处理后的二值图像
     thresh = getThresh(img)
     # 使用区域生长
-    return  maxRegionGrowing(img, thresh)
+    img_new, max_region =   maxRegionGrowing(img, thresh)
+
+    basename = os.path.basename(img_name)
+    file = os.path.splitext(basename)
+    file_prefix = file[0]
+    suffix = file[-1]
+    print(file_prefix, suffix)
+    max_region_file = os.path.join("\\".join(img_name.split("\\")[:-1]), file_prefix + "_max_region" + suffix)
+    thresh_file = os.path.join("\\".join(img_name.split("\\")[:-1]),  file_prefix + "_thresh" + suffix)
+    # print(res_image)
+    cv2.imwrite(max_region_file, max_region)
+    cv2.imwrite(thresh_file, thresh)
+
+    return img_new, img_new.shape[1], img_new.shape[0]
 
 def getThresh(img, thresh_value=None):
     img_w, img_h = img.shape
@@ -152,6 +166,7 @@ def getThresh(img, thresh_value=None):
 def maxRegionGrowing(img, thresh):
 
     # 最大连通区域
+    print("finding maximum region...")
     m, n = thresh.shape
     visited = [[False for _ in range(n)] for _ in range(m)]
 
@@ -204,6 +219,7 @@ def maxRegionGrowing(img, thresh):
         for j in range(n):
             if not max_visited[i][j]:
                 img[i][j] = 0
+                thresh[i][j] = 0
 
     x, y, w, h = cv2.boundingRect(img)
     if x >= 10 and y >= 10 and x+w <= n and y+h <= m:
@@ -212,7 +228,8 @@ def maxRegionGrowing(img, thresh):
         w += 20
         h += 20
     img_new = img[y:y+h, x:x+w]
-    return img_new, img_new.shape[1], img_new.shape[0]
+
+    return img_new, thresh
 
 
 if __name__ == '__main__':

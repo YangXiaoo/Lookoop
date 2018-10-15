@@ -30,12 +30,15 @@ class Solution(object):
         # add start-building events
         # also add end-building events(acts as buildings with 0 height)
         # and sort the events in left -> right order
+        # print(buildings)
+        # print()
         events = [(L, -H, R) for L, R, H in buildings]
-        print(events)
+        # print(events)
         events += list({(R, 0, 0) for _, R, _ in buildings})
-        print(events)
+        # print(events)
+        # print()
         events.sort()
-        print(events)
+        # print(events)
 
         # res: result, [x, height]
         # live: heap, [-height, ending position]
@@ -49,11 +52,49 @@ class Solution(object):
             if negH: heappush(live, (negH, R))
             if res[-1][1] != -live[0][0]:
                 res += [ [pos, -live[0][0]] ]
+            # print("pos : ", pos, " live: ", live, "res: ", res)
         return res[1:]
 
+
+
+# Time Limit Exceeded
+class Solution2:
+    def getSkyline(self, buildings):
+        """
+        :type buildings: List[List[int]]
+        :rtype: List[List[int]]
+        """
+        maxs = 0
+        for i in buildings:
+            if i[1] > maxs:
+                maxs = i[1]
+        if maxs == 0:
+            return []
+        # print(maxs)
+        heap = [0 for _ in range(maxs)]
+        for i in buildings:
+            s = i[0]
+            while s < i[1]:
+                if i[-1] > heap[s]:
+                    heap[s] = i[-1]
+                s += 1
+        # print(heap)
+        index = []
+        l = 0
+        pre = 0
+        while l < maxs:
+            if heap[l] != pre:
+                index.append(l)
+                pre = heap[l]
+            l += 1
+        res = []
+        for i in index:
+            res.append([i, heap[i]])
+        res.append([maxs, 0])
+        return res
         
 
-buildings = [[0,1,3]]
+buildings = [[2,9,10],[3,7,15],[5,12,12],[15,20,10],[19,24,8]]
 test = Solution()
 res = test.getSkyline(buildings)
 print(res)

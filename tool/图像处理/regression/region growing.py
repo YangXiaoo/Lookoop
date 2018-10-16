@@ -47,37 +47,22 @@ def handle(dirs, out_dir, clip, w0):
             x,w,y,h = clip
             img = img[x:w , y:h]
 
-            # 2. 轮廓提取
-            img, w, h = crop(img, img_dirs, w0)
+            # 2. 分割
+            img= crop(img, img_dirs, w0)
+            h, w = img.shape
             
-            # 3. 将图片扩充为正方形
-            if w > h:
-                gap = w - h
-                fill = np.zeros([1, w], np.uint8)
-                for i in range(gap//2):
-                    img = np.concatenate((img,fill), axis = 0)
-                for i in range(gap//2):
-                    img = np.concatenate((fill, img), axis = 0)
-            elif w < h:
-                gap = h - w
-                fill = np.zeros([h, 1], np.uint8)
-                for i in range(gap//2):
-                    img = np.concatenate((img,fill), axis = 1)
-                for i in range(gap//2):
-                    img = np.concatenate((fill, img), axis = 1)
-            else:
-                pass
+            # 3. 归一化为256x256
+            img_new = normalization(img, w, h)
 
-            # 4. 归一化为256x256
-            img_new = cv2.resize(img, (256, 256), interpolation=cv2.INTER_LINEAR)
-            # 4.. 保存自适应阈值图像
+            # 4. 保存自适应阈值图像
             adaptive = cv2.adaptiveThreshold(img_new, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
             saveImage(img_dirs, adaptive, "_adaptive")
+
             # 5. 转换为三通道
             img_new = cv2.cvtColor(img_new, cv2.COLOR_GRAY2BGR)
 
             # 6. 保存图片
-            cv2.imwrite(img_dirs, img_new)
+            saveImage(img_dirs, img_new, "_new")
 
             # 控制台输出
             print("handled: ", f.split("\\")[-1])
@@ -108,11 +93,22 @@ def handle(dirs, out_dir, clip, w0):
 
 def crop(img, img_dirs, weight):
     img_w, img_h = img.shape
+    saveImage(img_dirs, img, "_old")
+
+    # 获得原图的自适应阈值图
+    adaptive = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+
     # 获得处理后的二值图像
     thresh = getThresh(img, weight)
+    saveImage(img_dirs, thresh, "_raw_thresh")
+
     # 使用区域生长获得轮廓
     res, growing = regionGrowing(img, thresh)
 
+    for i in range(img_w):
+        for j in range(img_h):
+            if growing[i][j] == 0:
+                adaptive[i][j] = 0
     # 扩充边缘
     x, y, w, h = cv2.boundingRect(growing)
     if x >= 10 and y >= 10 and x+w <= img_w and y+h <= img_h:
@@ -123,14 +119,19 @@ def crop(img, img_dirs, weight):
 
     # 切片
     img_new = res[y:y+h, x:x+w]
-    
+    new_adaptive = adaptive[y:y+h, x:x+w]
+
+    # 保存基于原图的自适应分割图
+    new_adaptive = normalization(new_adaptive, new_adaptive.shape[1], new_adaptive.shape[0])
+    saveImage(img_dirs, new_adaptive, "_original_adaptive")
+
     # 保存二值图像, 生长区域
     saveImage(img_dirs, growing, "_growing_region")
-    saveImage(img_dirs, thresh, "_thresh")
+    # saveImage(img_dirs, thresh, "_thresh")
     # 转换为数组
     img_new = np.array(img_new)
 
-    return img_new, img_new.shape[1], img_new.shape[0]
+    return img_new
 
 
 def saveImage(img_dirs, image, mid_name):
@@ -197,46 +198,40 @@ def regionGrowing(img, thresh):
         for j in range(n):
             if not visited[i][j]:
                 thresh[i][j] = 0
-
-
-    # 为避免黑洞, 得到轮廓二值图像后还需要翻转
-    r, c = m-1, (n-1)//2 # 获得轮廓外区域
-    visited = [[False for _ in range(n)] for _ in range(m)]
-    queue = []
-    queue.append([r, c])
-    visited[r][c] = True
-    while len(queue) != 0:
-        row, col = queue.pop()
-        if row > 1 and not visited[row - 1][col] and thresh[row - 1][col] == 0:
-            queue.append([row - 1, col])
-            visited[row - 1][col] = True
-
-        # 往右搜索
-        if row + 1 < m and not visited[row + 1][col] and thresh[row + 1][col] == 0:
-            queue.append([row + 1, col])
-            visited[row + 1][col] = True
-
-        # 往上搜索
-        if col - 1 >= 0 and not visited[row][col - 1] and thresh[row][col - 1] == 0:
-            queue.append([row, col -1])
-            visited[row][col - 1] = True
-
-        # 往下搜搜
-        if col + 1 < n and not visited[row][col + 1] and thresh[row][col + 1] == 0:
-            queue.append([row, col + 1])
-            visited[row][col + 1] = True  
-
-    for i in range(m):
-        for j in range(n):
-            if visited[i][j]:
                 img[i][j] = 0
-
 
     return img, thresh
 
 
+def normalization(img, w, h):
+    """
+    归一化
+    """
+    if w > h:
+        gap = w - h
+        fill = np.zeros([1, w], np.uint8)
+        for i in range(gap//2):
+            img = np.concatenate((img,fill), axis = 0)
+        for i in range(gap//2):
+            img = np.concatenate((fill, img), axis = 0)
+    elif w < h:
+        gap = h - w
+        fill = np.zeros([h, 1], np.uint8)
+        for i in range(gap//2):
+            img = np.concatenate((img,fill), axis = 1)
+        for i in range(gap//2):
+            img = np.concatenate((fill, img), axis = 1)
+    else:
+        pass
+
+    img_new = cv2.resize(img, (256, 256), interpolation=cv2.INTER_LINEAR)\
+
+    return img_new
+
+
+
 if __name__ == '__main__':
-    dirs = "C:\\Study\\test\\image\\regression" # 原图片存储路径
+    dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
     out_dir = "C:\\Study\\test\\regression_out" # 存储路径
     # 获得权值
     label = "label.txt" # 标签文件
@@ -256,5 +251,5 @@ if __name__ == '__main__':
         print("using LMS...")
         w0 = ridgeRegression(feature, label, 0.5)
 
-    print("handling...")
+    print("\nhandling...")
     handle(dirs, out_dir, (45,-45,45,-45), w0)

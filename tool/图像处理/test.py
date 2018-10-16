@@ -1,6 +1,8 @@
 import numpy as np 
-n = 10
-# visited = [0 for _ in range(n)]
-visited = [0] * n
-visited[2] = 1
-print(visited)
+import datetime
+start_time = datetime.datetime.now()
+for i in range(2000000):
+	pass
+end_time = datetime.datetime.now()
+expend = end_time - start_time
+print(expend*2000)

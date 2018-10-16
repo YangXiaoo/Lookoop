@@ -5,7 +5,7 @@
 
 import numpy as np
 
-def loadData(file_path):
+def load(file_path):
     '''导入训练数据
     input:  file_path(string):训练数据
     output: feature(mat):特征
@@ -176,12 +176,12 @@ def getPrediction(data, w):
 if __name__ == "__main__":
     # 1、导入数据
     print("loading data ...")
-    feature, label = loadData("data.txt")
+    feature, label = load("data.txt")
     # 2、训练模型
     print(feature)
     print(label)
     print ("traing...")
-    method = "lbfgs"  # 选择的方法
+    method = "bfgs"  # 选择的方法
     if method == "bfgs":  # 选择BFGS训练模型
         print("using BFGS...")
         w0 = bfgs(feature, label, 0.5, 50, 0.4, 0.55)
@@ -192,4 +192,4 @@ if __name__ == "__main__":
         w0 = ridgeRegression(feature, label, 0.5)
     print(w0)
     # 69    57  51 
-    print(69*w0[0, 0] + 57*w0[1, 0])
+    # print(69*w0[0, 0] + 57*w0[1, 0])

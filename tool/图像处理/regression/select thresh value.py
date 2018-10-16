@@ -2,6 +2,10 @@
 # 2018-10-15
 # 确定阈值
 
+"""
+运行之后，手选最佳阈值并填入label.txt文件中, 每个数据之间间隔为制表符
+"""
+
 import numpy as np
 import os
 import cv2
@@ -82,6 +86,8 @@ def handle(dirs, out_dir, clip):
             
         # 写入数据
         # 先写入均值 直方图 方差 数据 至 data.txt
+
+        # histogram转换类型
         for i in range(len(histogram)):
             histogram[i] = str(histogram[i])
 
@@ -114,24 +120,24 @@ def handle(dirs, out_dir, clip):
         #     right += 1
 
         
-        # for v in thresh_value:
-        #     ret, new_thresh = cv2.threshold(thresh , v, 255, cv2.THRESH_BINARY)
-        #     kernel = np.zeros((7,7), np.uint8)
-        #     new_thresh = cv2.morphologyEx(new_thresh, cv2.MORPH_CLOSE, kernel)
-        #     new_thresh = cv2.medianBlur(new_thresh, 5)
+        for v in thresh_value:
+            ret, new_thresh = cv2.threshold(thresh , v, 255, cv2.THRESH_BINARY)
+            kernel = np.zeros((7,7), np.uint8)
+            new_thresh = cv2.morphologyEx(new_thresh, cv2.MORPH_CLOSE, kernel)
+            new_thresh = cv2.medianBlur(new_thresh, 5)
 
-        #     # 保存
-        #     basename = os.path.basename(f)
-        #     file = os.path.splitext(basename)
-        #     file_prefix = str(count) # file[0]
-        #     file_suffix = file[-1]
-        #     if v == mean_value:
-        #         image_name = file_prefix + '_thresh_value_' + str(v) + '_mean' + file_suffix
-        #     else:
-        #         image_name = file_prefix + '_thresh_value_' + str(v) + file_suffix
-        #     out_file = os.path.join(out_dir,  image_name)
-        #     print("saving :", out_file)
-        #     cv2.imwrite(out_file, new_thresh)
+            # 保存
+            basename = os.path.basename(f)
+            file = os.path.splitext(basename)
+            file_prefix = str(count) # file[0]
+            file_suffix = file[-1]
+            if v == mean_value:
+                image_name = file_prefix + '_thresh_value_' + str(v) + '_mean' + file_suffix
+            else:
+                image_name = file_prefix + '_thresh_value_' + str(v) + file_suffix
+            out_file = os.path.join(out_dir,  image_name)
+            print("saving :", out_file)
+            cv2.imwrite(out_file, new_thresh)
 
         count += 1
 
@@ -143,7 +149,7 @@ def handle(dirs, out_dir, clip):
 if __name__ == '__main__':
     dirs = "C:\\Study\\test\\image\\thresh"
     out_dir = "C:\\Study\\test\\thresh"
-    handle(dirs, out_dir, clip=(35,-35,35,-35))
+    handle(dirs, out_dir, clip=(40,-40,40,-40))
 
 
 

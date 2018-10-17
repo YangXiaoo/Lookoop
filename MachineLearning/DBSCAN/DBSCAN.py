@@ -179,5 +179,7 @@ if __name__ == "__main__":
     # 3、利用DBSCAN算法进行训练
     types, sub_class = dbscan(data, eps, MinPts)
     print("finish!\n")
+
+    
     print(types)
     print(sub_class)

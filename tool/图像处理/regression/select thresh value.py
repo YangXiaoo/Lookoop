@@ -41,6 +41,7 @@ def handle(dirs, out_dir, clip):
     out_data = os.path.join(out_dir, 'data.txt')
     data_file = open(out_data, "w")
 
+    # 原图对应序号
     record = os.path.join(out_dir, 'record.txt')
     record_file = open(record, "w")
 
@@ -49,7 +50,7 @@ def handle(dirs, out_dir, clip):
 
         record_data = str(count) + '\t' + str(f) + '\n'
         record_file.write(record_data)
-        continue
+        # continue
 
 
         img = cv2.imread(f, 0)

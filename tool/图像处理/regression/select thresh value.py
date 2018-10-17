@@ -41,8 +41,17 @@ def handle(dirs, out_dir, clip):
     out_data = os.path.join(out_dir, 'data.txt')
     data_file = open(out_data, "w")
 
+    record = os.path.join(out_dir, 'record.txt')
+    record_file = open(record, "w")
+
     count = 0
     for f in files:
+
+        record_data = str(count) + '\t' + str(f) + '\n'
+        record_file.write(record_data)
+        continue
+
+
         img = cv2.imread(f, 0)
 
         # 裁剪边缘
@@ -143,6 +152,7 @@ def handle(dirs, out_dir, clip):
 
     data_file.close()
     label_file.close()
+    record_file.close()
     os.startfile(out_dir)
 
 

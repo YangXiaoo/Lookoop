@@ -7,8 +7,6 @@
 运行此程序获得原图像的二值图，并保存
 """
 
-
-
 from regression import *
 import numpy as np
 import os
@@ -28,41 +26,25 @@ def loadPic(dirpath):
     return file
 
 
-def loadData(file_path, new_file):
+def loadData(file_path):
     '''
     导入训练数据
-    file_path: 标签文件
-    new_file: 数据文件
+    file_path: 数据文件
     '''
-    # 获得数据标签   
+    # 将标签添加到数据中
     f = open(file_path)
     feature = []
+    label = []
     for line in f.readlines():
         feature_tmp = []
         lines = line.strip().split("\t")
-        for i in range(len(lines)):
+        for i in range(len(lines) - 1):
             feature_tmp.append(float(lines[i]))
         feature.append(feature_tmp)
+        label.append(float(lines[-1]))
     f.close()
-
-    # 将标签添加到数据中
-    new_f = open(new_file)
-    new_feature = []
-    label = []
-    row = 0
-    for line in new_f.readlines():
-        feature_tmp = []
-        lines = line.strip().split("\t")
-        # print(row, float(feature[row][0]), float(lines[0]))
-        if  row < len(feature) and float(feature[row][0]) == float(lines[0]):
-            for i in range(len(lines) - 1):
-                feature_tmp.append(float(lines[i]))
-            new_feature.append(feature_tmp)
-            label.append(feature[row][-1])
-            row += 1
-    new_f.close()
     
-    return np.mat(new_feature), np.mat(label).T
+    return np.mat(feature), np.mat(label).T
 
 
 def handle(dirs, out_dir, clip, weight):

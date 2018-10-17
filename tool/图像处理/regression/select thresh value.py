@@ -1,5 +1,6 @@
 # coding:UTF-8
 # 2018-10-15
+# update: 2018-10-17(增加序号对应的图片)
 # 确定阈值
 
 """
@@ -110,7 +111,7 @@ def handle(dirs, out_dir, clip):
 
 
         # 获取n个阈值
-        n = 15
+        n = 20
         gap = 2 # 两个阈值之间的间隔
         thresh_value = []
         small = mean_value
@@ -122,12 +123,13 @@ def handle(dirs, out_dir, clip):
 
 
         # 大于均值的很差，所以不考虑了
-        # large = mean_value
-        # right = 0
-        # while large < 255 and right < 10:
-        #     thresh_value.append(large)
-        #     large += 3
-        #     right += 1
+        large = mean_value
+        r = 5
+        right = 0
+        while large < 255 and right < r:
+            thresh_value.append(large)
+            large += 2
+            right += 1
 
         
         for v in thresh_value:
@@ -158,8 +160,8 @@ def handle(dirs, out_dir, clip):
 
 
 if __name__ == '__main__':
-    dirs = "C:\\Study\\test\\image\\thresh"
-    out_dir = "C:\\Study\\test\\thresh"
+    dirs = "C:\\Study\\test\\image\\failed"
+    out_dir = "C:\\Study\\test\\thresh_failed"
     handle(dirs, out_dir, clip=(40,-40,40,-40))
 
 

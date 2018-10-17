@@ -35,7 +35,7 @@ def handle(dirs, out_dir, clip, w0):
 
     for f in files:
         count += 1
-        print(count, '/', total)
+        print("%s / %s" % (count, total))
         img_dirs = os.path.join(out_dir, f.split("\\")[-1])
         if os.path.isfile(img_dirs):
             skip += 1
@@ -65,16 +65,16 @@ def handle(dirs, out_dir, clip, w0):
             saveImage(img_dirs, img_new, "_new")
 
             # 控制台输出
-            print("handled: ", f.split("\\")[-1])
+            print("handled: %s" % f.split("\\")[-1])
             if count % 5 == 0 and count != total:
                 end_time = datetime.datetime.now()
                 expend = end_time - start_time
-                print("\nexpend time:", expend, "\nexpected time: ", expend / count * total, '\n')
+                print("\nexpend time: %s \nexpected time: %s \n" % (expend, expend / count * total))
             success += 1
 
         except Exception as e:
             # 图片处理失败, 跳过图片保存目录: ./failed
-            print("Error: " + str(e))
+            print("Error: %s" % str(e))
             
             failed_dir = os.path.join("\\".join(out_dir.split("\\")[:-1]), out_dir.split("\\")[-1] + "_failed")
             print("failed to handle %s, skiped.\nsaved in %s" % (f,failed_dir))
@@ -233,11 +233,17 @@ def normalization(img, w, h):
 if __name__ == '__main__':
     dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
     out_dir = "C:\\Study\\test\\regression_out" # 存储路径
-    # 获得权值
-    label = "label.txt" # 标签文件
-    data = "data.txt" # 数据文件
-    print("loading data ...")
-    feature, label = loadData(label, data) # 融合标签文件和数据文件
+
+    # 加载数据
+    data = "new_data.txt"
+
+    # # 通过handleData.py 文件获得
+    # label = "C:\\Study\\test\\data\\label.txt"
+    # d = "C:\\Study\\test\\data\\data.txt"
+    # from handleData import *
+    # getData(label, d, data)
+
+    feature, label = loadData(data)
     # 训练
     print ("traing...")
     method = ""

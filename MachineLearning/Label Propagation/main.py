@@ -48,7 +48,7 @@ def getMaxCommunityLabel(vector_dict, adjacent):
 
 	sort_label = sorted(label_dict.items(), key=lambda d:d[1], reverse=True)
 
-	# print(sort_label)
+	print(sort_label)
 	return sort_label[0][0]
 
 

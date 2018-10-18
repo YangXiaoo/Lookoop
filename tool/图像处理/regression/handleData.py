@@ -47,5 +47,5 @@ def getData(file_path, new_file, out_file):
 if __name__ == '__main__':
     label = "C:\\Study\\test\\data\\label.txt"
     data = "C:\\Study\\test\\data\\data.txt"
-    new_data = "new_data.txt"
+    new_data = "new_.txt"
     getData(label, data, new_data)

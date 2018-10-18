@@ -232,7 +232,7 @@ def normalization(img, w, h):
 
 if __name__ == '__main__':
     dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
-    out_dir = "C:\\Study\\test\\regression_out" # 存储路径
+    out_dir = "C:\\Study\\test\\regression_out_130" # 存储路径
 
     # 加载数据
     data = "new_data.txt"

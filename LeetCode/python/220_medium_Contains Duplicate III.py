@@ -15,7 +15,7 @@ Input: nums = [1,5,9,1,5,9], k = 2, t = 3
 Output: false
 '''
 
-# 2018-10-17
+# 2018-10-17 - 2018-10-18
 # 220. Contains Duplicate III
 # https://leetcode.com/problems/contains-duplicate-iii/description/
 
@@ -44,4 +44,22 @@ class Solution:
                 # Remove the bucket which is too far away. Beware of zero t.
                 del buckets[nums[i - k] / t if t else nums[i - k]]
 
+        return False
+
+class Solution2:
+    def containsNearbyAlmostDuplicate(self, nums, k, t):
+        """
+        :type nums: List[int]
+        :type k: int
+        :type t: int
+        :rtype: bool
+        """
+        if t == 0 and len(set(nums)) == len(nums):
+            return False
+        for i in range(len(nums)):
+            j = i+1
+            while abs(j-i)<=k and j<len(nums):
+                if abs(nums[j]-nums[i])<=t:
+                    return True
+                j += 1
         return False

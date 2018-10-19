@@ -54,9 +54,9 @@ def handle(dirs, out_dir, clip, w0):
             # 3. 归一化为256x256
             img_new = normalization(img, w, h)
 
-            # 4. 保存自适应阈值图像
-            adaptive = cv2.adaptiveThreshold(img_new, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
-            saveImage(img_dirs, adaptive, "_adaptive")
+            # # 4. 保存自适应阈值图像
+            # adaptive = cv2.adaptiveThreshold(img_new, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+            # saveImage(img_dirs, adaptive, "_adaptive")
 
             # 5. 转换为三通道
             img_new = cv2.cvtColor(img_new, cv2.COLOR_GRAY2BGR)
@@ -95,8 +95,8 @@ def crop(img, img_dirs, weight):
     img_w, img_h = img.shape
     saveImage(img_dirs, img, "_old")
 
-    # 获得原图的自适应阈值图
-    adaptive = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+    # # 获得原图的自适应阈值图
+    # adaptive = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
 
     # 获得处理后的二值图像
     thresh = getThresh(img, weight)
@@ -105,10 +105,10 @@ def crop(img, img_dirs, weight):
     # 使用区域生长获得轮廓
     res, growing = regionGrowing(img, thresh)
 
-    for i in range(img_w):
-        for j in range(img_h):
-            if growing[i][j] == 0:
-                adaptive[i][j] = 0
+    # for i in range(img_w):
+    #     for j in range(img_h):
+    #         if growing[i][j] == 0:
+    #             adaptive[i][j] = 0
     # 扩充边缘
     x, y, w, h = cv2.boundingRect(growing)
     if x >= 10 and y >= 10 and x+w <= img_w and y+h <= img_h:
@@ -119,11 +119,11 @@ def crop(img, img_dirs, weight):
 
     # 切片
     img_new = res[y:y+h, x:x+w]
-    new_adaptive = adaptive[y:y+h, x:x+w]
+    # new_adaptive = adaptive[y:y+h, x:x+w]
 
-    # 保存基于原图的自适应分割图
-    new_adaptive = normalization(new_adaptive, new_adaptive.shape[1], new_adaptive.shape[0])
-    saveImage(img_dirs, new_adaptive, "_original_adaptive")
+    # # 保存基于原图的自适应分割图
+    # new_adaptive = normalization(new_adaptive, new_adaptive.shape[1], new_adaptive.shape[0])
+    # saveImage(img_dirs, new_adaptive, "_original_adaptive")
 
     # 保存二值图像, 生长区域
     saveImage(img_dirs, growing, "_growing_region")
@@ -232,7 +232,7 @@ def normalization(img, w, h):
 
 if __name__ == '__main__':
     dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
-    out_dir = "C:\\Study\\test\\regression_out_130" # 存储路径
+    out_dir = "C:\\Study\\test\\regression_out_test" # 存储路径
 
     # 加载数据
     data = "new_data.txt"

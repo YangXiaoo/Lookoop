@@ -76,11 +76,11 @@ def bfgs(feature, label, lam, max_iter, sigma, delta):
 
         m = 0
         mk = 0
-        while m < 20:
+        while m < 40:
             left = getResult(feature, label, (w0 + (delta**m) * dk), lam)
             right = getResult(feature, label, w0, lam)
 
-            if left < right + sigma * (delta**m) * (gk.T * dk)[0, 0]:
+            if float(left) < float((right + sigma * (delta**m) * (gk.T * dk)[0, 0])):
                 mk = m 
                 break
             m += 1
@@ -89,7 +89,7 @@ def bfgs(feature, label, lam, max_iter, sigma, delta):
         w = w0 + (delta**mk) * dk
         sk = w - w0
         yk = getGradient(feature, label, w, lam) - gk
-        if yk.T * sk > 0:
+        if float(yk.T * sk) > 0:
             Bk = Bk - (Bk * sk * sk.T * Bk) / (sk.T * Bk * sk) + (yk * yk.T) / (yk.T * sk) 
 
         it += 1
@@ -124,7 +124,7 @@ def lbfgs(feature, label, lam, maxCycle, m=10):
         while (m < 20):
             newf = getResult(feature, label, (w0 + rho ** m * dk), lam)
             oldf = getResult(feature, label, w0, lam)
-            if newf < oldf + sigma * (rho ** m) * (gk.T * dk)[0, 0]:
+            if float(newf) < float(oldf + sigma * (rho ** m) * (gk.T * dk)[0, 0]):
                 mk = m
                 break
             m = m + 1
@@ -158,7 +158,7 @@ def lbfgs(feature, label, lam, maxCycle, m=10):
             beta = (y[i].T * r) / (y[i].T * s[i])
             r = r + s[i] * (a[t - i - 1] - beta[0, 0])
             
-        if yk.T * sk > 0:
+        if float(yk.T * sk) > 0:
             # print("update OK!!!!")
             dk = -r
         
@@ -176,13 +176,13 @@ def getPrediction(data, w):
 if __name__ == "__main__":
     # 1、导入数据
     print("loading data ...")
-    feature, label = load("data.txt")
+    feature, label = load("new_data.txt")
     # 2、训练模型
-    print(feature)
-    print(label)
+    # print(feature)
+    # print(label)
     print ("traing...")
     method = "bfgs"  # 选择的方法
-    if method == "bfgs":  # 选择BFGS训练模型
+    if method == "lbfgs":  # 选择BFGS训练模型
         print("using BFGS...")
         w0 = bfgs(feature, label, 0.5, 50, 0.4, 0.55)
     elif method == "lbfgs":  # 选择L-BFGS训练模型
@@ -193,3 +193,9 @@ if __name__ == "__main__":
     print(w0)
     # 69    57  51 
     # print(69*w0[0, 0] + 57*w0[1, 0])
+    """
+     [ 8.80404223e-04]
+     [-1.40043641e-03]
+     [-4.48134975e-03]
+     [ 1.08071264e-02]]
+    """

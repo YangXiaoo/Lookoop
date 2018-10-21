@@ -1,5 +1,6 @@
 # coding:UTF-8
 # 2018-10-12
+# update: 2018-10-20(nan的出现导致不能计算出结果)
 # 岭回归和Lasso回归
 # BFGS算法： https://blog.csdn.net/itplus/article/details/21897443
 

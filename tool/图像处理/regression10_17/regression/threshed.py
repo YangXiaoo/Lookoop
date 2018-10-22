@@ -2,7 +2,7 @@
 # 2018-10-15
 # 确定阈值
 # 自适应阈值处理: https://blog.csdn.net/sinat_21258931/article/details/61418681
-# update:2018-10-22(新的数据处理方法)
+
 """
 运行此程序获得原图像的二值图，并保存
 """
@@ -43,26 +43,8 @@ def loadData(file_path):
         feature.append(feature_tmp)
         label.append(float(lines[-1]))
     f.close()
-
-    # 处理数据
-    m, n = len(feature), len(feature[0])
-    data = np.mat(np.ones((m, n)))
-    for i in range(m):
-        h = 0
-        data[i, 0] = 1
-        for j in range(1, n):
-            if feature[i][j] > feature[i][j - 1]:
-                h = j
-                data[i, j] = data[i, j - 1] + 1
-            else:
-                if feature[i][j] == feature[i][j - 1]:
-                    h = j
-                for k in range(j, h, -1):
-                    if data[i, j] >= data[i, j - 1]:
-                        data[i, j - 1] += 1
-
     
-    return data, np.mat(label).T
+    return np.mat(feature), np.mat(label).T
 
 
 def handle(dirs, out_dir, clip, weight):
@@ -146,34 +128,22 @@ def getThreshValue(img, weight):
     variance = int((sum_diff // (img_w * img_h))**0.5)
 
     # 获得直方图
-    histogram = [0 for _ in range(256)]
+    histogram = [1 for _ in range(256)]
     for i in range(img_w):
         for j in range(img_h):
             histogram[thresh[i][j]] += 1
 
+
     ######### 通过权重得到阈值 ##########
     inputs = [mean_value, variance]
     inputs.extend(histogram)
-    n = len(inputs)
+    data = []
+    for i in inputs:
+        data.append([i])
+    data = np.mat(data)
+    # print(np.shape(data), np.shape(weight))
 
-    data_tmp = [0 for _ in range(n)]
-    data_tmp[0] = 1
-    h = 0
-    for i in range(1, n):
-        if inputs[i] > inputs[i - 1]:
-            h = i
-            data_tmp[i] = data_tmp[i-1] + 1
-        else:
-            if inputs[i] == inputs[i - 1]:
-                h = i 
-            for j in range(i, h, -1):
-                if data_tmp[j] >= data_tmp[j - 1]:
-                    data_tmp[j - 1] += 1
-
-    data = np.mat(data_tmp)
-    print(np.shape(data), np.shape(weight))
-
-    v = int((data * weight)[0, 0])
+    v = int((data.T * weight)[0, 0])
 
 
     # 对阈值进行判断, 去除漂移值
@@ -187,12 +157,10 @@ def getThreshValue(img, weight):
 
 if __name__ == '__main__':
     dirs = "C:\\Study\\test\\image\\train-m"
-    out_dir = "C:\\Study\\test\\threshed_new"
+    out_dir = "C:\\Study\\test\\threshed_old"
 
     print("loading data ...")
-    # 加载数据
-    data = "new_data.txt"
-    feature, label = loadData(data)
+    feature, label = loadData("new_data.txt")
     # 训练
     print ("traing...")
     method = ""  # 选择的方法

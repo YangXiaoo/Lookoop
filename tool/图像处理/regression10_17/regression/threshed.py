@@ -12,7 +12,8 @@ import numpy as np
 import os
 import cv2
 import datetime
-
+import matplotlib.pyplot as plt
+import matplotlib
 __suffix = ["png", "jpg"]
 
 
@@ -38,7 +39,7 @@ def loadData(file_path):
     for line in f.readlines():
         feature_tmp = []
         lines = line.strip().split("\t")
-        for i in range(len(lines) - 1):
+        for i in range(2, len(lines) - 1):
             feature_tmp.append(float(lines[i]))
         feature.append(feature_tmp)
         label.append(float(lines[-1]))
@@ -135,7 +136,7 @@ def getThreshValue(img, weight):
 
 
     ######### 通过权重得到阈值 ##########
-    inputs = [mean_value, variance]
+    inputs = [] # inputs = [mean_value, variance]
     inputs.extend(histogram)
     data = []
     for i in inputs:
@@ -175,8 +176,21 @@ if __name__ == '__main__':
         w0 = ridgeRegression(feature, label, 0.5)
 
     # print(w0)
-    print("\nhandling picture...")
-    handle(dirs, out_dir, (40,-40,40,-40), w0)
+    # print("\nhandling picture...")
+    x = []
+    y = []
+    index = 0
+    for w in w0:
+        x.append(index)
+        y.append(w[0, 0])
+    x = np.array(x)
+    y = np.array(y)
+    print(np.shape(y))
+    print(y)
+    plt.bar(range(len(y)), y)
+
+    plt.show()
+    # handle(dirs, out_dir, (40,-40,40,-40), w0)
 
 
 

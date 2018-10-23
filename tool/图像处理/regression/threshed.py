@@ -12,6 +12,8 @@ import numpy as np
 import os
 import cv2
 import datetime
+import matplotlib.pyplot as plt
+import matplotlib
 
 __suffix = ["png", "jpg"]
 
@@ -207,9 +209,59 @@ if __name__ == '__main__':
         w0 = ridgeRegression(feature, label, 0.5)
 
     # print(w0)
-    print("\nhandling picture...")
-    handle(dirs, out_dir, (40,-40,40,-40), w0)
+    # print("\nhandling picture...")
+    # handle(dirs, out_dir, (40,-40,40,-40), w0)
 
 
+    x = []
+    y = []
+    index = 0
+    for w in w0:
+        x.append(index)
+        y.append(w[0, 0])
+    x = np.array(x)
+    y = np.array(y)
+    # color = np.arctan2(y, x)
+    # # 绘制散点图
+    # plt.scatter(x, y, s = 75, c = color, alpha = 0.5)
+    # # 设置坐标轴范围
+    # plt.xlim((-5, 5))
+    # plt.ylim((-5, 5))
 
+    # # 不显示坐标轴的值
+    # plt.xticks(())
+    # plt.yticks(())
 
+    # plt.show()
+
+    # # 设置matplotlib正常显示中文和负号
+    # matplotlib.rcParams['font.sans-serif']=['SimHei']   # 用黑体显示中文
+    # matplotlib.rcParams['axes.unicode_minus']=False     # 正常显示负号
+    # # 随机生成（10000,）服从正态分布的数据
+    # index = 0
+    # data = []
+    # for i in y:
+    #     for c in range(i):
+    #         data.append(index)
+    #     index += 1
+    # """
+    # 绘制直方图
+    # data:必选参数，绘图数据
+    # bins:直方图的长条形数目，可选项，默认为10
+    # normed:是否将得到的直方图向量归一化，可选项，默认为0，代表不归一化，显示频数。normed=1，表示归一化，显示频率。
+    # facecolor:长条形的颜色
+    # edgecolor:长条形边框的颜色
+    # alpha:透明度
+    # """
+    # plt.hist(data, bins=256, normed=0, facecolor="blue", edgecolor="black", alpha=0.7)
+    # # 显示横轴标签
+    # plt.xlabel("区间")
+    # # 显示纵轴标签
+    # plt.ylabel("频数/频率")
+    # # 显示图标题
+    # plt.title("频数/频率分布直方图")
+    # plt.show()
+    print(y)
+    plt.bar(range(len(y)), y)
+
+    plt.show()

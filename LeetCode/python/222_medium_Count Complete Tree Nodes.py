@@ -83,6 +83,6 @@ class Solution:
             height += 1
             temp = temp.right
         if height == (maxHeight - 1): # left tree is perfect at the lowest level
-            return pow(2, height) + self.count(root.right, maxHeight - 1)
+            return pow(2, height) + self.count(root.right, maxHeight - 1)  # 右子树是完美树，则左子树也是完美树。右子树进入递归计算
         else: # right tree must be perfect at one level shallower
-            return pow(2, height) + self.count(root.left, maxHeight - 1)
+            return pow(2, height) + self.count(root.left, maxHeight - 1) # 右子树不是完美树此时右子树+左子树进入递归

@@ -126,27 +126,6 @@ def crop(img, img_name, f, thresh_value=None):
 
     # 得到绘制在0矩阵上的轮廓和 最大轮廓矩阵
     img_contour, max_contour, thresh = findMaxContour(img, thresh_value)
-
-    # max_contour 记录轮廓的点
-    # print("find maxmium distance...")
-    # start_time = datetime.datetime.now()
-    # print("length: %s" % len(max_contour))
-    # # print(max_contour)
-    # distance, first, second = 0, 0, 0
-    # for i in max_contour:
-    #     for j in max_contour:
-    #         dis = ((j[0][1] - i[0][1])**2 + (j[0][0] - i[0][0])**2)
-    #         if dis > distance:
-    #             first = i[0] 
-    #             second = j[0]
-    #             distance = dis
-    # end_time = datetime.datetime.now()
-    # expend = end_time - start_time
-    # print("Time sumption: ", expend, first, second)
-    # k = (first[1] - second[1]) / (first[0] - second[0])
-    # print("slope: ", k)
-
-
     width, height = cv2.minAreaRect(max_contour)[1]
 
     # rect = cv2.minAreaRect(max_contour)
@@ -322,7 +301,7 @@ if __name__ == '__main__':
     # dirs = "C:\\Study\\ImageHandle\\fail_to_trans\\fail\\" 
     # dirs = "C:\\Study\\test\\failed"
 
-    dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
+    dirs = "C:\\Study\\test\\choose thresh value\\thresh" # 原图片存储路径
     out_dir = "C:\\Study\\test\\out_pic" # 存储路径
 
     # thresh_value = 70

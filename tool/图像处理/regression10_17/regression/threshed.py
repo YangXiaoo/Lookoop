@@ -186,7 +186,7 @@ if __name__ == '__main__':
     x = np.array(x)
     y = np.array(y)
     print(np.shape(y))
-    print(y)
+    # print(y)
     plt.bar(range(len(y)), y)
 
     plt.show()

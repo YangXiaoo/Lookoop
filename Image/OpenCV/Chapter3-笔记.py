@@ -131,7 +131,7 @@ ret, thresh = cv2.threshold(img, 127, 255, 0) # 二值化
 # cv2.CHAIN_APPROX_NONE： 不压缩
 # 返回修改后的图片， 图像的轮廓以及它们的层次
 # contours : 矩阵的四个点
-image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+image, contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2HAIN_APPROX_SIMPLE).C
 cv2.imshow("changed", image)
 print(contours)
 # contours结果

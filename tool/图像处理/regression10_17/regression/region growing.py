@@ -98,12 +98,23 @@ def crop(img, img_dirs, weight):
     # 获得原图的自适应阈值图
     # adaptive = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
 
+    # 去噪
+    img_med = cv2.medianBlur(img, 5)
+    kernel = np.zeros((7,7), np.uint8)
+    img = cv2.morphologyEx(img_med, cv2.MORPH_OPEN, kernel)
+    saveImage(img_dirs, img, "_remove_noise") # 去除噪声的图片
     # 获得处理后的二值图像
-    thresh = getThresh(img, weight)
-    saveImage(img_dirs, thresh, "_raw_thresh")
+    old_thresh, thresh = getThresh(img, weight)
+    saveImage(img_dirs, thresh, "_raw_thresh") # 经过闭运算的二值图
+    saveImage(img_dirs, old_thresh, "_old_thresh") # 没有经过闭运算的二值图
 
     # 使用区域生长获得轮廓
     res, growing = regionGrowing(img, thresh)
+
+
+    # 旋转
+    # res = ratation(res)
+
 
     # for i in range(img_w):
     #     for j in range(img_h):
@@ -153,14 +164,15 @@ def getThresh(img, weight):
     mask = np.zeros((img.shape[0], img.shape[1]), np.uint8)
 
     thresh_value, _, _, thresh = getThreshValue(img, weight)
-
+    
     # 二值,闭运算
     ret, thresh = cv2.threshold(thresh , thresh_value, 255, cv2.THRESH_BINARY)
+    old_thresh = thresh
     kernel = np.zeros((7,7), np.uint8)
     thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel) # 闭运算，封闭小黑洞
     thresh = cv2.medianBlur(thresh, 5)
 
-    return thresh
+    return old_thresh, thresh
 
 
 def regionGrowing(img, thresh):
@@ -228,11 +240,54 @@ def normalization(img, w, h):
 
     return img_new
 
+def ratation(res):
+    img_w, img_h = np.shape(res)
+    image, contours, hier = cv2.findContours(res, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE )
 
+    # 寻找最大轮廓
+    max_contour = None
+    max_area = 0
+    noise = 0.8 * img_w * img_h # 可能会识别边界, 但这样处理后会导致返回值为None
+    for c in contours:
+        # print(cv2.contourArea(c)) # test
+        if cv2.contourArea(c) > max_area and cv2.contourArea(c) < noise:
+            max_area = cv2.contourArea(c)
+            max_contour = c
+
+
+    width, height = cv2.minAreaRect(max_contour)[1]
+
+    rect = cv2.minAreaRect(max_contour)
+    box = cv2.boxPoints(rect)  # 获取最小外接矩形的4个顶点
+    box = np.int0(box)
+
+    if 0 not in box.ravel():
+
+        '''绘制最小外界矩形
+        for i in range(4):
+            cv2.line(image, tuple(box[i]), tuple(box[(i+1)%4]), 0)  # 5
+        '''
+        # 旋转角度
+        theta = cv2.minAreaRect(max_contour)[2]
+        # if abs(theta) <= 45:
+        print('图片的旋转角度为%s.'%theta)
+        sign = 1
+        if theta < 0:
+            sign = -1
+        if abs(theta) > 45:
+            angle = sign * (abs(theta) - 90)
+        else:
+            angle = theta
+
+    center = (img_w//2, img_h//2)
+    M = cv2.getRotationMatrix2D(center, angle, 1)
+    res = cv2.warpAffine(res, M, (img_w*4, img_h*4), flags=cv2.INTER_CUBIC, borderMode=cv2.BORDER_REPLICATE)
+
+    return res
 
 if __name__ == '__main__':
-    dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
-    out_dir = "C:\\Study\\test\\regression_out_10_23" # 存储路径
+    dirs = "C:\\Study\\test\\image\\thresh" # 原图片存储路径
+    out_dir = "C:\\Study\\test\\regression_res" # 存储路径
 
     # 加载数据
     data = "new_data.txt"

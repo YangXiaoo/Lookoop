@@ -267,6 +267,6 @@ def findMaxContour(img, thresh_value=100):
 
 
 if __name__ == '__main__':
-    dirs = "C:\\Study\\test\\image\\train-m" # 原图片存储路径
+    dirs = "C:\\Study\\test\\image\\thresh" # 原图片存储路径
     out_dir = "C:\\Study\\test\\out_pic" # 存储路径
     tranPic(dirs, out_dir, thresh_value=None, clip=(30,-30,30,-30)) 

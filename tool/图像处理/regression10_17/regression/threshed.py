@@ -14,6 +14,8 @@ import cv2
 import datetime
 import matplotlib.pyplot as plt
 import matplotlib
+matplotlib.use('Agg')
+
 __suffix = ["png", "jpg"]
 
 
@@ -187,8 +189,13 @@ if __name__ == '__main__':
     y = np.array(y)
     print(np.shape(y))
     # print(y)
+    plt.xlabel("pixel value")
+    plt.ylabel("weights")
     plt.bar(range(len(y)), y)
 
+
+    # 默认保存为png格式
+    plt.savefig('weights')
     plt.show()
     # handle(dirs, out_dir, (40,-40,40,-40), w0)
 

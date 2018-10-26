@@ -163,7 +163,7 @@ if __name__ == '__main__':
     out_dir = "C:\\Study\\test\\threshed_old"
 
     print("loading data ...")
-    feature, label = loadData("new_data.txt")
+    feature, label = loadData("new_daaaa.txt")
     # 训练
     print ("traing...")
     method = ""  # 选择的方法

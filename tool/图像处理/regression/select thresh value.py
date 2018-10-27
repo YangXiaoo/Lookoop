@@ -48,7 +48,7 @@ def handle(dirs, out_dir, clip):
 
     count = 0
     for f in files:
-        print(f)
+
         record_data = str(count) + '\t' + str(f) + '\n'
         record_file.write(record_data)
         # continue
@@ -123,13 +123,13 @@ def handle(dirs, out_dir, clip):
 
 
         # 大于均值的很差，所以不考虑了
-        # large = mean_value
-        # r = 5
-        # right = 0
-        # while large < 255 and right < r:
-        #     thresh_value.append(large)
-        #     large += 2
-        #     right += 1
+        large = mean_value
+        r = 5
+        right = 0
+        while large < 255 and right < r:
+            thresh_value.append(large)
+            large += 2
+            right += 1
 
         
         for v in thresh_value:
@@ -160,8 +160,8 @@ def handle(dirs, out_dir, clip):
 
 
 if __name__ == '__main__':
-    dirs = "C:\\Study\\test\\choose thresh value\\thresh"
-    out_dir = "C:\\Study\\test\\choose_threshed"
+    dirs = "C:\\Study\\test\\image\\failed"
+    out_dir = "C:\\Study\\test\\thresh_failed"
     handle(dirs, out_dir, clip=(40,-40,40,-40))
 
 

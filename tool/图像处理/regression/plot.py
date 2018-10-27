@@ -18,7 +18,7 @@ def getThreshed(file):
 
 if __name__ == '__main__':
     print("loading data ...")
-    feature, label = loadData("new_daaaa.txt")
+    feature, label = loadData("new_data.txt")
     # 训练
     print ("traing...")
     method = ""  # 选择的方法
@@ -32,23 +32,24 @@ if __name__ == '__main__':
         print("using LMS...")
         w0 = ridgeRegression(feature, label, 0.5)
 
-    a_x = []
+    a_x = [] # 绘制直线的x轴坐标
+    x = [] # 绘制预测值的x坐标
     for i in label:
-        a_x.append(int(i))
-    a_y = a_x # a_x.copy()
+        # print(i)
+        a_x.append(int(i[0]))
+        x.append(i[0])
+    a_y = a_x # 直线的y坐标
     # 得到预测值
     predition = getPrediction(feature, w0)
-    y = []
+    y = [] # 预测值的y坐标
     for i in predition:
         y.append(i[0])
-    x = y # y.copy()
     color = np.arctan2(y, x)
-    print(len(x))
     # 绘制散点图
     plt.scatter(x, y, s = 10, c = color, alpha = 1)
     # 设置坐标轴范围
-    plt.xlim((20, 30))
-    plt.ylim((20, 30))
+    plt.xlim((0, 150))
+    plt.ylim((0, 150))
 
     plt.xlabel("actual value")
     plt.ylabel("prediction")

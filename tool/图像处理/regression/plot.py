@@ -18,10 +18,10 @@ def getThreshed(file):
 
 if __name__ == '__main__':
     print("loading data ...")
-    feature, label = loadData("new_data.txt")
+    feature, label = loadData("new_daaaa.txt")
     # 训练
     print ("traing...")
-    method = ""  # 选择的方法
+    method = "bfgs"  # 选择的方法
     if method == "bfgs":  # 选择BFGS训练模型
         print("using BFGS...")
         w0 = bfgs(feature, label, 0.5, 50, 0.4, 0.55)
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     plt.xlabel("actual value")
     plt.ylabel("prediction")
     plt.plot(a_x, a_y)
-    plt.savefig('result')
+    plt.savefig('result_bfgs')
     plt.show()
 
 

@@ -143,7 +143,7 @@ if __name__ == '__main__':
     # 方法一比较
     res = batchProcess(file_path, file_path_1)
     for k, v in res.items():
-        print("图片: %s 的分割精度为 %5f , 过分割率为 %5f , 欠分割率为: %5f" % (k, v[0], v[1], v[2]))
+        print("picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f" % (k, v[0], v[1], v[2]))
 
     # 方法二比较
     # ...

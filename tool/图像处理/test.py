@@ -1,6 +1,6 @@
 import numpy as np 
-import datetime
-nums = [1,2,3,4,5]
-for i in range(len(nums)):
-	nums[i] = str(nums[i])
-print("\t".join(nums))
+lists = [[1, 3, 4], [2, 3, 5], [1, 2, 3, 5], [2, 5]]
+it = [[1], [2], [3], [4], [5]]
+for i in lists:
+	for j in it:
+		

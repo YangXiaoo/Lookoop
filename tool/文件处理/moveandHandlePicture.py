@@ -75,73 +75,11 @@ def handle_picture(f,s):
     mt_s = np.array(s_img)
     print data_s
     data = mt_f * mt_s
-    data = initial(data)
+    # data = initial(data)
     new = Image.fromarray(data)
     dir_name = get_path(s, out_dir, s_path)
     file_name = os.path.join(dir_name,s_name)
     new.save(file_name,suffix)  
-
-
-def initial(data):
-    height = 512 /2
-    weight = 512 /2
-    result = []
-    row = len(data)
-    line = len(data[0])
-    u_c = 0
-    l_c = 0
-    r_c = 0
-    d_c = 0
-    for r in range(0,row):
-        for l in range(0,line):
-            if data[r][l] != 0 & u_c == 0:
-                u_x = l 
-                u_y = r
-                u_c = 1
-                break
-        if u_c == 1:
-            break
-    for l in range(0,line):
-        for r in range(0,row):
-            if data[r][l] != 0 & l_c == 0:
-                l_x = l 
-                l_y = r 
-                l_c = 1
-                break
-        if l_c == 1:
-            break
-    for r in range(row,0,-1):
-        for l in range(line,0,-1):
-            if data[r][l] != 0 & r_c == 0:
-                r_x = l 
-                r_y = r 
-                r_c = 1
-                break
-        if r_c == 1:
-            break
-    for l in range(line,0,-1):
-        for r in range(row,0,-1):
-            if data[r][l] != 0 & d_c == 0:
-                d_x = l 
-                d_y = r 
-                d_c = 1
-                break
-        if d_c == 1:
-            break
-    o_y = d_y - u_y 
-    o_x = r_x - l_x 
-    y_max = o_y + height
-    y_min = o_y - height
-    x_max = o_x + weight
-    x_min = o_x - weight
-
-    for r in range(0,row):
-        for l in range(0,line):
-            tmp = []
-            if (r<=y_max)&(r>=y_min)&(l<=x_max)&(l>=x_min):
-                tmp.append(data[r][l])
-        result.append(tmp)
-    return result
             
 
 
@@ -158,7 +96,7 @@ def main():
         for s in s_file_list:
             s_name = os.path.basename(s)
             if s_name == f_name:
-                handle_picture(first_pic,second_pic)
+                handle_picture(f,s)
 
 if __name__ == '__main__':
     main()

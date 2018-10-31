@@ -44,7 +44,7 @@ def getAccuracyRate(Rs, Ts):
     Rs:手工勾画的分割图像的参考面积
     Ts:算法分割得到的图像的真实面积
     """
-    SA = (1- abs(Rs - Ts) / Rs) / 100.0
+    SA = (1- abs(Rs - Ts) / Rs)
     return SA
 
 
@@ -54,7 +54,7 @@ def getErrorRate(Os, Rs):
     Os:本不应该包含在分割结果中的像素点个数，实际却在分割结果中的像素点个数
     Rs:手工勾画的分割图像的参考面积
     """
-    OR = (Os / (Rs + Os)) / 100.0
+    OR = (Os / (Rs + Os))
     return OR
 
 
@@ -63,7 +63,7 @@ def getLossRate(Us, Rs, Os):
     欠分割率：在GT图像参考面积之中欠缺的像素点的比率
     Us: 本应该在分割结果中的像素点的个数，实际却不在分割结果中的像素点的个数
     """
-    UR = (Us / (Rs + Os)) / 100.0
+    UR = (Us / (Rs + Os))
     return UR
 
 

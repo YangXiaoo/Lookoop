@@ -18,7 +18,7 @@ except:
 	import scipy
 
 # GrabCut
-name = "image/m_3.jpg" #(794, 688, 3)
+name = "C:/Study/github/Lookoop/Image/OpenCV/image/m_5.jpg" #(794, 688, 3)
 img = cv2.imread(name)
 
 # print(img.shape) # (500, 500, 3)

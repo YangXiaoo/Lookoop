@@ -28,6 +28,7 @@ imgLap = cv2.Laplacian(imgGray,cv2.CV_8U)
  
 # otsu method
 threshold,imgOtsu = cv2.threshold(imgGray,100,255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+print(threshold)
  
 # adaptive gaussian threshold  
 imgAdapt = cv2.adaptiveThreshold(imgGray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,cv2.THRESH_BINARY,11,2)

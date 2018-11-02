@@ -31,7 +31,7 @@ def process(file_path, out_dir):
         # 去噪, 腐蚀膨胀开运算
         kernel = np.zeros((7,7), np.uint8)
         img = cv2.morphologyEx(img_med, cv2.MORPH_OPEN, kernel)
-        adaptive = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+        adaptive = cv2.threshold(img,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
         edges = cv2.Canny(img, 20, 25)
         
         img = cv2.morphologyEx(edges, cv2.MORPH_OPEN, kernel)

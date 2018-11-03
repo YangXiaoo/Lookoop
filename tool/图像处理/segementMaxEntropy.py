@@ -6,6 +6,8 @@ import numpy as np
 import os
 import cv2
 import datetime
+
+
 __suffix = ["png", "jpg"]
 
 def getFile(dirpath):
@@ -91,7 +93,7 @@ def handle(dirs, out_dir, clip):
                 expend = end_time - start_time
                 print("\nexpend time:", expend, "\nexpected time: ", expend / count * total, '\n')
             success += 1
-
+        
         except Exception as e:
             # 图片处理失败, 跳过图片保存目录: ./failed
             print("Error: " + str(e))
@@ -105,6 +107,7 @@ def handle(dirs, out_dir, clip):
             fail += 1
             print()
 
+
     end_time = datetime.datetime.now()
     expend = end_time - start_time
     print("\n\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d\nExpend time: %s" %(total, success, skip, fail, expend))
@@ -116,14 +119,17 @@ def crop(img, img_dirs):
     saveImage(img_dirs, img, "_old")
 
     # 获得原图的自适应阈值图
-    # adaptive = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+    # adaptive = cv2.adaptiveThreshold(img, 255, ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2)
     # 去噪
     img_med = cv2.medianBlur(img, 5)
     kernel = np.zeros((7,7), np.uint8)
     img = cv2.morphologyEx(img_med, cv2.MORPH_OPEN, kernel)
     # saveImage(img_dirs, img, "_remove_noise") # 去除噪声的图片
     # 获得处理后的二值图像
-    threshold, imgOtsu = cv2.threshold(img, 15, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    threshed = maxEntrop(img)
+    # threshold, imgOtsu = cv2.threshold(img, threshed*0.4, 255, cv2.THRESH_BINARY)
+    imgOtsu = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2)
+    kernel = np.zeros((37,37), np.uint8)
     imgOtsu = cv2.morphologyEx(imgOtsu, cv2.MORPH_OPEN, kernel)
     imgOtsu = cv2.morphologyEx(imgOtsu, cv2.MORPH_CLOSE, kernel)
     img_segement, thresh_img = maxContour(img, imgOtsu)
@@ -264,8 +270,49 @@ def maxContour(img, thresh):
     threshed = np.multiply(img, thresh)
     return res, threshed
 
-    
+def maxEntrop(img):
+    histogram = [0] * 256
+    m, n = np.shape(img)
+
+    max_entropy = -1
+    threshed = 0
+    total_pixel = m * n 
+    # 计算阈值
+    for i in range(m):
+        for j in range(n):
+            histogram[img[i, j]] += 1
+
+    for i in range(256):
+        # 计算Pt
+        p_t = 0
+        for x in range(i):
+            p_t += histogram[x]
+
+        # 计算背景熵
+        H_B = 0
+        for x in range(i):
+            if histogram[x] != 0:
+                pi_pt = histogram[x] / p_t
+                H_B += - pi_pt * np.log(pi_pt)
+
+
+        # 计算物体熵
+        H_O = 0
+        for x in range(i, 250):
+            if histogram[x] != 0:
+                pi_1_pt = histogram[x] / (total_pixel - p_t)
+                H_O += - pi_1_pt * np.log(pi_1_pt)
+
+
+        total_entrop = H_O + H_B
+        if total_entrop > max_entropy:
+            max_entropy = total_entrop
+            threshed  = i 
+
+    print(threshed)
+    return threshed
+
 if __name__ == '__main__':
     file_path = "C:\\Study\\test\\original"
-    out_dir = "C:\\Study\\test\\OTSU"
+    out_dir = "C:\\Study\\test\\adaptive__"
     handle(file_path, out_dir, (45,-45,45,-45))

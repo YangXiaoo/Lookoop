@@ -130,21 +130,21 @@ def getThreshValue(img, weight):
     ######### 计算特征参数 ##########
     # 不同阈值处理
 
-    # # 已经不用了
-    # # 计算均值
-    # sums = 0
-    # for i in range(img_w):
-    #     for j in range(img_h):
-    #         sums += thresh[i][j]
-    # mean_value = sums // (img_w * img_h)
+    # 已经不用了
+    # 计算均值
+    sums = 0
+    for i in range(img_w):
+        for j in range(img_h):
+            sums += thresh[i][j]
+    mean_value = sums // (img_w * img_h)
 
-    # # 计算标准方差的
-    # sum_diff = 0
-    # for i in range(img_w):
-    #     for j in range(img_h):
-    #         diff = float((mean_value - thresh[i][j]) * (mean_value - thresh[i][j]))
-    #         sum_diff += diff
-    # variance = int((sum_diff // (img_w * img_h))**0.5)
+    # 计算标准方差的
+    sum_diff = 0
+    for i in range(img_w):
+        for j in range(img_h):
+            diff = float((mean_value - thresh[i][j]) * (mean_value - thresh[i][j]))
+            sum_diff += diff
+    variance = int((sum_diff // (img_w * img_h))**0.5)
 
     # 获得直方图
     histogram = [1 for _ in range(256)]
@@ -166,7 +166,7 @@ def getThreshValue(img, weight):
     data = np.mat(data)
     # print(np.shape(data), np.shape(weight))
 
-    v = int((data.T * weight)[0, 0])
+    v = int((data * weight)[0, 0])
 
 
     # 对阈值进行判断, 去除漂移值

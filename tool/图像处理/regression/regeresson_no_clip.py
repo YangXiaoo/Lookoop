@@ -71,7 +71,7 @@ def handle(dirs, out_dir, clip, w0):
             expend = end_time - start_time
             print("\nexpend time:", expend, "\nexpected time: ", expend / count * total, '\n')
         success += 1
-        break
+
         # except Exception as e:
         #     # 图片处理失败, 跳过图片保存目录: ./failed
         #     print("Error: " + str(e))
@@ -287,7 +287,7 @@ def ratation(res):
 
 if __name__ == '__main__':
     dirs = "C:\\Study\\test\\st" # 原图片存储路径
-    out_dir = "C:\\Study\\test\\regression_no_normal" # 存储路径
+    out_dir = "C:\\Study\\test\\xxxxxx" # 存储路径
 
     # 加载数据
     data = "new_data.txt"

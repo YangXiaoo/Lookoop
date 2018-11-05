@@ -51,15 +51,15 @@ def handle(dirs, out_dir, clip, w0):
             img= crop(img, img_dirs, w0)
             h, w = img.shape
             
-            # # 3. 归一化为256x256
-            # img_new = normalization(img, w, h)
+            # 3. 归一化为256x256
+            img_new = normalization(img, w, h)
 
-            # # # 4. 保存自适应阈值图像
-            # # adaptive = cv2.adaptiveThreshold(img_new, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
-            # # saveImage(img_dirs, adaptive, "_adaptive")
+            # # 4. 保存自适应阈值图像
+            # adaptive = cv2.adaptiveThreshold(img_new, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
+            # saveImage(img_dirs, adaptive, "_adaptive")
 
-            # # 5. 转换为三通道
-            # img_new = cv2.cvtColor(img_new, cv2.COLOR_GRAY2BGR)
+            # 5. 转换为三通道
+            img_new = cv2.cvtColor(img_new, cv2.COLOR_GRAY2BGR)
 
             # 6. 保存图片
             saveImage(img_dirs, img_new, "_new")
@@ -93,7 +93,7 @@ def handle(dirs, out_dir, clip, w0):
 
 def crop(img, img_dirs, weight):
     img_w, img_h = img.shape
-    # saveImage(img_dirs, img, "_old")
+    saveImage(img_dirs, img, "_old")
 
     # 获得原图的自适应阈值图
     # adaptive = cv2.adaptiveThreshold(img, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
@@ -105,8 +105,8 @@ def crop(img, img_dirs, weight):
     saveImage(img_dirs, img, "_remove_noise") # 去除噪声的图片
     # 获得处理后的二值图像
     old_thresh, thresh = getThresh(img, weight)
-    # saveImage(img_dirs, thresh, "_raw_thresh") # 经过闭运算的二值图
-    # saveImage(img_dirs, old_thresh, "_old_thresh") # 没有经过闭运算的二值图
+    saveImage(img_dirs, thresh, "_raw_thresh") # 经过闭运算的二值图
+    saveImage(img_dirs, old_thresh, "_old_thresh") # 没有经过闭运算的二值图
 
     # 使用区域生长获得轮廓
     res, growing = regionGrowing(img, thresh)
@@ -116,33 +116,33 @@ def crop(img, img_dirs, weight):
     # res = ratation(res)
 
 
-    # # for i in range(img_w):
-    # #     for j in range(img_h):
-    # #         if growing[i][j] == 0:
-    # #             adaptive[i][j] = 0
-    # # 扩充边缘
-    # x, y, w, h = cv2.boundingRect(growing)
-    # if x >= 10 and y >= 10 and x+w <= img_w and y+h <= img_h:
-    #     x -= 10
-    #     y -= 10
-    #     w += 20
-    #     h += 20
+    # for i in range(img_w):
+    #     for j in range(img_h):
+    #         if growing[i][j] == 0:
+    #             adaptive[i][j] = 0
+    # 扩充边缘
+    x, y, w, h = cv2.boundingRect(growing)
+    if x >= 10 and y >= 10 and x+w <= img_w and y+h <= img_h:
+        x -= 10
+        y -= 10
+        w += 20
+        h += 20
 
-    # # 切片
-    # img_new = res[y:y+h, x:x+w]
-    # # new_adaptive = adaptive[y:y+h, x:x+w]
+    # 切片
+    img_new = res[y:y+h, x:x+w]
+    # new_adaptive = adaptive[y:y+h, x:x+w]
 
-    # # # 保存基于原图的自适应分割图
-    # # new_adaptive = normalization(new_adaptive, new_adaptive.shape[1], new_adaptive.shape[0])
-    # # saveImage(img_dirs, new_adaptive, "_original_adaptive")
+    # # 保存基于原图的自适应分割图
+    # new_adaptive = normalization(new_adaptive, new_adaptive.shape[1], new_adaptive.shape[0])
+    # saveImage(img_dirs, new_adaptive, "_original_adaptive")
 
-    # # 保存二值图像, 生长区域
-    # saveImage(img_dirs, growing, "_growing_region")
-    # # saveImage(img_dirs, thresh, "_thresh")
-    # # 转换为数组
-    # img_new = np.array(img_new)
+    # 保存二值图像, 生长区域
+    saveImage(img_dirs, growing, "_growing_region")
+    # saveImage(img_dirs, thresh, "_thresh")
+    # 转换为数组
+    img_new = np.array(img_new)
 
-    return res
+    return img_new
 
 
 def saveImage(img_dirs, image, mid_name):
@@ -286,11 +286,11 @@ def ratation(res):
     return res
 
 if __name__ == '__main__':
-    dirs = "C:\\Study\\test\\st" # 原图片存储路径
-    out_dir = "C:\\Study\\test\\regression_no_normal" # 存储路径
+    dirs = "C:\\Study\\test\\image\\thresh" # 原图片存储路径
+    out_dir = "C:\\Study\\test\\xxxx" # 存储路径
 
     # 加载数据
-    data = "new_daaaa.txt"
+    data = "new_data.txt"
 
     # # 通过handleData.py 文件获得
     # label = "C:\\Study\\test\\data\\label.txt"

@@ -41,47 +41,22 @@ def handle(dirs, out_dir, clip, w0):
             skip += 1
             continue
         try:
-            
-            # 1. 读取图片, 切边处理
             img = cv2.imread(f, 0)
             x,w,y,h = clip
             img = img[x:w , y:h]
-
-            # 2. 分割
             img= crop(img, img_dirs, w0)
-            h, w = img.shape
-            
-            # 3. 归一化为256x256
-            img_new = normalization(img, w, h)
-
-            # # 4. 保存自适应阈值图像
-            # adaptive = cv2.adaptiveThreshold(img_new, 255, cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,11,2)
-            # saveImage(img_dirs, adaptive, "_adaptive")
-
-            # 5. 转换为三通道
+            img_new = normalization(img)
             img_new = cv2.cvtColor(img_new, cv2.COLOR_GRAY2BGR)
 
             # 6. 保存图片
             saveImage(img_dirs, img_new, "_new")
 
             # 控制台输出
-            print("handled: ", f.split("\\")[-1])
-            if count % 5 == 0 and count != total:
-                end_time = datetime.datetime.now()
-                expend = end_time - start_time
-                print("\nexpend time:", expend, "\nexpected time: ", expend / count * total, '\n')
+            printToConsole(start_time, f, count, total, 5)
             success += 1
 
         except Exception as e:
-            # 图片处理失败, 跳过图片保存目录: ./failed
-            print("Error: " + str(e))
-            
-            failed_dir = os.path.join("\\".join(out_dir.split("\\")[:-1]), out_dir.split("\\")[-1] + "_failed")
-            print("failed to handle %s, skiped.\nsaved in %s" % (f,failed_dir))
-            if not os.path.isdir(failed_dir):
-                os.mkdir(failed_dir)
-            print(os.path.join(failed_dir, f.split("\\")[-1]))
-            os.system("copy %s %s" % (f, os.path.join(failed_dir, f.split("\\")[-1])))
+            saveError(e, out_dir, f)
             fail += 1
             print()
 

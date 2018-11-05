@@ -14,6 +14,9 @@ import matplotlib
 matplotlib.use('Agg')
 
 def getWeight(data, labels):
+    """
+    三个数据作为参数得到阈值
+    """
     m, n = np.shape(data)
     print(m, n)
     # 重新清理数据
@@ -44,7 +47,7 @@ def getCov(mean, data):
     return cov
 
 
-def plotScatter(data, labels, w):
+def plotScatter(data, labels, w, lim, save_name):
     actual_x = [] # 绘制直线的x轴坐标
     predict_x = [] # 绘制预测值的x坐标
     for i in labels:
@@ -53,7 +56,7 @@ def plotScatter(data, labels, w):
     actual_y = actual_x # 直线的y坐标
 
     # 得到预测值
-    predition = getPrediction(data, w)
+    predition = data * w
     predict_y = [] # 预测值的y坐标
     for i in predition:
         predict_y.append(i[0])
@@ -61,17 +64,17 @@ def plotScatter(data, labels, w):
     # 绘制散点图
     plt.scatter(predict_x, predict_y, s = 10, c = color, alpha = 1)
     # 设置坐标轴范围
-    plt.xlim((0, 150))
-    plt.ylim((0, 150))
+    plt.xlim(lim[0])
+    plt.ylim(lim[1])
 
     plt.xlabel("actual value")
     plt.ylabel("prediction")
     plt.plot(actual_x, actual_y)
-    plt.savefig('result_lms_three_par_2')
+    plt.savefig(save_name)
     plt.show()
 
 
 if __name__ == '__main__':
     data, labels = loadData("new_daaaa.txt")
     w, new_data = getWeight(data, labels)
-    plotScatter(new_data, labels, w)
+    plotScatter(new_data, labels, w, [(0, 150), (0, 150)], 'sdd')

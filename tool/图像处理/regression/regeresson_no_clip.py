@@ -161,7 +161,6 @@ def getThresh(img, weight):
     """
     获得二值图形
     """
-    mask = np.zeros((img.shape[0], img.shape[1]), np.uint8)
 
     thresh_value, _, _, thresh = getThreshValue(img, weight)
     

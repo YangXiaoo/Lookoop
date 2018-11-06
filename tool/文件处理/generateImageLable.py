@@ -2,7 +2,7 @@
 # generateImageLable
 import os
 import math
-def main(dirs, data_dir, handle=True, preffix=True):
+def generateImageLable(dirs, data_dir, handle=True, preffix=True):
     """
     数据路径: C:/software/caffe/caffe-master/data/xunlian/val/m-10-10.4 (2).png
     dirs: 训练数据与测试数据目录，list类型 dirs = ["train", "val"]

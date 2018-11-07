@@ -1,4 +1,4 @@
-# coding:UTF-8
+# coding : UTF-8
 # 2018-11-5
 # 分割过程中一些基本操作封装
 
@@ -121,8 +121,8 @@ def getThreshValuebyHistogram(img, weight, is_handle=True):
     # 对阈值进行判断, 去除漂移值
     if v > mean_value * 0.9:
         v = int(mean_value * 0.9)
-    if v < mean_value * 0.6:
-        v = int(mean_value * 0.6)
+    if v < mean_value * 0.3:
+        v = int(mean_value * 0.3)
     print("prediction: %d, limited to: %d" % (dummy_v, v))
     return v
 
@@ -885,3 +885,70 @@ class neuralNetwork(object):
 
         return final_outputs
 
+
+def printEst(res, way):
+    """
+    打印分割评估结果
+    res: {"pic_file_name":[accuracy_rate, error_rate, loss_rate]}
+    way:所使用的方法 type:str
+    """
+    total_ac, total_err, total_loss, count = 0, 0, 0, 0
+    for k, v in res.items():
+        total_ac += v[0]
+        total_err += v[1]
+        total_loss += v[2]
+        count += 1
+        print("picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f" % (k, v[0], v[1], v[2]))
+    print("%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f" % (way, total_ac/count, total_err/count, total_loss/count))
+
+
+def getHistogramMean(data):
+    """
+    根据直方图获得该图像的平均像素
+    rtype: float, 平均像素
+    """
+    total_pixel = 0
+    total = 0
+    m, n = np.shape(data)
+    count = 0
+    for i in range(m):
+        for j in range(n):
+            total_pixel += count * int(data[i, j])
+            total += int(data[i, j])
+            count += 1
+    return total_pixel / total
+
+
+def standardPicClip(dir_path, out_dir, clip=(45,-45,45,-45)):
+    """
+    对图像进行切边
+    dir_path：原图路径
+    out_dir：切边后保存目录
+    """
+    files = getFiles(dir_path)
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+    for f in files:
+        img = cv2.imread(f, 0)
+        out_path = os.path.join(out_dir, f.split("\\")[-1])
+        x,w,y,h = clip
+        img = img[x:w , y:h]
+        saveImage(out_path, "_new", img)
+    os.startfile(out_dir)
+
+
+def skipChar(file_path, out_dir, skip_word='_new'):
+    """
+    跳过含有skip_word字符的文件
+    file_path: 原文件目录
+    out_dir:输出文件目录
+    """
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+    files = getFiles(file_path)
+    for f in files:
+        if "_new" in f.split("\\")[-1]:
+            continue
+        new_dirs = os.path.join(out_dir, f.split("\\")[-1])
+        os.rename(f, new_dirs)
+    os.startfile(out_dir)

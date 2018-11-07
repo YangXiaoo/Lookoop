@@ -23,8 +23,6 @@ Given target = 20, return false.
 # 240. Search a 2D Matrix II
 # https://leetcode.com/problems/search-a-2d-matrix-ii/
 
-
-
 # https://leetcode.com/problems/search-a-2d-matrix-ii/discuss/66139/6-9-lines-C%2B%2BPython-Solutions-with-Explanations
 class Solution:
     def searchMatrix(self, matrix, target):

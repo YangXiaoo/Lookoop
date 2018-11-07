@@ -105,20 +105,41 @@ def loadData(file_path, gap=1):
     return np.mat(fea), np.mat(label).T
 
 
-def getThreshValue(img, weight):
+def getThreshValuebyHistogram(img, weight, is_handle=True):
     """
     根据权重预测阈值
     """
     img = moveNoise(img, 7) # 去噪
     histogram = getHistogram(img) # 获得直方图
+    if is_handle:
+        histogram = np.mat(histogram)
+        histogram = handleHistogram(histogram)
+    mean_value = getMean(img)
     data = np.mat(histogram) # 转换为矩阵类型
     v = int((data * weight)[0, 0]) # 预测最佳阈值
+    dummy_v = v
     # 对阈值进行判断, 去除漂移值
     if v > mean_value * 0.9:
         v = int(mean_value * 0.9)
     if v < mean_value * 0.6:
         v = int(mean_value * 0.6)
+    print("prediction: %d, limited to: %d" % (dummy_v, v))
     return v
+
+
+def handleHistogram(data):
+    """
+    对直方图进行数据归一化处理
+    """
+    m, n = np.shape(data)
+    ret = data
+    for i in range(m):
+        total = np.sum(data[i, :])
+        for j in range(n):
+            # 100000 时效果差
+            ret[i, j] = ret[i, j] / total * 20000
+    # print(ret)
+    return ret
 
 
 def moveNoise(img, kernel_size):
@@ -165,7 +186,7 @@ def getHistogram(img):
     获得图像直方图统计
     """
     img_w, img_h = np.shape(img)
-    histogram = [1 for _ in range(256)]
+    histogram = [0 for _ in range(256)]
     for i in range(img_w):
         for j in range(img_h):
             histogram[img[i][j]] += 1
@@ -256,6 +277,9 @@ def maxRegionGrowing(img, thresh):
 def regionGrowing(img, thresh):
     """
     区域生长
+    img: 待分割图
+    thresh:二值图
+    rtype: 分割图，分割图对应的二值图
     """
     m, n = thresh.shape
     r, c = m // 2, n // 2 # 种子起始点
@@ -297,8 +321,8 @@ def waterBfs(img, old_image):
     """
     获取最大轮廓后进行分割
     img: 轮廓
-    old_img:待分割图
-    返回：分割图，二值图
+    old_image: 待分割图
+    rtype: 分割图，分割图对应的二值图
     """
     row, col = img.shape
     # 得到rowxcol的矩阵[[False, False...], ..., [False, False...]]
@@ -495,7 +519,7 @@ def maxEntrop(img):
     return threshed
 
 
-def ratation(res):
+def rotation(res):
     img_w, img_h = np.shape(res)
     image, contours, hier = cv2.findContours(res, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE )
     # 寻找最大轮廓
@@ -700,6 +724,7 @@ def getLossPoints(standard, actual):
                 loss_count += 1
     return loss_count
 
+
 def getAccuracy(standard_file, file_path):
     """
     standard_file:标准分割图像的路径
@@ -802,3 +827,61 @@ def delFileChar(file):
             print("Old filename: %s" % f_old)
             print("New filename: %s\n" % f_new)
     print("Successful,total %s files renamed." % count)
+
+
+
+############################### 三层神经网络 ##############################################
+class neuralNetwork(object):
+    def __init__(self, inputNodes, hiddenNodes, outputNodes, learningRate):
+        """
+        初始化网络参数, 共三层网络
+        """
+        self.in_nodes = inputNodes
+        self.hide_nodes = hiddenNodes
+        self.out_nodes = outputNodes
+        self.l_rate = learningRate
+
+        # 将input层与hidden层权重用矩阵表示
+        # 同理表示 hidden层与output层
+        # pow(self.hide_nodes, -0.5) 标准方差为传入链接数目的开方
+        # 矩阵规模： hidden x in 这样表示是因为 weight_in_hide x inputs 才能正确相乘
+        self.weight_in_hide = numpy.random.normal(0.0, pow(self.hide_nodes, -0.5), (self.hide_nodes, self.in_nodes))
+        self.weight_hide_out = numpy.random.normal(0.0, pow(self.out_nodes, -0.5), (self.out_nodes, self.hide_nodes))
+
+        self.active_function = lambda x: (1/(1 + math.e**(-x))) # sigmoid函数
+
+    def train(self, inputs_list, targets_list):
+        """
+        训练数据集
+        """
+        inputs = numpy.array(inputs_list, ndmin=2).T #转换为2d array并且转置. ndmin表示矩阵维度
+        targets = numpy.array(targets_list, ndmin=2).T
+
+        hidden_inputs = numpy.dot(self.weight_in_hide, inputs)
+        hidden_outputs = self.active_function(hidden_inputs)
+
+        final_inputs = numpy.dot(self.weight_hide_out, hidden_outputs)
+        final_outputs = self.active_function(final_inputs)
+
+        output_errors = (targets - final_outputs) # 期望差值
+        hidden_error = numpy.dot(self.weight_hide_out.T, output_errors) # 误差反向传播
+
+        # 根据误差修改各层权重
+        self.weight_hide_out += self.l_rate * numpy.dot((output_errors * final_outputs * (1.0 - final_outputs)), numpy.transpose(hidden_outputs))
+        self.weight_in_hide += self.l_rate * numpy.dot((hidden_error * hidden_outputs * (1.0 - hidden_outputs)), numpy.transpose(inputs))
+
+
+    def test(self, inputs_lists):
+        """
+        测试
+        """
+        inputs = numpy.array(inputs_lists, ndmin=2).T
+
+        hidden_inputs = numpy.dot(self.weight_in_hide, inputs)
+        hidden_outputs = self.active_function(hidden_inputs)
+
+        final_inputs = numpy.dot(self.weight_hide_out, hidden_outputs)
+        final_outputs = self.active_function(final_inputs)
+
+        return final_outputs
+

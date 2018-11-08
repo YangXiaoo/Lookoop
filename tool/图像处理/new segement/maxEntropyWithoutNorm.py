@@ -49,7 +49,6 @@ def handle(dirs, out_dir, clip):
             saveError(e, out_dir, f)
             fail += 1
 
-
     end_time = datetime.datetime.now()
     expend = end_time - start_time
     print("\n\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d\nExpend time: %s" %(total, success, skip, fail, expend))
@@ -58,5 +57,5 @@ def handle(dirs, out_dir, clip):
 
 if __name__ == '__main__':
     file_path = "C:\\Study\\test\\1ssssssss"
-    out_dir = "C:\\Study\\test\\maxEntrop"
+    out_dir = "C:\\Study\\test\\maxEntrop_without_norm"
     handle(file_path, out_dir, (45,-45,45,-45))

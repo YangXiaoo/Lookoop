@@ -1,0 +1,624 @@
+C:\Study\github\Lookoop\tool\图像处理\new segement\api.py:11: UserWarning: 
+This call to matplotlib.use() has no effect because the backend has already
+been chosen; matplotlib.use() must be called *before* pylab, matplotlib.pyplot,
+or matplotlib.backends is imported for the first time.
+
+The backend was *originally* set to 'TkAgg' by the following code:
+  File "C:\Study\github\Lookoop\tool\图像处理\new segement\分割模型.py", line 6, in <module>
+    from api import getFiles, batchProcess, printEst
+  File "C:\Study\github\Lookoop\tool\图像处理\new segement\api.py", line 9, in <module>
+    import matplotlib.pyplot as plt
+  File "C:\Users\Yauno\AppData\Local\Programs\Python\Python37-32\lib\site-packages\matplotlib\pyplot.py", line 71, in <module>
+    from matplotlib.backends import pylab_setup
+  File "C:\Users\Yauno\AppData\Local\Programs\Python\Python37-32\lib\site-packages\matplotlib\backends\__init__.py", line 16, in <module>
+    line for line in traceback.format_stack()
+
+
+  matplotlib.use('Agg')
+回归法
+C:\Study\test\100-gt\fm-1-2.4_new.png
+C:\Study\test\100-gt\fm-10-10.61_new.png
+C:\Study\test\100-gt\fm-10-10.6_new.png
+C:\Study\test\100-gt\fm-10-9.5_new.png
+C:\Study\test\100-gt\fm-10-9.9_new.png
+C:\Study\test\100-gt\fm-11-11.02_new.png
+C:\Study\test\100-gt\fm-11-11.22_new.png
+C:\Study\test\100-gt\fm-11-14.0_new.png
+C:\Study\test\100-gt\fm-11-9.61_new.png
+C:\Study\test\100-gt\fm-12-11.6_new.png
+C:\Study\test\100-gt\fm-12-11.9_new.png
+C:\Study\test\100-gt\fm-12-13.4 (2)_new.png
+C:\Study\test\100-gt\fm-12-14.7_new.png
+C:\Study\test\100-gt\fm-13-11.1_new.png
+C:\Study\test\100-gt\fm-13-13.62_new.png
+C:\Study\test\100-gt\fm-14-14.0_new.png
+C:\Study\test\100-gt\fm-14-15.9_new.png
+C:\Study\test\100-gt\fm-15-15.0_new.png
+C:\Study\test\100-gt\fm-15-15.9_new.png
+C:\Study\test\100-gt\fm-15-16.31_new.png
+C:\Study\test\100-gt\fm-16-16.31_new.png
+C:\Study\test\100-gt\fm-16-17.31_new.png
+C:\Study\test\100-gt\fm-17-12.3_new.png
+C:\Study\test\100-gt\fm-2-1.7_new.png
+C:\Study\test\100-gt\fm-2-2.91_new.png
+C:\Study\test\100-gt\fm-3-3.1_new.png
+C:\Study\test\100-gt\fm-3-3.5_new.png
+C:\Study\test\100-gt\fm-3-4.03_new.png
+C:\Study\test\100-gt\fm-4-4.35_new.png
+C:\Study\test\100-gt\fm-4-4.5_new.png
+C:\Study\test\100-gt\fm-4-5.21_new.png
+C:\Study\test\100-gt\fm-4-5.8_new.png
+C:\Study\test\100-gt\fm-5-4.91_new.png
+C:\Study\test\100-gt\fm-5-5.912_new.png
+C:\Study\test\100-gt\fm-6-5.8_new.png
+C:\Study\test\100-gt\fm-6-6.0_new.png
+C:\Study\test\100-gt\fm-6-7.4_new.png
+C:\Study\test\100-gt\fm-7-10.9_new.png
+C:\Study\test\100-gt\fm-7-6.2_new.png
+C:\Study\test\100-gt\fm-7-7.2_new.png
+C:\Study\test\100-gt\fm-7-7.4_new.png
+C:\Study\test\100-gt\fm-7-8.41_new.png
+C:\Study\test\100-gt\fm-8-10.81_new.png
+C:\Study\test\100-gt\fm-8-10.83_new.png
+C:\Study\test\100-gt\fm-8-7.81_new.png
+C:\Study\test\100-gt\fm-8-9.23_new.png
+C:\Study\test\100-gt\fm-8-9.53_new.png
+C:\Study\test\100-gt\fm-9-10.62_new.png
+C:\Study\test\100-gt\fm-9-11.0_new.png
+C:\Study\test\100-gt\fm-9-7.8_new.png
+C:\Study\test\100-gt\fm-9-9.31_new.png
+C:\Study\test\100-gt\fm-9-9.6_new.png
+C:\Study\test\100-gt\fm-9-9.81_new.png
+C:\Study\test\100-gt\fm-9-9.8_new.png
+C:\Study\test\100-gt\m-10-11 (1)_new.png
+C:\Study\test\100-gt\m-10-12.6_new.png
+C:\Study\test\100-gt\m-10-9.0_new.png
+C:\Study\test\100-gt\m-11-10.6_new.png
+C:\Study\test\100-gt\m-11-12.6_new.png
+C:\Study\test\100-gt\m-12-11.9_new.png
+C:\Study\test\100-gt\m-12-12.63_new.png
+C:\Study\test\100-gt\m-12-13.0_new.png
+C:\Study\test\100-gt\m-13-11.8_new.png
+C:\Study\test\100-gt\m-13-12.8_new.png
+C:\Study\test\100-gt\m-14-13.2_new.png
+C:\Study\test\100-gt\m-14-13.4_new.png
+C:\Study\test\100-gt\m-15-15.2_new.png
+C:\Study\test\100-gt\m-15-15.71_new.png
+C:\Study\test\100-gt\m-15-16.82_new.png
+C:\Study\test\100-gt\m-16-13.9_new.png
+C:\Study\test\100-gt\m-16-16.1_new.png
+C:\Study\test\100-gt\m-16-16.8_new.png
+C:\Study\test\100-gt\m-16-17.0_new.png
+C:\Study\test\100-gt\m-17-18 (2)_new.png
+C:\Study\test\100-gt\m-17-18.2_new.png
+C:\Study\test\100-gt\m-17-18_new.png
+C:\Study\test\100-gt\m-2-2.0_new.png
+C:\Study\test\100-gt\m-3-3.7_new.png
+C:\Study\test\100-gt\m-4-4.61_new.png
+C:\Study\test\100-gt\m-4-5.4_new.png
+C:\Study\test\100-gt\m-5--6.5_new.png
+C:\Study\test\100-gt\m-5-3.6_new.png
+C:\Study\test\100-gt\m-5-6.3_new.png
+C:\Study\test\100-gt\m-5-6.8_new.png
+C:\Study\test\100-gt\m-6-6.41_new.png
+C:\Study\test\100-gt\m-6-6.7_new.png
+C:\Study\test\100-gt\m-6-7.5_new.png
+C:\Study\test\100-gt\m-6-8.0_new.png
+C:\Study\test\100-gt\m-7-6.61_new.png
+C:\Study\test\100-gt\m-7-7.4_new.png
+C:\Study\test\100-gt\m-7-8.4 (2)_new.png
+C:\Study\test\100-gt\m-7-8.4_new.png
+C:\Study\test\100-gt\m-7-8.6_new.png
+C:\Study\test\100-gt\m-8-7.2_new.png
+C:\Study\test\100-gt\m-8-8.2_new.png
+C:\Study\test\100-gt\m-8-8.4_new.png
+C:\Study\test\100-gt\m-8-8.5_new.png
+C:\Study\test\100-gt\m-8-8.71_new.png
+C:\Study\test\100-gt\m-9-10.7_new.png
+C:\Study\test\100-gt\m-9-9.5_new.png
+picture: fm-1-2.4_new , accuracy rate: 0.997200 , error rate:  0.012017 , loss rate: 0.009251
+picture: fm-10-10.61_new , accuracy rate: 0.924460 , error rate:  0.001619 , loss rate: 0.077036
+picture: fm-10-10.6_new , accuracy rate: 0.930857 , error rate:  0.002047 , loss rate: 0.071049
+picture: fm-10-9.5_new , accuracy rate: 0.998001 , error rate:  0.013086 , loss rate: 0.011113
+picture: fm-10-9.9_new , accuracy rate: 0.998476 , error rate:  0.015447 , loss rate: 0.016948
+picture: fm-11-11.02_new , accuracy rate: 0.914277 , error rate:  0.000513 , loss rate: 0.086191
+picture: fm-11-11.22_new , accuracy rate: 0.981854 , error rate:  0.007543 , loss rate: 0.025551
+picture: fm-11-14.0_new , accuracy rate: 0.982681 , error rate:  0.023349 , loss rate: 0.006434
+picture: fm-11-9.61_new , accuracy rate: 0.995380 , error rate:  0.014840 , loss rate: 0.010288
+picture: fm-12-11.6_new , accuracy rate: 0.926064 , error rate:  0.002167 , loss rate: 0.075943
+picture: fm-12-11.9_new , accuracy rate: 0.970727 , error rate:  0.006557 , loss rate: 0.035638
+picture: fm-12-13.4 (2)_new , accuracy rate: 0.985972 , error rate:  0.019681 , loss rate: 0.005930
+picture: fm-12-14.7_new , accuracy rate: 0.915184 , error rate:  0.001035 , loss rate: 0.085763
+picture: fm-13-11.1_new , accuracy rate: 0.866019 , error rate:  0.000272 , loss rate: 0.134216
+picture: fm-13-13.62_new , accuracy rate: 0.983823 , error rate:  0.006216 , loss rate: 0.022292
+picture: fm-14-14.0_new , accuracy rate: 0.961317 , error rate:  0.002596 , loss rate: 0.041178
+picture: fm-14-15.9_new , accuracy rate: 0.973213 , error rate:  0.003932 , loss rate: 0.030614
+picture: fm-15-15.0_new , accuracy rate: 0.890263 , error rate:  0.000863 , loss rate: 0.110505
+picture: fm-15-15.9_new , accuracy rate: 0.884440 , error rate:  0.000493 , loss rate: 0.115996
+picture: fm-15-16.31_new , accuracy rate: 0.857320 , error rate:  0.001830 , loss rate: 0.144249
+picture: fm-16-16.31_new , accuracy rate: 0.822470 , error rate:  0.000010 , loss rate: 0.177538
+picture: fm-16-17.31_new , accuracy rate: 0.803946 , error rate:  0.000662 , loss rate: 0.196587
+picture: fm-17-12.3_new , accuracy rate: 0.999909 , error rate:  0.012429 , loss rate: 0.012519
+picture: fm-2-1.7_new , accuracy rate: 0.999223 , error rate:  0.009828 , loss rate: 0.009059
+picture: fm-2-2.91_new , accuracy rate: 0.985841 , error rate:  0.004991 , loss rate: 0.019079
+picture: fm-3-3.1_new , accuracy rate: 0.983503 , error rate:  0.006716 , loss rate: 0.023102
+picture: fm-3-3.5_new , accuracy rate: 0.988447 , error rate:  0.005450 , loss rate: 0.016940
+picture: fm-3-4.03_new , accuracy rate: 0.993066 , error rate:  0.004349 , loss rate: 0.011252
+picture: fm-4-4.35_new , accuracy rate: 0.973599 , error rate:  0.000915 , loss rate: 0.027291
+picture: fm-4-4.5_new , accuracy rate: 0.980400 , error rate:  0.006557 , loss rate: 0.026028
+picture: fm-4-5.21_new , accuracy rate: 0.985287 , error rate:  0.004515 , loss rate: 0.019162
+picture: fm-4-5.8_new , accuracy rate: 0.995473 , error rate:  0.007587 , loss rate: 0.012080
+picture: fm-5-4.91_new , accuracy rate: 0.972443 , error rate:  0.004560 , loss rate: 0.031991
+picture: fm-5-5.912_new , accuracy rate: 0.975135 , error rate:  0.004686 , loss rate: 0.029435
+picture: fm-6-5.8_new , accuracy rate: 0.945768 , error rate:  0.004204 , loss rate: 0.058208
+picture: fm-6-6.0_new , accuracy rate: 0.988100 , error rate:  0.008693 , loss rate: 0.020489
+picture: fm-6-7.4_new , accuracy rate: 0.991884 , error rate:  0.007995 , loss rate: 0.016046
+picture: fm-7-10.9_new , accuracy rate: 0.983267 , error rate:  0.005366 , loss rate: 0.022009
+picture: fm-7-6.2_new , accuracy rate: 0.960937 , error rate:  0.004340 , loss rate: 0.043233
+picture: fm-7-7.2_new , accuracy rate: 0.989250 , error rate:  0.008833 , loss rate: 0.019487
+picture: fm-7-7.4_new , accuracy rate: 0.997939 , error rate:  0.015460 , loss rate: 0.013432
+picture: fm-7-8.41_new , accuracy rate: 0.938404 , error rate:  0.001743 , loss rate: 0.063231
+picture: fm-8-10.81_new , accuracy rate: 0.948735 , error rate:  0.000982 , loss rate: 0.052196
+picture: fm-8-10.83_new , accuracy rate: 0.950315 , error rate:  0.002329 , loss rate: 0.051899
+picture: fm-8-7.81_new , accuracy rate: 0.977288 , error rate:  0.006100 , loss rate: 0.028673
+picture: fm-8-9.23_new , accuracy rate: 0.999630 , error rate:  0.008735 , loss rate: 0.009102
+picture: fm-8-9.53_new , accuracy rate: 0.132779 , error rate:  0.467608 , loss rate: 0.005906
+picture: fm-9-10.62_new , accuracy rate: 0.982030 , error rate:  0.006167 , loss rate: 0.024026
+picture: fm-9-11.0_new , accuracy rate: 0.910244 , error rate:  0.000594 , loss rate: 0.090297
+picture: fm-9-7.8_new , accuracy rate: 0.989769 , error rate:  0.006353 , loss rate: 0.016518
+picture: fm-9-9.31_new , accuracy rate: 0.994557 , error rate:  0.017086 , loss rate: 0.011736
+picture: fm-9-9.6_new , accuracy rate: 0.747241 , error rate:  0.207983 , loss rate: 0.007794
+picture: fm-9-9.81_new , accuracy rate: 0.897012 , error rate:  0.001350 , loss rate: 0.104199
+picture: fm-9-9.8_new , accuracy rate: 0.983564 , error rate:  0.021329 , loss rate: 0.005244
+picture: m-10-11 (1)_new , accuracy rate: 0.999441 , error rate:  0.013536 , loss rate: 0.012984
+picture: m-10-12.6_new , accuracy rate: 0.988923 , error rate:  0.012955 , loss rate: 0.023888
+picture: m-10-9.0_new , accuracy rate: 0.947437 , error rate:  0.002614 , loss rate: 0.055040
+picture: m-11-10.6_new , accuracy rate: 0.954935 , error rate:  0.002000 , loss rate: 0.046975
+picture: m-11-12.6_new , accuracy rate: 0.902160 , error rate:  0.001135 , loss rate: 0.098865
+picture: m-12-11.9_new , accuracy rate: 0.967470 , error rate:  0.006759 , loss rate: 0.039069
+picture: m-12-12.63_new , accuracy rate: 0.994712 , error rate:  0.021056 , loss rate: 0.015879
+picture: m-12-13.0_new , accuracy rate: 0.955264 , error rate:  0.002147 , loss rate: 0.046788
+picture: m-13-11.8_new , accuracy rate: 0.997045 , error rate:  0.012742 , loss rate: 0.015659
+picture: m-13-12.8_new , accuracy rate: 0.920679 , error rate:  0.002523 , loss rate: 0.081644
+picture: m-14-13.2_new , accuracy rate: 0.940563 , error rate:  0.001260 , loss rate: 0.060622
+picture: m-14-13.4_new , accuracy rate: 0.893703 , error rate:  0.000570 , loss rate: 0.106807
+picture: m-15-15.2_new , accuracy rate: 0.992821 , error rate:  0.005973 , loss rate: 0.013109
+picture: m-15-15.71_new , accuracy rate: 0.986948 , error rate:  0.019695 , loss rate: 0.006900
+picture: m-15-16.82_new , accuracy rate: 0.999743 , error rate:  0.016553 , loss rate: 0.016300
+picture: m-16-13.9_new , accuracy rate: 0.962995 , error rate:  0.003422 , loss rate: 0.040301
+picture: m-16-16.1_new , accuracy rate: 0.980048 , error rate:  0.023817 , loss rate: 0.004341
+picture: m-16-16.8_new , accuracy rate: 0.844575 , error rate:  0.000349 , loss rate: 0.155720
+picture: m-16-17.0_new , accuracy rate: 0.862049 , error rate:  0.001051 , loss rate: 0.138857
+picture: m-17-18 (2)_new , accuracy rate: 0.979042 , error rate:  0.025254 , loss rate: 0.004825
+picture: m-17-18.2_new , accuracy rate: 0.997825 , error rate:  0.012896 , loss rate: 0.010749
+picture: m-17-18_new , accuracy rate: 0.959345 , error rate:  0.006016 , loss rate: 0.046427
+picture: m-2-2.0_new , accuracy rate: 0.989368 , error rate:  0.018485 , loss rate: 0.008050
+picture: m-3-3.7_new , accuracy rate: 0.991172 , error rate:  0.006160 , loss rate: 0.014933
+picture: m-4-4.61_new , accuracy rate: 0.997814 , error rate:  0.011898 , loss rate: 0.009738
+picture: m-4-5.4_new , accuracy rate: 0.950459 , error rate:  0.001951 , loss rate: 0.051395
+picture: m-5--6.5_new , accuracy rate: 0.971493 , error rate:  0.004820 , loss rate: 0.033189
+picture: m-5-3.6_new , accuracy rate: 0.979485 , error rate:  0.024576 , loss rate: 0.004565
+picture: m-5-6.3_new , accuracy rate: 0.996388 , error rate:  0.013503 , loss rate: 0.009939
+picture: m-5-6.8_new , accuracy rate: 0.983365 , error rate:  0.007429 , loss rate: 0.023940
+picture: m-6-6.41_new , accuracy rate: 0.992794 , error rate:  0.008400 , loss rate: 0.015546
+picture: m-6-6.7_new , accuracy rate: 0.918184 , error rate:  0.001069 , loss rate: 0.082797
+picture: m-6-7.5_new , accuracy rate: 0.995961 , error rate:  0.015285 , loss rate: 0.011308
+picture: m-6-8.0_new , accuracy rate: 0.997643 , error rate:  0.013159 , loss rate: 0.010834
+picture: m-7-6.61_new , accuracy rate: 0.995293 , error rate:  0.014336 , loss rate: 0.009696
+picture: m-7-7.4_new , accuracy rate: 0.999502 , error rate:  0.010823 , loss rate: 0.010331
+picture: m-7-8.4 (2)_new , accuracy rate: 0.999811 , error rate:  0.010055 , loss rate: 0.010242
+picture: m-7-8.4_new , accuracy rate: 0.970443 , error rate:  0.003049 , loss rate: 0.032516
+picture: m-7-8.6_new , accuracy rate: 0.995847 , error rate:  0.008921 , loss rate: 0.013037
+picture: m-8-7.2_new , accuracy rate: 0.990832 , error rate:  0.012251 , loss rate: 0.021306
+picture: m-8-8.2_new , accuracy rate: 0.983683 , error rate:  0.011066 , loss rate: 0.027202
+picture: m-8-8.4_new , accuracy rate: 0.988972 , error rate:  0.008173 , loss rate: 0.019112
+picture: m-8-8.5_new , accuracy rate: 0.509216 , error rate:  0.334742 , loss rate: 0.008243
+picture: m-8-8.71_new , accuracy rate: 0.987644 , error rate:  0.009567 , loss rate: 0.021805
+picture: m-9-10.7_new , accuracy rate: 0.945374 , error rate:  0.001567 , loss rate: 0.056107
+picture: m-9-9.5_new , accuracy rate: 0.920628 , error rate:  0.000954 , loss rate: 0.080250
+回归法 mean results, accuracy rate: 0.947841 , error rate:  0.017592 , loss rate: 0.040198
+直方图均值
+C:\Study\test\100-gt\fm-1-2.4_new.png
+C:\Study\test\100-gt\fm-10-10.61_new.png
+C:\Study\test\100-gt\fm-10-10.6_new.png
+C:\Study\test\100-gt\fm-10-9.5_new.png
+C:\Study\test\100-gt\fm-10-9.9_new.png
+C:\Study\test\100-gt\fm-11-11.02_new.png
+C:\Study\test\100-gt\fm-11-11.22_new.png
+C:\Study\test\100-gt\fm-11-14.0_new.png
+C:\Study\test\100-gt\fm-11-9.61_new.png
+C:\Study\test\100-gt\fm-12-11.6_new.png
+C:\Study\test\100-gt\fm-12-11.9_new.png
+C:\Study\test\100-gt\fm-12-13.4 (2)_new.png
+C:\Study\test\100-gt\fm-12-14.7_new.png
+C:\Study\test\100-gt\fm-13-11.1_new.png
+C:\Study\test\100-gt\fm-13-13.62_new.png
+C:\Study\test\100-gt\fm-14-14.0_new.png
+C:\Study\test\100-gt\fm-14-15.9_new.png
+C:\Study\test\100-gt\fm-15-15.0_new.png
+C:\Study\test\100-gt\fm-15-15.9_new.png
+C:\Study\test\100-gt\fm-15-16.31_new.png
+C:\Study\test\100-gt\fm-16-16.31_new.png
+C:\Study\test\100-gt\fm-16-17.31_new.png
+C:\Study\test\100-gt\fm-17-12.3_new.png
+C:\Study\test\100-gt\fm-2-1.7_new.png
+C:\Study\test\100-gt\fm-2-2.91_new.png
+C:\Study\test\100-gt\fm-3-3.1_new.png
+C:\Study\test\100-gt\fm-3-3.5_new.png
+C:\Study\test\100-gt\fm-3-4.03_new.png
+C:\Study\test\100-gt\fm-4-4.35_new.png
+C:\Study\test\100-gt\fm-4-4.5_new.png
+C:\Study\test\100-gt\fm-4-5.21_new.png
+C:\Study\test\100-gt\fm-4-5.8_new.png
+C:\Study\test\100-gt\fm-5-4.91_new.png
+C:\Study\test\100-gt\fm-5-5.912_new.png
+C:\Study\test\100-gt\fm-6-5.8_new.png
+C:\Study\test\100-gt\fm-6-6.0_new.png
+C:\Study\test\100-gt\fm-6-7.4_new.png
+C:\Study\test\100-gt\fm-7-10.9_new.png
+C:\Study\test\100-gt\fm-7-6.2_new.png
+C:\Study\test\100-gt\fm-7-7.2_new.png
+C:\Study\test\100-gt\fm-7-7.4_new.png
+C:\Study\test\100-gt\fm-7-8.41_new.png
+C:\Study\test\100-gt\fm-8-10.81_new.png
+C:\Study\test\100-gt\fm-8-10.83_new.png
+C:\Study\test\100-gt\fm-8-7.81_new.png
+C:\Study\test\100-gt\fm-8-9.23_new.png
+C:\Study\test\100-gt\fm-8-9.53_new.png
+C:\Study\test\100-gt\fm-9-10.62_new.png
+C:\Study\test\100-gt\fm-9-11.0_new.png
+C:\Study\test\100-gt\fm-9-7.8_new.png
+C:\Study\test\100-gt\fm-9-9.31_new.png
+C:\Study\test\100-gt\fm-9-9.6_new.png
+C:\Study\test\100-gt\fm-9-9.81_new.png
+C:\Study\test\100-gt\fm-9-9.8_new.png
+C:\Study\test\100-gt\m-10-11 (1)_new.png
+C:\Study\test\100-gt\m-10-12.6_new.png
+C:\Study\test\100-gt\m-10-9.0_new.png
+C:\Study\test\100-gt\m-11-10.6_new.png
+C:\Study\test\100-gt\m-11-12.6_new.png
+C:\Study\test\100-gt\m-12-11.9_new.png
+C:\Study\test\100-gt\m-12-12.63_new.png
+C:\Study\test\100-gt\m-12-13.0_new.png
+C:\Study\test\100-gt\m-13-11.8_new.png
+C:\Study\test\100-gt\m-13-12.8_new.png
+C:\Study\test\100-gt\m-14-13.2_new.png
+C:\Study\test\100-gt\m-14-13.4_new.png
+C:\Study\test\100-gt\m-15-15.2_new.png
+C:\Study\test\100-gt\m-15-15.71_new.png
+C:\Study\test\100-gt\m-15-16.82_new.png
+C:\Study\test\100-gt\m-16-13.9_new.png
+C:\Study\test\100-gt\m-16-16.1_new.png
+C:\Study\test\100-gt\m-16-16.8_new.png
+C:\Study\test\100-gt\m-16-17.0_new.png
+C:\Study\test\100-gt\m-17-18 (2)_new.png
+C:\Study\test\100-gt\m-17-18.2_new.png
+C:\Study\test\100-gt\m-17-18_new.png
+C:\Study\test\100-gt\m-2-2.0_new.png
+C:\Study\test\100-gt\m-3-3.7_new.png
+C:\Study\test\100-gt\m-4-4.61_new.png
+C:\Study\test\100-gt\m-4-5.4_new.png
+C:\Study\test\100-gt\m-5--6.5_new.png
+C:\Study\test\100-gt\m-5-3.6_new.png
+C:\Study\test\100-gt\m-5-6.3_new.png
+C:\Study\test\100-gt\m-5-6.8_new.png
+C:\Study\test\100-gt\m-6-6.41_new.png
+C:\Study\test\100-gt\m-6-6.7_new.png
+C:\Study\test\100-gt\m-6-7.5_new.png
+C:\Study\test\100-gt\m-6-8.0_new.png
+C:\Study\test\100-gt\m-7-6.61_new.png
+C:\Study\test\100-gt\m-7-7.4_new.png
+C:\Study\test\100-gt\m-7-8.4 (2)_new.png
+C:\Study\test\100-gt\m-7-8.4_new.png
+C:\Study\test\100-gt\m-7-8.6_new.png
+C:\Study\test\100-gt\m-8-7.2_new.png
+C:\Study\test\100-gt\m-8-8.2_new.png
+C:\Study\test\100-gt\m-8-8.4_new.png
+C:\Study\test\100-gt\m-8-8.5_new.png
+C:\Study\test\100-gt\m-8-8.71_new.png
+C:\Study\test\100-gt\m-9-10.7_new.png
+C:\Study\test\100-gt\m-9-9.5_new.png
+picture: fm-1-2.4_new , accuracy rate: 0.980073 , error rate:  0.004775 , loss rate: 0.024606
+picture: fm-10-10.61_new , accuracy rate: 0.957661 , error rate:  0.002244 , loss rate: 0.044488
+picture: fm-10-10.6_new , accuracy rate: 0.947050 , error rate:  0.002391 , loss rate: 0.055214
+picture: fm-10-9.5_new , accuracy rate: 0.961628 , error rate:  0.004786 , loss rate: 0.042974
+picture: fm-10-9.9_new , accuracy rate: 0.989939 , error rate:  0.011886 , loss rate: 0.021828
+picture: fm-11-11.02_new , accuracy rate: 0.939587 , error rate:  0.001296 , loss rate: 0.061630
+picture: fm-11-11.22_new , accuracy rate: 0.986106 , error rate:  0.008180 , loss rate: 0.021960
+picture: fm-11-14.0_new , accuracy rate: 0.989802 , error rate:  0.009869 , loss rate: 0.019966
+picture: fm-11-9.61_new , accuracy rate: 0.950899 , error rate:  0.003552 , loss rate: 0.052478
+picture: fm-12-11.6_new , accuracy rate: 0.948900 , error rate:  0.003383 , loss rate: 0.054311
+picture: fm-12-11.9_new , accuracy rate: 0.894118 , error rate:  0.001882 , loss rate: 0.107565
+picture: fm-12-13.4 (2)_new , accuracy rate: 0.976999 , error rate:  0.006537 , loss rate: 0.029387
+picture: fm-12-14.7_new , accuracy rate: 0.931561 , error rate:  0.002388 , loss rate: 0.070663
+picture: fm-13-11.1_new , accuracy rate: 0.893315 , error rate:  0.000414 , loss rate: 0.107055
+picture: fm-13-13.62_new , accuracy rate: 0.988941 , error rate:  0.007153 , loss rate: 0.018133
+picture: fm-14-14.0_new , accuracy rate: 0.941455 , error rate:  0.001309 , loss rate: 0.059777
+picture: fm-14-15.9_new , accuracy rate: 0.948799 , error rate:  0.001427 , loss rate: 0.052555
+picture: fm-15-15.0_new , accuracy rate: 0.960051 , error rate:  0.001750 , loss rate: 0.041628
+picture: fm-15-15.9_new , accuracy rate: 0.895849 , error rate:  0.000426 , loss rate: 0.104533
+picture: fm-15-16.31_new , accuracy rate: 0.880123 , error rate:  0.001940 , loss rate: 0.121585
+picture: fm-16-16.31_new , accuracy rate: 0.851457 , error rate:  0.000022 , loss rate: 0.148561
+picture: fm-16-17.31_new , accuracy rate: 0.839424 , error rate:  0.000707 , loss rate: 0.161169
+picture: fm-17-12.3_new , accuracy rate: 0.976773 , error rate:  0.005354 , loss rate: 0.028456
+picture: fm-2-1.7_new , accuracy rate: 0.978224 , error rate:  0.004350 , loss rate: 0.026031
+picture: fm-2-2.91_new , accuracy rate: 0.974602 , error rate:  0.002511 , loss rate: 0.027845
+picture: fm-3-3.1_new , accuracy rate: 0.983631 , error rate:  0.006611 , loss rate: 0.022871
+picture: fm-3-3.5_new , accuracy rate: 0.963559 , error rate:  0.001092 , loss rate: 0.037493
+picture: fm-3-4.03_new , accuracy rate: 0.993353 , error rate:  0.004339 , loss rate: 0.010957
+picture: fm-4-4.35_new , accuracy rate: 0.978448 , error rate:  0.001175 , loss rate: 0.022701
+picture: fm-4-4.5_new , accuracy rate: 0.980400 , error rate:  0.006557 , loss rate: 0.026028
+picture: fm-4-5.21_new , accuracy rate: 0.985287 , error rate:  0.004515 , loss rate: 0.019162
+picture: fm-4-5.8_new , accuracy rate: 0.961640 , error rate:  0.002898 , loss rate: 0.041147
+picture: fm-5-4.91_new , accuracy rate: 0.973135 , error rate:  0.004434 , loss rate: 0.031180
+picture: fm-5-5.912_new , accuracy rate: 0.975486 , error rate:  0.004543 , loss rate: 0.028946
+picture: fm-6-5.8_new , accuracy rate: 0.961855 , error rate:  0.005186 , loss rate: 0.043133
+picture: fm-6-6.0_new , accuracy rate: 0.964253 , error rate:  0.003472 , loss rate: 0.039096
+picture: fm-6-7.4_new , accuracy rate: 0.921942 , error rate:  0.000305 , loss rate: 0.078339
+picture: fm-7-10.9_new , accuracy rate: 0.961060 , error rate:  0.002037 , loss rate: 0.040897
+picture: fm-7-6.2_new , accuracy rate: 0.913826 , error rate:  0.001711 , loss rate: 0.087738
+picture: fm-7-7.2_new , accuracy rate: 0.916188 , error rate:  0.000282 , loss rate: 0.084070
+picture: fm-7-7.4_new , accuracy rate: 0.967450 , error rate:  0.005163 , loss rate: 0.037545
+picture: fm-7-8.41_new , accuracy rate: 0.946366 , error rate:  0.002032 , loss rate: 0.055557
+picture: fm-8-10.81_new , accuracy rate: 0.958507 , error rate:  0.001286 , loss rate: 0.042726
+picture: fm-8-10.83_new , accuracy rate: 0.946978 , error rate:  0.001828 , loss rate: 0.054753
+picture: fm-8-7.81_new , accuracy rate: 0.935536 , error rate:  0.002164 , loss rate: 0.066488
+picture: fm-8-9.23_new , accuracy rate: 0.998462 , error rate:  0.009541 , loss rate: 0.008018
+picture: fm-8-9.53_new , accuracy rate: 0.532906 , error rate:  0.342297 , loss rate: 0.035087
+picture: fm-9-10.62_new , accuracy rate: 0.863855 , error rate:  0.000344 , loss rate: 0.136442
+picture: fm-9-11.0_new , accuracy rate: 0.891240 , error rate:  0.000198 , loss rate: 0.108937
+picture: fm-9-7.8_new , accuracy rate: 0.993192 , error rate:  0.007540 , loss rate: 0.014297
+picture: fm-9-9.31_new , accuracy rate: 0.994837 , error rate:  0.012095 , loss rate: 0.017196
+picture: fm-9-9.6_new , accuracy rate: 0.971520 , error rate:  0.004638 , loss rate: 0.032986
+picture: fm-9-9.81_new , accuracy rate: 0.837462 , error rate:  0.000575 , loss rate: 0.163020
+picture: fm-9-9.8_new , accuracy rate: 0.960854 , error rate:  0.005394 , loss rate: 0.044328
+picture: m-10-11 (1)_new , accuracy rate: 0.995560 , error rate:  0.014646 , loss rate: 0.010270
+picture: m-10-12.6_new , accuracy rate: 0.901784 , error rate:  0.000904 , loss rate: 0.099031
+picture: m-10-9.0_new , accuracy rate: 0.968197 , error rate:  0.002745 , loss rate: 0.034460
+picture: m-11-10.6_new , accuracy rate: 0.957671 , error rate:  0.001839 , loss rate: 0.044090
+picture: m-11-12.6_new , accuracy rate: 0.926007 , error rate:  0.001734 , loss rate: 0.075599
+picture: m-12-11.9_new , accuracy rate: 0.973182 , error rate:  0.007217 , loss rate: 0.033842
+picture: m-12-12.63_new , accuracy rate: 0.985949 , error rate:  0.012386 , loss rate: 0.026263
+picture: m-12-13.0_new , accuracy rate: 0.886214 , error rate:  0.000227 , loss rate: 0.113987
+picture: m-13-11.8_new , accuracy rate: 0.940042 , error rate:  0.002270 , loss rate: 0.062092
+picture: m-13-12.8_new , accuracy rate: 0.948591 , error rate:  0.002950 , loss rate: 0.054207
+picture: m-14-13.2_new , accuracy rate: 0.948596 , error rate:  0.001489 , loss rate: 0.052816
+picture: m-14-13.4_new , accuracy rate: 0.909886 , error rate:  0.000746 , loss rate: 0.090792
+picture: m-15-15.2_new , accuracy rate: 0.992821 , error rate:  0.005973 , loss rate: 0.013109
+picture: m-15-15.71_new , accuracy rate: 0.996094 , error rate:  0.010379 , loss rate: 0.014244
+picture: m-15-16.82_new , accuracy rate: 0.605909 , error rate:  0.290896 , loss rate: 0.011444
+picture: m-16-13.9_new , accuracy rate: 0.883986 , error rate:  0.000401 , loss rate: 0.116368
+picture: m-16-16.1_new , accuracy rate: 0.990452 , error rate:  0.017487 , loss rate: 0.008107
+picture: m-16-16.8_new , accuracy rate: 0.832580 , error rate:  0.000099 , loss rate: 0.167503
+picture: m-16-17.0_new , accuracy rate: 0.825220 , error rate:  0.000257 , loss rate: 0.174992
+picture: m-17-18 (2)_new , accuracy rate: 0.994730 , error rate:  0.013068 , loss rate: 0.018270
+picture: m-17-18.2_new , accuracy rate: 0.995244 , error rate:  0.014201 , loss rate: 0.009513
+picture: m-17-18_new , accuracy rate: 0.947609 , error rate:  0.004677 , loss rate: 0.056823
+picture: m-2-2.0_new , accuracy rate: 0.986472 , error rate:  0.020000 , loss rate: 0.006742
+picture: m-3-3.7_new , accuracy rate: 0.968873 , error rate:  0.001878 , loss rate: 0.032947
+picture: m-4-4.61_new , accuracy rate: 0.970179 , error rate:  0.003368 , loss rate: 0.033088
+picture: m-4-5.4_new , accuracy rate: 0.918239 , error rate:  0.000808 , loss rate: 0.082503
+picture: m-5--6.5_new , accuracy rate: 0.988188 , error rate:  0.006472 , loss rate: 0.018208
+picture: m-5-3.6_new , accuracy rate: 0.992454 , error rate:  0.009250 , loss rate: 0.016727
+picture: m-5-6.3_new , accuracy rate: 0.975803 , error rate:  0.003872 , loss rate: 0.027975
+picture: m-5-6.8_new , accuracy rate: 0.962330 , error rate:  0.003073 , loss rate: 0.040627
+picture: m-6-6.41_new , accuracy rate: 0.980350 , error rate:  0.004801 , loss rate: 0.024357
+picture: m-6-6.7_new , accuracy rate: 0.874207 , error rate:  0.000567 , loss rate: 0.126289
+picture: m-6-7.5_new , accuracy rate: 0.956533 , error rate:  0.001978 , loss rate: 0.045359
+picture: m-6-8.0_new , accuracy rate: 0.933512 , error rate:  0.002205 , loss rate: 0.068546
+picture: m-7-6.61_new , accuracy rate: 0.953226 , error rate:  0.003944 , loss rate: 0.050533
+picture: m-7-7.4_new , accuracy rate: 0.971999 , error rate:  0.003190 , loss rate: 0.031101
+picture: m-7-8.4 (2)_new , accuracy rate: 0.949737 , error rate:  0.001165 , loss rate: 0.051368
+picture: m-7-8.4_new , accuracy rate: 0.976727 , error rate:  0.003574 , loss rate: 0.026763
+picture: m-7-8.6_new , accuracy rate: 0.960357 , error rate:  0.002274 , loss rate: 0.041827
+picture: m-8-7.2_new , accuracy rate: 0.924765 , error rate:  0.002941 , loss rate: 0.077954
+picture: m-8-8.2_new , accuracy rate: 0.970253 , error rate:  0.008499 , loss rate: 0.037994
+picture: m-8-8.4_new , accuracy rate: 0.940488 , error rate:  0.001183 , loss rate: 0.060624
+picture: m-8-8.5_new , accuracy rate: 0.964870 , error rate:  0.003169 , loss rate: 0.038189
+picture: m-8-8.71_new , accuracy rate: 0.946133 , error rate:  0.003667 , loss rate: 0.057337
+picture: m-9-10.7_new , accuracy rate: 0.961344 , error rate:  0.002368 , loss rate: 0.040933
+picture: m-9-9.5_new , accuracy rate: 0.941776 , error rate:  0.001501 , loss rate: 0.059638
+直方图均值 mean results, accuracy rate: 0.941917 , error rate:  0.010371 , loss rate: 0.053210
+最大熵
+C:\Study\test\100-gt\fm-1-2.4_new.png
+C:\Study\test\100-gt\fm-10-10.61_new.png
+C:\Study\test\100-gt\fm-10-10.6_new.png
+C:\Study\test\100-gt\fm-10-9.5_new.png
+C:\Study\test\100-gt\fm-10-9.9_new.png
+C:\Study\test\100-gt\fm-11-11.02_new.png
+C:\Study\test\100-gt\fm-11-11.22_new.png
+C:\Study\test\100-gt\fm-11-14.0_new.png
+C:\Study\test\100-gt\fm-11-9.61_new.png
+C:\Study\test\100-gt\fm-12-11.6_new.png
+C:\Study\test\100-gt\fm-12-11.9_new.png
+C:\Study\test\100-gt\fm-12-13.4 (2)_new.png
+C:\Study\test\100-gt\fm-12-14.7_new.png
+C:\Study\test\100-gt\fm-13-11.1_new.png
+C:\Study\test\100-gt\fm-13-13.62_new.png
+C:\Study\test\100-gt\fm-14-14.0_new.png
+C:\Study\test\100-gt\fm-14-15.9_new.png
+C:\Study\test\100-gt\fm-15-15.0_new.png
+C:\Study\test\100-gt\fm-15-15.9_new.png
+C:\Study\test\100-gt\fm-15-16.31_new.png
+C:\Study\test\100-gt\fm-16-16.31_new.png
+C:\Study\test\100-gt\fm-16-17.31_new.png
+C:\Study\test\100-gt\fm-17-12.3_new.png
+C:\Study\test\100-gt\fm-2-1.7_new.png
+C:\Study\test\100-gt\fm-2-2.91_new.png
+C:\Study\test\100-gt\fm-3-3.1_new.png
+C:\Study\test\100-gt\fm-3-3.5_new.png
+C:\Study\test\100-gt\fm-3-4.03_new.png
+C:\Study\test\100-gt\fm-4-4.35_new.png
+C:\Study\test\100-gt\fm-4-4.5_new.png
+C:\Study\test\100-gt\fm-4-5.21_new.png
+C:\Study\test\100-gt\fm-4-5.8_new.png
+C:\Study\test\100-gt\fm-5-4.91_new.png
+C:\Study\test\100-gt\fm-5-5.912_new.png
+C:\Study\test\100-gt\fm-6-5.8_new.png
+C:\Study\test\100-gt\fm-6-6.0_new.png
+C:\Study\test\100-gt\fm-6-7.4_new.png
+C:\Study\test\100-gt\fm-7-10.9_new.png
+C:\Study\test\100-gt\fm-7-6.2_new.png
+C:\Study\test\100-gt\fm-7-7.2_new.png
+C:\Study\test\100-gt\fm-7-7.4_new.png
+C:\Study\test\100-gt\fm-7-8.41_new.png
+C:\Study\test\100-gt\fm-8-10.81_new.png
+C:\Study\test\100-gt\fm-8-10.83_new.png
+C:\Study\test\100-gt\fm-8-7.81_new.png
+C:\Study\test\100-gt\fm-8-9.23_new.png
+C:\Study\test\100-gt\fm-8-9.53_new.png
+C:\Study\test\100-gt\fm-9-10.62_new.png
+C:\Study\test\100-gt\fm-9-11.0_new.png
+C:\Study\test\100-gt\fm-9-7.8_new.png
+C:\Study\test\100-gt\fm-9-9.31_new.png
+C:\Study\test\100-gt\fm-9-9.6_new.png
+C:\Study\test\100-gt\fm-9-9.81_new.png
+C:\Study\test\100-gt\fm-9-9.8_new.png
+C:\Study\test\100-gt\m-10-11 (1)_new.png
+C:\Study\test\100-gt\m-10-12.6_new.png
+C:\Study\test\100-gt\m-10-9.0_new.png
+C:\Study\test\100-gt\m-11-10.6_new.png
+C:\Study\test\100-gt\m-11-12.6_new.png
+C:\Study\test\100-gt\m-12-11.9_new.png
+C:\Study\test\100-gt\m-12-12.63_new.png
+C:\Study\test\100-gt\m-12-13.0_new.png
+C:\Study\test\100-gt\m-13-11.8_new.png
+C:\Study\test\100-gt\m-13-12.8_new.png
+C:\Study\test\100-gt\m-14-13.2_new.png
+C:\Study\test\100-gt\m-14-13.4_new.png
+C:\Study\test\100-gt\m-15-15.2_new.png
+C:\Study\test\100-gt\m-15-15.71_new.png
+C:\Study\test\100-gt\m-15-16.82_new.png
+C:\Study\test\100-gt\m-16-13.9_new.png
+C:\Study\test\100-gt\m-16-16.1_new.png
+C:\Study\test\100-gt\m-16-16.8_new.png
+C:\Study\test\100-gt\m-16-17.0_new.png
+C:\Study\test\100-gt\m-17-18 (2)_new.png
+C:\Study\test\100-gt\m-17-18.2_new.png
+C:\Study\test\100-gt\m-17-18_new.png
+C:\Study\test\100-gt\m-2-2.0_new.png
+C:\Study\test\100-gt\m-3-3.7_new.png
+C:\Study\test\100-gt\m-4-4.61_new.png
+C:\Study\test\100-gt\m-4-5.4_new.png
+C:\Study\test\100-gt\m-5--6.5_new.png
+C:\Study\test\100-gt\m-5-3.6_new.png
+C:\Study\test\100-gt\m-5-6.3_new.png
+C:\Study\test\100-gt\m-5-6.8_new.png
+C:\Study\test\100-gt\m-6-6.41_new.png
+C:\Study\test\100-gt\m-6-6.7_new.png
+C:\Study\test\100-gt\m-6-7.5_new.png
+C:\Study\test\100-gt\m-6-8.0_new.png
+C:\Study\test\100-gt\m-7-6.61_new.png
+C:\Study\test\100-gt\m-7-7.4_new.png
+C:\Study\test\100-gt\m-7-8.4 (2)_new.png
+C:\Study\test\100-gt\m-7-8.4_new.png
+C:\Study\test\100-gt\m-7-8.6_new.png
+C:\Study\test\100-gt\m-8-7.2_new.png
+C:\Study\test\100-gt\m-8-8.2_new.png
+C:\Study\test\100-gt\m-8-8.4_new.png
+C:\Study\test\100-gt\m-8-8.5_new.png
+C:\Study\test\100-gt\m-8-8.71_new.png
+C:\Study\test\100-gt\m-9-10.7_new.png
+C:\Study\test\100-gt\m-9-9.5_new.png
+picture: fm-1-2.4_new , accuracy rate: -0.509994 , error rate:  0.602504 , loss rate: 0.002288
+picture: fm-10-10.61_new , accuracy rate: 0.956489 , error rate:  0.002244 , loss rate: 0.045657
+picture: fm-10-10.6_new , accuracy rate: 0.871305 , error rate:  0.000658 , loss rate: 0.129268
+picture: fm-10-9.5_new , accuracy rate: 0.905463 , error rate:  0.001812 , loss rate: 0.096177
+picture: fm-10-9.9_new , accuracy rate: 0.993765 , error rate:  0.019279 , loss rate: 0.013164
+picture: fm-11-11.02_new , accuracy rate: 0.818410 , error rate:  0.000000 , loss rate: 0.181590
+picture: fm-11-11.22_new , accuracy rate: 0.897188 , error rate:  0.002568 , loss rate: 0.105117
+picture: fm-11-14.0_new , accuracy rate: 0.910063 , error rate:  0.001853 , loss rate: 0.091623
+picture: fm-11-9.61_new , accuracy rate: 0.915108 , error rate:  0.002124 , loss rate: 0.086836
+picture: fm-12-11.6_new , accuracy rate: 0.977303 , error rate:  0.007964 , loss rate: 0.030480
+picture: fm-12-11.9_new , accuracy rate: 0.881579 , error rate:  0.001543 , loss rate: 0.119781
+picture: fm-12-13.4 (2)_new , accuracy rate: 0.888216 , error rate:  0.000951 , loss rate: 0.112629
+picture: fm-12-14.7_new , accuracy rate: 0.886129 , error rate:  0.000465 , loss rate: 0.114284
+picture: fm-13-11.1_new , accuracy rate: 0.870786 , error rate:  0.000254 , loss rate: 0.129434
+picture: fm-13-13.62_new , accuracy rate: 0.923938 , error rate:  0.001172 , loss rate: 0.077145
+picture: fm-14-14.0_new , accuracy rate: 0.842478 , error rate:  0.000348 , loss rate: 0.157816
+picture: fm-14-15.9_new , accuracy rate: 0.906436 , error rate:  0.000593 , loss rate: 0.094101
+picture: fm-15-15.0_new , accuracy rate: 0.972854 , error rate:  0.002812 , loss rate: 0.029882
+picture: fm-15-15.9_new , accuracy rate: 0.996231 , error rate:  0.011024 , loss rate: 0.014751
+picture: fm-15-16.31_new , accuracy rate: 0.806333 , error rate:  0.001098 , loss rate: 0.194552
+picture: fm-16-16.31_new , accuracy rate: 0.971413 , error rate:  0.004399 , loss rate: 0.032860
+picture: fm-16-17.31_new , accuracy rate: 0.837003 , error rate:  0.000707 , loss rate: 0.163588
+picture: fm-17-12.3_new , accuracy rate: 0.900913 , error rate:  0.000636 , loss rate: 0.099660
+picture: fm-2-1.7_new , accuracy rate: 0.997138 , error rate:  0.008161 , loss rate: 0.011000
+picture: fm-2-2.91_new , accuracy rate: 0.470934 , error rate:  0.349522 , loss rate: 0.005376
+picture: fm-3-3.1_new , accuracy rate: -1.330028 , error rate:  0.700580 , loss rate: 0.002925
+picture: fm-3-3.5_new , accuracy rate: 0.935802 , error rate:  0.000283 , loss rate: 0.064463
+picture: fm-3-4.03_new , accuracy rate: -1.572088 , error rate:  0.720182 , loss rate: 0.000465
+picture: fm-4-4.35_new , accuracy rate: -0.590426 , error rate:  0.613981 , loss rate: 0.000047
+picture: fm-4-4.5_new , accuracy rate: -0.607964 , error rate:  0.617652 , loss rate: 0.002851
+picture: fm-4-5.21_new , accuracy rate: -1.290813 , error rate:  0.696124 , loss rate: 0.000000
+picture: fm-4-5.8_new , accuracy rate: 0.810998 , error rate:  0.000023 , loss rate: 0.189021
+picture: fm-5-4.91_new , accuracy rate: -2.303408 , error rate:  0.767850 , loss rate: 0.000962
+picture: fm-5-5.912_new , accuracy rate: -0.497340 , error rate:  0.600977 , loss rate: 0.003503
+picture: fm-6-5.8_new , accuracy rate: 0.955459 , error rate:  0.004557 , loss rate: 0.048895
+picture: fm-6-6.0_new , accuracy rate: 0.964250 , error rate:  0.003472 , loss rate: 0.039099
+picture: fm-6-7.4_new , accuracy rate: 0.959347 , error rate:  0.001549 , loss rate: 0.042139
+picture: fm-7-10.9_new , accuracy rate: 0.987573 , error rate:  0.017959 , loss rate: 0.005755
+picture: fm-7-6.2_new , accuracy rate: 0.895816 , error rate:  0.001151 , loss rate: 0.105215
+picture: fm-7-7.2_new , accuracy rate: 0.960351 , error rate:  0.002603 , loss rate: 0.042148
+picture: fm-7-7.4_new , accuracy rate: -0.361288 , error rate:  0.578555 , loss rate: 0.004846
+picture: fm-7-8.41_new , accuracy rate: 0.790557 , error rate:  0.000014 , loss rate: 0.209454
+picture: fm-8-10.81_new , accuracy rate: 0.970957 , error rate:  0.002468 , loss rate: 0.031439
+picture: fm-8-10.83_new , accuracy rate: 0.929145 , error rate:  0.001099 , loss rate: 0.071876
+picture: fm-8-7.81_new , accuracy rate: 0.935308 , error rate:  0.002164 , loss rate: 0.066716
+picture: fm-8-9.23_new , accuracy rate: -1.543679 , error rate:  0.717931 , loss rate: 0.000439
+picture: fm-8-9.53_new , accuracy rate: 0.040362 , error rate:  0.491653 , loss rate: 0.003823
+picture: fm-9-10.62_new , accuracy rate: 0.819535 , error rate:  0.000191 , loss rate: 0.180621
+picture: fm-9-11.0_new , accuracy rate: 0.858742 , error rate:  0.000091 , loss rate: 0.141336
+picture: fm-9-7.8_new , accuracy rate: 0.994988 , error rate:  0.008206 , loss rate: 0.013176
+picture: fm-9-9.31_new , accuracy rate: 0.948965 , error rate:  0.004463 , loss rate: 0.055271
+picture: fm-9-9.6_new , accuracy rate: 0.780452 , error rate:  0.187199 , loss rate: 0.008750
+picture: fm-9-9.81_new , accuracy rate: 0.836873 , error rate:  0.000575 , loss rate: 0.163609
+picture: fm-9-9.8_new , accuracy rate: 0.000001 , error rate:  0.000000 , loss rate: 0.999999
+picture: m-10-11 (1)_new , accuracy rate: 0.963410 , error rate:  0.004985 , loss rate: 0.041393
+picture: m-10-12.6_new , accuracy rate: 0.900991 , error rate:  0.000904 , loss rate: 0.099823
+picture: m-10-9.0_new , accuracy rate: 0.967264 , error rate:  0.002745 , loss rate: 0.035391
+picture: m-11-10.6_new , accuracy rate: 0.941222 , error rate:  0.001159 , loss rate: 0.059868
+picture: m-11-12.6_new , accuracy rate: 0.895136 , error rate:  0.000851 , loss rate: 0.105626
+picture: m-12-11.9_new , accuracy rate: 0.800284 , error rate:  0.000583 , loss rate: 0.200183
+picture: m-12-12.63_new , accuracy rate: 0.859268 , error rate:  0.001790 , loss rate: 0.142270
+picture: m-12-13.0_new , accuracy rate: 0.871049 , error rate:  0.000155 , loss rate: 0.129086
+picture: m-13-11.8_new , accuracy rate: 0.911313 , error rate:  0.000894 , loss rate: 0.089501
+picture: m-13-12.8_new , accuracy rate: 0.856251 , error rate:  0.000428 , loss rate: 0.144116
+picture: m-14-13.2_new , accuracy rate: 0.888769 , error rate:  0.000320 , loss rate: 0.111515
+picture: m-14-13.4_new , accuracy rate: 0.909497 , error rate:  0.000746 , loss rate: 0.091181
+picture: m-15-15.2_new , accuracy rate: -0.386941 , error rate:  0.581723 , loss rate: 0.001598
+picture: m-15-15.71_new , accuracy rate: 0.999160 , error rate:  0.012566 , loss rate: 0.011737
+picture: m-15-16.82_new , accuracy rate: -3.066679 , error rate:  0.802689 , loss rate: 0.000288
+picture: m-16-13.9_new , accuracy rate: 0.832576 , error rate:  0.000106 , loss rate: 0.167512
+picture: m-16-16.1_new , accuracy rate: 0.986320 , error rate:  0.019627 , loss rate: 0.006215
+picture: m-16-16.8_new , accuracy rate: 0.828082 , error rate:  0.000063 , loss rate: 0.171969
+picture: m-16-17.0_new , accuracy rate: 0.833665 , error rate:  0.000390 , loss rate: 0.166660
+picture: m-17-18 (2)_new , accuracy rate: 0.896178 , error rate:  0.001153 , loss rate: 0.104855
+picture: m-17-18.2_new , accuracy rate: 0.988808 , error rate:  0.017832 , loss rate: 0.006839
+picture: m-17-18_new , accuracy rate: 0.652759 , error rate:  0.260353 , loss rate: 0.003517
+picture: m-2-2.0_new , accuracy rate: 0.846892 , error rate:  0.000439 , loss rate: 0.153480
+picture: m-3-3.7_new , accuracy rate: 0.323750 , error rate:  0.405374 , loss rate: 0.003257
+picture: m-4-4.61_new , accuracy rate: 0.990979 , error rate:  0.007390 , loss rate: 0.016344
+picture: m-4-5.4_new , accuracy rate: 0.944789 , error rate:  0.001485 , loss rate: 0.056614
+picture: m-5--6.5_new , accuracy rate: 0.962795 , error rate:  0.002557 , loss rate: 0.039666
+picture: m-5-3.6_new , accuracy rate: 0.979428 , error rate:  0.024562 , loss rate: 0.004495
+picture: m-5-6.3_new , accuracy rate: 0.944825 , error rate:  0.000908 , loss rate: 0.056033
+picture: m-5-6.8_new , accuracy rate: 0.999947 , error rate:  0.012829 , loss rate: 0.012882
+picture: m-6-6.41_new , accuracy rate: 0.997460 , error rate:  0.012213 , loss rate: 0.009704
+picture: m-6-6.7_new , accuracy rate: 0.921530 , error rate:  0.001030 , loss rate: 0.079419
+picture: m-6-7.5_new , accuracy rate: 0.989612 , error rate:  0.009735 , loss rate: 0.020022
+picture: m-6-8.0_new , accuracy rate: 0.911375 , error rate:  0.001160 , loss rate: 0.089682
+picture: m-7-6.61_new , accuracy rate: 0.938466 , error rate:  0.003201 , loss rate: 0.064539
+picture: m-7-7.4_new , accuracy rate: 0.963126 , error rate:  0.002014 , loss rate: 0.038813
+picture: m-7-8.4 (2)_new , accuracy rate: 0.919611 , error rate:  0.000723 , loss rate: 0.081054
+picture: m-7-8.4_new , accuracy rate: 0.971650 , error rate:  0.002875 , loss rate: 0.031144
+picture: m-7-8.6_new , accuracy rate: 0.813174 , error rate:  0.000120 , loss rate: 0.186924
+picture: m-8-7.2_new , accuracy rate: 0.924590 , error rate:  0.002941 , loss rate: 0.078129
+picture: m-8-8.2_new , accuracy rate: 0.964447 , error rate:  0.007823 , loss rate: 0.043098
+picture: m-8-8.4_new , accuracy rate: 0.923473 , error rate:  0.000546 , loss rate: 0.077032
+picture: m-8-8.5_new , accuracy rate: 0.681918 , error rate:  0.249762 , loss rate: 0.011124
+picture: m-8-8.71_new , accuracy rate: 0.988379 , error rate:  0.009478 , loss rate: 0.020989
+picture: m-9-10.7_new , accuracy rate: 0.967035 , error rate:  0.002957 , loss rate: 0.035824
+picture: m-9-9.5_new , accuracy rate: 0.963180 , error rate:  0.003188 , loss rate: 0.039891
+最大熵 mean results, accuracy rate: 0.633267 , error rate:  0.102456 , loss rate: 0.077792
+[Finished in 6871.9s]

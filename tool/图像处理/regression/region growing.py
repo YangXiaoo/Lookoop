@@ -45,8 +45,8 @@ def handle(dirs, out_dir, clip, w0):
             x,w,y,h = clip
             img = img[x:w , y:h]
             img= crop(img, img_dirs, w0)
-            img_new = normalization(img)
-            img_new = cv2.cvtColor(img_new, cv2.COLOR_GRAY2BGR)
+            # img_new = normalization(img)
+            # img_new = cv2.cvtColor(img_new, cv2.COLOR_GRAY2BGR)
 
             # 6. 保存图片
             saveImage(img_dirs, img_new, "_new")

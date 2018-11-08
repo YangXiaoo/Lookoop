@@ -121,8 +121,8 @@ def getThreshValuebyHistogram(img, weight, is_handle=True):
     # 对阈值进行判断, 去除漂移值
     if v > mean_value * 0.9:
         v = int(mean_value * 0.9)
-    if v < mean_value * 0.3:
-        v = int(mean_value * 0.3)
+    if v < mean_value * 0.7:
+        v = int(mean_value * 0.7)
     print("prediction: %d, limited to: %d" % (dummy_v, v))
     return v
 
@@ -502,13 +502,15 @@ def maxEntrop(img):
         for x in range(i):
             if histogram[x] != 0:
                 pi_pt = histogram[x] / p_t
+                if pi_pt <= 0: continue
                 H_B += - pi_pt * np.log(pi_pt)
 
         # 计算物体熵
         H_O = 0
-        for x in range(i, 250):
+        for x in range(i, 256):
             if histogram[x] != 0:
                 pi_1_pt = histogram[x] / (total_pixel - p_t)
+                if pi_1_pt <= 0: continue
                 H_O += - pi_1_pt * np.log(pi_1_pt)
 
         total_entrop = H_O + H_B
@@ -755,13 +757,15 @@ def batchProcess(file_path_1, file_path_2):
     len_files = len(files_1)
     res = {}
     # 逐一处理
+    count = 1
     for i in range(len_files):
-        print(files_1[i])
+        print("Process %d: %s"% (count, files_1[i]))
         accuracy_rate, error_rate, loss_rate = getAccuracy(files_1[i], files_2[i])
         # print(files_2[i])
         basename = os.path.basename(files_1[i])
         pic_name = os.path.splitext(basename)[0]
         res[pic_name] = [accuracy_rate, error_rate, loss_rate]
+        count += 1
 
     return res
 
@@ -952,3 +956,19 @@ def skipChar(file_path, out_dir, skip_word='_new'):
         new_dirs = os.path.join(out_dir, f.split("\\")[-1])
         os.rename(f, new_dirs)
     os.startfile(out_dir)
+
+
+
+def getPredictionErrorRate(data, labels, w0):
+    """
+    预测值减去标准值的平方再求和，最后计算均值
+    """
+    predition = data * w0
+    m, n = np.shape(predition)
+    error = predition - labels
+    error_sum = 0
+    for i in range(m):
+        for j in range(n):
+            error_sum += error[i, j] * error[i, j]
+
+    return error_sum / (m * n)

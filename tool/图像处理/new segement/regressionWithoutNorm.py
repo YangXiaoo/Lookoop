@@ -32,7 +32,7 @@ def handle(dirs, out_dir, clip, w0):
             x,w,y,h = clip
             img = img[x:w , y:h]
             # 去除噪点
-            thresh_value = getThreshValuebyHistogram(img, w0)
+            thresh_value = getThreshValuebyHistogram(img, w0, is_handle=False)
             # 二值化
             threshold, thrshed_img = cv2.threshold(img, thresh_value, 255, cv2.THRESH_BINARY)
             # 使用区域生长法分割
@@ -54,11 +54,11 @@ def handle(dirs, out_dir, clip, w0):
 
 
 if __name__ == '__main__':
-    file_path = "C:\\Study\\test\\st"
-    out_dir = "C:\\Study\\test\\regression_no_aaaa"
+    file_path = "C:\\Study\\test\\old"
+    out_dir = "C:\\Study\\test\\old_no_norm_no_sucess"
     data = "new_data.txt"
     feature, label = loadData(data)
     # 直方图归一化
-    feature = handleHistogram(feature)
+    # feature = handleHistogram(feature)
     w0 = ridgeRegression(feature, label, 0.5)
     handle(file_path, out_dir, (45,-45,45,-45), w0)

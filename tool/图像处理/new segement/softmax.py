@@ -4,32 +4,7 @@
 import numpy as np
 import random as rd
 import matplotlib.pyplot as plt
-def loadData(file_name, skip=True):
-    """
-    载入数据
-    """
-    feature = []
-    label = []
-    file = open(file_name)
-
-    for line in file.readlines():
-        feature_tmp = []
-        label_tmp = []
-        data = line.strip().split("\t") # split(" ")
-        feature_tmp.append(1)  # 偏置项
-        if skip:
-            for i in data[:-1]:
-                feature_tmp.append(float(i))
-        else:
-            for i in data:
-                feature_tmp.append(float(i))
-        label_tmp.append(int(data[-1]))
-
-        feature.append(feature_tmp)
-        label.append(label_tmp)
-
-    file.close()
-    return np.mat(feature), np.mat(label)
+from api import loadData, handleHistogram
 
 
 def train(feature, label, k, max_iteration, alpha):
@@ -46,22 +21,6 @@ def train(feature, label, k, max_iteration, alpha):
             print("iteration: %d, error rate: %.10f" % (i, error_rate))
         row_sum = -y.sum(axis=1) # 按行相加 m x 1         
         row_sum = row_sum.repeat(k, axis=1) # 每个样本都需要除以总值， 所以转换为 m x k
-        # # 关于sum, repeat函数的用法
-        # weight = np.mat(np.ones((3, 2)))
-        # print(weight)
-        # # [[1. 1.]
-        # #  [1. 1.]
-        # #  [1. 1.]]
-        # weight = weight.sum(axis=1)
-        # print(weight)
-        # # [[2.]
-        # #  [2.]
-        # #  [2.]]
-        # weight = weight.repeat(3, axis=1)
-        # print(weight)
-        # # [[2. 2. 2.]
-        # #  [2. 2. 2.]
-        # #  [2. 2. 2.]]
         y = y / row_sum # 得到-P(y|x,w)
         for x in range(m):
             y[x, label[x, 0]]  += 1
@@ -113,38 +72,43 @@ def predict(test_data, weights):
 
 
 if __name__ == "__main__":
-    inputfile = "data.txt"
+    inputfile = "new_data.txt"
     # 1、导入训练数据
     feature, label = loadData(inputfile)
+    feature = handleHistogram(feature)
     print(np.shape(feature), np.shape(label))
-    x = []
-    y = []
-    for i in range(np.shape(feature)[0]):
-        x.append(feature[i, 1])
-        y.append(feature[i, 2])
-    x = np.array(x)
-    y = np.array(y)
-    color = np.arctan2(y, x)
-    # 绘制散点图
-    plt.scatter(x, y, s = 75, c = color, alpha = 0.5)
-    # 设置坐标轴范围
-    plt.xlim((-5, 5))
-    plt.ylim((-5, 5))
-
-    # 不显示坐标轴的值
-    plt.xticks(())
-    plt.yticks(())
-
-    plt.show()
-
-    k = 4
+    #print(feature)
+    k = 256
     # 2、训练Softmax模型
-    weights = train(feature, label, k, 10000, 0.4)
-    print(weights)
+    weights = train(feature, label, k, 100000, 0.1)
+    # print(weights)
 
     # 3. 预测   
-    m, n = np.shape(weights)
-    data = load_data(4000, m)
-    res = predict(data, weights)
-    print(res)
+    
+    actual_x = [] # 绘制直线的x轴坐标
+    predict_x = [] # 绘制预测值的x坐标
+    for i in label:
+        actual_x.append(int(i[0]))
+        predict_x.append(i[0])
+    actual_y = actual_x # 直线的y坐标
 
+    # 得到预测值
+    predition = predict(feature, weights)
+    m, n = np.shape(predition)
+    error = np.mat(np.zeros((m)))
+    predict_y = [] # 预测值的y坐标
+    for i in predition:
+        predict_y.append(i[0])
+    color = np.arctan2(predict_y, predict_x)
+    # 绘制散点图
+    plt.scatter(predict_x, predict_y, s = 10, c = color, alpha = 1)
+    # 设置坐标轴范围
+    plt.xlim([0, 150])
+    plt.ylim([0, 150])
+    error[predict_y == actual_x] = 1
+    print("correct rate:", np.sum(error)/m)
+    plt.xlabel("actual value")
+    plt.ylabel("prediction")
+    plt.plot(actual_x, actual_y)
+    plt.savefig("soft_max_iteration_100000")
+    plt.show()

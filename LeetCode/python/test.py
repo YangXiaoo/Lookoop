@@ -1,2 +1,2 @@
-nums = []
-print(nums[-1])
+nums = [1,1,2,4]
+print(nums[2:2])

@@ -10,9 +10,10 @@ from regression import ridgeRegression
 if __name__ == '__main__':
     print("loading data ...")
     feature, label = loadData("new_data.txt")
-    feature = handleHistogram(feature)
+    feature = handleHistogram(feature, alpha=20000, is_total=True)
+    # feature = handleHistogram(feature)
 
     w0 = ridgeRegression(feature, label, 0.5)
-    plotScatter(feature, label, w0, [(0,150), (0,150)], "dddd")
+    plotScatter(feature, label, w0, [(0,150), (0,150)], "regression")
 
 

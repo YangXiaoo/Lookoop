@@ -6,8 +6,11 @@ import os
 import cv2
 import datetime
 import numpy as np
-import matplotlib.pyplot as plt
+import numpy
+import math
+
 import matplotlib
+import matplotlib.pyplot as plt
 matplotlib.use('Agg')
 
 
@@ -88,21 +91,21 @@ def loadData(file_path, gap=1):
         for i in range(2, len(lines) - 1):
             feature_tmp.append(float(lines[i]))
         feature.append(feature_tmp)
-        label.append(float(lines[-1]))
+        label.append(int(lines[-1]))
     f.close()
 
-    # 调整数据
-    fea = []
-    for i in feature:
-        index = 0
-        tmp = []
-        while index < __total:
-            tmp.append(sum(i[index : index + gap])/gap)
-            index += gap
-        fea.append(tmp)
-    print(len(fea[0]))
+    # # 调整数据
+    # fea = []
+    # for i in feature:
+    #     index = 0
+    #     tmp = []
+    #     while index < __total:
+    #         tmp.append(sum(i[index : index + gap])/gap)
+    #         index += gap
+    #     fea.append(tmp)
+    # print(len(fea[0]))
 
-    return np.mat(fea), np.mat(label).T
+    return np.mat(feature), np.mat(label).T
 
 
 def getThreshValuebyHistogram(img, weight, is_handle=True):
@@ -127,7 +130,7 @@ def getThreshValuebyHistogram(img, weight, is_handle=True):
     return v
 
 
-def handleHistogram(data):
+def handleHistogram(data, alpha=0.99, is_total=False):
     """
     对直方图进行数据归一化处理
     """
@@ -137,7 +140,10 @@ def handleHistogram(data):
         total = np.sum(data[i, :])
         for j in range(n):
             # 100000 时效果差
-            ret[i, j] = ret[i, j] / total * 20000
+            if is_total:
+                ret[i, j] = ret[i, j] / total * alpha
+            else:
+                ret[i, j] = ret[i, j] / np.max(data[i, :]) * alpha
     # print(ret)
     return ret
 
@@ -712,6 +718,21 @@ def getErrorPoints(standard, actual):
     return error_count
 
 
+def getSamePoints(standard, actual):
+    """
+    计算标准分割与实际分割的集合
+    standard:标准分割像素点索引，矩阵
+    actual: 实际分割像素点索引，矩阵
+    """
+    same_points = 0
+    m, n = np.shape(standard)
+    for i in range(m):
+        for j in range(n):
+            if standard[i, j] != 0 and standard[i, j] == actual[i, j]:
+                same_points += 1
+    return same_points
+
+
 def getLossPoints(standard, actual):
     """
     计算本应该在分割结果中的像素点的个数，实际却不在分割结果中的像素点的个数
@@ -731,18 +752,20 @@ def getAccuracy(standard_file, file_path):
     """
     standard_file:标准分割图像的路径
     file_path:使用不同方法得到的图片路径
-    return: 分割精度，过分割率，欠分割率
+    return: 分割精度，过分割率，欠分割率. dice
     """
     # print("get accuracy...")
     area, index = getArea(standard_file)
     area_new, index_new = getArea(file_path)
+    same_points = getSamePoints(index, index_new)
+    dice = 2 * same_points / (area + area_new)
     error_count = getErrorPoints(index, index_new)
     loss_count = getLossPoints(index, index_new)
     # 计算该方法下的分割精度，过分割率，欠分割率
     accuracy_rate = getAccuracyRate(area, area_new)
     error_rate = getErrorRate(error_count, area)
     loss_rate = getLossRate(loss_count, area, error_count)
-    return accuracy_rate, error_rate, loss_rate
+    return accuracy_rate, error_rate, loss_rate, dice
 
 
 def batchProcess(file_path_1, file_path_2):
@@ -752,6 +775,7 @@ def batchProcess(file_path_1, file_path_2):
     要求： 两个目录下面的图像个数、名称要一一对应
     return : {"pic_1":[accuracy_rate, error_rate, loss_rate]}
     """
+    start_time = datetime.datetime.now()
     files_1 = sorted(getFiles(file_path_1))
     files_2 = sorted(getFiles(file_path_2))
     len_files = len(files_1)
@@ -759,12 +783,14 @@ def batchProcess(file_path_1, file_path_2):
     # 逐一处理
     count = 1
     for i in range(len_files):
-        print("Process %d: %s"% (count, files_1[i]))
-        accuracy_rate, error_rate, loss_rate = getAccuracy(files_1[i], files_2[i])
+        # print("Process %d: %s"% (count, files_1[i]))
+        
+        accuracy_rate, error_rate, loss_rate, dice = getAccuracy(files_1[i], files_2[i])
         # print(files_2[i])
         basename = os.path.basename(files_1[i])
         pic_name = os.path.splitext(basename)[0]
-        res[pic_name] = [accuracy_rate, error_rate, loss_rate]
+        res[pic_name] = [accuracy_rate, error_rate, loss_rate, dice]
+        printToConsole(start_time, files_1[i], count, len_files, 5)
         count += 1
 
     return res
@@ -896,14 +922,38 @@ def printEst(res, way):
     res: {"pic_file_name":[accuracy_rate, error_rate, loss_rate]}
     way:所使用的方法 type:str
     """
-    total_ac, total_err, total_loss, count = 0, 0, 0, 0
+    total_ac, total_err, total_loss, dice, count = 0, 0, 0, 0, 0
     for k, v in res.items():
         total_ac += v[0]
         total_err += v[1]
         total_loss += v[2]
+        dice += v[3]
         count += 1
-        print("picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f" % (k, v[0], v[1], v[2]))
-    print("%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f" % (way, total_ac/count, total_err/count, total_loss/count))
+        print("picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (k, v[0], v[1], v[2], v[3]))
+    print("%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (way, total_ac/count, total_err/count, total_loss/count, dice/count))
+
+
+def saveEst(res, way, out_dir):
+    """
+    将结果保存至out_dir目录中，文件名为out_dir/way + '_results.txt'
+    """
+    print("saving results...")
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+    file_name = os.path.join(out_dir, way + '_results.txt')
+    f = open(file_name, 'w')
+    out_puts = ""
+    total_ac, total_err, total_loss, dice, count = 0, 0, 0, 0, 0
+    for k, v in res.items():
+        total_ac += v[0]
+        total_err += v[1]
+        total_loss += v[2]
+        dice += v[3]
+        count += 1
+        out_puts += "picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f\n" % (k, v[0], v[1], v[2], v[3])
+    out_puts += "%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (way, total_ac/count, total_err/count, total_loss/count, dice/count)
+    f.write(out_puts)
+    f.close()
 
 
 def getHistogramMean(data):
@@ -961,14 +1011,18 @@ def skipChar(file_path, out_dir, skip_word='_new'):
 
 def getPredictionErrorRate(data, labels, w0):
     """
-    预测值减去标准值的平方再求和，最后计算均值
+    
     """
     predition = data * w0
     m, n = np.shape(predition)
-    error = predition - labels
+    # print(m,n)
+    # print(error)
     error_sum = 0
     for i in range(m):
         for j in range(n):
-            error_sum += error[i, j] * error[i, j]
-
+            # print(error[i, j])
+            err = abs(int(predition[i, j]) - labels[i, j])
+            print(err)
+            error_sum = error_sum + err
+    # print(error_sum)
     return error_sum / (m * n)

@@ -108,7 +108,7 @@ def test():
 
 	#############  测试 ##############
 	# 读取测试数据
-	test_data_file = open("C:/Study/github/Lookoop/Image/Python神经网络/mnist_dataset/mnist_test_10.csv", "r")
+	test_data_file = open("C:/Study/github/Lookoop/Image/Python神经网络/mnist_dataset/mnist_train_100.csv", "r")
 	test_data_list = test_data_file.readlines()
 	test_data_file.close()	
 

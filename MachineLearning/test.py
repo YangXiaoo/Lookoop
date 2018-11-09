@@ -9,9 +9,14 @@ import numpy as np
 # #  [0. 0. 1. 0.]
 # #  [0. 0. 1. 0.]]
 
-# a = np.array([[0,0,3],[0,0,0],[0,0,9]])
-# r = np.nonzero(a)[0]
-# print(r)
-
-s = 3
-print("dsdsd", s)
+a = np.mat([[0,0,3],[0,0,9], [12,3,1]])
+print(a)
+k = 2
+# nums = [1,2,3,4,5,6]
+# print(nums[:-2:-1])
+eig_val, eig_vec = np.linalg.eig(np.mat(a))
+print(eig_val)
+egi_val_sort = np.argsort(eig_val)
+egi_val_ind = egi_val_sort[:-(k + 1):-1]
+print(egi_val_ind)
+egi_val_cut = eig_val[:egi_val_ind]

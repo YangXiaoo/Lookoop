@@ -21,7 +21,10 @@ import numpy as np
 # print(egi_val_ind)
 # egi_val_cut = eig_val[:egi_val_ind]
 
-nums1  = [1,2]
-nums2 = [1,2]
-print(nums1.pop())
-print(nums1)
+# nums1  = [1,2]
+# nums2 = [1,2]
+# print(nums1.pop())
+# print(nums1)
+
+mat = np.zeros((2,3,3))
+print(mat)

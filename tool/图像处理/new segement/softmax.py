@@ -46,6 +46,7 @@ def cost(err, label_data):
             sum_cost -= 0
     return sum_cost / m
 
+
 def load_data(num, m):
     '''
     导入测试数据
@@ -58,6 +59,7 @@ def load_data(num, m):
         testDataSet[i, 1] = rd.random() * 6 - 3#随机生成[-3,3]之间的随机数
         testDataSet[i, 2] = rd.random() * 15#随机生成[0,15]之间是的随机数
     return testDataSet
+
 
 def predict(test_data, weights):
     '''

@@ -796,6 +796,46 @@ def batchProcess(file_path_1, file_path_2):
     return res
 
 
+def printEst(res, way):
+    """
+    打印分割评估结果
+    res: {"pic_file_name":[accuracy_rate, error_rate, loss_rate]}
+    way:所使用的方法 type:str
+    """
+    total_ac, total_err, total_loss, dice, count = 0, 0, 0, 0, 0
+    for k, v in res.items():
+        total_ac += v[0]
+        total_err += v[1]
+        total_loss += v[2]
+        dice += v[3]
+        count += 1
+        print("picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (k, v[0], v[1], v[2], v[3]))
+    print("%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (way, total_ac/count, total_err/count, total_loss/count, dice/count))
+
+
+def saveEst(res, way, out_dir):
+    """
+    将结果保存至out_dir目录中，文件名为out_dir/way + '_results.txt'
+    """
+    print("saving results...")
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+    file_name = os.path.join(out_dir, way + '_results.txt')
+    f = open(file_name, 'w')
+    out_puts = ""
+    total_ac, total_err, total_loss, dice, count = 0, 0, 0, 0, 0
+    for k, v in res.items():
+        total_ac += v[0]
+        total_err += v[1]
+        total_loss += v[2]
+        dice += v[3]
+        count += 1
+        out_puts += "picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f\n" % (k, v[0], v[1], v[2], v[3])
+    out_puts += "%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (way, total_ac/count, total_err/count, total_loss/count, dice/count)
+    f.write(out_puts)
+    f.close()
+
+
 ###################生成标签########################
 def generateImageLable(dirs, data_dir, handle=True, preffix=True):
     """
@@ -860,7 +900,7 @@ def delFileChar(file):
 
 
 
-############################### 三层神经网络 ##############################################
+############################### BP神经网络 ##############################################
 class neuralNetwork(object):
     def __init__(self, inputNodes, hiddenNodes, outputNodes, learningRate):
         """
@@ -914,46 +954,6 @@ class neuralNetwork(object):
         final_outputs = self.active_function(final_inputs)
 
         return final_outputs
-
-
-def printEst(res, way):
-    """
-    打印分割评估结果
-    res: {"pic_file_name":[accuracy_rate, error_rate, loss_rate]}
-    way:所使用的方法 type:str
-    """
-    total_ac, total_err, total_loss, dice, count = 0, 0, 0, 0, 0
-    for k, v in res.items():
-        total_ac += v[0]
-        total_err += v[1]
-        total_loss += v[2]
-        dice += v[3]
-        count += 1
-        print("picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (k, v[0], v[1], v[2], v[3]))
-    print("%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (way, total_ac/count, total_err/count, total_loss/count, dice/count))
-
-
-def saveEst(res, way, out_dir):
-    """
-    将结果保存至out_dir目录中，文件名为out_dir/way + '_results.txt'
-    """
-    print("saving results...")
-    if not os.path.isdir(out_dir):
-        os.mkdir(out_dir)
-    file_name = os.path.join(out_dir, way + '_results.txt')
-    f = open(file_name, 'w')
-    out_puts = ""
-    total_ac, total_err, total_loss, dice, count = 0, 0, 0, 0, 0
-    for k, v in res.items():
-        total_ac += v[0]
-        total_err += v[1]
-        total_loss += v[2]
-        dice += v[3]
-        count += 1
-        out_puts += "picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f\n" % (k, v[0], v[1], v[2], v[3])
-    out_puts += "%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (way, total_ac/count, total_err/count, total_loss/count, dice/count)
-    f.write(out_puts)
-    f.close()
 
 
 def getHistogramMean(data):
@@ -1011,7 +1011,7 @@ def skipChar(file_path, out_dir, skip_word='_new'):
 
 def getPredictionErrorRate(data, labels, w0):
     """
-    
+    得到误差均值
     """
     predition = data * w0
     m, n = np.shape(predition)

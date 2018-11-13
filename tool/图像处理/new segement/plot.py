@@ -9,7 +9,7 @@ from regression import ridgeRegression
 
 if __name__ == '__main__':
     print("loading data ...")
-    feature, label = loadData("new_data.txt")
+    feature, label = loadData("data.txt")
     feature = handleHistogram(feature, alpha=20000, is_total=True)
     # feature = handleHistogram(feature)
 

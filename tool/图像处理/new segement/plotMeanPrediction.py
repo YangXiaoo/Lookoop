@@ -12,6 +12,7 @@ matplotlib.use('Agg')
 if __name__ == '__main__':
     print("loading data ...")
     feature, label = loadData("new_data.txt")
+    # feature, label = dataFilter(feature, label)
     line_x, line_y = [], []
     x, y = [], []
     m, n = np.shape(feature)

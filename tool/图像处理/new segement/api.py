@@ -1029,22 +1029,22 @@ def getPredictionErrorRate(data, labels, w0):
 
 
 
-def dataFilter(data, labels):
-    """
-    过滤数据中异常项
-    data:直方图
-    labels:最佳阈值
-    return: 过滤后的直方图数据，以及对应标签
-    """
-    m, n = np.shape(data)
-    ret_data = []
-    ret_lables = []
-    for i in range(m):
-        histogram_mean = getHistogramMean(data[i, :])
-        if abs(int(histogram_mean) - int(labels[i, 0])) < 40:
-            ret_data.append(data[i, : ])
-            ret_lables.append(labels[i, ])
-    # print(ret_lables, ret_data)
-    print(np.shape(ret_data))
-    return ret_data, ret_lables
+# def dataFilter(data, labels):
+#     """
+#     过滤数据中异常项
+#     data:直方图
+#     labels:最佳阈值
+#     return: 过滤后的直方图数据，以及对应标签
+#     """
+#     m, n = np.shape(data)
+#     ret_data = []
+#     ret_lables = []
+#     for i in range(m):
+#         histogram_mean = getHistogramMean(data[i, :])
+#         if abs(int(histogram_mean) - int(labels[i, 0])) < 40:
+#             ret_data.append(data[i, : ])
+#             ret_lables.append(labels[i, ])
+#     # print(ret_lables, ret_data)
+#     print(np.shape(ret_data))
+#     return ret_data, ret_lables
 

@@ -38,6 +38,7 @@ def handle(dirs, out_dir, clip):
             img_segement, thresh_img = maxContour(img, thrshed_img)
             # 保存
             saveImage(img_dirs, "_new", img_segement)
+            saveImage(img_dirs, "_threshed", thresh_img)
 
             # 打印信息到输出台
             printToConsole(start_time, f, count, total, 5)
@@ -54,6 +55,6 @@ def handle(dirs, out_dir, clip):
 
 
 if __name__ == '__main__':
-    file_path = "C:\\Study\\test\\1ssssssss"
-    out_dir = "C:\\Study\\test\\otsu_no_norm"
+    file_path = "C:\\Study\\test\\otsuss"
+    out_dir = "C:\\Study\\test\\otsu_threshed"
     handle(file_path, out_dir, (45,-45,45,-45))

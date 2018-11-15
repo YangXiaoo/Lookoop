@@ -8,6 +8,7 @@ import datetime
 import numpy as np
 import numpy
 import math
+from decimal import *
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -124,8 +125,31 @@ def getThreshValuebyHistogram(img, weight, is_handle=True):
     # 对阈值进行判断, 去除漂移值
     if v > mean_value * 0.9:
         v = int(mean_value * 0.9)
-    if v < mean_value * 0.7:
-        v = int(mean_value * 0.7)
+    if v < mean_value * 0.35:
+        v = int(mean_value * 0.35)
+    print("prediction: %d, limited to: %d" % (dummy_v, v))
+    return v
+
+
+def getThreshValuebySoftmax(img, weight):
+    """
+    根据权重预测阈值
+    weight: softmax训练获得
+    """
+    histogram = getHistogram(img, to_float=True) # 获得直方图
+    histogram = np.mat(histogram)
+    histogram = handleHistogram(histogram)
+    mean_value = getMean(img)
+    data = np.mat(histogram) # 转换为矩阵类型
+    # print(np.shape(data), data)
+    h = data * weight  # 预测最佳阈值
+    v = h.argmax(axis=1)
+    dummy_v = v
+    # 对阈值进行判断, 去除漂移值
+    # if v > mean_value * 0.9:
+    #     v = int(mean_value * 0.9)
+    # if v < mean_value * 0.7:
+    #     v = int(mean_value * 0.7)
     print("prediction: %d, limited to: %d" % (dummy_v, v))
     return v
 
@@ -135,15 +159,18 @@ def handleHistogram(data, alpha=0.99, is_total=False):
     对直方图进行数据归一化处理
     """
     m, n = np.shape(data)
-    ret = data
+    ret = data.copy()
     for i in range(m):
         total = np.sum(data[i, :])
+        # print("total: ", total)
+        max_value = np.max(data[i, :])
         for j in range(n):
             # 100000 时效果差
             if is_total:
                 ret[i, j] = ret[i, j] / total * alpha
             else:
-                ret[i, j] = ret[i, j] / np.max(data[i, :]) * alpha
+                ret[i, j] = ret[i, j] / max_value * alpha
+                # print(max_value, float(ret[i, j]) / max_value)
     # print(ret)
     return ret
 
@@ -187,7 +214,7 @@ def getCov(img, mean_value):
     return variance
 
 
-def getHistogram(img):
+def getHistogram(img, to_float=False):
     """
     获得图像直方图统计
     """
@@ -196,6 +223,12 @@ def getHistogram(img):
     for i in range(img_w):
         for j in range(img_h):
             histogram[img[i][j]] += 1
+    # 转为浮点数
+    if to_float:
+        ret = []
+        for k,v in enumerate(histogram):
+            ret.append(float(v))
+        return ret
 
     return histogram
 
@@ -641,14 +674,14 @@ def plotScatter(data, labels, w, lim, save_name):
         predict_y.append(i[0])
     color = np.arctan2(predict_y, predict_x)
     # 绘制散点图
-    plt.scatter(predict_x, predict_y, s = 10, c = color, alpha = 1)
+    plt.scatter(predict_x, predict_y, s = 10, c="k", alpha = 1)
     # 设置坐标轴范围
     plt.xlim(lim[0])
     plt.ylim(lim[1])
 
     plt.xlabel("actual value")
     plt.ylabel("prediction")
-    plt.plot(actual_x, actual_y)
+    plt.plot(actual_x, actual_y, c="k")
     plt.savefig(save_name)
     plt.show()
 
@@ -1048,3 +1081,19 @@ def getPredictionErrorRate(data, labels, w0):
 #     print(np.shape(ret_data))
 #     return ret_data, ret_lables
 
+
+def  loadWeights(file):
+    """
+    加载权重数据
+    """
+    w = []
+    f = open(file)
+    data = f.readlines()
+    for line in data:
+        line_data = line[:-1].split("\t")
+        w_tmp = []
+        for x in line_data:
+            w_tmp.append(Decimal(x))
+        w.append(w_tmp)
+    f.close()
+    return np.mat(w)

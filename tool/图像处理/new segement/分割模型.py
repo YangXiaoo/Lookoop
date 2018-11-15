@@ -29,9 +29,16 @@ if __name__ == '__main__':
     # printEst(res, "最大熵")
     # saveEst(res, "最大熵", out_dir)
 
-    # 方法4比较
-    print("OTSU")
-    file_path_2 = "C:\\Study\\test\\otsu_no_norm" # 方法一得到分割图像路径
+    # # 方法4比较
+    # print("OTSU")
+    # file_path_2 = "C:\\Study\\test\\otsu_no_norm" # 方法一得到分割图像路径
+    # res = batchProcess(file_path, file_path_2)
+    # printEst(res, "OTSU")
+    # saveEst(res, "OTSU", out_dir)
+    
+    # 方法5比较
+    print("softmax")
+    file_path_2 = "C:\\Study\\test\\softmax_no_norm_no_limited" # 方法一得到分割图像路径
     res = batchProcess(file_path, file_path_2)
-    printEst(res, "OTSU")
-    saveEst(res, "OTSU", out_dir)
+    printEst(res, "softmax")
+    saveEst(res, "softmax", out_dir)

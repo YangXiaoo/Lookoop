@@ -25,10 +25,27 @@ class FullConnectedLayer(object):
 		self.output = np.zeros((output_size, 1)) # 输出化初始为0向量
 
 	def forward(self, input_array):
+		"""
+		向前传播
+		"""
 		self.input = input_array
 		self.output = self.activator.forward(np.dot(self.w, input_array) + self.b)
 
 
 	def backward(self, delta_array):
-		
+		"""
+		误差反向传播
+		delta_array: 误差
+		"""
+		self.delta = np.mutiply(self.activator.backward(self.input), np.dot(self.w.T, delta_array)) # 计算当前误差，以备上一层使用
+		self.w_grad = np.dot(delta_array, self.input.T)
+		self.b_grad = delta_array
+
+
+	def update(self):
+		"""
+		用梯度下降法更新权重
+		"""
+		self.w += self.learning_rate * self.w_grad
+		self.b += self.learning_rate * self.b
 

@@ -107,6 +107,7 @@ class ConvLayer(object):
         self.stride = stride # 步幅
         self.output_width = int(ConvLayer.calculate_output_size(self.input_width, filter_width, zero_padding,stride))  # 计算输出宽度
         self.output_height = int(ConvLayer.calculate_output_size(self.input_height, filter_height, zero_padding,stride))  # 计算输出高度
+        
         self.output_array = np.zeros((self.filter_number,self.output_height, self.output_width)) # 创建输出三维数组。每个过滤器都产生一个二维数组的输出
         self.filters = []   # 卷积层的每个过滤器
         for i in range(filter_number):

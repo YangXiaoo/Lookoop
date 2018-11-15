@@ -26,5 +26,5 @@ import numpy as np
 # print(nums1.pop())
 # print(nums1)
 
-mat = np.zeros((2,3,3))
-print(mat)
+mat = np.ones((2,3,3))
+print(mat.sum())

@@ -4,7 +4,7 @@
 import numpy as np
 import random as rd
 import matplotlib.pyplot as plt
-from api import loadData, handleHistogram
+from api import loadData, handleHistogram, loadWeights
 
 
 def train(feature, label, k, max_iteration, alpha):
@@ -73,8 +73,25 @@ def predict(test_data, weights):
     return h.argmax(axis=1) # 获得最大索引位置即标签
 
 
+def saveModel(file_name, weights):
+    '''
+    保存最终的模型
+    input:  file_name(string):保存的文件名
+            weights(mat):softmax模型
+    '''
+    f_w = open(file_name, "w")
+    m, n = np.shape(weights)
+    for i in range(m):
+        w_tmp = []
+        for j in range(n):
+            w_tmp.append(str(weights[i, j]))
+        f_w.write("\t".join(w_tmp) + "\n")
+    f_w.close()
+
+
+
 if __name__ == "__main__":
-    inputfile = "new_data.txt"
+    inputfile = "data.txt"
     # 1、导入训练数据
     feature, label = loadData(inputfile)
     feature = handleHistogram(feature)
@@ -82,11 +99,14 @@ if __name__ == "__main__":
     #print(feature)
     k = 256
     # 2、训练Softmax模型
-    weights = train(feature, label, k, 100000, 0.1)
+    weights = train(feature, label, k, 10000, 0.1)
     # print(weights)
-
+    # saveModel("weights.txt", weights)
+    # np.save("weights.npy", weights)
     # 3. 预测   
-    
+    # weights = np.load("weights.npy")
+    # weights = loadWeights("weights.txt")
+    print(weights)
     actual_x = [] # 绘制直线的x轴坐标
     predict_x = [] # 绘制预测值的x坐标
     for i in label:

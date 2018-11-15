@@ -55,7 +55,7 @@ def handle(dirs, out_dir, clip, w0):
 
 if __name__ == '__main__':
     file_path = "C:\\Study\\test\\old"
-    out_dir = "C:\\Study\\test\\old_no_norm_no_sucess"
+    out_dir = "C:\\Study\\test\\old_no_norm_no_sucessxxx"
     data = "new_data.txt"
     feature, label = loadData(data)
     # 直方图归一化

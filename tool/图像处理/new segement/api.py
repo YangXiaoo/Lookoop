@@ -1093,7 +1093,7 @@ def  loadWeights(file):
         line_data = line[:-1].split("\t")
         w_tmp = []
         for x in line_data:
-            w_tmp.append(Decimal(x))
+            w_tmp.append(x)
         w.append(w_tmp)
     f.close()
     return np.mat(w)

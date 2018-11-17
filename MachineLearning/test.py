@@ -27,3 +27,4 @@ import numpy as np
 # print(nums1)
 
 
+print(int(30.75))

@@ -37,7 +37,7 @@ class FullConnectedLayer(object):
         误差反向传播
         delta_array: 误差
         """
-        self.delta = np.mutiply(self.activator.backward(self.input), np.dot(self.w.T, delta_array)) # 计算当前误差，以备上一层使用
+        self.delta = np.multiply(self.activator.backward(self.input), np.dot(self.w.T, delta_array)) # 计算当前误差，以备上一层使用
         self.w_grad = np.dot(delta_array, self.input.T)
         self.b_grad = delta_array
 

@@ -40,7 +40,7 @@ def getTrainingData(dir_path):
 		data.append(img)
 		labels.append(label_tmp)
 
-	return data, labels
+	return np.array(data), labels
 
 if __name__ == '__main__':
 	data, labels = getTrainingData("C:\\Study\\test\\histogram_no_norm")

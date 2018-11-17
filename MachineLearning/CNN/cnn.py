@@ -171,7 +171,7 @@ class ConvLayer(object):
                 conv(padding_array[i], flipped_weights[d], delta_array[d], 1, 0)
             self.delta_array += delta_array
 
-        derivative_array = np.array(self, input_array)
+        derivative_array = np.array(self.input_array)
         ConvLayer.elementWiseOp(derivative_array, activator.backward)
         self.delta_array *= derivative_array # 得到上一层误差
 
@@ -195,7 +195,7 @@ class ConvLayer(object):
         return expand_array
 
 
-    def bpGardient(sensitivity_array):
+    def bpGardient(self, sensitivity_array):
         """
         计算偏置项的梯度
         偏置项的梯度就是sensitivity map 所有误差项之和
@@ -220,7 +220,7 @@ class ConvLayer(object):
         """
         计算feature map大小
         """
-        return (input_size - filter_size + 2 * zero_padding) / stride + 1
+        return int((input_size - filter_size + 2 * zero_padding) / stride + 1)
 
 
     @staticmethod

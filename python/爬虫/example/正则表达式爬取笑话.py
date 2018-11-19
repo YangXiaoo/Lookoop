@@ -1,5 +1,4 @@
-#!/usr/bin/env python
-# _*_ coding:utf-8 _*_
+# coding:UTF-8
 # date(2018-4-21)
 import urllib2
 import urllib

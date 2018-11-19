@@ -99,12 +99,12 @@ if __name__ == "__main__":
     #print(feature)
     k = 256
     # 2、训练Softmax模型
-    weights = train(feature, label, k, 10000, 0.1)
+    # weights = train(feature, label, k, 10000, 0.1)
     # print(weights)
     # saveModel("weights.txt", weights)
     # np.save("weights.npy", weights)
     # 3. 预测   
-    # weights = np.load("weights.npy")
+    weights = np.load("weights.npy")
     # weights = loadWeights("weights.txt")
     print(weights)
     actual_x = [] # 绘制直线的x轴坐标
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         predict_y.append(i[0])
     color = np.arctan2(predict_y, predict_x)
     # 绘制散点图
-    plt.scatter(predict_x, predict_y, s = 10, c = color, alpha = 1)
+    plt.scatter(predict_x, predict_y, s = 10, c = "k", alpha = 1)
     # 设置坐标轴范围
     plt.xlim([0, 150])
     plt.ylim([0, 150])
@@ -131,6 +131,6 @@ if __name__ == "__main__":
     print("correct rate:", np.sum(error)/m)
     plt.xlabel("actual value")
     plt.ylabel("prediction")
-    plt.plot(actual_x, actual_y)
+    plt.plot(actual_x, actual_y, c="k")
     plt.savefig("soft_max_iteration_100000")
     plt.show()

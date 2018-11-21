@@ -10,7 +10,7 @@ from softmax import train, predict
 import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.use('Agg')
-from api import getFiles, saveImage, saveError, printToConsole, moveNoise, loadData, getHistogram, regionGrowing, getThreshValuebySoftmax, handleHistogram, loadWeights, batchProcess, printEst, saveEst
+from api import getFiles, saveImage, saveError, printToConsole, moveNoise, loadData, getHistogram, regionGrowing, getThreshValuebySoftmax, handleHistogram, loadWeights, batchProcess, printEst, saveEst, saveModel
 
 def handle(dirs, out_dir, clip, w0):
     start_time = datetime.datetime.now()
@@ -65,15 +65,13 @@ if __name__ == '__main__':
     # print(np.shape(w0))
     # print(w0)
     inputfile = "data.txt"
-    # 1、导入训练数据
     feature, label = loadData(inputfile)
     feature = handleHistogram(feature)
     # print(np.shape(feature), np.shape(label))
     #print(feature)
     k = 256
-    # 2、训练Softmax模型
     w0 = train(feature, label, k, 200000, 0.1)
-
+    saveModel("weights.txt", w0)
     actual_x = [] # 绘制直线的x轴坐标
     predict_x = [] # 绘制预测值的x坐标
     for i in label:

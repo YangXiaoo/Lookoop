@@ -1176,3 +1176,19 @@ def getDBSCANvalue(gray, f="SIFT"):
     print("least_value:", least_value)
 
     return least_value
+
+
+def saveModel(file_name, weights):
+    '''
+    保存最终的模型
+    input:  file_name(string):保存的文件名
+            weights(mat):softmax模型
+    '''
+    f_w = open(file_name, "w")
+    m, n = np.shape(weights)
+    for i in range(m):
+        w_tmp = []
+        for j in range(n):
+            w_tmp.append(str(weights[i, j]))
+        f_w.write("\t".join(w_tmp) + "\n")
+    f_w.close()

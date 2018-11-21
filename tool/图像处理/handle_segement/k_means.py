@@ -1,3 +1,5 @@
+# coding:UTF-8
+# 2018-11-20
 from sklearn.cluster import KMeans
 import numpy as np
 import PIL.Image as image

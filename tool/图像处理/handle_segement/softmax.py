@@ -14,11 +14,14 @@ def train(feature, label, k, max_iteration, alpha):
     m, n = np.shape(feature)
     weights = np.mat(np.ones((n, k))) # n x k
     i = 0
-    while i <= max_iteration:
+    end, pre, gap = 0.0001, 1e5, 1
+    while i <= max_iteration and gap > end:
         y = np.exp(feature * weights) # m x k
         if i % 500 == 0:
             error_rate = cost(y, label)
-            print("iteration: %d, error rate: %.10f" % (i, error_rate))
+            gap = abs(error_rate - pre)
+            pre = error_rate
+            print("iteration: %d, error rate: %.10f, gap: %.10f" % (i, error_rate, gap))
         row_sum = -y.sum(axis=1) # 按行相加 m x 1         
         row_sum = row_sum.repeat(k, axis=1) # 每个样本都需要除以总值， 所以转换为 m x k
         y = y / row_sum # 得到-P(y|x,w)
@@ -99,12 +102,12 @@ if __name__ == "__main__":
     #print(feature)
     k = 256
     # 2、训练Softmax模型
-    # weights = train(feature, label, k, 10000, 0.1)
+    weights = train(feature, label, k, 400000, 0.1)
     # print(weights)
     # saveModel("weights.txt", weights)
     # np.save("weights.npy", weights)
     # 3. 预测   
-    weights = np.load("weights.npy")
+    # weights = np.load("weights.npy")
     # weights = loadWeights("weights.txt")
     print(weights)
     actual_x = [] # 绘制直线的x轴坐标
@@ -132,5 +135,5 @@ if __name__ == "__main__":
     plt.xlabel("actual value")
     plt.ylabel("prediction")
     plt.plot(actual_x, actual_y, c="k")
-    plt.savefig("soft_max_iteration_100000")
+    plt.savefig("soft_max_iteration_200000")
     plt.show()

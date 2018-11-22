@@ -25,3 +25,4 @@ skipChar(file_path, out_dir)
 #       if data_f[i, j] == 1:
 #           data_f[i. j] = 255
 # cv2.imwrite()
+print(0.0001864296>0.001)

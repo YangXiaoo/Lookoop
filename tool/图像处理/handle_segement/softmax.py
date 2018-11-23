@@ -102,7 +102,7 @@ if __name__ == "__main__":
     #print(feature)
     k = 256
     # 2、训练Softmax模型
-    weights = train(feature, label, k, 400000, 0.1)
+    weights = train(feature, label, k, 200000, 0.1)
     # print(weights)
     # saveModel("weights.txt", weights)
     # np.save("weights.npy", weights)

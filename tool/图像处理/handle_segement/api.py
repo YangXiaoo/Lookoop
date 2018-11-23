@@ -160,18 +160,15 @@ def handleHistogram(data, alpha=0.99, is_total=False):
     对直方图进行数据归一化处理
     """
     m, n = np.shape(data)
-    ret = np.zeros(np.shape(data)) + 0.01
+    ret = np.zeros((m, n))
     for i in range(m):
         total = np.sum(data[i, :])
         max_value = np.max(data[i, :])
         for j in range(n):
-            # 100000 时效果差
             if is_total:
                 ret[i, j] = data[i, j] / total * alpha
             else:
-                ret[i, j] = data[i, j] / max_value * alpha
-                # print(max_value, float(ret[i, j]) / max_value)
-    # print(ret)
+                ret[i, j] = [data[i, j], 1][data[i, j] == 0] / max_value * alpha
     return ret
 
 

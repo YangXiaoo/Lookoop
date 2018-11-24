@@ -17,7 +17,7 @@ def handle(dirs, out_dir, clip):
     total = len(files)
     fail, success, skip, count = 0, 0, 0, 0
 
-    for f in files:
+    for f in files[:20]:
         count += 1
         print(count, '/', total)
         img_dirs = os.path.join(out_dir, f.split("\\")[-1])
@@ -36,6 +36,12 @@ def handle(dirs, out_dir, clip):
             threshed = getDBSCANvalue(img)
             
             # 二值化
+            # thrshed_img = np.zeros(np.shape(img))
+            # img_m, img_n = np.shape(img)
+            # for i in range(img_m):
+            #     for j in range(img_n):
+            #         if img[i, j] >= threshed:
+            #             thrshed_img[i, j] = 255
             threshold, thrshed_img = cv2.threshold(img, threshed, 255, cv2.THRESH_BINARY)
             # saveImage(img_dirs, "_threshed_raw", thrshed_img)
 
@@ -67,5 +73,5 @@ def handle(dirs, out_dir, clip):
 
 if __name__ == '__main__':
     file_path = "C:\\Study\\test\\1ssssssss"
-    out_dir = "C:\\Study\\test\\dbscan_norm_10_0.3"
+    out_dir = "C:\\Study\\test\\dbscan_norm___"
     handle(file_path, out_dir, (45,-45,45,-45))

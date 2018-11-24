@@ -1098,6 +1098,15 @@ def  loadWeights(file):
 
 def getDBSCANvalue(gray, f="SIFT"):
     gray_m, gray_n = np.shape(gray)
+
+    # 去噪形态学处理
+    thresh = gray.copy()
+    kernel = np.zeros((7,7), np.uint8)
+    for i in range(10):
+        thresh = cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, kernel)
+    cv2.imwrite("mroph_pic.png", thresh)
+
+    # 训练DBSCAN
     def func(algorithm, par=None):
         algorithms = {
             "SIFT" : cv2.xfeatures2d.SIFT_create(),
@@ -1108,24 +1117,16 @@ def getDBSCANvalue(gray, f="SIFT"):
     alg = func(f)
     keypoints, descriptor = alg.detectAndCompute(gray, None)
     points2f = cv2.KeyPoint_convert(keypoints) 
-    # print(points2f)
-    # print(keypoints)
-
-    # dummy = np.zeros(gray.shape)
-    # for i in points2f:
-    #   # print(i[0], i[1])
-    #   cv2.circle(dummy, tuple(i), 2, (51, 163, 236), 1) #33
     min_pts = 5
     eps = DBSCAN.epsilon(points2f, min_pts)
-    # 3、利用DBSCAN算法进行训练
     types, sub_class = DBSCAN.dbscan(points2f, eps, min_pts)
+
+    # 获得最大簇类
     cluster = {}
-    # print(np.shape(sub_class))
     sub_m, sub_n = np.shape(sub_class)
     for i in range(sub_m):
         for j in range(sub_n):
             cluster[sub_class[i, j]] = cluster.get(sub_class[i,j], 1) + sub_class[i,j]
-    # print(cluster)
     max_cluster_class,max_total = 0, 0
     for k,v in cluster.items():
         if v > max_total:
@@ -1149,7 +1150,7 @@ def getDBSCANvalue(gray, f="SIFT"):
 
     # 根据特征点获得周围像素的值，半径为5
     points = []
-    r = 10
+    r = 5
     for x in max_cluster:
         i, j = x
         for m in range(i - r, i + r):
@@ -1161,17 +1162,28 @@ def getDBSCANvalue(gray, f="SIFT"):
     pixel_value = []
     for x in points:
         if int(x[0]) >= gray_m or x[1] >= gray_n: continue
-        if gray[int(x[0]), int(x[1])] != 0:
-            pixel_value.append(gray[int(x[0]), int(x[1])])
+        if thresh[int(x[0]), int(x[1])] != 0:
+            pixel_value.append(thresh[int(x[0]), int(x[1])])
     pixel_mean = sum(pixel_value) // max_total
 
 
-    print("pixel_mean: ", pixel_mean)
-    # print(pixel_value)
-    least_value = sorted(pixel_value)[int(max_total*0.3)]
-    print("least_value:", least_value)
+    print("pixel_mean: ", pixel_mean, "total_pixel:", max_total)
+    # vprint(sorted(pixel_value))
+    dicts = {}
+    for i in pixel_value:
+        dicts[i] = dicts.get(i, 0) + 1
 
-    return least_value
+    # set_value = set(pixel_value)
+    # least_value = sorted(pixel_value)[int(max_total*0)]
+    print("dicts", dicts)
+    max_k, max_v = 0, 0
+    for k,v in dicts.items():
+        if v > max_v:
+            max_k = k
+            max_v = v
+    print("least_value:", max_k)
+
+    return max_k
 
 
 def saveModel(file_name, weights):

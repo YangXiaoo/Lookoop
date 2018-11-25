@@ -33,19 +33,18 @@ class Solution:
                     continue
                 if v == '[':
                     index.append(len(stack))
-                    stack.append(int(tmp_digit))
-                    
+                    stack.append(int(tmp_digit)) 
                     tmp_digit = ''
                 stack.append(v)
             else:
                 last = index.pop()
-                print(stack,  last)
+                # print(stack,  last)
                 tmp = "".join(stack[last+2:]) * int(stack[last])
-                print(tmp, last, stack, index)
+                # print(tmp, last, stack, index)
                 del stack[last:]
                 stack.append(tmp)
 
-        print(stack, index)
+        # print(stack, index)
         return "".join(stack)
 
 nums = ["3[a]2[bc]", "3[a2[c]]", "2[abc]3[cd]ef", "3[w]", "100[leetcode]"]

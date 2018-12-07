@@ -1,3 +1,7 @@
-nums = [1,1,2,4]
-del nums[1:]
-print(nums)
+class test(object):
+    def __init__(self):
+        self.a = 1
+
+t = test()
+t.b = 2
+print(t.b)

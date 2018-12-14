@@ -18,4 +18,4 @@ tf.global_variavles_initializer() # 初始化所有变量
 tf.global_variables() # 获取当前计算图的所有变量
 tf.trainable_varibles() # 获得所有优化参数
 tf.clip_by_value() # 将一个张量中的数值限制在一个范围内
-tf.reduce_mean() # 
+tf.reduce_mean() # 求元素平均

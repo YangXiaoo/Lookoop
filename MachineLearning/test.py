@@ -26,5 +26,7 @@ import numpy as np
 # print(nums1.pop())
 # print(nums1)
 
-
-print(int(30.75))
+import tensorflow as tf
+hello = tf.constant('Hello, TensorFlow!')  #初始化一个TensorFlow的常量
+sess = tf.Session()  #启动一个会话
+print(sess.run(hello))  

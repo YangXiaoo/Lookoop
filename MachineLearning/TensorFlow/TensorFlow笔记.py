@@ -6,6 +6,7 @@ tf.get_collection() # 获取一个集合里面的所有资源
 result.get_shape() # 获取结果张量的维度信息
 tf.Tensor.eval() # 计算一个张量的值
 tf.InteractiveSession() # 将生成的会话注册成默认会话
+tf.placeholder() # 占位符
 
 tf.ConfigProto() # 配置需要生成的会话,以下为参数
 	# allow_soft_placement: 1.无法在CPU进行计算，2. 没有CPU资源 3. 运算输入包含对CPU计算结果引用
@@ -19,3 +20,32 @@ tf.global_variables() # 获取当前计算图的所有变量
 tf.trainable_varibles() # 获得所有优化参数
 tf.clip_by_value() # 将一个张量中的数值限制在一个范围内
 tf.reduce_mean() # 求元素平均
+tf.log()
+# 损失函数
+tf.nn.softmax_cross_entropy_with_logits(lables=y_, logits=y)
+
+# 比较大小
+tf.greater(v1, v2).eval() # v1>v2则True
+
+
+
+# 训练大致过程
+barch_size = 
+x = tf.placeholder(tf.float32, shape(barch_size, 2), name='x_input')
+y_ = tf.placeholder(tf.float32, shape(barch_size, 1), name='y_input')
+# 定义网络结构及优化算法
+loss = 
+train_step = tf.train.AdamOptimizer(0.0001).minimize(loss)
+with tf.Session as sess:
+	for i in range(STEPS):
+		# 准备batch_size个数
+		current_x, current_y = 
+		sess.run(train_step, feed_dict={x: current_x, y_:current_y})
+
+# 学习率
+global_step = tf.Variable(0)
+learning_rate = tf.train.exponential_decay(0.1, global_step, 100, 0.96, staircase=True)
+learning_step = tf.train.GradientDescentOpimizer(learning_rate).minimize(loss, global_step=global_step)
+
+
+tf.cast() # 将x的数据格式转化成dtype.例如，原来x的数据格式是bool，那么将其转化成float以后，就能够将其转化成0和1的序列。反之也可以

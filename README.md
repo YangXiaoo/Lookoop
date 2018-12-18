@@ -1,7 +1,7 @@
 ![](dijkstra.jpg)
 >## 个人博客
 
-- [链接](http://www.lxa.kim)
+- [链接](http://yangxiao.online)
 
 >## tool 
 

@@ -37,16 +37,7 @@ class Solution(object):
             else:
                 res.append(chars)
                 ins = chars.index(char)
-                if ins == len(chars) - 1:
-                    chars = []
-                    chars.append(char)
-                else:
-                    for j in range(0, len(chars)):
-                        if char == chars[j]:
-                            ins = j 
-                            break
-                    chars = chars[ins+1:]
-                    chars.append(char)
+                chars = chars[ins + 1:] + [char]
         res.append(chars)
         l = len(res)
         m_l = 0

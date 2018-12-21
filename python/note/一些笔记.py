@@ -132,3 +132,7 @@ queue = collections.deque()
 queue.append(1)
 queue.popleft()
 queue.pop()
+
+
+tarfile.open(filepath, 'r:gz').extractall(dest_directory) # 解压filepath下的所有文件到dest_directory
+statinfo = os.stat(filepath) # 查看filepath的状态

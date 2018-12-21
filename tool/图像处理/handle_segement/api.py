@@ -899,7 +899,7 @@ def generateImageLable(dirs, data_dir, handle=True, preffix=True):
                 if not handle:
                     continue
             try:
-                year = round(float(year))
+                year = int(round(float(year)))
                 if preffix:
                     d_file.write("{0}{1} {2}\n".format(dir_pre, f, year))
                 else:

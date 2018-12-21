@@ -21,13 +21,12 @@ tf.trainable_varibles() # 获得所有优化参数
 tf.clip_by_value() # 将一个张量中的数值限制在一个范围内
 tf.reduce_mean() # 求元素平均
 tf.log()
+tf.argmax(y, 1) # 获取y中最大值的索引
 # 损失函数
 tf.nn.softmax_cross_entropy_with_logits(lables=y_, logits=y)
 
 # 比较大小
 tf.greater(v1, v2).eval() # v1>v2则True
-
-
 
 # 训练大致过程
 barch_size = 
@@ -48,4 +47,22 @@ learning_rate = tf.train.exponential_decay(0.1, global_step, 100, 0.96, staircas
 learning_step = tf.train.GradientDescentOpimizer(learning_rate).minimize(loss, global_step=global_step)
 
 
-tf.cast() # 将x的数据格式转化成dtype.例如，原来x的数据格式是bool，那么将其转化成float以后，就能够将其转化成0和1的序列。反之也可以
+tf.cast(data, tf.int32) # 将x的数据格式转化成dtype.例如，原来x的数据格式是bool，那么将其转化成float以后，就能够将其转化成0和1的序列。反之也可以
+
+tf.FixedLengthRecordReader(record_bytes=record_bytes) # 读取固定长度字节数信息
+
+tf.strided_slice( input_, begin, end , stride) # 提取张量的一部分[begin, end)
+
+# 命令行
+# 三个参数：变量，默认值，用法描述
+tf.app.flags.DEFINE_string() ：定义一个用于接收 string 类型数值的变量;
+tf.app.flags.DEFINE_integer() : 定义一个用于接收 int 类型数值的变量;
+tf.app.flags.DEFINE_float() ： 定义一个用于接收 float 类型数值的变量;
+tf.app.flags.DEFINE_boolean() : 定义一个用于接收 bool 类型数值的变量;
+FLAGS = tf.app.flags.FLAGS # 使用
+
+
+# 文件处理
+if tf.gfile.Exists(FLAGS.train_dir):
+tf.gfile.DeleteRecursively(FLAGS.train_dir)
+tf.gfile.MakeDirs(FLAGS.train_dir)

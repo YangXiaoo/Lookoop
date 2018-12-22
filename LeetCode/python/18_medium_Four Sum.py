@@ -45,10 +45,7 @@ class Solution:
                     elif nums[j] + nums[l] + nums[r] > (target - nums[i]):
                         r -= 1
                     else:
-                        tmp.append(nums[i])
-                        tmp.append(nums[j])
-                        tmp.append(nums[l])
-                        tmp.append(nums[r])
+                        tmp = [nums[i], nums[j], nums[l], nums[r]]
                         if tmp in res:
                             l += 1
                             r -= 1
@@ -56,7 +53,6 @@ class Solution:
                             res.append(tmp)
                             l += 1
                             r -= 1
-                    # print(tmp,res,i,j,l,r)
                 j += 1
             i += 1
         return res

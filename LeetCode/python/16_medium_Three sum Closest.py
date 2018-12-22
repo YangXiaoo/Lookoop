@@ -37,32 +37,20 @@ class Solution1:
                 if nums[l] + nums[r] < (target-nums[i]):
                     if abs(nums[i] + nums[l] + nums[r] - target) < sums:
                         sums = abs(nums[i] + nums[l] + nums[r] - target)
-                        fir = nums[i]
-                        sec = nums[l]
-                        thrd = nums[r]                        
+                        res = [nums[i], nums[l], nums[r]]                       
                     l += 1
                 elif nums[l] + nums[r] > (target-nums[i]):
                     if abs(nums[i] + nums[l] + nums[r] - target) < sums:
                         sums = abs(nums[i] + nums[l] + nums[r] - target)
-                        fir = nums[i]
-                        sec = nums[l]
-                        thrd = nums[r] 
+                        res = [nums[i], nums[l], nums[r]] 
                     r -= 1
                 else:
                     sums = abs(nums[i] + nums[l] + nums[r] - target)
-                    fir = nums[i]
-                    sec = nums[l]
-                    thrd = nums[r]
+                    res = [nums[i], nums[l], nums[r]]
                     l += 1
                     r -= 1
-                # print(nums[i],nums[l],nums[r],sums)
             i += 1
-        # print(fir,sec,thrd)
-        res.append(fir)
-        res.append(sec)
-        res.append(thrd)
-        sums = fir + sec + thrd
-        return sums
+        return sum(res)
 
 
 

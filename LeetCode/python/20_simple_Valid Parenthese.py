@@ -46,7 +46,7 @@ class Solution:
             else:
                 pars.append(c)
         return len(pars) == 1
-
+ 
 # test
 s = ")(([])[]{}"
 test = Solution()

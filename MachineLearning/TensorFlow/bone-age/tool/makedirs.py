@@ -33,7 +33,7 @@ def make_dir(input_dir, output_dir, size=(224, 224)):
 		os.mkdir(output_dir)
 	for f in files:
 		print(f)
-		dir_name = str(round(float(os.path.splitext(os.path.basename(f))[0].split('(')[0].split('-')[-1])))
+		dir_name = str(int(round(float(os.path.splitext(os.path.basename(f))[0].split('(')[0].split('-')[-1]))))
 		cur_f_dir = os.path.join(output_dir, dir_name)
 		if not os.path.isdir(cur_f_dir):
 			os.mkdir(cur_f_dir)

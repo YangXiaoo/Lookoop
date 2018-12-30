@@ -68,7 +68,7 @@ def get_train_lable(pic_path, csv_path, train_male_output,
         for f in data:
             count += 1
             print(str(int(count/total * 100)),' %', ' [', '#'*int(count/total * 100), '-'* (100 - int(count/total * 100)) , ']', end='\n')
-            
+
             pic_basename = os.path.basename(f)
             pic_id = pic_basename.split('.')[0]
             if csv_dict[pic_id][1] == 'True':
@@ -86,7 +86,7 @@ def get_train_lable(pic_path, csv_path, train_male_output,
 
 if __name__ == '__main__':
     pic_path = r'C:\Users\Yauno\Downloads\rsna-bone-age\boneage-training-dataset'
-    csv_path = 'C:\\Users\\Yauno\\Downloads\\rsna-bone-age\\boneage-training-dataset.csv'
+    csv_path = r'C:\Users\Yauno\Downloads\rsna-bone-age\boneage-training-dataset.csv'
     train_male_output = r'C:\Study\test\kaggle-bonage\train-male'
     train_female_output = r'C:\Study\test\kaggle-bonage\train-female'
     validation_male_output = r'C:\Study\test\kaggle-bonage\validation-male'

@@ -32,4 +32,4 @@ import numpy as np
 # print(sess.run(hello))
 #  
 
-print(0.2/0.4)
+print('a' < 'b')

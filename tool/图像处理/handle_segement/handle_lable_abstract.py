@@ -26,7 +26,7 @@ def handle(dirs, out_dir):
             continue
         try:
             img = cv2.imread(f, 0)
-            img_new = moveMargin(img, img)
+            # img_new = moveMargin(img, img)
             img_new = normalization(img_new)
             saveImage(img_dirs, "", img_new)
 

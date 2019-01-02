@@ -418,7 +418,7 @@ def waterBfs(img, old_image):
     return res, img
 
 
-def normalization(img):
+def normalization(img, img_size=(256, 256)):
     """
     归一化
     """
@@ -440,7 +440,7 @@ def normalization(img):
     else:
         pass
 
-    img_new = cv2.resize(img, (256, 256), interpolation=cv2.INTER_LINEAR)
+    img_new = cv2.resize(img, img_size, interpolation=cv2.INTER_LINEAR)
 
     return img_new
 

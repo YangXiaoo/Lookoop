@@ -78,8 +78,8 @@ def get_train_lable(pic_path, csv_path, train_male_output,
                 out_dir = os.path.join(female_output, pic_basename)
                 female_lables.write(pic_basename + ' ' + csv_dict[pic_id][0] + '\n')
             dummy_smg = os.popen("copy %s %s" % (f, out_dir))
-            if count == 100:
-                break
+            # if count == 100:
+            #     break
         male_lables.close()
         female_lables.close()
 

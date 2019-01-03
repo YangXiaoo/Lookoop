@@ -32,4 +32,10 @@ import numpy as np
 # print(sess.run(hello))
 #  
 
-print('a' < 'b')
+import random
+nums = [1,2,3,4,5,6]
+nums = random.shuffle(nums)
+print(nums)
+
+
+print(int(6833*0.7))

@@ -1,6 +1,7 @@
 # coding:UTF-8
 # 2018-12-28
 import os
+import copy
 try:
     import pandas as pd 
 except:
@@ -77,7 +78,7 @@ def get_train_lable(pic_path, csv_path, train_male_output,
 
 
     # 获取文件列表，打乱顺序划分训练集与验证集
-    data_id = list(pic_files).copy()
+    data_id = copy.copy(list(pic_files))
     total = len(data_id)
     random.shuffle(data_id)
     split_index = int(total * train_size)  # 默认 70% 作为训练集
@@ -97,7 +98,7 @@ def get_train_lable(pic_path, csv_path, train_male_output,
         # 将男女图片分类
         for f in data:
             count += 1
-            print(str(int(count/total * 100)),' %', ' [', '#'*int(count/total * 100), '-'* (100 - int(count/total * 100)) , ']', end='\n')
+            print(str(int(count/total * 100)),' %', ' [', '#'*int(count/total * 100), '-'* (100 - int(count/total * 100)) , ']')
 
             pic_basename = os.path.basename(f)
             pic_id = pic_basename.split('.')[0]

@@ -32,10 +32,20 @@ import numpy as np
 # print(sess.run(hello))
 #  
 
-import random
-nums = [1,2,3,4,5,6]
-nums = random.shuffle(nums)
-print(nums)
 
+import matplotlib.pyplot as plt
+import numpy as np
 
-print(int(6833*0.7))
+names = ['group_a', 'group_b', 'group_c']
+values = [1, 10, 100]
+
+plt.figure(1, figsize=(9, 9))
+
+plt.subplot(131)
+plt.bar(names, values)
+plt.subplot(132)
+plt.scatter(names, values)
+plt.subplot(133)
+plt.plot(names, values)
+plt.suptitle('Categorical Plotting')
+plt.show()

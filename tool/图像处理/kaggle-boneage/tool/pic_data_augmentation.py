@@ -4,7 +4,6 @@
 # 还需要添加色度变换
 
 import os
-# import cv2
 import numpy as np 
 import random
 import datetime
@@ -195,7 +194,7 @@ def augmentation(input_path,
 
     end_time = datetime.datetime.now()
     expend = end_time - start_time
-    print("\n\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d\nExpend time: %s" %(total, success, skip, fail, expend))
+    print("\n\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d\nExpend time: %s" % (total, success, skip, fail, expend))
     os.rmdir(tmp_dir) # 删除缓存目录
     os.startfile(output_path)
 

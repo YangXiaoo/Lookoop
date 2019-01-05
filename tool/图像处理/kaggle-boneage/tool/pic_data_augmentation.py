@@ -140,10 +140,10 @@ def augmentation(input_path,
     """
     files = getFiles(input_path)
 
-    tmp_lable_container = []
+    tmp_lable_container = [] # 存储标签
     start_time = datetime.datetime.now()
     total = len(files)
-    tmp_dir = 'C:\\gen_pic_tmp'
+    tmp_dir = 'C:\\gen_pic_tmp' # 生成图片的路径
     fail, success, skip, count = 0, 0, 0, 0
 
     mkdir([output_path, lable_output_path, tmp_dir]) # 检查输出目录是否存在

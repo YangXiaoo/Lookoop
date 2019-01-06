@@ -33,19 +33,24 @@ import numpy as np
 #  
 
 
-import matplotlib.pyplot as plt
-import numpy as np
+# import matplotlib.pyplot as plt
+# import numpy as np
 
-names = ['group_a', 'group_b', 'group_c']
-values = [1, 10, 100]
+# names = ['group_a', 'group_b', 'group_c']
+# values = [1, 10, 100]
 
-plt.figure(1, figsize=(9, 9))
+# plt.figure(1, figsize=(9, 9))
 
-plt.subplot(131)
-plt.bar(names, values)
-plt.subplot(132)
-plt.scatter(names, values)
-plt.subplot(133)
-plt.plot(names, values)
-plt.suptitle('Categorical Plotting')
-plt.show()
+# plt.subplot(131)
+# plt.bar(names, values)
+# plt.subplot(132)
+# plt.scatter(names, values)
+# plt.subplot(133)
+# plt.plot(names, values)
+# plt.suptitle('Categorical Plotting')
+# plt.show()
+
+import tensorflow as tf 
+
+ret = tf.gfile.Exists(r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\data\label.txt')
+print(ret)

@@ -136,3 +136,22 @@ queue.pop()
 
 tarfile.open(filepath, 'r:gz').extractall(dest_directory) # 解压filepath下的所有文件到dest_directory
 statinfo = os.stat(filepath) # 查看filepath的状态
+
+
+
+namedtuple(): 生成可以使用名字来访问元素内容的tuple子类
+Clone = collections.namedtuple('Clone',
+                               ['outputs',  # Whatever model_fn() returned.
+                                'scope',  # The scope used to create it.
+                                'device',  # The device used to create.
+                               ])
+
+
+# 暴露接口
+__all__ = ['create_clones',
+           'deploy',
+           'optimize_clones',
+           'DeployedModel',
+           'DeploymentConfig',
+           'Clone',
+          ]

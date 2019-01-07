@@ -65,16 +65,128 @@ def create_clones(config, model_fn, args=None, kwargs=None):
 
 
 def _gather_clone_loss(clone, num_clones, regularization_losses):
-	pass
+	"""
+	获得单个设备的losses
+	"""
+  	sum_loss = None
+  	# Individual components of the loss that will need summaries.
+  	clone_loss = None
+  	regularization_loss = None
 
-def _optimize_clone(optimizer, clone, num_clones, regularization_losses,
-                    **kwargs):
-	pass
+  	# Compute and aggregate losses on the clone device.
+  	with tf.device(clone.device):
+    	all_losses = []
+    	clone_losses = tf.get_collection(tf.GraphKeys.LOSSES, clone.scope)
+    	if clone_losses:
+      		clone_loss = tf.add_n(clone_losses, name='clone_loss')
+      		if num_clones > 1:
+        		clone_loss = tf.div(
+        			clone_loss, 
+        			1.0 * num_clones,
+                    name='scaled_clone_loss')
+      		all_losses.append(clone_loss)
 
-def optimize_clones(clones, optimizer,
+    	if regularization_losses:
+      		regularization_loss = tf.add_n(regularization_losses,
+                                     name='regularization_loss')
+      		all_losses.append(regularization_loss)
+
+    	if all_losses:
+      		sum_loss = tf.add_n(all_losses)
+
+  	# 获得分布的损失
+  	if clone_loss is not None:
+    	tf.summary.scalar(clone.scope + '/clone_loss', clone_loss)
+  	if regularization_loss is not None:
+    	tf.summary.scalar('regularization_loss', regularization_loss)
+
+  	return sum_loss
+
+
+def _optimize_clone(optimizer, 
+					clone, 
+					num_clones, 
+					regularization_losses,              
+				    **kwargs):
+	"""
+	计算单个设备的losses 和 gradients
+	"""
+  	sum_loss = _gather_clone_loss(clone, num_clones, regularization_losses)
+  	clone_grad = None
+  	if sum_loss is not None:
+    	with tf.device(clone.device):
+      		clone_grad = optimizer.compute_gradients(sum_loss, **kwargs)
+  	return sum_loss, clone_grad
+
+
+
+def _sum_clones_gradients(clone_grads):
+	"""
+	计算所有设备的gradients的和
+	"""
+  	sum_grads = []
+  	for grad_and_vars in zip(*clone_grads):
+    	# Note that each grad_and_vars looks like the following:
+    	#   ((grad_var0_clone0, var0), ... (grad_varN_cloneN, varN))
+    	grads = []
+    	var = grad_and_vars[0][1]
+    	for g, v in grad_and_vars:
+      		assert v == var
+      		if g is not None:
+        		grads.append(g)
+    	if grads:
+      		if len(grads) > 1:
+        		sum_grad = tf.add_n(grads, name=var.op.name + '/sum_grads')
+      	else:
+        	sum_grad = grads[0]
+      	sum_grads.append((sum_grad, var))
+      	
+  return sum_grads
+
+
+
+def _add_gradients_summaries(grads_and_vars):
+	pass 
+
+
+
+def optimize_clones(clones, 
+					optimizer,
                     regularization_losses=None,
                     **kwargs):
-	pass 
+	"""
+	计算克隆的损失及梯度
+	""" 
+  	grads_and_vars = []
+  	clones_losses = []
+  	num_clones = len(clones)
+
+  	if regularization_losses is None:
+    	regularization_losses = tf.get_collection(
+        	tf.GraphKeys.REGULARIZATION_LOSSES)
+
+  	for clone in clones:
+    	with tf.name_scope(clone.scope):
+      		clone_loss, clone_grad = _optimize_clone(
+          		optimizer, 
+          		clone, 
+          		num_clones, 
+          		regularization_losses, 
+          		**kwargs)
+
+      		if clone_loss is not None:
+        		clones_losses.append(clone_loss)
+        		grads_and_vars.append(clone_grad)
+      		# 只对第一个设备进行正则化
+    		regularization_losses = None
+
+  	# 计算所有loss
+  	total_loss = tf.add_n(clones_losses, name='total_loss')
+  	# 计算所有设备的gradients
+  	grads_and_vars = _sum_clones_gradients(grads_and_vars)
+
+  	return total_loss, grads_and_vars
+	
 
 def deploy(config,
            model_fn,
@@ -84,12 +196,6 @@ def deploy(config,
            summarize_gradients=False):
 	pass 
 
-
-def _sum_clones_gradients(clone_grads):
-	pass 
-
-def _add_gradients_summaries(grads_and_vars):
-	pass 
 
 class DeploymentConfig(object):
 	"""
@@ -113,6 +219,10 @@ class DeploymentConfig(object):
 	  	num_ps_tasks: Number of tasks for the `ps` job. 0 to not use replicas.
 	  	worker_job_name: A name for the worker job.
 	  	ps_job_name: A name for the parameter server job.
+
+	  	https://www.cnblogs.com/libinggen/p/7399307.html 
+	  	先创建TensorFlow Cluster对象，包含一组task(每个task一台独立机器)，分布式执行TensorFlow计算图。
+	  	一个Cluster切分多个job，一个job是一类特定任务(parameter server ps,worker)， 每个job可以包含多个task。 每个task创建一个server，连接到Cluster，每个task执行在不同机器。 也可以一台机器执行多个task(不同GPU)。 tf.train.ClusterSpec初始化Cluster对象, 初始化信息是Python dict，tf.train.ClusterSpec({"ps":["192.168.233.201:2222"],"worker":["192.168.233.202:2222","192.168.233.203:2222"]})，代表一个parameter server和两个worker，分别在三个不同机器上。 每个task，定义自己身份， 如server=tf.train.Server(cluster,job_name="ps",task_index=0)，机器job定义ps第0台机器。 程序中with tf.device("/job:worker/task:7")，限定Variable存放在哪个task或机器。
 	  	"""
 	  	# 基本判断
 	    if num_replicas > 1:

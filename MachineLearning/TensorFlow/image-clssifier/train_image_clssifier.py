@@ -12,6 +12,7 @@ from datasets import dataset_factory
 from deployment import model_deploy
 from nets import nets_factory
 from preprocessing import preprocessing_factory
+from tool import *
 
 slim = tf.contrib.slim 
 
@@ -180,5 +181,66 @@ def main():
 	      	return end_points
 
 
-	    summaries = set(tf.get_collection(tf.GraphKeys.SUMMARIES))
+	    summaries = set(tf.get_collection(tf.GraphKeys.SUMMARIES)) # Summary是对网络中Tensor取值进行监测的一种Operation
 
+	    clones = model_deploy.create_clones(deploy_config, clone_fn, [batch_queue])
+	    first_clone_scope = deploy_config.clone_scope(0) # master
+
+	    # 获得第一个环境下的操作
+	    update_ops = tf.get_collection(tf.GraphKeys.UPDATE_OPS, first_clone_scope)
+
+
+		end_points = clones[0].outputs
+    	for end_point in end_points:
+      		x = end_points[end_point]
+      		summaries.add(tf.summary.histogram('activations/' + end_point, x))
+      		summaries.add(tf.summary.scalar('sparsity/' + end_point, tf.nn.zero_fraction(x)))
+
+	    # 添加loss到可视化中
+	    for loss in tf.get_collection(tf.GraphKeys.LOSSES, first_clone_scope):
+	      	summaries.add(tf.summary.scalar('losses/%s' % loss.op.name, loss))
+
+	    # 添加变量
+	    for variable in slim.get_model_variables():
+	      	summaries.add(tf.summary.histogram(variable.op.name, variable))
+
+	    # 滑动平均设置
+	    if input_para['moving_average_decay']:
+	      	moving_average_variables = slim.get_model_variables()
+	      	variable_averages = tf.train.ExponentialMovingAverage(
+	          	input_para['moving_average_decay'], 
+	          	global_step)
+	    else:
+	      	moving_average_variables, variable_averages = None, None
+
+	    # 求解方法
+	    with tf.device(deploy_config.optimizer_device()):
+	      	learning_rate = configure_learning_rate(
+	      		dataset.num_samples, 
+	      		global_step,
+	      		**input_para)
+	      	optimizer = configure_optimizer(learning_rate, **input_para)
+	      	summaries.add(tf.summary.scalar('learning_rate', learning_rate))
+
+	    if input_para['sync_replicas']:
+	      	optimizer = tf.train.SyncReplicasOptimizer(
+	          	opt=optimizer,
+	          	replicas_to_aggregate=input_para['replicas_to_aggregate'],
+	          	variable_averages=variable_averages,
+	          	variables_to_average=moving_average_variables,
+	          	replica_id=tf.constant(input_para['task'], tf.int32, shape=()),
+	          	total_num_replicas=input_para['worker_replicas'])
+	    elif input_para['moving_average_decay']:
+	      	# 跟新Opt
+	      	update_ops.append(variable_averages.apply(moving_average_variables))
+
+	    variables_to_train = get_variables_to_train() # 获得训练参数
+
+	    # 分布式复制求解设置
+	    total_loss, clones_gradients = model_deploy.optimize_clones(
+	        clones,
+	        optimizer,
+	        var_list=variables_to_train)
+	    
+	    # 添加损失
+	    summaries.add(tf.summary.scalar('total_loss', total_loss))

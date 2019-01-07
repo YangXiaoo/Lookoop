@@ -10,12 +10,12 @@ __all__ = [
 ]
 
 def configure_learning_rate(num_samples_per_epoch, global_step, input_par):
-  """
-  设置学习率
-  """
-    decay_steps = int(num_samples_per_epoch / input_parbatch_size *
+    """
+    设置学习率
+    """
+    decay_steps = int(num_samples_per_epoch / input_par['batch_size'] *
                     input_par['num_epochs_per_decay'])
-    if input_parsync_replicas:
+    if input_par['sync_replicas']:
         decay_steps /= input_par['replicas_to_aggregate']
 
     if input_par['learning_rate_decay_type'] == 'exponential':
@@ -45,9 +45,9 @@ def configure_learning_rate(num_samples_per_epoch, global_step, input_par):
 
 
 def configure_optimizer(learning_rate, input_par):
-  """
-  设置求解方法
-  """
+    """
+    设置求解方法
+    """
     if input_par['optimizer'] == 'adadelta':
         optimizer = tf.train.AdadeltaOptimizer(
             learning_rate,
@@ -89,7 +89,7 @@ def configure_optimizer(learning_rate, input_par):
 
 
 def get_variables_to_train(input_par):
-     """
+    """
     获得需要训练的变量
     """
     if input_par['trainable_scopes'] is None:

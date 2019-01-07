@@ -126,8 +126,6 @@ def _sum_clones_gradients(clone_grads):
     """
     sum_grads = []
     for grad_and_vars in zip(*clone_grads):
-        # Note that each grad_and_vars looks like the following:
-        #   ((grad_var0_clone0, var0), ... (grad_varN_cloneN, varN))
         grads = []
         var = grad_and_vars[0][1]
         for g, v in grad_and_vars:
@@ -137,11 +135,12 @@ def _sum_clones_gradients(clone_grads):
         if grads:
             if len(grads) > 1:
                 sum_grad = tf.add_n(grads, name=var.op.name + '/sum_grads')
-        else:
-            sum_grad = grads[0]
-        sum_grads.append((sum_grad, var))
+            else:
+                sum_grad = grads[0]
 
-  return sum_grads
+            sum_grads.append((sum_grad, var))
+
+    return sum_grads
 
 
 
@@ -337,7 +336,7 @@ class DeploymentConfig(object):
         device += '/device:CPU:0'
 
         class _PSDeviceChooser(object):
-          """Slim device chooser for variables when using PS."""
+            """Slim device chooser for variables when using PS."""
 
             def __init__(self, device, tasks):
                 self._device = device

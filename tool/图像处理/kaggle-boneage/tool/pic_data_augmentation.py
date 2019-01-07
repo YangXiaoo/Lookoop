@@ -150,17 +150,21 @@ def augmentation(input_path,
 
     mkdir([output_path, lable_output_path, tmp_dir]) # 检查输出目录是否存在
 
-    for f in files:
+    cleanDir(tmp_dir) # 清空缓存文件
+
+    for i, f in enumerate(files):
         count += 1
         print(count, '/', total)
         # try:
         # 载入图片
         img = loadImg(f)
+        tmp_dir_sub = os.path.join(tmp_dir, str(i))
+        mkdir([tmp_dir_sub])
 
         # 生成图片
         input_par = {
             'batch_size':batch_size, 
-            'save_to_dir':tmp_dir, 
+            'save_to_dir':tmp_dir_sub, 
             'save_prefix':save_prefix, 
             'save_format':save_format
         }
@@ -177,7 +181,7 @@ def augmentation(input_path,
         getLables(tmp_lable_container, lables[base_name], tmp_dir)
         tmp_lable_container.append(base_name + ' ' + lables[base_name] + '\n')
         
-        cleanDir(tmp_dir) # 清空缓存文件
+        # cleanDir(tmp_dir) # 清空缓存文件
 
         # 打印信息到输出台
         printToConsole(start_time, f, count, total, 5)
@@ -197,7 +201,8 @@ def augmentation(input_path,
     end_time = datetime.datetime.now()
     expend = end_time - start_time
     print("\n\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d\nExpend time: %s" % (total, success, skip, fail, expend))
-    os.rmdir(tmp_dir) # 删除缓存目录
+    cleanDir(tmp_dir)
+    # os.rmdir(tmp_dir) # 删除缓存目录
     os.startfile(output_path)
 
 

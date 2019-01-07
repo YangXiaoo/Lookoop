@@ -95,7 +95,7 @@ def main():
 
 	with tf.Graph().as_default(): # 实例化一个图
 
-		# 部署环境初始化
+		# 运行环境初始化
 		deploy_config = model_deploy.DeploymentConfig(
 			num_clones=input_para['num_clones'],
 			clone_on_cpu=input_para['clone_on_cpu'],
@@ -103,9 +103,9 @@ def main():
 	        num_replicas=input_para['num_replicas'],
 	        num_ps_tasks=input_para['num_ps_tasks'])
 
-    	# 设置运行的设备
+    	# 初始化迭代计数器
     	with tf.device(deploy_config.variables_device()):
-      		global_step = slim.create_global_step() # 迭代计数器
+      		global_step = slim.create_global_step() 
 
 
       	# 初始化训练数据
@@ -128,6 +128,17 @@ def main():
         	is_training=True)
 
     	# 设置数据加载, 主机加载数据
+    	# DatasetDataProvider参数设置
+    	# dataset：Dataset 类实例
+		# num_readers：并行阅读器数量
+		# reader_kwargs=None：阅读器关键配置字典
+		# shuffle：是否打乱
+		# num_epochs：每个数据源被读取的次数，如果设为None数据将会被无限循环的读取
+		# common_queue_capacity：读取数据队列的容量，默认为256
+		# common_queue_min：读取数据队列的最小容量
+		# record_key：（不是很理解）
+		# seed=None：打乱是的种子
+		# scope=None：范围
 	    with tf.device(deploy_config.inputs_device()):
 	      	provider = slim.dataset_data_provider.DatasetDataProvider(
 	          	dataset,
@@ -146,7 +157,7 @@ def main():
           		[image, label],
           		batch_size=input_para['batch_size'],
           		num_threads=input_para['num_preprocessing_thread']s,
-          		capacity=5 * input_para['batch_size'])
+          		capacity=input_para['batch_size'])
 
 	      	# 独热编码
 	      	labels = slim.one_hot_encoding(
@@ -194,9 +205,14 @@ def main():
     	for end_point in end_points:
       		x = end_points[end_point]
       		summaries.add(tf.summary.histogram('activations/' + end_point, x))
+
+      		# Tensorflow-tf.nn.zero_fraction()
+      		# 将输入的Tensor中0元素在所有元素中所占的比例计算并返回,
+      		# 因为relu激活函数有时会大面积的将输入参数设为0,
+      		# 所以此函数可以有效衡量relu激活函数的有效性
       		summaries.add(tf.summary.scalar('sparsity/' + end_point, tf.nn.zero_fraction(x)))
 
-	    # 添加loss到可视化中
+	    # 添加loss到summary
 	    for loss in tf.get_collection(tf.GraphKeys.LOSSES, first_clone_scope):
 	      	summaries.add(tf.summary.scalar('losses/%s' % loss.op.name, loss))
 
@@ -214,12 +230,12 @@ def main():
 	      	moving_average_variables, variable_averages = None, None
 
 	    # 求解方法
-	    with tf.device(deploy_config.optimizer_device()):
+	    with tf.device(deploy_config.optimizer_device()): # '/job:/device:CPU:0'
 	      	learning_rate = configure_learning_rate(
 	      		dataset.num_samples, 
 	      		global_step,
-	      		**input_para)
-	      	optimizer = configure_optimizer(learning_rate, **input_para)
+	      		input_para)
+	      	optimizer = configure_optimizer(learning_rate, input_para) # tf.train.exponential_decay
 	      	summaries.add(tf.summary.scalar('learning_rate', learning_rate))
 
 	    if input_para['sync_replicas']:
@@ -231,16 +247,53 @@ def main():
 	          	replica_id=tf.constant(input_para['task'], tf.int32, shape=()),
 	          	total_num_replicas=input_para['worker_replicas'])
 	    elif input_para['moving_average_decay']:
-	      	# 跟新Opt
+	      	# 更新Opt
 	      	update_ops.append(variable_averages.apply(moving_average_variables))
 
-	    variables_to_train = get_variables_to_train() # 获得训练参数
+	    variables_to_train = get_variables_to_train(input_para) # 获得训练参数
 
-	    # 分布式复制求解设置
+	    # 分布式 求解设置
+	    # https://blog.csdn.net/NockinOnHeavensDoor/article/details/80632677
 	    total_loss, clones_gradients = model_deploy.optimize_clones(
 	        clones,
 	        optimizer,
 	        var_list=variables_to_train)
-	    
+
 	    # 添加损失
 	    summaries.add(tf.summary.scalar('total_loss', total_loss))
+
+	    # 创建gradient更新操作
+	    grad_updates = optimizer.apply_gradients(clones_gradients, global_step=global_step)
+    	update_ops.append(grad_updates)
+
+    	update_op = tf.group(*update_ops) # 组合操作, 返回操作
+
+    	# 设置依赖, 只有update_op执行完后才能执行with里面的
+    	# 它是通过在计算图内部创建 send / recv节点来引用或复制变量的
+    	# 最主要的用途就是更好的控制在不同设备间传递变量的值；
+		# 另外，它还有一种常见的用途，就是用来作为一个虚拟节点来控制流程操作，
+		# 比如我们希望强制先执行loss_averages_op或updata_op, 然后更新相关变量
+    	with tf.control_dependencies([update_op]):
+     	 	train_tensor = tf.identity(total_loss, name='train_op')
+
+		summaries |= set(tf.get_collection(tf.GraphKeys.SUMMARIES, first_clone_scope))
+    	# 融合所有summary
+   	 	summary_op = tf.summary.merge(list(summaries), name='summary_op')
+
+   	 	# 训练
+	    slim.learning.train(
+	        train_tensor,
+	        logdir=input_par['train_dir'],
+	        master=input_par['master'],
+	        is_chief=(input_partask == 0),
+	        init_fn=get_init_fn(input_par),
+	        summary_op=summary_op,
+	        number_of_steps=input_par['max_number_of_steps'],
+	        log_every_n_steps=input_par['log_every_n_steps'],
+	        save_summaries_secs=input_par['save_summaries_secs'],
+	        save_interval_secs=input_par['save_interval_secs'],
+	        sync_optimizer=optimizer if input_par['sync_replicas'] else None)
+
+
+if __name__ == '__main__':
+  tf.app.run()

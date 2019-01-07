@@ -9,7 +9,7 @@ __all__ = [
     'configure_optimizer',
 ]
 
-def configure_learning_rate(num_samples_per_epoch, global_step, **input_par):
+def configure_learning_rate(num_samples_per_epoch, global_step, input_par):
   """
   设置学习率
   """
@@ -26,7 +26,6 @@ def configure_learning_rate(num_samples_per_epoch, global_step, **input_par):
             input_par['learning_rate_decay_factor'],
             staircase=True,
             name='exponential_decay_learning_rate')
-
     elif input_par['learning_rate_decay_type'] == 'fixed':
         return tf.constant(input_par['learning_rate'], name='fixed_learning_rate')
     elif input_par['learning_rate_decay_type'] == 'polynomial':
@@ -45,7 +44,7 @@ def configure_learning_rate(num_samples_per_epoch, global_step, **input_par):
 
 
 
-def configure_optimizer(learning_rate, **input_par):
+def configure_optimizer(learning_rate, input_par):
   """
   设置求解方法
   """
@@ -103,3 +102,43 @@ def get_variables_to_train(input_par):
         variables = tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope)
         variables_to_train.extend(variables)
     return variables_to_train
+
+
+def get_init_fn(input_par):
+    """
+    微调初始化
+    """
+    if input_par['checkpoint_path'] is None:
+        return None
+
+    # 若与最近一次训练重复, 则忽略当前微调设置
+    if tf.train.latest_checkpoint(input_par['train_dir']):
+        tf.logging.info('Ignoring --checkpoint_path because a checkpoint already exists in %s' % input_par['train_dir'])
+        return None
+
+    exclusions = []
+    if input_par['checkpoint_exclude_scopes']:
+        exclusions = [scope.strip() for scope in input_par['checkpoint_exclude_scopes'].split(',')]
+
+    # 不训练的节点
+    variables_to_restore = []
+    for var in slim.get_model_variables():
+        excluded = False
+        for exclusion in exclusions:
+            if var.op.name.startswith(exclusion):
+                excluded = True
+                break
+        if not excluded:
+            variables_to_restore.append(var)
+
+    if tf.gfile.IsDirectory(input_par['checkpoint_path']):
+        checkpoint_path = tf.train.latest_checkpoint(input_par['checkpoint_path'])
+    else:
+        checkpoint_path = input_par['checkpoint_path']
+
+    tf.logging.info('Fine-tuning from %s' % checkpoint_path)
+
+    return slim.assign_from_checkpoint_fn(
+        checkpoint_path,
+        variables_to_restore,
+        ignore_missing_vars=input_par['ignore_missing_vars'])

@@ -119,7 +119,9 @@ def getLablesDict(lable_path):
     data = lable.readlines()
     ret = {}
     for line in data:
-        key, value = line[:-1].split(' ')
+        # print(line[:-1].split(' ')) # ['mm', '(2).png', '10']
+        tmp = line[:-1].split(' ')
+        key, value = ''.join(tmp[:-1]), tmp[-1]
         ret[key] = value
     lable.close()
     return ret
@@ -151,39 +153,39 @@ def augmentation(input_path,
     for f in files:
         count += 1
         print(count, '/', total)
-        try:
-            # 载入图片
-            img = loadImg(f)
+        # try:
+        # 载入图片
+        img = loadImg(f)
 
-            # 生成图片
-            input_par = {
-                'batch_size':batch_size, 
-                'save_to_dir':tmp_dir, 
-                'save_prefix':save_prefix, 
-                'save_format':save_format
-            }
-            genPic(img, max_gen=10, **input_par)
+        # 生成图片
+        input_par = {
+            'batch_size':batch_size, 
+            'save_to_dir':tmp_dir, 
+            'save_prefix':save_prefix, 
+            'save_format':save_format
+        }
+        genPic(img, max_gen=10, **input_par)
 
-            # 将缓存中的图片移动到指定目录
-            movePic(tmp_dir, output_path)
+        # 将缓存中的图片移动到指定目录
+        movePic(tmp_dir, output_path)
 
-            # 复制当前使用的图片至指定目录
-            movePic(f, output_path)
+        # 复制当前使用的图片至指定目录
+        movePic(f, output_path)
 
-            # 获得标签
-            base_name = os.path.basename(f)
-            getLables(tmp_lable_container, lables[base_name], tmp_dir)
-            tmp_lable_container.append(base_name + ' ' + lables[base_name] + '\n')
-            
-            cleanDir(tmp_dir) # 清空缓存文件
+        # 获得标签
+        base_name = os.path.basename(f)
+        getLables(tmp_lable_container, lables[base_name], tmp_dir)
+        tmp_lable_container.append(base_name + ' ' + lables[base_name] + '\n')
+        
+        cleanDir(tmp_dir) # 清空缓存文件
 
-            # 打印信息到输出台
-            printToConsole(start_time, f, count, total, 5)
-            success += 1
-        except Exception as e:
-            # 错误情况
-            saveError(e, output_path, f)
-            fail += 1
+        # 打印信息到输出台
+        printToConsole(start_time, f, count, total, 5)
+        success += 1
+        # except Exception as e:
+        #     # 错误情况
+        #     saveError(e, output_path, f)
+        #     fail += 1
 
     # 打乱标签列表写标签
     random.shuffle(tmp_lable_container)

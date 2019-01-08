@@ -6,7 +6,7 @@ from tensorflow.python import pywrap_tensorflow
 # checkpoint_path = os.path.join('~/tensorflowTraining/ResNet/model', "model.ckpt")
  
 # code for designated ckpt, change 3890 to your num
-checkpoint_path = os.path.join(r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pretrained', "vgg_16.ckpt")
+checkpoint_path = os.path.join(r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_incept', "model.ckpt-162")
 # Read data from checkpoint file
 reader = pywrap_tensorflow.NewCheckpointReader(checkpoint_path)
 var_to_shape_map = reader.get_variable_to_shape_map()

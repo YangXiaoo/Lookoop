@@ -19,7 +19,7 @@ slim = tf.contrib.slim
 # parameters
 input_para = {
     'master' : '',
-    'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_test', # 存放节点和日志
+    'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_incept', # 存放节点和日志
 
     'num_clones' : 1, # 部署平台个数
     'clone_on_cpu' : True, # 是否部署在CPU上
@@ -69,22 +69,22 @@ input_para = {
 
 
     # Dataset
-    'dataset_name' : 'bone', # The name of the dataset to load
-    'dataset_split_name' : 'train', # The name of the train/test split
-    'dataset_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/data', # The directory where the dataset files are stored
-    'labels_offset' : 0,  # An offset for the labels in the dataset. This flag is primarily used to  evaluate the VGG and ResNet architectures which do not use a background
-    'model_name' : 'vgg_16', # The name of the architecture to train
-    'preprocessing_name' : None, # The name of the preprocessing to use. If left as `None`, then the model_name flag is used
-    'batch_size' : 2, # The number of samples in each batch
-    'train_image_size' : 224, # 训练图片大小, None使用默认大小
-    'max_number_of_steps' : None, # The maximum number of training steps
+    'dataset_name' : 'bone', # 加载数据集的模块名
+    'dataset_split_name' : 'train', # 划分数据集的名称
+    'dataset_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/data', # 数据存储
+    'labels_offset' : 0,  # 标签偏移
+    'model_name' : 'inception_v3', # 模型名
+    'preprocessing_name' : None, # 预处理
+    'batch_size' : 2, # batch size
+    'train_image_size' : 299, # 训练图片大小, None使用默认大小
+    'max_number_of_steps' : 10000, # 最大迭代次数
 
 
     # Fine-Tuning
     'checkpoint_path' : None,
-    'checkpoint_exclude_scopes' : 'fc6,fc7,fc8', #Comma-separated list of scopes of variables to exclude when restoring from a checkpoint
-    'trainable_scopes' : None, # Comma-separated list of scopes to filter the set of variables to train. By default, None would train all the variables
-    'ignore_missing_vars' : True, # When restoring a checkpoint would ignore missing variables
+    'checkpoint_exclude_scopes' : 'fc6,fc7,fc8', # 不加载的节点
+    'trainable_scopes' : None, # 默认训练所有节点
+    'ignore_missing_vars' : True, # W检查节点的时候忽略缺失值
 }
 
 

@@ -1,5 +1,5 @@
 # coding:UTF-8
-# 2019-1-8
+# 2019-1-7
 # test
 
 from __future__ import absolute_import
@@ -18,16 +18,12 @@ import tensorflow as tf
 
 
 input_par = {
-    'model_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\frozen_graph.pb',
-
+    'model_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir\model.ckpt-638.meta',
     'label_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\data\label.txt',
-
     'image_file' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\row_data\train\2',
-
-    # 'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir',
-
-    'width' : 299,
-    'height' : 299,
+    'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir',
+    'width' : 224,
+    'height' : 224,
     'prediction_output' : '',
 }
 
@@ -64,21 +60,21 @@ class NodeLookup(object):
         return self.node_lookup[node_id]
 
 
-def create_graph(sess, model_path):
+def create_graph(sess, model_path, checkpoint_path):
     """
     从保存模型 xx_xx.pb  中加载图
     """
-    with tf.gfile.FastGFile(model_path, 'rb') as f:
-        graph_def = tf.GraphDef()
-        graph_def.ParseFromString(f.read())
-        _ = tf.import_graph_def(graph_def, name='')
+    # with tf.gfile.FastGFile(model_path, 'rb') as f:
+    #     graph_def = tf.GraphDef()
+    #     graph_def.ParseFromString(f.read())
+    #     _ = tf.import_graph_def(graph_def, name='')
 
-    # saver = tf.train.import_meta_graph(model_path)
-    # saver.restore(sess, tf.train.latest_checkpoint(checkpoint_path))
+    saver = tf.train.import_meta_graph(model_path)
+    saver.restore(sess, tf.train.latest_checkpoint(checkpoint_path))
 
-    # # 获取权重
-    # graph = tf.get_default_graph()
-    # return graph
+    # 获取权重
+    graph = tf.get_default_graph()
+    return graph
 
 
 def preprocess_for_eval(image, 
@@ -122,20 +118,20 @@ def run_inference_on_image(_):
                 image_data = sess.run(image_data)
                 image_list.append(image_data)
 
-    # 加载保存的模型
-    create_graph(sess, input_par['model_path'])
+    input_images = tf.placeholder(dtype=tf.float32, shape = [None,224,224,3])
     with tf.Session() as sess:
-        
-        softmax_tensor = sess.graph.get_tensor_by_name('InceptionV3/Logits/SpatialSqueeze:0')
+        # 加载保存的模型
+        graph = create_graph(sess, input_par['model_path'], input_par['checkpoint_path'])
+        softmax_tensor = graph.get_tensor_by_name('vgg_16/fc8/weights/RMSProp_1:0')
         node_lookup = NodeLookup(input_par['label_path'])
         for image_data in image_list:
             predictions = sess.run(softmax_tensor,
-                               {'input:0': image_data})
+                               {input_images: image_data})
             
-            # predictions = np.squeeze(predictions)
-            # pred = tf.argmax(predictions,axis=0)
-            print(predictions.shape)
-            print(predictions)
+            predictions = np.squeeze(predictions)
+            pred = tf.argmax(predictions,axis=1)
+            print(predictions.shape) # (4096, 18)
+            print(sess.run(pred))
             # 测试输出前5个
             # top_k = predictions.argsort()[-5:][::-1]
             # print(top_k)

@@ -10,7 +10,8 @@ import datetime
 import shutil
 import time
 from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_array, load_img
-
+import _thread
+import time
 
 __suffix__ = ["png"]
 
@@ -50,7 +51,7 @@ def saveError(e, out_dir, f):
     if not os.path.isdir(failed_dir):
         os.mkdir(failed_dir)
     print(os.path.join(failed_dir, f.split("\\")[-1]))
-    os.system("copy %s %s" % (f, os.path.join(failed_dir, f.split("\\")[-1])))
+    dummy_smg = os.popen("copy %s %s" % (f, os.path.join(failed_dir, f.split("\\")[-1])))
 
     return 
 
@@ -141,10 +142,11 @@ def getLablesDict(lable_path):
     return ret
 
 
-def augmentation(input_path, 
+def augmentation(files, 
                 output_path, 
                 lables, 
                 lable_output_path,
+                tmp_dir,
                 batch_size=1,
                 save_prefix='bone',
                 save_format='png'):
@@ -154,12 +156,11 @@ def augmentation(input_path,
     lables: 待处理数据对应标签, {'pic_01.png':label_01, 'pic_02.png':label_02,...}
     lable_output_path: 重新生成的标签输出路径
     """
-    files = getFiles(input_path)
+    
 
     tmp_lable_container = [] # 存储标签
     start_time = datetime.datetime.now()
     total = len(files)
-    tmp_dir = 'C:\\gen_pic_tmp' # 生成图片的路径
     file_dic = [] # 存储图片名字，防止重名
     fail, success, skip, count = 0, 0, 0, 0
 
@@ -228,13 +229,15 @@ if __name__ == '__main__':
     lables = getLablesDict(lable_path)
 
     input_path =  r'C:\Study\test\kaggle-bonage\train-male'
+    files = getFiles(input_path)
 
     output_path = r'C:\Study\test\kaggle-bonage\test'
     lable_output_path = r'C:\Study\test\kaggle-bonage\test'
-    augmentation(input_path, 
-                output_path, 
-                lables, 
-                lable_output_path,
-                batch_size=1,
-                save_prefix='bone',
-                save_format='png')
+    try:
+       _thread.start_new_thread(augmentation, (files[:len(files)//2],output_path,lables,lable_output_path,'C:\\gen_pic_tmp_0', ) )
+       _thread.start_new_thread(augmentation, (files[len(files)//2:],output_path,lables,lable_output_path,'C:\\gen_pic_tmp_1', ) )
+    except:
+        print("Error: unable to start thread")
+
+    while 1:
+        pass

@@ -33,3 +33,16 @@ import os
 
 a,b = os.path.split(r'C:\Study\test\kaggle-bonage\train-male\train.txt')
 print(a, b)
+
+
+# os.rename(r'C:\Users\Yauno\Documents\Tencent Files\1270009836\FileRecv\lable.txt', r'C:\Study\test\kaggle-bonage\lable.txt')
+
+# file = r'C:\Users\Yauno\Documents\Tencent Files\1270009836\FileRecv\lable(1).txt'
+# with open(file) as f:
+# 	data = f.readlines()
+# 	dicts = []
+# 	for d in  data:
+# 		if d in dicts:
+# 			print(d)
+# 		else:
+# 			dicts.append(d)

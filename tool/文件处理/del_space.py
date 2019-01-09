@@ -27,7 +27,7 @@ def dele_space(file):
     print("Successful,total %s files renamed." % count)
 
 def main():
-    dirpath = raw_input("INPUT DIRPATH:")
+    dirpath = r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\row_data\train\2'
     file_list = get_filename(dirpath)
     dele_space(file_list)
 

@@ -150,8 +150,8 @@ def get_train_lable(pic_path,
                 out_dir = os.path.join(female_output, pic_basename)
                 female_lables.write(pic_basename + ' ' + sort_female_bone_age[csv_dict[pic_id][0]] + '\n')
             dummy_smg = os.popen("copy %s %s" % (f, out_dir))
-            if count == 100 or count == 200:
-                break
+            # if count == 50 or count == 100:
+            #     break
         male_lables.close()
         female_lables.close()
 

@@ -109,7 +109,7 @@ def getLables(tmp_lable_container,
             while base_name not in file_dic:
                 print("rename file: %s ..." % f)
                 time.sleep(1)
-                base_name = 'rename_' + str(random.randrange(1,10000)) + '_' + basename
+                base_name = 'rename_' + str(random.randrange(1,10000)) + '_' + base_name
             os.rename(f, os.path.join(f_dir, base_name))
         file_dic.append(base_name)
         tmp_lable_container.append(base_name + ' ' + lable + '\n')
@@ -147,6 +147,7 @@ def augmentation(files,
                 lables, 
                 lable_output_path,
                 tmp_dir,
+                label_name='lable.txt',
                 batch_size=1,
                 save_prefix='bone',
                 save_format='png'):
@@ -164,7 +165,7 @@ def augmentation(files,
     file_dic = [] # 存储图片名字，防止重名
     fail, success, skip, count = 0, 0, 0, 0
 
-    mkdir([output_path, lable_output_path, tmp_dir]) # 检查输出目录是否存在
+    mkdir([tmp_dir]) # 检查输出目录是否存在
 
     cleanDir(tmp_dir) # 清空缓存文件
 
@@ -207,7 +208,7 @@ def augmentation(files,
 
     # 打乱标签列表写标签
     random.shuffle(tmp_lable_container)
-    with open(os.path.join(lable_output_path, 'lable.txt'), 'w') as lable_file:
+    with open(os.path.join(lable_output_path, label_name), 'a') as lable_file:
         for line in tmp_lable_container:
             lable_file.write(line)
 
@@ -233,9 +234,13 @@ if __name__ == '__main__':
 
     output_path = r'C:\Study\test\kaggle-bonage\test'
     lable_output_path = r'C:\Study\test\kaggle-bonage\test'
+    mkdir([output_path, lable_output_path])
     try:
-       _thread.start_new_thread(augmentation, (files[:len(files)//2],output_path,lables,lable_output_path,'C:\\gen_pic_tmp_0', ) )
-       _thread.start_new_thread(augmentation, (files[len(files)//2:],output_path,lables,lable_output_path,'C:\\gen_pic_tmp_1', ) )
+        split = len(files)//3
+        print(len(files), split)
+        _thread.start_new_thread(augmentation, (files[:split],output_path,lables,lable_output_path,'C:\\gen_pic_tmp_0', ) )
+        _thread.start_new_thread(augmentation, (files[split : split*2],output_path,lables,lable_output_path,'C:\\gen_pic_tmp_1', ) )
+        _thread.start_new_thread(augmentation, (files[split*2:],output_path,lables,lable_output_path,'C:\\gen_pic_tmp_2', ) )
     except:
         print("Error: unable to start thread")
 

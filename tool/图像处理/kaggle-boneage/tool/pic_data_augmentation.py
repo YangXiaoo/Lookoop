@@ -108,13 +108,13 @@ def getLables(tmp_lable_container,
             while base_name not in file_dic:
                 print("rename file: %s ..." % f)
                 time.sleep(1)
-                base_name = 'rename_' + str(random.randrange(1,10000)) + '_' + basename
+                base_name = 'rename_' + str(random.randrange(1,10000)) + '_' + base_name
             os.rename(f, os.path.join(f_dir, base_name))
         file_dic.append(base_name)
         tmp_lable_container.append(base_name + ' ' + lable + '\n')
 
     return 
-
+    
 
 def movePic(tmp_dir, output_path):
     if os.path.isdir(tmp_dir):

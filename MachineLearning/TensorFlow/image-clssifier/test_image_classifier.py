@@ -24,11 +24,14 @@ input_par = {
 
     'image_file' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\row_data\train\2',
 
+    'test_label_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\row_data\train\2\2.txt',
+
     # 'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir',
+    'tensor_name' : 'InceptionV3/Logits/SpatialSqueeze:0',
 
     'width' : 299,
     'height' : 299,
-    'prediction_output' : '',
+    'prediction_output' : r'C:\Study\test\tensorflow-bone\InceptionV3.npy',
 }
 
 __suffix__ = ["png"]
@@ -41,6 +44,23 @@ def getFiles(dirpath):
             if name.split(".")[-1] in __suffix__:
                 file.append(path)
     return file
+
+
+def getLablesDict(label_path):
+    lable = open(label_path)
+    data = lable.readlines()
+    ret = {}
+    for line in data:
+        # print(line[:-1].split(' ')) # ['mm', '(2).png', '10']
+        tmp = line[:-1].split(' ')
+        key, value = ''.join(tmp[:-1]), tmp[-1]
+        if int(value) > 19:
+            value = value[:-1]
+        ret[key] = value
+    lable.close()
+    print(lable)
+    return ret
+
 
 class NodeLookup(object):
     """
@@ -110,47 +130,34 @@ def preprocess_for_eval(image,
 
 
 def run_inference_on_image(_):
-    image_list = []
+    image_list = {}
     file_list = getFiles(input_par['image_file'])
     with tf.Graph().as_default():
         for img in file_list:
+            base_name = os.path.basename(img)
             image_data = tf.gfile.FastGFile(img, 'rb').read()
             image_data = tf.image.decode_jpeg(image_data)
             image_data = preprocess_for_eval(image_data, input_par['width'], input_par['height'])
             image_data = tf.expand_dims(image_data, 0)
             with tf.Session() as sess:
                 image_data = sess.run(image_data)
-                image_list.append(image_data)
+                image_list[base_name] = image_data
+
+        label_dict = getLablesDict(input_par['test_label_path'])
 
     # 加载保存的模型
     create_graph(sess, input_par['model_path'])
     with tf.Session() as sess:
-        
-        softmax_tensor = sess.graph.get_tensor_by_name('InceptionV3/Logits/SpatialSqueeze:0')
-        node_lookup = NodeLookup(input_par['label_path'])
-        for image_data in image_list:
+        prediction_output = {}
+        softmax_tensor = sess.graph.get_tensor_by_name(input_par['tensor_name'])
+        # node_lookup = NodeLookup(input_par['label_path'])
+        for k,image_data in image_list.items():
             predictions = sess.run(softmax_tensor,
                                {'input:0': image_data})
-            
-            # predictions = np.squeeze(predictions)
-            # pred = tf.argmax(predictions,axis=0)
-            print(predictions.shape)
-            print(predictions)
-            # 测试输出前5个
-            # top_k = predictions.argsort()[-5:][::-1]
-            # print(top_k)
-            # for node_id in top_k:
-            #     human_string = node_lookup.id_to_string(node_id)
-            #     score = predictions[node_id]
-            #     print('%s (score = %.5f)\n' % (human_string, score))
+            print(k, predictions)
+            prediction_output[str(label_dict[k]) + '_' + k] = predictions
+        np.save(input_par['prediction_output'], prediction_output)
 
-"""
-[[12 11 10  3  2 17  1 15 16  0  7  9  5 14  6 13  8  4]
- [13  6  5 15  1  2  4 11 14  3  0  7 10  9 16  8 17 12]
- [ 1 13 14  2 12  6 10  9 11  5  4 17  0 15  3 16  8  7]
- [16 10  4  3  6  5  2  0  9 13  1 17 11  8  7 15 14 12]
- [14 13  1  9  7  5  3  4  2 16  0  6 15 10  8 12 11 17]]
-"""
 
 if __name__ == '__main__':
     tf.app.run(main=run_inference_on_image)

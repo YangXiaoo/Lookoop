@@ -1,6 +1,6 @@
 # coding:UTF-8
 # 2019-1-7
-# test
+# 计算单个tensor
 
 from __future__ import absolute_import
 from __future__ import division
@@ -22,6 +22,7 @@ input_par = {
     'label_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\data\label.txt',
     'image_file' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\row_data\train\2',
     'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir',
+    'tensor_name' : 'vgg_16/fc8/weights/RMSProp_1:0',
     'width' : 224,
     'height' : 224,
     'prediction_output' : '',
@@ -122,7 +123,7 @@ def run_inference_on_image(_):
     with tf.Session() as sess:
         # 加载保存的模型
         graph = create_graph(sess, input_par['model_path'], input_par['checkpoint_path'])
-        softmax_tensor = graph.get_tensor_by_name('vgg_16/fc8/weights/RMSProp_1:0')
+        softmax_tensor = graph.get_tensor_by_name(input_par['tensor_name'])
         node_lookup = NodeLookup(input_par['label_path'])
         for image_data in image_list:
             predictions = sess.run(softmax_tensor,

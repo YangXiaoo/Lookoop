@@ -10,28 +10,39 @@ from tfrecord import main
 
 
 input_para = {
-    'train_dir' : '',
-    'test_dir' : '',
-    'output_dir' : '',
-    'label_output' : '',
-    'train-shards' : 2,
-    'validation-shards' : 2,
-    'num-threads' : 2,
-    'dataset-name' : 'datatset'
+    'train_dir' : r'C:\Study\test\kaggle-bonage\train-male_disposal_out\0\train',
+    'validation_dir' : r'C:\Study\test\kaggle-bonage\train-male_disposal_out\0\test', # 也可以为test
+
+    'train_labels_file' : r'C:\Study\test\kaggle-bonage\tf_record\0\train_label.txt',
+    'validation_labels_file' : r'C:\Study\test\kaggle-bonage\tf_record\0\validation_label.txt',
+
+    'output_dir' : r'C:\Study\test\kaggle-bonage\tf_record\0',
+    'dataset_name' : 'datatset',
+
+    'train_shards' : 2,
+    'validation_shards' : 2,
+    'num_threads' : 2,
+    'class_label_base' : 0,
 }
 
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    labels_file = os.path.join(input_para['label_output'], 'label.txt')
-    if os.path.exists(labels_file) is False:
-        logging.warning('Can\'t find label.txt. Now create it.')
-        all_entries = os.listdir(input_para['train_dir'])
-        dirnames = []
-        for entry in all_entries:
-            if os.path.isdir(os.path.join(input_para['train_dir'], entry)):
-                dirnames.append(entry)
-        with open(labels_file, 'w') as f:
-            for dirname in dirnames:
-                f.write(dirname + '\n')
+    group = [[input_para['train_labels_file'], input_para['train_dir']], 
+        [input_para['validation_labels_file'], input_para['validation_dir']]]
+    for g in group:
+        label, dirs = g
+        if os.path.exists(label) is False:
+            logging.warning('Can\'t find label.txt. Now create it.')
+            all_entries = os.listdir(dirs)
+            dirnames = []
+            for entry in all_entries:
+                if os.path.isdir(os.path.join(dirs, entry)):
+                    dirnames.append(entry)
+            label_dir = os.path.split(label)[0]
+            if not os.path.isdir(label_dir):
+                os.makedirs(label_dir)
+            with open(label, 'w') as f:
+                for dirname in dirnames:
+                    f.write(dirname + '\n')
     main(input_para)

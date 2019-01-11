@@ -13,12 +13,10 @@ input_para = {
     'train_dir' : r'C:\Study\test\kaggle-bonage\train-male_disposal_out\0\train',
     'validation_dir' : r'C:\Study\test\kaggle-bonage\train-male_disposal_out\0\test', # 也可以为test
 
-    'train_labels_file' : r'C:\Study\test\kaggle-bonage\tf_record\0\train_label.txt',
-    'validation_labels_file' : r'C:\Study\test\kaggle-bonage\tf_record\0\validation_label.txt',
+    'labels_file' : r'C:\Study\test\kaggle-bonage\tf_record\0\label.txt',
 
     'output_dir' : r'C:\Study\test\kaggle-bonage\tf_record\0',
     'dataset_name' : 'datatset',
-
     'train_shards' : 2,
     'validation_shards' : 2,
     'num_threads' : 2,
@@ -28,8 +26,7 @@ input_para = {
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    group = [[input_para['train_labels_file'], input_para['train_dir']], 
-        [input_para['validation_labels_file'], input_para['validation_dir']]]
+    group = [[input_para['labels_file'], input_para['train_dir']]]
     for g in group:
         label, dirs = g
         if os.path.exists(label) is False:

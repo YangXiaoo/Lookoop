@@ -12,5 +12,8 @@ import numpy as np
 # ret = np.linspace(0, 20, 4 + 1).astype(np.int)
 # print(ret)
 
-ret = np.arange(1,4)
-print(ret)
+# ret = np.arange(1,4)
+# print(ret)
+
+nums = [] * 0
+print(nums)

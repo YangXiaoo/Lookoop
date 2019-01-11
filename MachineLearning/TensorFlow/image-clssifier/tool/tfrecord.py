@@ -44,7 +44,11 @@ def _find_image_files(data_dir,
     # 各个文件夹下的图片
     for text in unique_labels:
         pic_file_pattern = '%s/%s/*' % (data_dir, text) # 匹配格式 `*` 通配符
-        matching_files = tf.gfile.Glob(pic_file_pattern)
+        matching_files = []
+        try:
+            matching_files = tf.gfile.Glob(pic_file_pattern)
+        except:
+            pass
         labels.extend([label_index] * len(matching_files)) # 分类索引
         texts.extend([text] * len(matching_files)) # 父文件夹名
         filenames.extend(matching_files) # 图片名
@@ -297,14 +301,14 @@ def main(input_para):
         'validation', 
         input_para['validation_dir'],
         input_para['validation_shards'],
-        input_para['validation_labels_file'],
+        input_para['labels_file'],
         input_para)
 
     _process_dataset(
         'train', 
         input_para['train_dir'],
         input_para['train_shards'],
-        input_para['train_labels_file'],
+        input_para['labels_file'],
         input_para)
 
     logging.info('%s : Finish!' % datetime.now())

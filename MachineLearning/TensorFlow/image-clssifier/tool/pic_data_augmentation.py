@@ -76,7 +76,7 @@ def loadImg(pic_file):
 def mkdir(file_list):
     for f in file_list:
         if not os.path.isdir(f):
-            os.mkdir(f)
+            os.makedirs(f)
     return 
 
 

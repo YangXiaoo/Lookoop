@@ -37,10 +37,10 @@ def mkdir(file_list):
     if isinstance(file_list, list):
         for f in file_list:
             if not os.path.isdir(f):
-                os.mkdir(f)
+                os.makedirs(f)
     else:
         if not os.path.isdir(file_list):
-            os.mkdir(file_list)
+            os.makedirs(file_list)
     return 
 
 

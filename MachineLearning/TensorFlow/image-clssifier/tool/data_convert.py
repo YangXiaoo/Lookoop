@@ -31,7 +31,7 @@ if __name__ == '__main__':
         label, dirs = g
         if os.path.exists(label) is False:
             logging.warning('Can\'t find label.txt. Now create it.')
-            all_entries = os.listdir(dirs)
+            all_entries = o n s.listdir(dirs)
             dirnames = []
             for entry in all_entries:
                 if os.path.isdir(os.path.join(dirs, entry)):

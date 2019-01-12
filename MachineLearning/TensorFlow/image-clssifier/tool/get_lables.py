@@ -1,7 +1,10 @@
 # coding:UTF-8
 # 2018-12-28
 # update:2019-1-3, 均等分配训练集与验证集
+# update:2019-1-12, 修复由于数据集分布不均，导致验证集精确度较低
+
 import os
+import math
 try:
     import pandas as pd 
 except:
@@ -11,7 +14,7 @@ import random
 
 __suffix__ = ["png"]
 
-def getFiles(dirpath):
+def get_files(dirpath):
     file = []
     for root, dirs, files in os.walk(dirpath, topdown=False):
         for name in files:
@@ -21,50 +24,130 @@ def getFiles(dirpath):
     return file
 
 
-def get_train_lable(pic_path,
-                    csv_path,
-                    train_male_output, 
-                    train_female_output,
-                    validation_male_output,
-                    validation_female_output,
-                    lables_output,
-                    train_size=0.7):   
+def mkdir(file_list):
+    if isinstance(file_list, list):
+        for f in file_list:
+            if not os.path.isdir(f):
+                os.makedirs(f)
+    else:
+        if not os.path.isdir(file_list):
+            os.makedirs(file_list)
+    return 
+
+
+def _split_data(age_pic, train_size):
+    """
+    age_pic: {bone_age : [pic_id, ]}
+    train_size: [0, 1]
+
+    return :
+        ret_train: [pic_id, ]
+        ret_validation: [pic_id, ]
+    """
+    ret_train, ret_validation = [], []
+    for k,v in age_pic.items():
+        split = int(math.floor(len(v) * (1- train_size)))
+        ret_validation.extend(v[:split])
+        ret_train.extend(v[split:])
+
+    return ret_train, ret_validation
+
+
+def _get_pic_map(pic_files):
+    """
+    pic_files: [pic_path, ]
+    
+    return: {pic_id : [file_path,]}
+    """
+    file_dict = {} 
+    for f in pic_files:
+        pic_basename = os.path.basename(f)
+        pic_id = pic_basename.split('.')[0]
+        file_dict[pic_id] =  f
+
+    return file_dict
+
+
+def _get_data_lables(train_output, 
+                    validation_output, 
+                    train_data, 
+                    validation_data,
+                    sort_bone_age,
+                    file_dict,
+                    csv_dict):
+    """
+    train_output: string, file path
+    validation_output: string, file path
+    train_data: [pic_id, ]
+    validation_data: [pic_id, ]
+    file_dict: {pic_id : [file_path]}
+    csv_dict: {pic_id:[boneage, male]}
+
+    return: None
+    """
+    print("get_labels...")
+    group = [[train_output, train_data, 'train.txt'],
+            [validation_output, validation_data, 'validation.txt']]
+    for g in group:
+        output, data, label_txt = g 
+        labels = open(os.path.join(output, label_txt), 'w')
+        for pic_id in data:
+            f = file_dict[pic_id]
+            pic_basename = os.path.basename(f)
+            out_dir = os.path.join(output, pic_basename)
+            labels.write(pic_basename + ' ' + sort_bone_age[csv_dict[pic_id][0]] + '\n')
+            dummy_smg = os.popen("copy %s %s" % (f, out_dir))
+        labels.close()
+
+    return None
+
+
+def main(pic_path,
+        csv_path,
+        train_male_output, 
+        train_female_output,
+        validation_male_output,
+        validation_female_output,
+        lables_output,
+        train_size=0.7):   
     """
     获得标签并分类
     """
+
     print('loading data...')
     csv_file = pd.read_csv(csv_path,header = 0,encoding= 'utf8')  
     csv_data = pd.DataFrame(csv_file)  
     rows = len(csv_data) 
 
-    out_dirs = [train_male_output, train_female_output,
-                validation_male_output, validation_female_output]
-    for f in out_dirs:
-        if not os.path.isdir(f):
-            os.mkdir(f)
+    mkdir([train_male_output, 
+            train_female_output,
+            validation_male_output, 
+            validation_female_output])
 
-    pic_files = getFiles(pic_path)
-    total = len(pic_files)
+    pic_files = get_files(pic_path)
     
     # 获得csv数据
-    csv_dict = {}
+    csv_dict = {} # {pic_id:[boneage, male]}
+    male_age_pic = {} # {bone_age:[pic_id, ]}
+    female_age_pic = {}
     for i in range(rows):
-        csv_dict[str(csv_data['id'][i])] = [str(csv_data['boneage'][i]), str(csv_data['male'][i])]
-
-    # 处理骨龄
-    male_bone_age = []
-    female_bone_age = []
-    for k,v in csv_dict.values():
-        if v == 'True':
-            if k not in male_bone_age:
-                male_bone_age.append(k)
+        pic_id = str(csv_data['id'][i])
+        bone_age = str(csv_data['boneage'][i])
+        is_male = str(csv_data['male'][i])
+        csv_dict[pic_id] = [bone_age, is_male]
+        if is_male == 'True':
+            if bone_age not in male_age_pic:
+                male_age_pic[bone_age] = []
+            male_age_pic[bone_age].append(pic_id)
         else:
-            if k not in female_bone_age:
-                female_bone_age.append(k)
-    male_bone_age.sort(key=lambda x : int(x))
-    female_bone_age.sort(key=lambda x : int(x))
-    # print(male_bone_age, female_bone_age)
-    sort_male_bone_age, sort_female_bone_age = {}, {}
+            if bone_age not in female_age_pic:
+                female_age_pic[bone_age] = []
+            female_age_pic[bone_age].append(pic_id)
+
+    # 对年龄进行分类
+    male_bone_age = sorted(male_age_pic.keys(), key=lambda x:int(x))
+    female_bone_age = sorted(female_age_pic.keys(), key=lambda x:int(x))
+    sort_male_bone_age, sort_female_bone_age = {}, {} # {true_age:rename_class}
     for k,v in enumerate(male_bone_age):
         sort_male_bone_age[v] = str(k) 
     for k,v in enumerate(female_bone_age):
@@ -73,87 +156,44 @@ def get_train_lable(pic_path,
     # print(sort_female_bone_age, sort_male_bone_age) # {'4': '0', '6': '1', '9': '2', '10': '3',...}
 
     # 生成标签对应实际年龄
-    group = [[sort_male_bone_age, 'male_lables.txt'], [sort_female_bone_age, 'female_lables.txt']]
+    group = [[sort_male_bone_age, 'male_lables.txt'], 
+            [sort_female_bone_age, 'female_lables.txt']]
     for g in group:
         data, lable = g 
         lable_output = open(os.path.join(lables_output, lable), 'w')
         for k, v in data.items():
-            lable_output.write(v + ' ' + k + 'month\n')
+            lable_output.write(v + ' ' + k + '\n') # format: `class actual_age`
         lable_output.close()
 
 
     # 获取文件列表，打乱顺序划分训练集与验证集
-    file_dict = {}
-    for f in pic_files:
-        pic_basename = os.path.basename(f)
-        pic_id = pic_basename.split('.')[0]
-        file_dict[pic_id] =  [f, csv_dict[pic_id][1]]
+    male_train, male_validation = _split_data(male_age_pic, train_size)
+    # print(len(male_train))
+    female_train, female_validation = _split_data(female_age_pic, train_size)
 
-    male_list, female_list = [], []
-    for k,v in file_dict.items():
-        if v[1] == 'True':
-            male_list.append(k)
-        else:
-            female_list.append(k)
-
-    train_data, validation_data = [], []
-    group = [male_list, female_list]
-    for d in group:
-        file_list = d
-        random.shuffle(file_list)
-        # print(len(file_list))
-        len_data = len(file_list)
-        split_index = int(len_data * train_size) # 默认 70% 作为训练集
-        # print(split_index)
-        for i in file_list[:split_index]:
-            train_data.append(file_dict[i][0])
-        for i in file_list[split_index:]:
-            validation_data.append(file_dict[i][0])
-
-    # 查看训练集与验证集分布情况-可删除
-    test = [[train_data, 'train'], 
-            [validation_data, 'validation']]
-    for t in test:
-        data, text = t
-        male_count, female_count = 0, 0
-        for f in data:
-            pic_basename = os.path.basename(f)
-            pic_id = pic_basename.split('.')[0]
-            if csv_dict[pic_id][1] == 'True':
-                male_count += 1
-            else:
-                female_count += 1
-        print( '%s: %s, male: %s, female: %s' % (text, len(data), male_count, female_count))
+    # 获得pic_id到路径的映射
+    file_dict = _get_pic_map(pic_files)
 
 
-    # print("getting lables and classifing image...")
-    # 简化代码
-    group = [[train_male_output, train_female_output, train_data], 
-             [validation_male_output, validation_female_output, validation_data]]
-    # 分别对验证集与训练集进行分类并生成标签
-    # count, train_male_count, train_female_count, validation_male_count, validation_male_count = 0, 0, 0, 0, 0
-    count = 0
-    for g in group:
-        male_output, female_output, data = g
-        male_lables = open(os.path.join(male_output, 'train.txt'), 'w')
-        female_lables = open(os.path.join(female_output, 'train.txt'), 'w')
-        # 将男女图片分类
-        for f in data:
-            count += 1
-            print(str(float(count/total * 100))[:4],' %', ' [', '#'*int(count/total * 100), '-'* (100 - int(count/total * 100)) , ']', end='\n')
-            pic_basename = os.path.basename(f)
-            pic_id = pic_basename.split('.')[0]
-            if csv_dict[pic_id][1] == 'True':
-                out_dir = os.path.join(male_output, pic_basename)
-                male_lables.write(pic_basename + ' ' + sort_male_bone_age[csv_dict[pic_id][0]] + '\n')
-            else:
-                out_dir = os.path.join(female_output, pic_basename)
-                female_lables.write(pic_basename + ' ' + sort_female_bone_age[csv_dict[pic_id][0]] + '\n')
-            dummy_smg = os.popen("copy %s %s" % (f, out_dir))
-            # if count == 50 or count == 100:
-            #     break
-        male_lables.close()
-        female_lables.close()
+    # male
+    _get_data_lables(train_male_output, 
+                    validation_male_output, 
+                    male_train, 
+                    male_validation,
+                    sort_male_bone_age,
+                    file_dict,
+                    csv_dict)
+
+    # female
+    _get_data_lables(train_female_output, 
+                    validation_female_output, 
+                    female_train, 
+                    female_validation,
+                    sort_female_bone_age,
+                    file_dict,
+                    csv_dict)
+
+    os.startfile(train_male_output)
 
 
 if __name__ == '__main__':
@@ -164,6 +204,11 @@ if __name__ == '__main__':
     validation_male_output = r'C:\Study\test\kaggle-bonage\validation-male'
     validation_female_output = r'C:\Study\test\kaggle-bonage\validation-female'
     lables_output = r'C:\Study\test\kaggle-bonage'
-    get_train_lable(pic_path, csv_path, train_male_output, 
-                    train_female_output, validation_male_output,
-                    validation_female_output, lables_output)
+
+    main(pic_path, 
+        csv_path, 
+        train_male_output,
+        train_female_output, 
+        validation_male_output,
+        validation_female_output, 
+        lables_output)

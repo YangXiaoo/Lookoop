@@ -18,9 +18,10 @@ slim = tf.contrib.slim
 
 # parameters
 input_para = {
-    'master' : '',
-    'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_incept', # 存放节点和日志
+    
+    'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_vgg', # 存放节点和日志
 
+    'master' : '',
     'num_clones' : 1, # 部署平台个数
     'clone_on_cpu' : True, # 是否部署在CPU上
     'worker_replicas' : 1,
@@ -73,16 +74,16 @@ input_para = {
     'dataset_split_name' : 'train', # 划分数据集的名称
     'dataset_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/data', # 数据存储
     'labels_offset' : 0,  # 标签偏移
-    'model_name' : 'inception_v3', # 模型名
+    'model_name' : 'vgg_16', # 模型名 inception_v3
     'preprocessing_name' : None, # 预处理
     'batch_size' : 2, # batch size
-    'train_image_size' : 299, # 训练图片大小, None使用默认大小
+    'train_image_size' : 244, # 训练图片大小, None使用默认大小
     'max_number_of_steps' : 10000, # 最大迭代次数
 
 
     # Fine-Tuning
-    'checkpoint_path' : None,
-    'checkpoint_exclude_scopes' : 'fc6,fc7,fc8', # 不加载的节点
+    'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pretrained\vgg_16.ckpt', # None
+    'checkpoint_exclude_scopes' : 'vgg_16/fc6,vgg_16/fc7,vgg_16/fc8', # 不加载的节点
     'trainable_scopes' : None, # 默认训练所有节点
     'ignore_missing_vars' : True, # W检查节点的时候忽略缺失值
 }

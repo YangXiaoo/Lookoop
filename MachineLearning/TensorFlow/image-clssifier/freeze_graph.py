@@ -25,22 +25,7 @@ import tensorflow as tf
 input_para= None
 
 
-input_para = {
-    'input_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\inception_v3_inf_graph.pb',
 
-    'input_checkpoint' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_incept\model.ckpt-162',
-
-    'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\frozen_graph.pb',
-
-    'input_saver' : '',
-    'input_binary' : True, # bool
-    'output_node_names' : 'InceptionV3/Predictions/Reshape_1',
-    'restore_op_name' : "save/restore_all",
-    'filename_tensor_name' : "save/Const:0",
-    'clear_devices' : True,
-    'initializer_nodes' : '',
-    'variable_names_blacklist' : '',
-}
 
 def freeze_graph_with_def_protos(input_graph_def,
                                 input_saver_def,
@@ -88,6 +73,7 @@ def freeze_graph_with_def_protos(input_graph_def,
                 except KeyError:
                     # This tensor doesn't exist in the graph (for example it's
                     # 'global_step' or a similar housekeeping element) so skip it.
+                    print('error: ', key)
                     continue
                 var_list[key] = tensor
             saver = saver_lib.Saver(var_list=var_list)
@@ -176,7 +162,7 @@ def freeze_graph(input_graph,
         variable_names_blacklist)
 
 
-def main(_):
+def main(input_para):
     freeze_graph(
         input_para['input_graph'], 
         input_para['input_saver'], 
@@ -191,4 +177,21 @@ def main(_):
         input_para['variable_names_blacklist'])
 
 if __name__ == '__main__':
-    tf.app.run()
+    input_para = {
+        'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb',
+
+        'input_checkpoint' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_vgg\model.ckpt-602',
+
+        'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\vgg_frozen_graph.pb',
+
+        'input_saver' : '',
+        'input_binary' : True, # bool
+        'output_node_names' : 'vgg_16/fc8/squeezed', # vgg node
+        # 'output_node_names' : 'InceptionV3/Predictions/Reshape_1', # inception3 node
+        'restore_op_name' : "save/restore_all",
+        'filename_tensor_name' : "save/Const:0",
+        'clear_devices' : True,
+        'initializer_nodes' : '',
+        'variable_names_blacklist' : '',
+    }
+    main(input_para)

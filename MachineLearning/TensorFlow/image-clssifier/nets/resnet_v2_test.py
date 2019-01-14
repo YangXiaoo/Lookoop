@@ -185,7 +185,7 @@ class ResnetUtilsTest(tf.test.TestCase):
         'tiny/block2/unit_2/bottleneck_v2/conv1',
         'tiny/block2/unit_2/bottleneck_v2/conv2',
         'tiny/block2/unit_2/bottleneck_v2/conv3']
-    self.assertItemsEqual(expected, end_points)
+    self.assertItemsEqual(expected, end_points.keys())
 
   def _stack_blocks_nondense(self, net, blocks):
     """A simplified ResNet Block stacker without output stride control."""
@@ -251,6 +251,7 @@ class ResnetCompleteNetworkTest(tf.test.TestCase):
                     global_pool=True,
                     output_stride=None,
                     include_root_block=True,
+                    spatial_squeeze=True,
                     reuse=None,
                     scope='resnet_v2_small'):
     """A shallow and thin ResNet v2 for faster tests."""
@@ -266,6 +267,7 @@ class ResnetCompleteNetworkTest(tf.test.TestCase):
                                global_pool=global_pool,
                                output_stride=output_stride,
                                include_root_block=include_root_block,
+                               spatial_squeeze=spatial_squeeze,
                                reuse=reuse,
                                scope=scope)
 
@@ -276,12 +278,38 @@ class ResnetCompleteNetworkTest(tf.test.TestCase):
     with slim.arg_scope(resnet_utils.resnet_arg_scope()):
       logits, end_points = self._resnet_small(inputs, num_classes,
                                               global_pool=global_pool,
+                                              spatial_squeeze=False,
                                               scope='resnet')
     self.assertTrue(logits.op.name.startswith('resnet/logits'))
     self.assertListEqual(logits.get_shape().as_list(), [2, 1, 1, num_classes])
     self.assertTrue('predictions' in end_points)
     self.assertListEqual(end_points['predictions'].get_shape().as_list(),
                          [2, 1, 1, num_classes])
+    self.assertTrue('global_pool' in end_points)
+    self.assertListEqual(end_points['global_pool'].get_shape().as_list(),
+                         [2, 1, 1, 32])
+
+  def testEndpointNames(self):
+    # Like ResnetUtilsTest.testEndPointsV2(), but for the public API.
+    global_pool = True
+    num_classes = 10
+    inputs = create_test_input(2, 224, 224, 3)
+    with slim.arg_scope(resnet_utils.resnet_arg_scope()):
+      _, end_points = self._resnet_small(inputs, num_classes,
+                                         global_pool=global_pool,
+                                         scope='resnet')
+    expected = ['resnet/conv1']
+    for block in range(1, 5):
+      for unit in range(1, 4 if block < 4 else 3):
+        for conv in range(1, 4):
+          expected.append('resnet/block%d/unit_%d/bottleneck_v2/conv%d' %
+                          (block, unit, conv))
+        expected.append('resnet/block%d/unit_%d/bottleneck_v2' % (block, unit))
+      expected.append('resnet/block%d/unit_1/bottleneck_v2/shortcut' % block)
+      expected.append('resnet/block%d' % block)
+    expected.extend(['global_pool', 'resnet/logits', 'resnet/spatial_squeeze',
+                     'predictions'])
+    self.assertItemsEqual(end_points.keys(), expected)
 
   def testClassificationShapes(self):
     global_pool = True
@@ -307,6 +335,7 @@ class ResnetCompleteNetworkTest(tf.test.TestCase):
     with slim.arg_scope(resnet_utils.resnet_arg_scope()):
       _, end_points = self._resnet_small(inputs, num_classes,
                                          global_pool=global_pool,
+                                         spatial_squeeze=False,
                                          scope='resnet')
       endpoint_to_shape = {
           'resnet/block1': [2, 41, 41, 4],
@@ -325,6 +354,7 @@ class ResnetCompleteNetworkTest(tf.test.TestCase):
       _, end_points = self._resnet_small(inputs, num_classes,
                                          global_pool=global_pool,
                                          include_root_block=False,
+                                         spatial_squeeze=False,
                                          scope='resnet')
       endpoint_to_shape = {
           'resnet/block1': [2, 64, 64, 4],
@@ -345,6 +375,7 @@ class ResnetCompleteNetworkTest(tf.test.TestCase):
                                          num_classes,
                                          global_pool=global_pool,
                                          output_stride=output_stride,
+                                         spatial_squeeze=False,
                                          scope='resnet')
       endpoint_to_shape = {
           'resnet/block1': [2, 41, 41, 4],
@@ -393,6 +424,7 @@ class ResnetCompleteNetworkTest(tf.test.TestCase):
     with slim.arg_scope(resnet_utils.resnet_arg_scope()):
       logits, _ = self._resnet_small(inputs, num_classes,
                                      global_pool=global_pool,
+                                     spatial_squeeze=False,
                                      scope='resnet')
     self.assertTrue(logits.op.name.startswith('resnet/logits'))
     self.assertListEqual(logits.get_shape().as_list(),

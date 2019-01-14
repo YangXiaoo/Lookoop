@@ -16,22 +16,29 @@ from nets import nets_factory
 slim = tf.contrib.slim
 
 input_para = {
-    'model_name' : 'inception_v3',
+    'model_name' : 'vgg_16', # inception3
     'is_training' : False,
-    'default_image_size' : 224,
+    'default_image_size' : 224, # vgg:224, inception:299
     'dataset_name' : 'bone',
     'labels_offset' : 0,
-    'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/inception_v3_inf_graph.pb',
-    'dataset_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/data',
+
+    'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb', # vgg
+
+    # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/inception_v3_inf_graph.pb', # inception3
+
+    'data_split' : 'validation',
+
+    
+    'dataset_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/data', # 处理后TF格式的数据集
 }
 
 
-def main(_):
+def main(input_para):
     tf.logging.set_verbosity(tf.logging.INFO)
     with tf.Graph().as_default() as graph:
         dataset = dataset_factory.get_dataset(
             input_para['dataset_name'], 
-            'validation',
+            input_para['data_split'],
             input_para['dataset_dir'])
         network_fn = nets_factory.get_network_fn(
             input_para['model_name'],
@@ -52,4 +59,4 @@ def main(_):
 
 
 if __name__ == '__main__':
-  tf.app.run()
+  main(input_para)

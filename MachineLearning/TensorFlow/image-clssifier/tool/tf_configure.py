@@ -3,6 +3,7 @@
 # configure
 
 import tensorflow as tf
+slim = tf.contrib.slim 
 
 __all__ = [
     'configure_learning_rate',

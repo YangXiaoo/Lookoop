@@ -425,7 +425,9 @@ def inception_v3(inputs,
                  prediction_fn=slim.softmax,
                  spatial_squeeze=True,
                  reuse=None,
-                 scope='InceptionV3'):
+                 create_aux_logits=True,
+                 scope='InceptionV3',
+                 global_pool=False):
   """Inception model from http://arxiv.org/abs/1512.00567.
 
   "Rethinking the Inception Architecture for Computer Vision"
@@ -442,7 +444,9 @@ def inception_v3(inputs,
 
   Args:
     inputs: a tensor of size [batch_size, height, width, channels].
-    num_classes: number of predicted classes.
+    num_classes: number of predicted classes. If 0 or None, the logits layer
+      is omitted and the input features to the logits layer (before dropout)
+      are returned instead.
     is_training: whether is training or not.
     dropout_keep_prob: the percentage of activation values that are retained.
     min_depth: Minimum depth value (number of channels) for all convolution ops.
@@ -453,15 +457,21 @@ def inception_v3(inputs,
       usage will be to set this value in (0, 1) to reduce the number of
       parameters or computation cost of the model.
     prediction_fn: a function to get predictions out of logits.
-    spatial_squeeze: if True, logits is of shape [B, C], if false logits is
-        of shape [B, 1, 1, C], where B is batch_size and C is number of classes.
+    spatial_squeeze: if True, logits is of shape [B, C], if false logits is of
+        shape [B, 1, 1, C], where B is batch_size and C is number of classes.
     reuse: whether or not the network and its variables should be reused. To be
       able to reuse 'scope' must be given.
+    create_aux_logits: Whether to create the auxiliary logits.
     scope: Optional variable_scope.
+    global_pool: Optional boolean flag to control the avgpooling before the
+      logits layer. If false or unset, pooling is done with a fixed window
+      that reduces default-sized inputs to 1x1, while larger inputs lead to
+      larger outputs. If true, any input size is pooled down to 1x1.
 
   Returns:
-    logits: the pre-softmax activations, a tensor of size
-      [batch_size, num_classes]
+    net: a Tensor with the logits (pre-softmax activations) if num_classes
+      is a non-zero integer, or the non-dropped-out input to the logits layer
+      if num_classes is 0 or None.
     end_points: a dictionary from components of the network to the corresponding
       activation.
 
@@ -472,8 +482,7 @@ def inception_v3(inputs,
     raise ValueError('depth_multiplier is not greater than zero.')
   depth = lambda d: max(int(d * depth_multiplier), min_depth)
 
-  with tf.variable_scope(scope, 'InceptionV3', [inputs, num_classes],
-                         reuse=reuse) as scope:
+  with tf.variable_scope(scope, 'InceptionV3', [inputs], reuse=reuse) as scope:
     with slim.arg_scope([slim.batch_norm, slim.dropout],
                         is_training=is_training):
       net, end_points = inception_v3_base(
@@ -481,36 +490,46 @@ def inception_v3(inputs,
           depth_multiplier=depth_multiplier)
 
       # Auxiliary Head logits
-      with slim.arg_scope([slim.conv2d, slim.max_pool2d, slim.avg_pool2d],
-                          stride=1, padding='SAME'):
-        aux_logits = end_points['Mixed_6e']
-        with tf.variable_scope('AuxLogits'):
-          aux_logits = slim.avg_pool2d(
-              aux_logits, [5, 5], stride=3, padding='VALID',
-              scope='AvgPool_1a_5x5')
-          aux_logits = slim.conv2d(aux_logits, depth(128), [1, 1],
-                                   scope='Conv2d_1b_1x1')
+      if create_aux_logits and num_classes:
+        with slim.arg_scope([slim.conv2d, slim.max_pool2d, slim.avg_pool2d],
+                            stride=1, padding='SAME'):
+          aux_logits = end_points['Mixed_6e']
+          with tf.variable_scope('AuxLogits'):
+            aux_logits = slim.avg_pool2d(
+                aux_logits, [5, 5], stride=3, padding='VALID',
+                scope='AvgPool_1a_5x5')
+            aux_logits = slim.conv2d(aux_logits, depth(128), [1, 1],
+                                     scope='Conv2d_1b_1x1')
 
-          # Shape of feature map before the final layer.
-          kernel_size = _reduced_kernel_size_for_small_input(
-              aux_logits, [5, 5])
-          aux_logits = slim.conv2d(
-              aux_logits, depth(768), kernel_size,
-              weights_initializer=trunc_normal(0.01),
-              padding='VALID', scope='Conv2d_2a_{}x{}'.format(*kernel_size))
-          aux_logits = slim.conv2d(
-              aux_logits, num_classes, [1, 1], activation_fn=None,
-              normalizer_fn=None, weights_initializer=trunc_normal(0.001),
-              scope='Conv2d_2b_1x1')
-          if spatial_squeeze:
-            aux_logits = tf.squeeze(aux_logits, [1, 2], name='SpatialSqueeze')
-          end_points['AuxLogits'] = aux_logits
+            # Shape of feature map before the final layer.
+            kernel_size = _reduced_kernel_size_for_small_input(
+                aux_logits, [5, 5])
+            aux_logits = slim.conv2d(
+                aux_logits, depth(768), kernel_size,
+                weights_initializer=trunc_normal(0.01),
+                padding='VALID', scope='Conv2d_2a_{}x{}'.format(*kernel_size))
+            aux_logits = slim.conv2d(
+                aux_logits, num_classes, [1, 1], activation_fn=None,
+                normalizer_fn=None, weights_initializer=trunc_normal(0.001),
+                scope='Conv2d_2b_1x1')
+            if spatial_squeeze:
+              aux_logits = tf.squeeze(aux_logits, [1, 2], name='SpatialSqueeze')
+            end_points['AuxLogits'] = aux_logits
 
       # Final pooling and prediction
       with tf.variable_scope('Logits'):
-        kernel_size = _reduced_kernel_size_for_small_input(net, [8, 8])
-        net = slim.avg_pool2d(net, kernel_size, padding='VALID',
-                              scope='AvgPool_1a_{}x{}'.format(*kernel_size))
+        if global_pool:
+          # Global average pooling.
+          net = tf.reduce_mean(net, [1, 2], keep_dims=True, name='GlobalPool')
+          end_points['global_pool'] = net
+        else:
+          # Pooling with a fixed kernel size.
+          kernel_size = _reduced_kernel_size_for_small_input(net, [8, 8])
+          net = slim.avg_pool2d(net, kernel_size, padding='VALID',
+                                scope='AvgPool_1a_{}x{}'.format(*kernel_size))
+          end_points['AvgPool_1a'] = net
+        if not num_classes:
+          return net, end_points
         # 1 x 1 x 2048
         net = slim.dropout(net, keep_prob=dropout_keep_prob, scope='Dropout_1b')
         end_points['PreLogits'] = net
@@ -544,8 +563,8 @@ def _reduced_kernel_size_for_small_input(input_tensor, kernel_size):
   known, it will be lost. (2) inception.slim.ops._two_element_tuple cannot
   handle tensors that define the kernel size.
       shape = tf.shape(input_tensor)
-      return = tf.pack([tf.minimum(shape[1], kernel_size[0]),
-                        tf.minimum(shape[2], kernel_size[1])])
+      return = tf.stack([tf.minimum(shape[1], kernel_size[0]),
+                         tf.minimum(shape[2], kernel_size[1])])
 
   """
   shape = input_tensor.get_shape().as_list()

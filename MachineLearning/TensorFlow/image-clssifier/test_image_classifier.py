@@ -18,7 +18,7 @@ import tensorflow as tf
 
 
 input_par = {
-    'model_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\frozen_graph.pb',
+    'model_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\vgg_frozen_graph.pb',
 
     'label_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\data\label.txt',
 
@@ -27,11 +27,11 @@ input_par = {
     'test_label_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\row_data\train\2\2.txt',
 
     # 'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir',
-    'tensor_name' : 'InceptionV3/Logits/SpatialSqueeze:0',
+    'tensor_name' :  'vgg_16/fc8/squeezed:0', # 'InceptionV3/Logits/SpatialSqueeze:0',
 
-    'width' : 299,
-    'height' : 299,
-    'prediction_output' : r'C:\Study\test\tensorflow-bone\InceptionV3.npy',
+    'width' : 224, # vgg:224, inception3:299
+    'height' : 224, # vgg:224, inception3:299
+    'prediction_output' : r'C:\Study\test\tensorflow-bone\vgg_16.npy' # r'C:\Study\test\tensorflow-bone\InceptionV3.npy',
 }
 
 __suffix__ = ["png"]
@@ -154,7 +154,7 @@ def run_inference_on_image(_):
         for k,image_data in image_list.items():
             predictions = sess.run(softmax_tensor,
                                {'input:0': image_data})
-            print(k, predictions)
+            print(k, predictions.shape)
             prediction_output[str(label_dict[k]) + '_' + k] = predictions
         np.save(input_par['prediction_output'], prediction_output)
 

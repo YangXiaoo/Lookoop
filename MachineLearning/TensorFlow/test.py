@@ -15,5 +15,6 @@ import numpy as np
 # ret = np.arange(1,4)
 # print(ret)
 
-nums = [] * 0
-print(nums)
+
+dst = np.zeros((2,2,3),np.uint8)
+print(dst[0])

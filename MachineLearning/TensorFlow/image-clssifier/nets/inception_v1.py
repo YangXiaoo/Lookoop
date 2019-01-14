@@ -93,7 +93,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 32, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
 
@@ -110,7 +111,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 64, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
 
@@ -132,7 +134,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 64, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
 
@@ -149,7 +152,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 64, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
 
@@ -166,7 +170,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 64, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
 
@@ -183,7 +188,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 64, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
 
@@ -200,7 +206,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 128, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
 
@@ -222,7 +229,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 128, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
 
@@ -239,7 +247,8 @@ def inception_v1_base(inputs,
           with tf.variable_scope('Branch_3'):
             branch_3 = slim.max_pool2d(net, [3, 3], scope='MaxPool_0a_3x3')
             branch_3 = slim.conv2d(branch_3, 128, [1, 1], scope='Conv2d_0b_1x1')
-          net = tf.concat(axis=3, values=[branch_0, branch_1, branch_2, branch_3])
+          net = tf.concat(
+              axis=3, values=[branch_0, branch_1, branch_2, branch_3])
         end_points[end_point] = net
         if final_endpoint == end_point: return net, end_points
     raise ValueError('Unknown final endpoint %s' % final_endpoint)
@@ -252,7 +261,8 @@ def inception_v1(inputs,
                  prediction_fn=slim.softmax,
                  spatial_squeeze=True,
                  reuse=None,
-                 scope='InceptionV1'):
+                 scope='InceptionV1',
+                 global_pool=False):
   """Defines the Inception V1 architecture.
 
   This architecture is defined in:
@@ -266,32 +276,46 @@ def inception_v1(inputs,
 
   Args:
     inputs: a tensor of size [batch_size, height, width, channels].
-    num_classes: number of predicted classes.
+    num_classes: number of predicted classes. If 0 or None, the logits layer
+      is omitted and the input features to the logits layer (before dropout)
+      are returned instead.
     is_training: whether is training or not.
     dropout_keep_prob: the percentage of activation values that are retained.
     prediction_fn: a function to get predictions out of logits.
-    spatial_squeeze: if True, logits is of shape [B, C], if false logits is
-        of shape [B, 1, 1, C], where B is batch_size and C is number of classes.
+    spatial_squeeze: if True, logits is of shape [B, C], if false logits is of
+        shape [B, 1, 1, C], where B is batch_size and C is number of classes.
     reuse: whether or not the network and its variables should be reused. To be
       able to reuse 'scope' must be given.
     scope: Optional variable_scope.
+    global_pool: Optional boolean flag to control the avgpooling before the
+      logits layer. If false or unset, pooling is done with a fixed window
+      that reduces default-sized inputs to 1x1, while larger inputs lead to
+      larger outputs. If true, any input size is pooled down to 1x1.
 
   Returns:
-    logits: the pre-softmax activations, a tensor of size
-      [batch_size, num_classes]
+    net: a Tensor with the logits (pre-softmax activations) if num_classes
+      is a non-zero integer, or the non-dropped-out input to the logits layer
+      if num_classes is 0 or None.
     end_points: a dictionary from components of the network to the corresponding
       activation.
   """
   # Final pooling and prediction
-  with tf.variable_scope(scope, 'InceptionV1', [inputs, num_classes],
-                         reuse=reuse) as scope:
+  with tf.variable_scope(scope, 'InceptionV1', [inputs], reuse=reuse) as scope:
     with slim.arg_scope([slim.batch_norm, slim.dropout],
                         is_training=is_training):
       net, end_points = inception_v1_base(inputs, scope=scope)
       with tf.variable_scope('Logits'):
-        net = slim.avg_pool2d(net, [7, 7], stride=1, scope='AvgPool_0a_7x7')
-        net = slim.dropout(net,
-                           dropout_keep_prob, scope='Dropout_0b')
+        if global_pool:
+          # Global average pooling.
+          net = tf.reduce_mean(net, [1, 2], keep_dims=True, name='global_pool')
+          end_points['global_pool'] = net
+        else:
+          # Pooling with a fixed kernel size.
+          net = slim.avg_pool2d(net, [7, 7], stride=1, scope='AvgPool_0a_7x7')
+          end_points['AvgPool_0a_7x7'] = net
+        if not num_classes:
+          return net, end_points
+        net = slim.dropout(net, dropout_keep_prob, scope='Dropout_0b')
         logits = slim.conv2d(net, num_classes, [1, 1], activation_fn=None,
                              normalizer_fn=None, scope='Conv2d_0c_1x1')
         if spatial_squeeze:

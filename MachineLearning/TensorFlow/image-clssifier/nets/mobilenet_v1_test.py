@@ -35,12 +35,25 @@ class MobilenetV1Test(tf.test.TestCase):
 
     inputs = tf.random_uniform((batch_size, height, width, 3))
     logits, end_points = mobilenet_v1.mobilenet_v1(inputs, num_classes)
-    self.assertTrue(logits.op.name.startswith('MobilenetV1/Logits'))
+    self.assertTrue(logits.op.name.startswith(
+        'MobilenetV1/Logits/SpatialSqueeze'))
     self.assertListEqual(logits.get_shape().as_list(),
                          [batch_size, num_classes])
     self.assertTrue('Predictions' in end_points)
     self.assertListEqual(end_points['Predictions'].get_shape().as_list(),
                          [batch_size, num_classes])
+
+  def testBuildPreLogitsNetwork(self):
+    batch_size = 5
+    height, width = 224, 224
+    num_classes = None
+
+    inputs = tf.random_uniform((batch_size, height, width, 3))
+    net, end_points = mobilenet_v1.mobilenet_v1(inputs, num_classes)
+    self.assertTrue(net.op.name.startswith('MobilenetV1/Logits/AvgPool'))
+    self.assertListEqual(net.get_shape().as_list(), [batch_size, 1, 1, 1024])
+    self.assertFalse('Logits' in end_points)
+    self.assertFalse('Predictions' in end_points)
 
   def testBuildBaseNetwork(self):
     batch_size = 5
@@ -91,7 +104,7 @@ class MobilenetV1Test(tf.test.TestCase):
             inputs, final_endpoint=endpoint)
         self.assertTrue(out_tensor.op.name.startswith(
             'MobilenetV1/' + endpoint))
-        self.assertItemsEqual(endpoints[:index+1], end_points)
+        self.assertItemsEqual(endpoints[:index+1], end_points.keys())
 
   def testBuildCustomNetworkUsingConvDefs(self):
     batch_size = 5
@@ -124,6 +137,9 @@ class MobilenetV1Test(tf.test.TestCase):
                         normalizer_fn=slim.batch_norm):
       _, end_points = mobilenet_v1.mobilenet_v1_base(
           inputs, final_endpoint='Conv2d_13_pointwise')
+      _, explicit_padding_end_points = mobilenet_v1.mobilenet_v1_base(
+          inputs, final_endpoint='Conv2d_13_pointwise',
+          use_explicit_padding=True)
     endpoints_shapes = {'Conv2d_0': [batch_size, 112, 112, 32],
                         'Conv2d_1_depthwise': [batch_size, 112, 112, 32],
                         'Conv2d_1_pointwise': [batch_size, 112, 112, 64],
@@ -152,10 +168,17 @@ class MobilenetV1Test(tf.test.TestCase):
                         'Conv2d_13_depthwise': [batch_size, 7, 7, 1024],
                         'Conv2d_13_pointwise': [batch_size, 7, 7, 1024]}
     self.assertItemsEqual(endpoints_shapes.keys(), end_points.keys())
-    for endpoint_name, expected_shape in endpoints_shapes.iteritems():
+    for endpoint_name, expected_shape in endpoints_shapes.items():
       self.assertTrue(endpoint_name in end_points)
       self.assertListEqual(end_points[endpoint_name].get_shape().as_list(),
                            expected_shape)
+    self.assertItemsEqual(endpoints_shapes.keys(),
+                          explicit_padding_end_points.keys())
+    for endpoint_name, expected_shape in endpoints_shapes.items():
+      self.assertTrue(endpoint_name in explicit_padding_end_points)
+      self.assertListEqual(
+          explicit_padding_end_points[endpoint_name].get_shape().as_list(),
+          expected_shape)
 
   def testOutputStride16BuildAndCheckAllEndPointsUptoConv2d_13(self):
     batch_size = 5
@@ -168,6 +191,9 @@ class MobilenetV1Test(tf.test.TestCase):
       _, end_points = mobilenet_v1.mobilenet_v1_base(
           inputs, output_stride=output_stride,
           final_endpoint='Conv2d_13_pointwise')
+      _, explicit_padding_end_points = mobilenet_v1.mobilenet_v1_base(
+          inputs, output_stride=output_stride,
+          final_endpoint='Conv2d_13_pointwise', use_explicit_padding=True)
     endpoints_shapes = {'Conv2d_0': [batch_size, 112, 112, 32],
                         'Conv2d_1_depthwise': [batch_size, 112, 112, 32],
                         'Conv2d_1_pointwise': [batch_size, 112, 112, 64],
@@ -196,10 +222,17 @@ class MobilenetV1Test(tf.test.TestCase):
                         'Conv2d_13_depthwise': [batch_size, 14, 14, 1024],
                         'Conv2d_13_pointwise': [batch_size, 14, 14, 1024]}
     self.assertItemsEqual(endpoints_shapes.keys(), end_points.keys())
-    for endpoint_name, expected_shape in endpoints_shapes.iteritems():
+    for endpoint_name, expected_shape in endpoints_shapes.items():
       self.assertTrue(endpoint_name in end_points)
       self.assertListEqual(end_points[endpoint_name].get_shape().as_list(),
                            expected_shape)
+    self.assertItemsEqual(endpoints_shapes.keys(),
+                          explicit_padding_end_points.keys())
+    for endpoint_name, expected_shape in endpoints_shapes.items():
+      self.assertTrue(endpoint_name in explicit_padding_end_points)
+      self.assertListEqual(
+          explicit_padding_end_points[endpoint_name].get_shape().as_list(),
+          expected_shape)
 
   def testOutputStride8BuildAndCheckAllEndPointsUptoConv2d_13(self):
     batch_size = 5
@@ -212,6 +245,9 @@ class MobilenetV1Test(tf.test.TestCase):
       _, end_points = mobilenet_v1.mobilenet_v1_base(
           inputs, output_stride=output_stride,
           final_endpoint='Conv2d_13_pointwise')
+      _, explicit_padding_end_points = mobilenet_v1.mobilenet_v1_base(
+          inputs, output_stride=output_stride,
+          final_endpoint='Conv2d_13_pointwise', use_explicit_padding=True)
     endpoints_shapes = {'Conv2d_0': [batch_size, 112, 112, 32],
                         'Conv2d_1_depthwise': [batch_size, 112, 112, 32],
                         'Conv2d_1_pointwise': [batch_size, 112, 112, 64],
@@ -240,10 +276,17 @@ class MobilenetV1Test(tf.test.TestCase):
                         'Conv2d_13_depthwise': [batch_size, 28, 28, 1024],
                         'Conv2d_13_pointwise': [batch_size, 28, 28, 1024]}
     self.assertItemsEqual(endpoints_shapes.keys(), end_points.keys())
-    for endpoint_name, expected_shape in endpoints_shapes.iteritems():
+    for endpoint_name, expected_shape in endpoints_shapes.items():
       self.assertTrue(endpoint_name in end_points)
       self.assertListEqual(end_points[endpoint_name].get_shape().as_list(),
                            expected_shape)
+    self.assertItemsEqual(endpoints_shapes.keys(),
+                          explicit_padding_end_points.keys())
+    for endpoint_name, expected_shape in endpoints_shapes.items():
+      self.assertTrue(endpoint_name in explicit_padding_end_points)
+      self.assertListEqual(
+          explicit_padding_end_points[endpoint_name].get_shape().as_list(),
+          expected_shape)
 
   def testBuildAndCheckAllEndPointsApproximateFaceNet(self):
     batch_size = 5
@@ -254,6 +297,9 @@ class MobilenetV1Test(tf.test.TestCase):
                         normalizer_fn=slim.batch_norm):
       _, end_points = mobilenet_v1.mobilenet_v1_base(
           inputs, final_endpoint='Conv2d_13_pointwise', depth_multiplier=0.75)
+      _, explicit_padding_end_points = mobilenet_v1.mobilenet_v1_base(
+          inputs, final_endpoint='Conv2d_13_pointwise', depth_multiplier=0.75,
+          use_explicit_padding=True)
     # For the Conv2d_0 layer FaceNet has depth=16
     endpoints_shapes = {'Conv2d_0': [batch_size, 64, 64, 24],
                         'Conv2d_1_depthwise': [batch_size, 64, 64, 24],
@@ -283,10 +329,17 @@ class MobilenetV1Test(tf.test.TestCase):
                         'Conv2d_13_depthwise': [batch_size, 4, 4, 768],
                         'Conv2d_13_pointwise': [batch_size, 4, 4, 768]}
     self.assertItemsEqual(endpoints_shapes.keys(), end_points.keys())
-    for endpoint_name, expected_shape in endpoints_shapes.iteritems():
+    for endpoint_name, expected_shape in endpoints_shapes.items():
       self.assertTrue(endpoint_name in end_points)
       self.assertListEqual(end_points[endpoint_name].get_shape().as_list(),
                            expected_shape)
+    self.assertItemsEqual(endpoints_shapes.keys(),
+                          explicit_padding_end_points.keys())
+    for endpoint_name, expected_shape in endpoints_shapes.items():
+      self.assertTrue(endpoint_name in explicit_padding_end_points)
+      self.assertListEqual(
+          explicit_padding_end_points[endpoint_name].get_shape().as_list(),
+          expected_shape)
 
   def testModelHasExpectedNumberOfParameters(self):
     batch_size = 5
@@ -297,7 +350,7 @@ class MobilenetV1Test(tf.test.TestCase):
       mobilenet_v1.mobilenet_v1_base(inputs)
       total_params, _ = slim.model_analyzer.analyze_vars(
           slim.get_model_variables())
-      self.assertAlmostEqual(3217920L, total_params)
+      self.assertAlmostEqual(3217920, total_params)
 
   def testBuildEndPointsWithDepthMultiplierLessThanOne(self):
     batch_size = 5
@@ -383,6 +436,25 @@ class MobilenetV1Test(tf.test.TestCase):
       pre_pool_out = sess.run(pre_pool, feed_dict=feed_dict)
       self.assertListEqual(list(pre_pool_out.shape), [batch_size, 7, 7, 1024])
 
+  def testGlobalPoolUnknownImageShape(self):
+    tf.reset_default_graph()
+    batch_size = 1
+    height, width = 250, 300
+    num_classes = 1000
+    input_np = np.random.uniform(0, 1, (batch_size, height, width, 3))
+    with self.test_session() as sess:
+      inputs = tf.placeholder(tf.float32, shape=(batch_size, None, None, 3))
+      logits, end_points = mobilenet_v1.mobilenet_v1(inputs, num_classes,
+                                                     global_pool=True)
+      self.assertTrue(logits.op.name.startswith('MobilenetV1/Logits'))
+      self.assertListEqual(logits.get_shape().as_list(),
+                           [batch_size, num_classes])
+      pre_pool = end_points['Conv2d_13_pointwise']
+      feed_dict = {inputs: input_np}
+      tf.global_variables_initializer().run()
+      pre_pool_out = sess.run(pre_pool, feed_dict=feed_dict)
+      self.assertListEqual(list(pre_pool_out.shape), [batch_size, 8, 10, 1024])
+
   def testUnknowBatchSize(self):
     batch_size = 1
     height, width = 224, 224
@@ -445,6 +517,18 @@ class MobilenetV1Test(tf.test.TestCase):
       logits_out = sess.run(logits)
       self.assertListEqual(list(logits_out.shape), [1, 1, 1, num_classes])
 
+  def testBatchNormScopeDoesNotHaveIsTrainingWhenItsSetToNone(self):
+    sc = mobilenet_v1.mobilenet_v1_arg_scope(is_training=None)
+    self.assertNotIn('is_training', sc[slim.arg_scope_func_key(
+        slim.batch_norm)])
+
+  def testBatchNormScopeDoesHasIsTrainingWhenItsNotNone(self):
+    sc = mobilenet_v1.mobilenet_v1_arg_scope(is_training=True)
+    self.assertIn('is_training', sc[slim.arg_scope_func_key(slim.batch_norm)])
+    sc = mobilenet_v1.mobilenet_v1_arg_scope(is_training=False)
+    self.assertIn('is_training', sc[slim.arg_scope_func_key(slim.batch_norm)])
+    sc = mobilenet_v1.mobilenet_v1_arg_scope()
+    self.assertIn('is_training', sc[slim.arg_scope_func_key(slim.batch_norm)])
 
 if __name__ == '__main__':
   tf.test.main()

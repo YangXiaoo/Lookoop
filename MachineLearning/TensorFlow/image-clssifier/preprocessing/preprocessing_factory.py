@@ -14,6 +14,7 @@
 # ==============================================================================
 """Contains a factory for building various models."""
 
+
 from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
@@ -54,9 +55,21 @@ def get_preprocessing(name, is_training=False):
       'inception_resnet_v2': inception_preprocessing,
       'lenet': lenet_preprocessing,
       'mobilenet_v1': inception_preprocessing,
+      'mobilenet_v2': inception_preprocessing,
+      'mobilenet_v2_035': inception_preprocessing,
+      'mobilenet_v2_140': inception_preprocessing,
+      'nasnet_mobile': inception_preprocessing,
+      'nasnet_large': inception_preprocessing,
+      'pnasnet_mobile': inception_preprocessing,
+      'pnasnet_large': inception_preprocessing,
       'resnet_v1_50': vgg_preprocessing,
       'resnet_v1_101': vgg_preprocessing,
       'resnet_v1_152': vgg_preprocessing,
+      'resnet_v1_200': vgg_preprocessing,
+      'resnet_v2_50': vgg_preprocessing,
+      'resnet_v2_101': vgg_preprocessing,
+      'resnet_v2_152': vgg_preprocessing,
+      'resnet_v2_200': vgg_preprocessing,
       'vgg': vgg_preprocessing,
       'vgg_a': vgg_preprocessing,
       'vgg_16': vgg_preprocessing,
@@ -71,3 +84,4 @@ def get_preprocessing(name, is_training=False):
         image, output_height, output_width, is_training=is_training, **kwargs)
 
   return preprocessing_fn
+

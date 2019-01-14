@@ -177,6 +177,7 @@ def main(input_para):
         input_para['variable_names_blacklist'])
 
 if __name__ == '__main__':
+    # test
     input_para = {
         'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb',
 

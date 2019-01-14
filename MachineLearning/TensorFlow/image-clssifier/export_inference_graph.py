@@ -16,16 +16,26 @@ from nets import nets_factory
 slim = tf.contrib.slim
 
 input_para = {
-    'model_name' : 'vgg_16', # inception3
+    # 'model_name' : 'vgg_16', # inception_3
+    # 'model_name' : 'nasnet_large', # nasnet
+    # 'model_name' : 'pnasnet_large',
+    'model_name' : 'resnet_v2_200', # resnet
+
     'is_training' : False,
-    'default_image_size' : 224, # vgg:224, inception:299
+    'default_image_size' : 224, # vgg:224, inception:299, nasnet:331, pnasnet_large:331, resnet:224
     'dataset_name' : 'bone',
     'labels_offset' : 0,
 
-    'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb', # vgg
+    # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb', # vgg
 
     # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/inception_v3_inf_graph.pb', # inception3
 
+    # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/nasnet_inf_graph.pb', # nasnet
+
+    # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/pnasnet_inf_graph.pb', # pnasnet
+    'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/resnet_inf_graph.pb', # resnet
+
+    
     'data_split' : 'validation',
 
     

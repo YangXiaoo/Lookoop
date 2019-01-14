@@ -179,16 +179,33 @@ def main(input_para):
 if __name__ == '__main__':
     # test
     input_para = {
-        'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb',
+        # 'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb', # vgg
+        # 'input_checkpoint' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_vgg\model.ckpt-602', # vgg
+        # 'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\vgg_frozen_graph.pb', # vgg
+        # 'output_node_names' : 'vgg_16/fc8/squeezed', # vgg node
 
-        'input_checkpoint' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_vgg\model.ckpt-602',
+        # 'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/nasnet_inf_graph.pb', # nasnet
+        # 'input_checkpoint' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_nasnet_large\model.ckpt-141', # nasnet
+        # 'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\nasnet_frozen_graph.pb', # nasnet
+        # 'output_node_names' : 'final_layer/predictions', # nasnet
 
-        'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\vgg_frozen_graph.pb',
+        # 'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/pnasnet_inf_graph.pb', # pnasnet
+        # 'input_checkpoint' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_pnasnet_large\model.ckpt-135', # pnasnet
+        # 'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pnasnet_frozen_graph.pb', # pnasnet
+        # 'output_node_names' : 'final_layer/predictions', # pnasnet
+
+
+        'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/resnet_inf_graph.pb', # resnet
+        'input_checkpoint' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_resnet\model.ckpt-135', # pnasnet
+        'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\resnet_frozen_graph.pb', # pnasnet
+        'output_node_names' : 'final_layer/predictions', # pnasnet
+
 
         'input_saver' : '',
         'input_binary' : True, # bool
-        'output_node_names' : 'vgg_16/fc8/squeezed', # vgg node
+
         # 'output_node_names' : 'InceptionV3/Predictions/Reshape_1', # inception3 node
+
         'restore_op_name' : "save/restore_all",
         'filename_tensor_name' : "save/Const:0",
         'clear_devices' : True,

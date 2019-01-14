@@ -19,7 +19,7 @@ slim = tf.contrib.slim
 # parameters
 input_para = {
     
-    'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_nasnet_large', # 存放节点和日志
+    'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_resnet', # 存放节点和日志
 
     'master' : '',
     'num_clones' : 1, # 部署平台个数
@@ -77,16 +77,19 @@ input_para = {
 
     # 'model_name' : 'vgg_16', # vgg
     # 'model_name' : inception_v3, # inception3
-    'model_name' : 'nasnet_large', # NASnet
+    # 'model_name' : 'nasnet_large', # NASnet
+    # 'model_name' : 'pnasnet_large', # pnasnet
+    'model_name' : 'resnet_v2_200', # resnet
 
     'preprocessing_name' : None, # 预处理
 
     'batch_size' : 2, # batch size
     # 'train_image_size' : 229, # inception_3
     # 'train_image_size' : 244, # vgg_16 训练图片大小, None使用默认大小
-    'train_image_size' : 331, # nasnet
-
-    'max_number_of_steps' : 10000, # 最大迭代次数
+    # 'train_image_size' : 331, # nasnet
+    # 'train_image_size' : 331, # pnasnet
+    'train_image_size' : 224, # resnet
+    'max_number_of_steps' : 120, # 最大迭代次数
 
 
     # Fine-Tuning
@@ -99,6 +102,15 @@ input_para = {
     # mobilenet_v2_1.4_224
     # 'checkpoint_path' : r'C:\Study\github\others\finetuning\mobilenet_v2_1.4_224\mobilenet_v2_1.4_224.ckpt',
     # 'checkpoint_exclude_scopes' :  '',
+
+    # # nasnet
+    # 'checkpoint_path' : r'C:\Study\github\others\finetuning\nasnet-a_large_04_10_2017\model.ckpt',
+    # 'checkpoint_exclude_scopes' :  'cell_17/', # finetuning
+
+    # # pnasnet
+    # 'checkpoint_path' : r'C:\Study\github\others\finetuning\pnasnet-5_large_2017_12_13\model.ckpt',
+    # 'checkpoint_exclude_scopes' : '',
+
 
     # default
     'checkpoint_path' : None,

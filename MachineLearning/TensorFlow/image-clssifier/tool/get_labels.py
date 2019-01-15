@@ -86,8 +86,8 @@ def _get_data_lables(train_output,
     return: None
     """
     print("get_labels...")
-    group = [[train_output, train_data, 'train.txt'],
-            [validation_output, validation_data, 'validation.txt']]
+    group = [[train_output, train_data, 'labels.txt'],
+            [validation_output, validation_data, 'labels.txt']]
     for g in group:
         output, data, label_txt = g 
         labels = open(os.path.join(output, label_txt), 'w')

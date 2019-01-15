@@ -153,7 +153,7 @@ def run_inference_on_image(input_par):
     # 加载保存的模型
     create_graph(sess, input_par['model_path'])
     with tf.Session() as sess:
-        prediction_output = {}
+        prediction_output = {} # {'2_m-1-1.9.png': data}
         softmax_tensor = sess.graph.get_tensor_by_name(input_par['tensor_name'])
         # node_lookup = NodeLookup(input_par['label_path'])
         for k,image_data in image_list.items():

@@ -140,7 +140,7 @@ input_para = {
 
 
 
-train_para = [
+net_factory = [
 	# vgg_16
 	{
 		'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_vgg_16', # 存放节点和日志
@@ -290,10 +290,8 @@ def data_convert_to_tfrecord(train_dir,
 							tfrecord_output,
 							**input_para):
     # 数据格式转换
-
     split_entries = os.listdir(train_dir)
 
-    # tfrecord_files = [] # tfrecord数据路径 [calss_name, tfrecord, train_data_dir, validation_data_dir]
     for s in split_entries:
     	sub_dir = os.path.join(train_dir, str(s))
     	sub_tfrecord = os.path.join(tfrecord_output, str(s))
@@ -303,7 +301,6 @@ def data_convert_to_tfrecord(train_dir,
     	labels_file = os.path.join(sub_tfrecord, 'labels.txt')
     	data_convert.get_class_labels(train_data_dir, labels_file)
     	validation_data_dir = os.path.join(sub_dir, 'test')
-    	# tfrecord_files.append([s, sub_tfrecord, train_data_dir, validation_data_dir])
 
     	tfrecord.process_dataset(input_para['train_split_name'], 
     							train_data_dir,
@@ -324,7 +321,6 @@ def data_convert_to_tfrecord(train_dir,
     							input_para['dataset_name'],
     							input_para['tf_class_label_base'])
     	
-    # np.save('tfrecord_files.npy', tfrecord_files) # 存储数据到本地
 
 
 
@@ -339,6 +335,7 @@ def run_model(tfrecord_output, **input_para, **network_setting):
 	for s in tfrecord_files:
 		input_para['dataset_dir'] = os.path.join(tfrecord_output, str(s))
 		input_para['train_dir'] = os.path.join(tmp_train_dir, str(s))
+
 
 
 def convert_model(train_dir,
@@ -358,7 +355,6 @@ def convert_model(train_dir,
 
 	graph_dir = os.path.join(model_save_para['graph_dir'], network_setting['model_name'])
 
-
 	for s in model_index:
 		tmp_graph_dir = os.path.join(graph_dir, str(s))
 		model_save_para['graph_dir'] = os.path.join(tmp_graph_dir, 'inf_graph.pb')
@@ -366,22 +362,22 @@ def convert_model(train_dir,
 
 		export_graph_main(model_save_para)
 
-		tmp_model_ckpt = os.path.join(train_dir, )
-		model_save_para['input_checkpoint'] = api.get_checkpoint(v[0])
-		model_save_para['frozen_graph'] = os.path.join(tmp_train_dir, 'frozen_graph.pb')
+		tmp_model_ckpt = os.path.join(tmp_train_dir, str(s))
+		model_save_para['input_checkpoint'] = api.get_checkpoint(tmp_model_ckpt)
+
+		model_save_para['frozen_graph'] = os.path.join(tmp_graph_dir, 'frozen_graph.pb')
 
 		model_save_para['output_node_names'] = network_setting['output_tensor_name']
 
 		freeze_graph_main(model_save_para)
-		graph_index.append([v[1], v[3], model_save_para['frozen_graph'], output_node_names + ":0"])
-	np.save(os.path.join(graph_dir, 'graph_index.npy'), graph_index)
 
 
-def prediction_data(prediction_para, 
-					network_setting, 
-					graph_dir,
-					test_data,
-					label_path):
+
+def prediction_data(graph_dir,
+					test_dir,
+					label_path,
+					prediction_para, 
+					network_setting):
 	"""
 	graph_dir: 所有graph的路径
 	"""
@@ -390,17 +386,61 @@ def prediction_data(prediction_para,
 	class_labels = os.listdir(graph_index_dir)
 	prediction_para['label_path'] = label_path
 	for c in class_labels:
-		test_data_dir = os.path.join(test_data, c, 'test')
+		test_data_dir = os.path.join(test_dir, c, 'test')
 		prediction_para['image_file'] = test_data_dir
 		model_path = os.path.join(graph_index_dir, c, 'frozen_graph.pb')
 		prediction_para['model_path'] = model_path
 		prediction_para['tensor_name'] = network_setting['output_tensor_name']
 		prediction_para['width'] = network_setting['train_image_size']
 		prediction_para['height'] = network_setting['train_image_size']
-		prediction_para['prediction_output'] = os.path.join(prediction_para['prediction_output'], network_setting['model_name'], c)
+		prediction_para['prediction_output'] = os.path.join(prediction_para['prediction_output'], network_setting['model_name'], c, 'prediction.npy') # 创建文件夹
 
 		run_inference_on_image(prediction_para)
 
+
+def train_model(prediction_output):
+	model_name = os.listdir(prediction_output)
+	split_name = os.listdir(os.path.join(prediction_output, model_name))
+
+	train_data, labels = [], []
+	for s in split_name:
+		tmp_test_data, tmp_test_labels = {}, []
+		for m in model_name:
+			tmp_data_path = os.path.join(prediction_output, m, s, 'prediction.npy')
+			tmp_data = np.load(tmp_data_path) # {class_pic, data}
+			for k,v in tmp_data.items():
+				if k not in tmp_test_data:
+					tmp_test_data[k] = []
+
+				tmp_test_data.append(v)
+		for k,v in tmp_test_data.items():
+			train_data.append(v)
+			labels.append(int(k.split('_')[0]))
+
+	num_classes = len(set(labels))
+	labels = np_utils.to_categorical(labels, num_classes=num_classes)
+	 
+	# 构建模型阶段
+	# 一次性搭建神经网络模型的方法，注意是将模型元素放在一个list中
+	model = Sequential([
+	    Dense(num_classes, input_dim=18),
+	    Activation('relu'),
+	    Dense(10),
+	    Activation('softmax'),
+	])
+	 
+	# 激活模型
+	# 自定义RMS优化器
+	rmsprop = RMSprop(lr=0.001, rho=0.9, epsilon=1e-08, decay=0.0)
+	 
+	model.compile(optimizer=rmsprop,
+	              loss='categorical_crossentropy',
+	              metrics=['accuracy'])
+	
+	#训练阶段
+	print('Training...')
+	model.fit(X_train, y_train, epochs=10, batch_size=32)
+	return model
 
 
 if __name__ == '__main__':
@@ -432,8 +472,29 @@ if __name__ == '__main__':
 
 	# 数据格式转换
     # male
-    train_dir = input_para['male_split_output']
-    tfrecord_output = input_para['male_tfrecord_output']
-	data_convert_to_tfrecord(train_dir, 
-							tfrecord_output,
-							**input_para):
+    train_data = input_para['male_split_output']
+    male_tfrecord_output = input_para['male_tfrecord_output']
+	data_convert_to_tfrecord(train_data, 
+							male_tfrecord_output,
+							**input_para)
+
+
+	train_dir = input_para['train_dir']
+	for network_setting in net_factory
+		run_model(male_tfrecord_output, **input_para, **network_setting)
+		convert_model(train_dir,
+					male_tfrecord_output,
+					**network_setting, 
+					**model_save_para, 
+					**input_para)
+		graph_dir = model_save_para['graph_dir']
+		test_dir = input_para['male_split_output']
+		prediction_data(graph_dir,
+						test_dir,
+						label_path,
+						**prediction_para, 
+						**network_setting)
+
+	prediction_output = prediction_para['prediction_output']
+	model = train_model(prediction_output)
+	np.save(model)

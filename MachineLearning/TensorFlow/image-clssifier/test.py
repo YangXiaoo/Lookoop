@@ -45,23 +45,24 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 ...
 """
 
-# ret = np.load(r'C:\Study\test\tensorflow-bone\vgg_16.npy')
-# print(ret)
+ret = np.load(r'C:\Study\test\tensorflow-bone\vgg_16.npy')
+print(ret)
 
-p = 'C:/Study/github/others/finetuning/nasnet-a_large_04_10_2017'
-r = os.path.join(p, '0', '3.np')
-print(r)
+# p = 'C:/Study/github/test'
+# r = os.path.join(p, '0', 'dd' , 'fff' '3.np', 't.txt')
+# with open(r, 'w') as f:
+#     f.write('ddd')
 
 
 # # r = os.path.join()
 # print(os.listdir(r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\data'))
-file_list = os.listdir(r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_pnasnet_large')
-print(file_list)
-least_f, max_iter = '', 0
-for f in file_list:
-    if '.meta' in f:
-        tmp_iter = int(f.split('-')[-1].split('.')[0])
-        if tmp_iter > max_iter:
-            least_f = f
+# file_list = os.listdir(r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_pnasnet_large')
+# print(file_list)
+# least_f, max_iter = '', 0
+# for f in file_list:
+#     if '.meta' in f:
+#         tmp_iter = int(f.split('-')[-1].split('.')[0])
+#         if tmp_iter > max_iter:
+#             least_f = f
 
-print(least_f)
+# print(least_f)

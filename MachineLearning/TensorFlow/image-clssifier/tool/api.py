@@ -27,3 +27,16 @@ def get_checkpoint(train_dir):
 	ret = os.path.join(train_dir, least_f)
 
 	return ret
+
+
+
+def get_files(dirpath, suffix=["png"]):
+    file = []
+    for root, dirs, files in os.walk(dirpath, topdown=False):
+        for name in files:
+            path = os.path.join(root, name)
+            if name.split(".")[-1] in suffix:
+                file.append(path)
+    return file
+	
+

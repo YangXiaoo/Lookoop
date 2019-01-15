@@ -27,13 +27,13 @@ input_para= None
 
 
 
-def freeze_graph_with_def_protos(input_graph_def,
+def freeze_graph_with_def_protos(graph_dir_def,
                                 input_saver_def,
                                 input_checkpoint,
                                 output_node_names,
                                 restore_op_name,
                                 filename_tensor_name,
-                                output_graph,
+                                frozen_graph,
                                 clear_devices,
                                 initializer_nodes,
                                 variable_names_blacklist=""):
@@ -54,10 +54,10 @@ def freeze_graph_with_def_protos(input_graph_def,
     # Remove all the explicit device specifications for this node. This helps to
     # make the graph more portable.
     if clear_devices:
-        for node in input_graph_def.node:
+        for node in graph_dir_def.node:
             node.device = ""
 
-    _ = importer.import_graph_def(input_graph_def, name="")
+    _ = importer.import_graph_def(graph_dir_def, name="")
 
     with session.Session() as sess:
         if input_saver_def:
@@ -83,37 +83,37 @@ def freeze_graph_with_def_protos(input_graph_def,
 
         variable_names_blacklist = (variable_names_blacklist.split(",") if
                                 variable_names_blacklist else None)
-        output_graph_def = graph_util.convert_variables_to_constants(
+        frozen_graph_def = graph_util.convert_variables_to_constants(
             sess,
-            input_graph_def,
+            graph_dir_def,
             output_node_names.split(","),
             variable_names_blacklist=variable_names_blacklist)
 
     # Write GraphDef to file if output path has been given.
-    if output_graph:
-        with gfile.GFile(output_graph, "wb") as f:
-            f.write(output_graph_def.SerializeToString())
+    if frozen_graph:
+        with gfile.GFile(frozen_graph, "wb") as f:
+            f.write(frozen_graph_def.SerializeToString())
 
-    print("%d ops in the final graph." % len(output_graph_def.node))
+    print("%d ops in the final graph." % len(frozen_graph_def.node))
 
-    return output_graph_def
+    return frozen_graph_def
 
 
-def _parse_input_graph_proto(input_graph, input_binary):
+def _parse_graph_dir_proto(graph_dir, input_binary):
     """
     Parser input tensorflow graph into GraphDef proto.
     """
-    if not gfile.Exists(input_graph):
-        print("Input graph file '" + input_graph + "' does not exist!")
+    if not gfile.Exists(graph_dir):
+        print("Input graph file '" + graph_dir + "' does not exist!")
         return -1
-    input_graph_def = graph_pb2.GraphDef()
+    graph_dir_def = graph_pb2.GraphDef()
     mode = "rb" if input_binary else "r"
-    with gfile.FastGFile(input_graph, mode) as f:
+    with gfile.FastGFile(graph_dir, mode) as f:
         if input_binary:
-            input_graph_def.ParseFromString(f.read())
+            graph_dir_def.ParseFromString(f.read())
         else:
-            text_format.Merge(f.read(), input_graph_def)
-    return input_graph_def
+            text_format.Merge(f.read(), graph_dir_def)
+    return graph_dir_def
 
 
 def _parse_input_saver_proto(input_saver, input_binary):
@@ -131,32 +131,32 @@ def _parse_input_saver_proto(input_saver, input_binary):
   return saver_def
 
 
-def freeze_graph(input_graph,
+def freeze_graph(graph_dir,
                  input_saver,
                  input_binary,
                  input_checkpoint,
                  output_node_names,
                  restore_op_name,
                  filename_tensor_name,
-                 output_graph,
+                 frozen_graph,
                  clear_devices,
                  initializer_nodes,
                  variable_names_blacklist=""):
     """
     Converts all variables in a graph and checkpoint into constants.
     """
-    input_graph_def = _parse_input_graph_proto(input_graph, input_binary)
+    graph_dir_def = _parse_graph_dir_proto(graph_dir, input_binary)
     input_saver_def = None
     if input_saver:
         input_saver_def = _parse_input_saver_proto(input_saver, input_binary)
     freeze_graph_with_def_protos(
-        input_graph_def,
+        graph_dir_def,
         input_saver_def,
         input_checkpoint,
         output_node_names,
         restore_op_name,
         filename_tensor_name,
-        output_graph,
+        frozen_graph,
         clear_devices,
         initializer_nodes,
         variable_names_blacklist)
@@ -164,14 +164,14 @@ def freeze_graph(input_graph,
 
 def main(input_para):
     freeze_graph(
-        input_para['input_graph'], 
+        input_para['graph_dir'], 
         input_para['input_saver'], 
         input_para['input_binary'],
         input_para['input_checkpoint'], 
         input_para['output_node_names'],
         input_para['restore_op_name'], 
         input_para['filename_tensor_name'],
-        input_para['output_graph'], 
+        input_para['frozen_graph'], 
         input_para['clear_devices'], 
         input_para['initializer_nodes'],
         input_para['variable_names_blacklist'])
@@ -179,26 +179,26 @@ def main(input_para):
 if __name__ == '__main__':
     # test
     input_para = {
-        # 'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb', # vgg
+        # 'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb', # vgg
         # 'input_checkpoint' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_vgg\model.ckpt-602', # vgg
-        # 'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\vgg_frozen_graph.pb', # vgg
+        # 'frozen_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\vgg_frozen_graph.pb', # vgg
         # 'output_node_names' : 'vgg_16/fc8/squeezed', # vgg node
 
-        # 'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/nasnet_inf_graph.pb', # nasnet
+        # 'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/nasnet_inf_graph.pb', # nasnet
         # 'input_checkpoint' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_nasnet_large\model.ckpt-141', # nasnet
-        # 'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\nasnet_frozen_graph.pb', # nasnet
+        # 'frozen_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\nasnet_frozen_graph.pb', # nasnet
         # 'output_node_names' : 'final_layer/predictions', # nasnet
 
-        # 'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/pnasnet_inf_graph.pb', # pnasnet
+        # 'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/pnasnet_inf_graph.pb', # pnasnet
         # 'input_checkpoint' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_pnasnet_large\model.ckpt-135', # pnasnet
-        # 'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pnasnet_frozen_graph.pb', # pnasnet
+        # 'frozen_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pnasnet_frozen_graph.pb', # pnasnet
         # 'output_node_names' : 'final_layer/predictions', # pnasnet
 
 
-        'input_graph' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/resnet_inf_graph.pb', # resnet
-        'input_checkpoint' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_resnet\model.ckpt-135', # pnasnet
-        'output_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\resnet_frozen_graph.pb', # pnasnet
-        'output_node_names' : 'final_layer/predictions', # pnasnet
+        'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/resnet_inf_graph.pb', # resnet
+        'input_checkpoint' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_dir_resnet/model.ckpt-120', # pnasnet
+        'frozen_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\resnet_frozen_graph.pb', # resnet
+        'output_node_names' : 'resnet_v2_200/predictions/Reshape_1', # resnet
 
 
         'input_saver' : '',

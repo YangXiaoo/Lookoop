@@ -121,7 +121,7 @@ input_para = {
 }
 
 
-def main(_):
+def main(input_para):
     """
     训练入口
     """
@@ -330,4 +330,4 @@ def main(_):
 
 
 if __name__ == '__main__':
-  tf.app.run()
+  main(input_para)

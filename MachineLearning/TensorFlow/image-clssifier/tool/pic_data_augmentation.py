@@ -206,7 +206,7 @@ def augmentation(input_path,
 
     # 打乱标签列表写标签
     random.shuffle(tmp_lable_container)
-    with open(os.path.join(lable_output_path, 'lable.txt'), 'w') as lable_file:
+    with open(os.path.join(lable_output_path, 'labels.txt'), 'w') as lable_file:
         for line in tmp_lable_container:
             lable_file.write(line)
 

@@ -26,14 +26,14 @@ input_para = {
     'dataset_name' : 'bone',
     'labels_offset' : 0,
 
-    # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb', # vgg
+    # 'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb', # vgg
 
-    # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/inception_v3_inf_graph.pb', # inception3
+    # 'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/inception_v3_inf_graph.pb', # inception3
 
-    # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/nasnet_inf_graph.pb', # nasnet
+    # 'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/nasnet_inf_graph.pb', # nasnet
 
-    # 'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/pnasnet_inf_graph.pb', # pnasnet
-    'output_file' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/resnet_inf_graph.pb', # resnet
+    # 'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/pnasnet_inf_graph.pb', # pnasnet
+    'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/resnet_inf_graph.pb', # resnet
 
     
     'data_split' : 'validation',
@@ -64,7 +64,7 @@ def main(input_para):
             shape=[1, image_size, image_size, 3])
         network_fn(placeholder)
         graph_def = graph.as_graph_def()
-        with gfile.GFile(input_para['output_file'], 'wb') as f:
+        with gfile.GFile(input_para['graph_dir'], 'wb') as f:
             f.write(graph_def.SerializeToString())
 
 

@@ -286,30 +286,40 @@ def _process_image_files(name,
     sys.stdout.flush()
 
 
-def _process_dataset(name,
+def process_dataset(name,
                     directory,
                     num_shards,
                     labels_file,
-                    input_para):
-    filenames, texts, labels = _find_image_files(directory, labels_file, input_para['class_label_base'])
-    _process_image_files(name, filenames, texts, labels, num_shards, input_para['num_threads'], input_para['output_dir'], input_para['dataset_name'])
+                    num_threads,
+                    output_dir,
+                    dataset_name,
+                    class_label_base):
+    filenames, texts, labels = _find_image_files(directory, labels_file, class_label_base)
+    _process_image_files(name, filenames, texts, labels, num_shards, num_threads, output_dir, dataset_name)
 
 
 def main(input_para):
     logging.info('Saving results to %s' % input_para['output_dir'])
-    _process_dataset(
+    process_dataset(
         'validation', 
         input_para['validation_dir'],
         input_para['validation_shards'],
         input_para['labels_file'],
-        input_para)
+        input_para['num_threads'],
+        input_para['output_dir'],
+        input_para['dataset_name'],
+        input_para['class_label_base'])
 
-    _process_dataset(
+    process_dataset(
         'train', 
         input_para['train_dir'],
         input_para['train_shards'],
         input_para['labels_file'],
-        input_para)
+        input_para['output_dir'],
+        input_para['num_threads'],
+        input_para['output_dir'],
+        input_para['dataset_name'],
+        input_para['class_label_base'])
 
     logging.info('%s : Finish!' % datetime.now())
 

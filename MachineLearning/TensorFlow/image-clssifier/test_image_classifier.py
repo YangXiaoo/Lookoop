@@ -32,10 +32,10 @@ input_par = {
     # 'tensor_name' :  'vgg_16/fc8/squeezed:0', 
     # 'tensor_name' : 'InceptionV3/Logits/SpatialSqueeze:0',
     # 'tensor_name' : 'final_layer/predictions:0', # pnasnet, nasnet
-    'tensor_name' : 'final_layer/predictions:0', # resnet
+    'tensor_name' : 'resnet_v2_200/predictions/Reshape_1:0', # resnet
 
-    'width' : 224, # vgg:224, inception3:299, nasnet:331, resnet:224, pnasnet:331
-    'height' : 331,
+    'width' : 224, # vgg:224, inception3:299, nasnet:331, resnet:224, pnasnet:331, resnet:224
+    'height' : 224,
     'prediction_output' : r'C:\Study\test\tensorflow-bone\resnet.npy' # r'C:\Study\test\tensorflow-bone\InceptionV3.npy',
 }
 

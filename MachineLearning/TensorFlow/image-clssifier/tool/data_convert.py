@@ -23,23 +23,24 @@ input_para = {
     'class_label_base' : 0,
 }
 
-
-if __name__ == '__main__':
+def get_class_labels(train_dir, labels_file):
     logging.basicConfig(level=logging.INFO)
-    group = [[input_para['labels_file'], input_para['train_dir']]]
-    for g in group:
-        label, dirs = g
-        if os.path.exists(label) is False:
-            logging.warning('Can\'t find label.txt. Now create it.')
-            all_entries = o n s.listdir(dirs)
-            dirnames = []
-            for entry in all_entries:
-                if os.path.isdir(os.path.join(dirs, entry)):
-                    dirnames.append(entry)
-            label_dir = os.path.split(label)[0]
-            if not os.path.isdir(label_dir):
-                os.makedirs(label_dir)
-            with open(label, 'w') as f:
-                for dirname in dirnames:
-                    f.write(dirname + '\n')
+    if os.path.exists(labels_file) is False:
+        logging.warning('Can\'t find label.txt. Now create it.')
+        all_entries = os.listdir(train_dir)
+        dirnames = []
+        for entry in all_entries:
+            if os.path.isdir(os.path.join(train_dir, entry)):
+                dirnames.append(entry)
+        label_dir = os.path.split(labels_file)[0]
+        if not os.path.isdir(label_dir):
+            os.makedirs(label_dir)
+        with open(labels_file, 'w') as f:
+            for dirname in dirnames:
+                f.write(dirname + '\n')
+
+    labels_file
+    return 
+if __name__ == '__main__':
+    get_class_labels(input_para['train_dir']), input_para['labels_file']
     main(input_para)

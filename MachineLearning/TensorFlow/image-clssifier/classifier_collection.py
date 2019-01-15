@@ -4,6 +4,7 @@
 from export_interference_graph import main as export_graph_main
 from freeze_graph import main as freeze_graph_main
 from train_image_classifier import main as train_main
+from test_image_classifier import run_inference_on_image
 
 from tool import data_convert
 from tool import disposal_data
@@ -51,7 +52,8 @@ input_para = {
 
     # data convert
     # male
-    'tfrecord_output' :  r'C:\Study\test\kaggle-bonage\tf_record',
+    'male_tfrecord_output' :  r'C:\Study\test\kaggle-bonage\tf_record',
+    'female_tfrecord_output' :  r'C:\Study\test\kaggle-bonage\tf_record',
     'train_split_name' : 'train',
     'test_split_name' : 'test', # 'validation'
     'tf_num_shards' : 2,
@@ -129,25 +131,6 @@ input_para = {
 
 
     # Fine-Tuning
-
-    # vgg_16
-    # 'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pretrained\vgg_16.ckpt', # None
-    # 'checkpoint_exclude_scopes' : 'vgg_16/fc6,vgg_16/fc7,vgg_16/fc8', # 不加载的节点
-
-
-    # mobilenet_v2_1.4_224
-    # 'checkpoint_path' : r'C:\Study\github\others\finetuning\mobilenet_v2_1.4_224\mobilenet_v2_1.4_224.ckpt',
-    # 'checkpoint_exclude_scopes' :  '',
-
-    # # nasnet
-    # 'checkpoint_path' : r'C:\Study\github\others\finetuning\nasnet-a_large_04_10_2017\model.ckpt',
-    # 'checkpoint_exclude_scopes' :  'cell_17/', # finetuning
-
-    # # pnasnet
-    # 'checkpoint_path' : r'C:\Study\github\others\finetuning\pnasnet-5_large_2017_12_13\model.ckpt',
-    # 'checkpoint_exclude_scopes' : '',
-
-
     # default
     'checkpoint_path' : None,
     'checkpoint_exclude_scopes' :  '',
@@ -163,6 +146,7 @@ train_para = [
 		'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_vgg_16', # 存放节点和日志
 		'model_name' : 'vgg_16', # vgg
 		'train_image_size' : 244, # vgg_16
+		'output_tensor_name' : 'vgg_16/fc8/squeezed',
 
 	    # Fine-Tuning
 	    'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pretrained\vgg_16.ckpt', # None
@@ -174,6 +158,7 @@ train_para = [
 		'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_inception_v3',
 		'model_name' : 'inception_v3',
 		'train_image_size' : 229,
+		'output_tensor_name' : 'InceptionV3/Predictions/Reshape_1',
 
 	    # Fine-Tuning
 	    'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pretrained\inception_v3.ckpt',
@@ -185,6 +170,7 @@ train_para = [
 		'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_nasnet_large',
 		'model_name' : 'nasnet_large',
 		'train_image_size' : 331,
+		'output_tensor_name' : 'final_layer/predictions',
 
 	    # Fine-Tuning
 	    'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pretrained\nasnet_large.ckpt',
@@ -196,6 +182,7 @@ train_para = [
 		'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_pnasnet_large',
 		'model_name' : 'pnasnet_large',
 		'train_image_size' : 331,
+		'output_tensor_name' : 'final_layer/predictions',
 
 	    # Fine-Tuning
 	    'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pretrained\pnasnet_large.ckpt',
@@ -207,6 +194,7 @@ train_para = [
 		'train_dir' : r'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/train_resnet_v2_200',
 		'model_name' : 'resnet_v2_200',
 		'train_image_size' : 224,
+		'output_tensor_name' : 'resnet_v2_200/predictions/Reshape_1',
 
 	    # Fine-Tuning
 	    'checkpoint_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\pretrained\resnet_v2_200.ckpt',
@@ -225,7 +213,7 @@ model_save_para = {
 
         'input_checkpoint' : '', # ckpt模型
         'frozen_graph' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\graph', # resnet
-        'output_node_names' : 'resnet_v2_200/predictions/Reshape_1', # resnet
+        'output_node_names' : '', # resnet
 
         'input_saver' : '',
         'input_binary' : True, # bool
@@ -238,78 +226,76 @@ model_save_para = {
 	}
 
 
-def get_data(input_para):
+prediction_para = {
+    'model_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\resnet_frozen_graph.pb', # graph_dir
+    'label_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\data\label.txt', # 所有训练数据的标签
+    'image_file' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\row_data\train\2',
+    'tensor_name' : 'resnet_v2_200/predictions/Reshape_1:0',
+    'width' : 224,
+    'height' : 224,
+    'prediction_output' : r'C:\Study\test\tensorflow-bone\prediction_output'
+}
+
+
+def get_data(pic_path, 
+	        csv_path, 
+	        train_male_output,
+	        train_female_output, 
+	        validation_male_output,
+	        validation_female_output, 
+	        lables_output):
 	"""
 	数据处理
 	"""
 	# 图片抽取整理并生成标签
-    getlabels.main(input_para['pic_path'], 
-			        input_para['csv_path'], 
-			        input_para['train_male_output'],
-			        input_para['train_female_output'], 
-			        input_para['validation_male_output'],
-			        input_para['validation_female_output'], 
-			        input_para['lables_output'])
+	getlabels.main(pic_path, 
+			        csv_path, 
+			        train_male_output,
+			        train_female_output, 
+			        validation_male_output,
+			        validation_female_output, 
+			        lables_output)
 
 
-
-
-def data_augumentation(input_para):
+def data_augumentation(input_path, 
+		                output_path, 
+		                lable_path, 
+		                lable_output_path,
+		                batch_size=1,
+		                save_prefix='bone',
+		                save_format='png')
     # 数据扩充
-    # male
-    male_label_path = os.path.join(input_para['train_male_output'], 'train.txt')
-    male_labels = pic_data_augumentation.getLablesDict(male_label_path)
-    pic_data_augumentation.augmentation(input_para['train_male_output'], 
-								        input_para['augumentation_male_output'], 
-								        male_labels, 
-								        input_para['augumentation_male_lable_output'],
-								        batch_size=1,
-								        save_prefix='bone',
-								        save_format='png')
-
-    # female
-    female_label_path = os.path.join(input_para['train_female_output'], 'train.txt')
-    female_labels = pic_data_augumentation.getLablesDict(female_label_path)
-    pic_data_augumentation.augmentation(input_para['train_female_output'], 
-								        input_para['augumentation_female_output'], 
-								        female_labels, 
-								        input_para['augumentation_female_lable_output'],
-								        batch_size=1,
-								        save_prefix='bone',
-								        save_format='png')
+    lables = pic_data_augumentation.getLablesDict(lable_path)
+    pic_data_augumentation.augmentation(input_path, 
+						                output_path, 
+						                lables, 
+						                lable_output_path,
+						                batch_size=1,
+						                save_prefix='bone',
+						                save_format='png')
 
 
 
-def data_split(input_para):
+def data_split(input_dir, output_dir, label_path, k_fold=5):
     # 划分训练集
-    # male
-    male_label_path = os.path.join(input_para['augumentation_male_label_output'], 'labels.txt') # 若数据没有扩充这里的路径需要修改
-    male_labels_dict = disposal_data.getLabelsDict(male_label_path)
-    disposal_data.disposal(input_para['augumentation_male_output'], 
-    						input_para['male_split_output'], 
-    						male_labels_dict,
-    						k_fold=input_para['male_k_fold'])
-
-    # female
-    male_label_path = os.path.join(input_para['augumentation_female_label_output'], 'labels.txt')
-    male_labels_dict = disposal_data.getLabelsDict(male_label_path)
-    disposal_data.disposal(input_para['augumentation_female_output'], 
-    						input_para['female_split_output'], 
-    						male_labels_dict,
-    						k_fold=input_para['female_k_fold'])
+    labels_dict = disposal_data.getLabelsDict(label_path)
+    disposal_data.disposal(input_dir, 
+					    	output_dir, 
+					    	labels_dict
+					    	k_fold=k_fold)
 
 
 
-def data_convert_to_tfrecord(input_para):
+def data_convert_to_tfrecord(train_dir, 
+							tfrecord_output,
+							**input_para):
     # 数据格式转换
-    # male
-    male_train_dir = input_para['male_split_output']
-    tfrecord_output = input_para['tfrecord_output']
-    split_entries = os.listdir(male_train_dir)
 
-    tfrecord_files = [] # tfrecord数据路径 [tfrecord, train_data_dir, validation_data_dir]
+    split_entries = os.listdir(train_dir)
+
+    # tfrecord_files = [] # tfrecord数据路径 [calss_name, tfrecord, train_data_dir, validation_data_dir]
     for s in split_entries:
-    	sub_dir = os.path.join(male_train_dir, str(s))
+    	sub_dir = os.path.join(train_dir, str(s))
     	sub_tfrecord = os.path.join(tfrecord_output, str(s))
     	api.mkdirs(sub_tfrecord)
     	
@@ -317,7 +303,7 @@ def data_convert_to_tfrecord(input_para):
     	labels_file = os.path.join(sub_tfrecord, 'labels.txt')
     	data_convert.get_class_labels(train_data_dir, labels_file)
     	validation_data_dir = os.path.join(sub_dir, 'test')
-    	tfrecord_files.append([s, sub_tfrecord, train_data_dir, validation_data_dir])
+    	# tfrecord_files.append([s, sub_tfrecord, train_data_dir, validation_data_dir])
 
     	tfrecord.process_dataset(input_para['train_split_name'], 
     							train_data_dir,
@@ -338,30 +324,28 @@ def data_convert_to_tfrecord(input_para):
     							input_para['dataset_name'],
     							input_para['tf_class_label_base'])
     	
-    np.save('tfrecord_files.npy', tfrecord_files) # 存储数据到本地
+    # np.save('tfrecord_files.npy', tfrecord_files) # 存储数据到本地
 
 
 
 
-def run_model(input_para, network_setting):
+def run_model(tfrecord_output, **input_para, **network_setting):
 	input_para = input_para.copy()
-	tfrecord_files = np.load('tfrecord_files.npy')
+	tfrecord_files = os.listdir(tfrecord_output)
 	for k,v in network_setting.items():
 		input_para[k] = v
 
-	model_index = []  # [dst_train_dir, data_split_name, tfrecord, validation_data_dir]
 	tmp_train_dir = os.path.join(input_para['train_dir'], network_setting['model_name'])
-	for x in tfrecord_files:
-		input_para['dataset_dir'] = x[1]
-		input_para['train_dir'] = os.path.join(tmp_train_dir, str(x[0]))
-		model_index.append([input_para['train_dir'], x[0], x[1], x[3]])
-		train_main(input_para)
-
-	np.save(os.path.join(tmp_train_dir,'model_index.npy'), model_index) # train_dir/model_name/data_split_name
+	for s in tfrecord_files:
+		input_para['dataset_dir'] = os.path.join(tfrecord_output, str(s))
+		input_para['train_dir'] = os.path.join(tmp_train_dir, str(s))
 
 
-
-def convert_model(network_setting, model_save_para, input_para):
+def convert_model(train_dir,
+				tfrecord_output,
+				network_setting, 
+				model_save_para, 
+				input_para):
 	model_save_para = model_save_para.copy()
 	model_save_para['model_name'] = network_setting['model_name']
 	model_save_para['default_image_size'] = network_setting['train_image_size']
@@ -369,17 +353,87 @@ def convert_model(network_setting, model_save_para, input_para):
 	model_save_para['labels_offset'] = input_para['labels_offset']
 	model_save_para['data_split'] = input_para['test_split_name']
 
-	model_dir = os.path.join(input_para['train_dir'], network_setting['model_name'],'model_index.npy')
-	model_index = np.load(model_dir)
-	for v in model_index:
-		tmp_train_dir = os.path.join(model_save_para['graph_dir'], network_setting['model_name'], v[0])
-		model_save_para['graph_dir'] = os.path.join(tmp_train_dir, 'inf_graph.pb')
-		model_save_para['dataset_dir'] = v[2]
+	tmp_train_dir = os.path.join(train_dir, network_setting['model_name'])
+	model_index = os.listdir(tmp_train_dir)
+
+	graph_dir = os.path.join(model_save_para['graph_dir'], network_setting['model_name'])
+
+
+	for s in model_index:
+		tmp_graph_dir = os.path.join(graph_dir, str(s))
+		model_save_para['graph_dir'] = os.path.join(tmp_graph_dir, 'inf_graph.pb')
+		model_save_para['dataset_dir'] = os.path.join(tfrecord_output, str(s))
 
 		export_graph_main(model_save_para)
-		
-		model_save_para['input_checkpoint'] = api.get_checkpoint(tmp_train_dir)
+
+		tmp_model_ckpt = os.path.join(train_dir, )
+		model_save_para['input_checkpoint'] = api.get_checkpoint(v[0])
 		model_save_para['frozen_graph'] = os.path.join(tmp_train_dir, 'frozen_graph.pb')
 
+		model_save_para['output_node_names'] = network_setting['output_tensor_name']
+
+		freeze_graph_main(model_save_para)
+		graph_index.append([v[1], v[3], model_save_para['frozen_graph'], output_node_names + ":0"])
+	np.save(os.path.join(graph_dir, 'graph_index.npy'), graph_index)
 
 
+def prediction_data(prediction_para, 
+					network_setting, 
+					graph_dir,
+					test_data,
+					label_path):
+	"""
+	graph_dir: 所有graph的路径
+	"""
+	prediction_para = prediction_para.copy()
+	graph_index_dir = os.path.join(graph_dir, network_setting['model_name'])
+	class_labels = os.listdir(graph_index_dir)
+	prediction_para['label_path'] = label_path
+	for c in class_labels:
+		test_data_dir = os.path.join(test_data, c, 'test')
+		prediction_para['image_file'] = test_data_dir
+		model_path = os.path.join(graph_index_dir, c, 'frozen_graph.pb')
+		prediction_para['model_path'] = model_path
+		prediction_para['tensor_name'] = network_setting['output_tensor_name']
+		prediction_para['width'] = network_setting['train_image_size']
+		prediction_para['height'] = network_setting['train_image_size']
+		prediction_para['prediction_output'] = os.path.join(prediction_para['prediction_output'], network_setting['model_name'], c)
+
+		run_inference_on_image(prediction_para)
+
+
+
+if __name__ == '__main__':
+	# 抽取数据
+	get_data(input_para['pic_path'], 
+	        input_para['csv_path'], 
+	        input_para['train_male_output'],
+	        input_para['train_female_output'], 
+	        input_para['validation_male_output'],
+	        input_para['validation_female_output'], 
+	        input_para['lables_output'])
+
+	# 数据扩充
+	label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
+	data_augumentation(input_para['train_male_output'], 
+		                input_para['augumentation_male_output'], 
+		                lable_path, 
+		                input_para['augumentation_male_label_output'],
+		                batch_size=1,
+		                save_prefix='bone',
+		                save_format='png')
+
+	# 数据划分
+	label_path = os.path.join(input_para['augumentation_male_label_output'], 'labels.txt')
+	data_split(input_para['augumentation_male_output'], 
+		input_para['male_split_output'], 
+		label_path, 
+		k_fold=input_para['male_k_fold'])
+
+	# 数据格式转换
+    # male
+    train_dir = input_para['male_split_output']
+    tfrecord_output = input_para['male_tfrecord_output']
+	data_convert_to_tfrecord(train_dir, 
+							tfrecord_output,
+							**input_para):

@@ -134,7 +134,7 @@ def preprocess_for_eval(image,
         return image
 
 
-def run_inference_on_image(_):
+def run_inference_on_image(input_par):
     image_list = {}
     file_list = getFiles(input_par['image_file'])
     with tf.Graph().as_default():
@@ -148,7 +148,7 @@ def run_inference_on_image(_):
                 image_data = sess.run(image_data)
                 image_list[base_name] = image_data
 
-        label_dict = getLablesDict(input_par['test_label_path'])
+        label_dict = getLablesDict(input_par['label_path'])
 
     # 加载保存的模型
     create_graph(sess, input_par['model_path'])
@@ -165,4 +165,4 @@ def run_inference_on_image(_):
 
 
 if __name__ == '__main__':
-    tf.app.run(main=run_inference_on_image)
+    run_inference_on_image(input_par)

@@ -6,7 +6,7 @@ from __future__ import absolute_import
 import argparse
 import os
 import logging
-from tfrecord import main
+from tool import tfrecord
 
 
 input_para = {
@@ -43,4 +43,4 @@ def get_class_labels(train_dir, labels_file):
     return 
 if __name__ == '__main__':
     get_class_labels(input_para['train_dir']), input_para['labels_file']
-    main(input_para)
+    tfrecord.main(input_para)

@@ -16,6 +16,9 @@ import numpy as np
 from six.moves import urllib
 import tensorflow as tf
 
+__all__ = [
+    ''
+]
 
 input_par = {
     'model_path' : r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\resnet_frozen_graph.pb',
@@ -33,6 +36,7 @@ input_par = {
     # 'tensor_name' : 'InceptionV3/Logits/SpatialSqueeze:0',
     # 'tensor_name' : 'final_layer/predictions:0', # pnasnet, nasnet
     'tensor_name' : 'resnet_v2_200/predictions/Reshape_1:0', # resnet
+    'is_save' : True,
 
     'width' : 224, # vgg:224, inception3:299, nasnet:331, resnet:224, pnasnet:331, resnet:224
     'height' : 224,
@@ -98,12 +102,6 @@ def create_graph(sess, model_path):
         graph_def.ParseFromString(f.read())
         _ = tf.import_graph_def(graph_def, name='')
 
-    # saver = tf.train.import_meta_graph(model_path)
-    # saver.restore(sess, tf.train.latest_checkpoint(checkpoint_path))
-
-    # # 获取权重
-    # graph = tf.get_default_graph()
-    # return graph
 
 
 def preprocess_for_eval(image, 
@@ -161,7 +159,10 @@ def run_inference_on_image(input_par):
                                {'input:0': image_data})
             print(k, predictions.shape)
             prediction_output[str(label_dict[k]) + '_' + k] = predictions
-        np.save(input_par['prediction_output'], prediction_output)
+        if input_par['is_save']:
+            np.save(input_par['prediction_output'], prediction_output)
+
+        return prediction_output
 
 
 if __name__ == '__main__':

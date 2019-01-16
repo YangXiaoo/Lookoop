@@ -45,9 +45,16 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 ...
 """
 
-ret = np.load(r'C:\Study\test\tensorflow-bone\vgg_16.npy')
-print(ret)
-
+# ret = np.load(r'C:\Study\test\tensorflow-bone\vgg_16.npy')
+# print(ret)
+"""
+'2_m-1-1.9.png': array([[ 2.05507520e+07,  1.94889760e+07,  7.13783300e+06,
+         1.11738584e+08,  1.14213176e+08,  1.93517440e+07,
+         3.29394900e+07,  1.47754850e+07,  2.06201880e+07,
+         8.36995200e+07,  6.26028800e+07, -6.73418560e+07,
+         7.42099200e+07,  2.64569460e+07,  6.01207280e+07,
+         8.01406640e+07,  7.80726000e+07,  6.82800960e+07]], dtype=float32)
+"""
 # p = 'C:/Study/github/test'
 # r = os.path.join(p, '0', 'dd' , 'fff' '3.np', 't.txt')
 # with open(r, 'w') as f:
@@ -66,3 +73,30 @@ print(ret)
 #             least_f = f
 
 # print(least_f)
+
+
+
+nums = [1,20,3,4]
+nums_2 = [10,20,30,40]
+nums_1 = np.array(nums)
+nums_2 = np.array(nums_2)
+dicts = {'nums_1':nums_1, 'nums_2':nums_2}
+for k,v in dicts.items():
+    dicts[k] = v / 2
+
+# print(dicts)
+empty = np.array([])
+r = np.append(empty, nums_1)
+# print(r)
+
+# n = []
+# for i in nums:
+#     n.append(i)
+# print(n)
+
+ret = [nums_1 == nums_2] 
+ret = np.array(ret)  + 0
+print(ret.sum())
+
+
+print(int('12'))

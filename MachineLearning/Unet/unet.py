@@ -132,10 +132,15 @@ class myUnet(object):
 		imgs = np.load(self.predict_data_output)
 		for i in range(imgs.shape[0]):
 			img = imgs[i]
-			img[img > 0.1] = 255
-			img[img < 0.1] = 0
+			for i in range(img.shape[0]):
+				
+				print(max(img[i]), min(img[i]))
+			img = img * 255  # [img > 0.1] = 255
+			# img[img < 0.1] = 0
 			img = array_to_img(img)
 			img.save("%s/%d.jpg" % (self.img_save_path, i))
+			
+			break
 
 
 if __name__ == '__main__':
@@ -143,8 +148,8 @@ if __name__ == '__main__':
 	train_labels_path = r'C:\Study\github\others\Unet-master\Unet-master\imgs_mask_train.npy'
 	test_data_path = r'C:\Study\github\others\Unet-master\Unet-master\imgs_test.npy'
 
-	predict_data_output = r'C:\Study\github\others\Unet-master\Unet-master\prediction.npy'
-	img_save_path = r'C:\Study\github\others\Unet-master\Unet-master\image_prediction'
+	predict_data_output = r'C:\Users\Yauno\Documents\Tencent Files\1270009836\FileRecv\prediction_test.npy'
+	img_save_path = r'C:\Study\github\others\Unet-master\Unet-master\image_prediction_test'
 
 
 	mkdir(img_save_path)
@@ -157,8 +162,8 @@ if __name__ == '__main__':
 					height=512, 
 					width=512,
 					train_batch_size=1, # 4
-					nb_epoch=10, # 100
-					validation_split=0.2, # 0
+					nb_epoch=1, # 100
+					validation_split=0.8, # 0
 					optimizer=Adam(lr=1e-4), 
 					loss='binary_crossentropy', 
 					metrics=['accuracy'])

@@ -42,10 +42,10 @@ input_para = {
     # k-fold 划分训练集
     # male
     'male_split_output' : r'C:\Study\test\kaggle-bonage\train-male_disposal_out', # K-fold输出路径
-    'male_k_fold' : 5, # default 5
+    'male_k_fold' : 4, # default 5
     # female 
     'female_split_output' : r'C:\Study\test\kaggle-bonage\train-female_disposal_out', 
-    'female_k_fold' : 5, # default 5
+    'female_k_fold' : 4, # default 5
 
     # data convert
     # male
@@ -236,7 +236,8 @@ def get_data(pic_path,
             train_female_output, 
             validation_male_output,
             validation_female_output, 
-            lables_output):
+            lables_output,
+            train_size=0.8):
     """
     数据处理
     """
@@ -247,7 +248,8 @@ def get_data(pic_path,
                     train_female_output, 
                     validation_male_output,
                     validation_female_output, 
-                    lables_output)
+                    lables_output,
+                    train_size=train_size)
 
 
 def data_augumentation(input_path, 
@@ -285,8 +287,8 @@ def data_split(input_dir,
 
 
 def data_convert_to_tfrecord(train_dir, 
-                            tfrecord_output,
-                            **input_para):
+                                tfrecord_output,
+                                **input_para):
     # 数据格式转换
     split_entries = os.listdir(train_dir)
 
@@ -320,9 +322,11 @@ def data_convert_to_tfrecord(train_dir,
                                 input_para['tf_class_label_base'])
 
 
-def run_model(tfrecord_output, input_para, network_setting):
+def run_model(tfrecord_output, 
+                input_para, 
+                network_setting):
     """
-    
+
     """
     input_para = input_para.copy()
     tfrecord_files = os.listdir(tfrecord_output)
@@ -337,10 +341,13 @@ def run_model(tfrecord_output, input_para, network_setting):
 
 
 def convert_model(train_dir,
-                tfrecord_output,
-                network_setting, 
-                model_save_para, 
-                input_para):
+                    tfrecord_output,
+                    network_setting, 
+                    model_save_para, 
+                    input_para):
+    """
+
+    """
     model_save_para = model_save_para.copy()
     model_save_para['model_name'] = network_setting['model_name']
     model_save_para['default_image_size'] = network_setting['train_image_size']
@@ -372,10 +379,10 @@ def convert_model(train_dir,
 
 
 def prediction_train_data(graph_dir,
-                        test_dir,
-                        label_path,
-                        prediction_para, 
-                        network_setting):
+                            test_dir,
+                            label_path,
+                            prediction_para, 
+                            network_setting):
     """
     graph_dir: 所有graph的路径
     """
@@ -493,13 +500,15 @@ def model_collection_prediction(prediction_model,
 
 if __name__ == '__main__':
     # # 抽取数据
-    # get_data(input_para['pic_path'], 
-    #         input_para['csv_path'], 
-    #         input_para['train_male_output'],
-    #         input_para['train_female_output'], 
-    #         input_para['validation_male_output'],
-    #         input_para['validation_female_output'], 
-    #         input_para['lables_output'])
+    get_data(input_para['pic_path'], 
+            input_para['csv_path'], 
+            input_para['train_male_output'],
+            input_para['train_female_output'], 
+            input_para['validation_male_output'],
+            input_para['validation_female_output'], 
+            input_para['lables_output'],
+            train_size=0.8)
+
 
     # # 数据扩充
     # label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
@@ -510,6 +519,7 @@ if __name__ == '__main__':
     #                     batch_size=1,
     #                     save_prefix='bone',
     #                     save_format='png')
+
 
     # 数据划分
     label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
@@ -522,6 +532,7 @@ if __name__ == '__main__':
                 label_path, 
                 k_fold=k_fold)
 
+
     # # 数据格式转换
     # # male
     # train_data = input_para['male_split_output']
@@ -531,6 +542,7 @@ if __name__ == '__main__':
     #                         **input_para)
 
 
+    # # 训练
     # train_dir = input_para['train_dir']
     # graph_dir = model_save_para['graph_dir']
     # test_dir = input_para['male_split_output']

@@ -16,7 +16,7 @@ from tool import tfrecord
 from tool import api
 from tool import regression
 
-
+# tensorboard --logdir train_dir --port 8080
 
 input_para = {
     # 数据抽取参数
@@ -302,6 +302,7 @@ def run_model(tfrecord_output,
     tmp_train_dir = os.path.join(input_para['train_dir'], network_setting['model_name'])
     api.mkdirs(tmp_train_dir)
     for s in tfrecord_files:
+        print("[INFO] Use model %s, training on data %s" % (network_setting['model_name'], s))
         tmp_dataset_dir = os.path.join(tfrecord_output, str(s))
         tmp_class_train_dir = os.path.join(tmp_train_dir, str(s))
         api.mkdirs([tmp_dataset_dir, tmp_class_train_dir])
@@ -559,7 +560,6 @@ if __name__ == '__main__':
     graph_dir = model_save_para['graph_dir']
     test_dir = input_para['male_split_output']
     for network_setting in net_factory:
-
         print("[INFO] use model %s" % network_setting['model_name'])
         run_model(male_tfrecord_output, input_para, network_setting)
         convert_model(train_dir,
@@ -573,9 +573,6 @@ if __name__ == '__main__':
                                 label_path,
                                 prediction_para, 
                                 network_setting)
-
-
-
 
 
     # prediction_output = prediction_para['prediction_output']

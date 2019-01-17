@@ -2,7 +2,7 @@
 # 2018-12-28
 # update:2019-1-3, 均等分配训练集与验证集
 # update:2019-1-12, 修复由于数据集分布不均，导致验证集精确度较低
-
+# update:2019-1-15, 训练集不立刻处理，可以返回列表
 import os
 import math
 try:
@@ -122,6 +122,7 @@ def _write_result(result):
 
         return : None
     """
+    print("[INFO] saving data...")
     for g in result:
         output, files, labels = g 
         with open(os.path.join(output, 'labels.txt'), 'w') as f:
@@ -143,7 +144,7 @@ def main(pic_path,
         lables_output,
         train_size=0.7,
         threshed=5, 
-        is_wirte=True):   
+        is_write=True):   
     """
     获得标签并分类
     """
@@ -228,10 +229,18 @@ def main(pic_path,
                     sort_female_bone_age,
                     file_dict,
                     csv_dict)
-    if is_wirte:
-        _write_result(ret_1)
-        _write_result(ret_2)
+
+    # # 保存验证集
+    # _write_result([ret_1[1]])
+    # _write_result([ret_2[1]])
+
+    # 训练集待处理可以不保存
+    if is_write:
+        _write_result([ret_1[0]])
+        _write_result([ret_2[0]])
     os.startfile(train_male_output)
+
+    return ret_1[0], ret_2[0]
 
 
 if __name__ == '__main__':

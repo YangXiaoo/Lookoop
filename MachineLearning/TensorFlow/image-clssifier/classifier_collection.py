@@ -38,8 +38,8 @@ input_para = {
     'augumentation_female_output' : r'C:\Study\test\kaggle-bonage\female_augument',
     'augumentation_female_label_output' : r'C:\Study\test\kaggle-bonage\female_augument',
 
-    'thresheded' : 100, # 每个年龄图片数量超过这个值则不会扩充
-    'max_gen' : 5, # 默认单张图片扩充数量
+    'aug_threshed' : 10, # 每个年龄图片数量超过这个值则不会扩充
+    'aug_max_gen' : 5, # 默认单张图片扩充数量
     'distribution_ignore' : False, # 默认不忽略数据分布
 
 
@@ -475,7 +475,7 @@ if __name__ == '__main__':
     # # 抽取数据
     threshed = input_para['male_k_fold']
     train_size = 0.9
-    get_data.main(input_para['pic_path'], 
+    male_ret, female_ret = get_data.main(input_para['pic_path'], 
                 input_para['csv_path'], 
                 input_para['train_male_output'],
                 input_para['train_female_output'], 
@@ -486,37 +486,49 @@ if __name__ == '__main__':
                 threshed=threshed,
                 is_write=False)
 
-    # # 数据扩充
-    label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
-    lables = pic_data_augumentation.getLablesDict(lable_path)
-    input_path = input_para['train_male_output']
+    # 数据扩充
+    # 若没有扩充则用此路径
+    # label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
+    # labels = pic_data_augumentation.getLablesDict(lable_path)
+    # input_path = input_para['train_male_output']
+
+    input_file_list = []
+    output, files, labels = male_ret
+    for f, out_dir in files:
+        input_file_list.append(f)
+    labels_dict = {}
+    for label in labels:
+        pic_name, bone_age = label[:-1].split(' ')
+        labels_dict[pic_name] = bone_age
+
+
     output_path = input_para['augumentation_male_output']
     lable_output_path = input_para['augumentation_male_label_output']
-    thresheded = input_para['thresheded']
-    max_gen = input_para['max_gen']
+    threshed = input_para['aug_threshed']
+    max_gen = input_para['aug_max_gen']
     ignore = input_para['distribution_ignore']
-    pic_data_augumentation.augmentation(input_path, 
+    pic_data_augmentation.augmentation(input_file_list, 
                                         output_path, 
-                                        labels, 
+                                        labels_dict, 
                                         lable_output_path,
-                                        thresheded=100,
-                                        max_gen=5,
+                                        threshed=threshed,
+                                        max_gen=max_gen,
                                         batch_size=1,
                                         save_prefix='bone',
                                         save_format='png', 
-                                        ignore=False)
+                                        ignore=ignore)
 
 
-    # # 数据划分
-    # label_path = os.path.join(input_para['augumentation_male_output'], 'labels.txt')
-    # input_dir = input_para['augumentation_male_output']
-    # output_dir = input_para['male_split_output']
-    # k_fold = input_para['male_k_fold']
+    # 数据划分
+    label_path = os.path.join(input_para['augumentation_male_output'], 'labels.txt')
+    input_dir = input_para['augumentation_male_output']
+    output_dir = input_para['male_split_output']
+    k_fold = input_para['male_k_fold']
 
-    # data_split(input_dir, 
-    #             output_dir, 
-    #             label_path, 
-    #             k_fold=k_fold)
+    data_split(input_dir, 
+                output_dir, 
+                label_path, 
+                k_fold=k_fold)
 
 
     # # 数据格式转换

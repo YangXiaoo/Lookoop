@@ -170,7 +170,7 @@ def transformDict(label_dict):
     return ret
 
 
-def augmentation(input_path, 
+def augmentation(input_file_list, 
                 output_path, 
                 labels, 
                 lable_output_path,
@@ -191,7 +191,8 @@ def augmentation(input_path,
         True : 每张图片扩充数为max_gen
         False : 每张图片扩充数 max_gen=threshed//该年龄图片数量
     """
-    files = getFiles(input_path)
+    print("[INFO] starting augmentation picture ")
+    # files = getFiles(input_path)
     age_label = transformDict(labels)
     age_count = {}
     for k,v in age_label.items():
@@ -199,7 +200,7 @@ def augmentation(input_path,
 
     tmp_lable_container = [] # 存储标签
     start_time = datetime.datetime.now()
-    total = len(files)
+    total = len(input_file_list)
     tmp_dir = 'C:\\gen_pic_tmp' # 生成图片的路径
     file_dic = [] # 存储图片名字，防止重名
     fail, success, skip, count = 0, 0, 0, 0
@@ -208,7 +209,7 @@ def augmentation(input_path,
 
     cleanDir(tmp_dir) # 清空缓存文件
 
-    for i, f in enumerate(files):
+    for i, f in enumerate(input_file_list):
         count += 1
         print(count, '/', total)
         try:
@@ -220,6 +221,7 @@ def augmentation(input_path,
             if not ignore:
                 tmp_age_count = age_count[labels[base_name]]
                 if tmp_age_count > threshed:
+                    print("[INFO] skip, cause it beyond threshed")
                     continue 
                 else:
                     max_gen = threshed // tmp_age_count
@@ -279,7 +281,8 @@ if __name__ == '__main__':
 
     output_path = r'C:\Study\test\kaggle-bonage\test'
     lable_output_path = r'C:\Study\test\kaggle-bonage\test'
-    augmentation(input_path, 
+    files = getFiles(input_path)
+    augmentation(files, 
                 output_path, 
                 labels, 
                 lable_output_path,

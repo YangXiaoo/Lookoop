@@ -23,6 +23,7 @@ import numpy as np
 #         #     pass
 
 
+#########################
 # model_path = 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb'
 # with tf.gfile.FastGFile(model_path, 'rb') as f:
 #     graph_def = tf.GraphDef()
@@ -55,12 +56,16 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
          7.42099200e+07,  2.64569460e+07,  6.01207280e+07,
          8.01406640e+07,  7.80726000e+07,  6.82800960e+07]], dtype=float32)
 """
+
+
+#########################
 # p = 'C:/Study/github/test'
 # r = os.path.join(p, '0', 'dd' , 'fff' '3.np', 't.txt')
 # with open(r, 'w') as f:
 #     f.write('ddd')
 
 
+#########################
 # # r = os.path.join()
 # print(os.listdir(r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\data'))
 # file_list = os.listdir(r'C:\Study\github\others\Deep-Learning-21-Examples-master\chapter_3\data_prepare\satellite\train_dir_pnasnet_large')
@@ -75,7 +80,7 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 # print(least_f)
 
 
-
+#########################
 # nums = [1,20,3,4]
 # nums_2 = [10,20,30,40]
 # nums_1 = np.array(nums)
@@ -89,19 +94,23 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 # r = np.append(empty, nums_1)
 # # print(r)
 
+
+#########################
 # # n = []
 # # for i in nums:
 # #     n.append(i)
 # # print(n)
 
+
+#########################
 # ret = [nums_1 == nums_2] 
 # ret = np.array(ret)  + 0
 # print(ret.sum())
 
-
+#########################
 # print(int('12'))
 
-
+########################
 # # 查看图像年龄分布
 # lable_path = r'C:\Study\test\kaggle-bonage\validation-male\labels.txt'
 # with open(lable_path) as f:
@@ -117,7 +126,7 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 # print(sort_count)
 
 
-
+#######################
 # nums = [1,2,3,4,5,6]
 # thresh = len(nums)
 # print(nums[thresh:])
@@ -126,14 +135,38 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 # t = datetime.datetime.now()
 # print(str(t).split(' ')[-1].replace('.', '_').replace(':', '_'))
 
-nums_1 = []
-nums_2 = []
-nums_3 = []
-nums_4 = []
-group = [[nums_1, nums_2], [nums_3, nums_4]]
-for g in group:
-    n_1, n_2 = g
-    n_1.append([[1]])
-    n_2.append(2)
 
+####################
+# nums_1 = []
+# nums_2 = []
+# nums_3 = []
+# nums_4 = []
+# group = [[nums_1, nums_2], [nums_3, nums_4]]
+# for g in group:
+#     n_1, n_2 = g
+#     n_1.append([[1]])
+#     n_2.append(2)
+
+# print(nums_1)
+
+
+##################
+# nums = []
+
+# def test(nums):
+#     nums.append(1)
+
+
+# def test_1(nums):
+#     nums = []
+#     test(nums)
+#     print(nums)
+
+# test_1(nums)
+
+
+#######################
+nums_1 = [1,2,3]
+nums_2 = [4,5,6]
+nums_1.extend(nums_2)
 print(nums_1)

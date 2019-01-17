@@ -55,19 +55,26 @@ def getFiles(dirpath):
     return file
 
 
-def getLablesDict(label_path):
-    lable = open(label_path)
+def getlabelsDict(lable_path, is_handle=False):
+    """
+    对图像m-3-3.4.png
+    return:
+        {pic_0:class_0, pic_1:class_1, ...}
+    """
+    lable = open(lable_path)
     data = lable.readlines()
     ret = {}
     for line in data:
         # print(line[:-1].split(' ')) # ['mm', '(2).png', '10']
         tmp = line[:-1].split(' ')
-        key, value = ''.join(tmp[:-1]), tmp[-1]
-        if int(value) > 19:
-            value = value[:-1]
+        if is_handle:
+            key, value = ''.join(tmp[:-1]), tmp[-1]
+            if int(value) > 19:
+                value = value[:-1]
+        else:
+            key, value = tmp
         ret[key] = value
     lable.close()
-    print(lable)
     return ret
 
 

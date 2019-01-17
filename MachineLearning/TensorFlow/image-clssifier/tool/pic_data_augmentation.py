@@ -109,17 +109,15 @@ def getlabels(tmp_lable_container,
     for f in files:
         f_dir, base_name = os.path.split(f)
         if base_name in file_dic:
-            while base_name not in file_dic:
-                time.sleep(1)
-                t = datetime.datetime.now()
-                mid_name = str(t).split(' ')[-1].replace('.', '_').replace(':', '_')
-                base_name = 'rename_' + mid_name + '_' + base_name
-                print("file exist, rename file %s as %s" % (f, base_name))
+            t = datetime.datetime.now()
+            mid_name = str(t).split(' ')[-1].replace('.', '_').replace(':', '_')
+            base_name = 'rename_' + mid_name + '_' + base_name
+            print("[WARNING] file exist, rename file %s as %s" % (f, base_name))
             os.rename(f, os.path.join(f_dir, base_name))
         file_dic.append(base_name)
         tmp_lable_container.append(base_name + ' ' + lable + '\n')
 
-    return 
+    return file_dic
     
 
 def movePic(tmp_dir, output_path):
@@ -211,7 +209,7 @@ def augmentation(input_file_list,
 
     for i, f in enumerate(input_file_list):
         count += 1
-        print(count, '/', total)
+        print("[INFO] %s / %s" % (count, total))
         try:
             base_name = os.path.basename(f)
             # 复制当前使用的图片至指定目录
@@ -229,19 +227,20 @@ def augmentation(input_file_list,
             img = loadImg(f)
             tmp_dir_sub = os.path.join(tmp_dir, str(i))
             mkdir([tmp_dir_sub])
-
+            tmp_save_prefix = save_prefix + '_' + str(labels[base_name]) + '_' + base_name
             # 生成图片
             input_par = {
                 'batch_size':batch_size, 
                 'save_to_dir':tmp_dir_sub, 
-                'save_prefix':save_prefix, 
+                'save_prefix':tmp_save_prefix, 
                 'save_format':save_format
             }
             genPic(img, max_gen=max_gen, **input_par)
 
             # 获得标签
             
-            getlabels(tmp_lable_container, labels[base_name], tmp_dir_sub, file_dic)
+            file_dic = getlabels(tmp_lable_container, labels[base_name], tmp_dir_sub, file_dic)
+            # print(file_dic)
 
             # 将缓存中的图片移动到指定目录
             movePic(tmp_dir, output_path)

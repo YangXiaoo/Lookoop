@@ -130,14 +130,10 @@ input_para = {
 
 
 
-    'max_number_of_steps' : 10000, # 最大迭代次数
+    'max_number_of_steps' : 50, # 最大迭代次数
 
 
     # Fine-Tuning
-    # default
-    'checkpoint_path' : None,
-    'checkpoint_exclude_scopes' :  '',
-    'trainable_scopes' : None, # 默认训练所有节点
     'ignore_missing_vars' : True, # W检查节点的时候忽略缺失值
 }
 
@@ -153,6 +149,7 @@ net_factory = [
         # Fine-Tuning
         'checkpoint_path' : None, # None
         'checkpoint_exclude_scopes' : 'vgg_16/fc6,vgg_16/fc7,vgg_16/fc8', # 不加载的节点
+        'trainable_scopes' : None,
     },
 
     # inception_v3
@@ -164,6 +161,7 @@ net_factory = [
         # Fine-Tuning
         'checkpoint_path' : None,
         'checkpoint_exclude_scopes' : '',
+        'trainable_scopes' : None,
     },
 
     # nasnet_large
@@ -175,6 +173,7 @@ net_factory = [
         # Fine-Tuning
         'checkpoint_path' : None,
         'checkpoint_exclude_scopes' : 'cell_17/',
+        'trainable_scopes' : None,
     },
 
     # pnasnet_large
@@ -187,6 +186,7 @@ net_factory = [
         # Fine-Tuning
         'checkpoint_path' : None,
         'checkpoint_exclude_scopes' : '',
+        'trainable_scopes' : None,
     },
 
     # resnet_v2_200
@@ -198,7 +198,8 @@ net_factory = [
         # Fine-Tuning
         'checkpoint_path' : None,
         'checkpoint_exclude_scopes' : '',
-    },
+        'trainable_scopes' : None,
+    }
 ]
 
 model_save_para = {
@@ -226,22 +227,14 @@ model_save_para = {
 
 
 prediction_para = {
-    'model_path' : '', # graph_dir
-    'label_path' : '', # 所有训练数据的标签
-    'image_file' : '',
+    'model_path' : '', # 自动设置
+    'label_path' : '', # 所有训练数据的标签, 自动设置
+    'image_file' : '', # auto
     'is_save' : True,
-    'width' : 224,
-    'height' : 224,
+    'width' : 224, # auto
+    'height' : 224, # auto
     'prediction_output' : r'C:\Study\test\tensorflow-bone\prediction_output'
 }
-
-
-
-
-
-
-
-
 
 
 def data_split(input_dir, 
@@ -261,7 +254,7 @@ def data_split(input_dir,
 
 def data_convert_to_tfrecord(train_dir, 
                             tfrecord_output,
-                            **input_para):
+                            input_para):
     # 数据格式转换
     split_entries = os.listdir(train_dir)
 
@@ -307,9 +300,15 @@ def run_model(tfrecord_output,
         input_para[k] = v
 
     tmp_train_dir = os.path.join(input_para['train_dir'], network_setting['model_name'])
+    api.mkdirs(tmp_train_dir)
     for s in tfrecord_files:
-        input_para['dataset_dir'] = os.path.join(tfrecord_output, str(s))
-        input_para['train_dir'] = os.path.join(tmp_train_dir, str(s))
+        tmp_dataset_dir = os.path.join(tfrecord_output, str(s))
+        tmp_class_train_dir = os.path.join(tmp_train_dir, str(s))
+        api.mkdirs([tmp_dataset_dir, tmp_class_train_dir])
+        input_para['dataset_dir'] = tmp_dataset_dir
+        input_para['train_dir'] = tmp_class_train_dir
+
+        train_main(input_para)
 
 
 
@@ -332,9 +331,11 @@ def convert_model(train_dir,
     model_index = os.listdir(tmp_train_dir)
 
     graph_dir = os.path.join(model_save_para['graph_dir'], network_setting['model_name'])
+    api.mkdirs(graph_dir)
 
     for s in model_index:
         tmp_graph_dir = os.path.join(graph_dir, str(s))
+        api.mkdirs(tmp_graph_dir)
         model_save_para['graph_dir'] = os.path.join(tmp_graph_dir, 'inf_graph.pb')
         model_save_para['dataset_dir'] = os.path.join(tfrecord_output, str(s))
 
@@ -359,6 +360,7 @@ def prediction_train_data(graph_dir,
     """
     graph_dir: 所有graph的路径
     """
+    prediction_ret = {}
     prediction_para = prediction_para.copy()
     graph_index_dir = os.path.join(graph_dir, network_setting['model_name'])
     class_labels = os.listdir(graph_index_dir)
@@ -368,15 +370,19 @@ def prediction_train_data(graph_dir,
         prediction_para['image_file'] = test_data_dir
         model_path = os.path.join(graph_index_dir, c, 'frozen_graph.pb')
         prediction_para['model_path'] = model_path
-        prediction_para['tensor_name'] = network_setting['output_tensor_name']
+        prediction_para['tensor_name'] = network_setting['output_tensor_name'] + ":0"
         prediction_para['width'] = network_setting['train_image_size']
         prediction_para['height'] = network_setting['train_image_size']
-        prediction_para['prediction_output'] = os.path.join(prediction_para['prediction_output'], network_setting['model_name'], c, 'prediction.npy') # 创建文件夹.
+        prediction_dir = os.path.join(prediction_para['prediction_output'], network_setting['model_name'], c)
+        api.mkdirs(prediction_dir)
+        prediction_para['prediction_output'] = os.path.join(prediction_dir, 'prediction.npy') # 创建文件夹.
 
-        run_inference_on_image(prediction_para)
+        tmp_prediction = run_inference_on_image(prediction_para)
+        prediction_ret = dict(prediction_ret, **tmp_prediction)
+    return prediction_ret
 
 
-def train_model(prediction_output):
+def get_prediction_data(prediction_output):
     model_name = os.listdir(prediction_output)
     split_name = os.listdir(os.path.join(prediction_output, model_name))
 
@@ -393,8 +399,16 @@ def train_model(prediction_output):
                 tmp_test_data[k].extend(v) # {pic:[prediction_1, prediction_2, ]}
         for k,v in tmp_test_data.items():
             train_data.append(v)
-            labels.append(int(k.split('_')[0]))
+            try:
+                label = int(k.split('_')[0])
+            except:
+                label = int(k.split('_')[1])
+            labels.append(label)
 
+    return train_data, labels
+
+
+def train_model(train_data, labels):
     num_classes = len(set(labels))
     feature = np.mat(train_data)
     labels = np.mat(labels).T
@@ -472,34 +486,34 @@ def model_collection_prediction(prediction_model,
 
 
 if __name__ == '__main__':
-    # # 抽取数据
-    threshed = input_para['male_k_fold']
-    train_size = 0.9
-    male_ret, female_ret = get_data.main(input_para['pic_path'], 
-                input_para['csv_path'], 
-                input_para['train_male_output'],
-                input_para['train_female_output'], 
-                input_para['validation_male_output'],
-                input_para['validation_female_output'], 
-                input_para['lables_output'],
-                train_size=train_size,
-                threshed=threshed,
-                is_write=False)
+    # # # 抽取数据
+    # threshed = input_para['male_k_fold']
+    # train_size = 0.9
+    # male_ret, female_ret = get_data.main(input_para['pic_path'], 
+    #             input_para['csv_path'], 
+    #             input_para['train_male_output'],
+    #             input_para['train_female_output'], 
+    #             input_para['validation_male_output'],
+    #             input_para['validation_female_output'], 
+    #             input_para['lables_output'],
+    #             train_size=train_size,
+    #             threshed=threshed,
+    #             is_write=False)
 
-    # 数据扩充
-    # 若没有扩充则用此路径
-    # label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
-    # labels = pic_data_augumentation.getLablesDict(lable_path)
-    # input_path = input_para['train_male_output']
+    # # 数据扩充
+    # # 若没有扩充则用此路径
+    # # label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
+    # # labels = pic_data_augumentation.getLablesDict(lable_path)
+    # # input_path = input_para['train_male_output']
 
-    input_file_list = []
-    output, files, labels = male_ret
-    for f, out_dir in files:
-        input_file_list.append(f)
-    labels_dict = {}
-    for label in labels:
-        pic_name, bone_age = label[:-1].split(' ')
-        labels_dict[pic_name] = bone_age
+    # input_file_list = []
+    # output, files, labels = male_ret
+    # for f, out_dir in files:
+    #     input_file_list.append(f)
+    # labels_dict = {}
+    # for label in labels:
+    #     pic_name, bone_age = label[:-1].split(' ')
+    #     labels_dict[pic_name] = bone_age
 
 
     output_path = input_para['augumentation_male_output']
@@ -507,59 +521,68 @@ if __name__ == '__main__':
     threshed = input_para['aug_threshed']
     max_gen = input_para['aug_max_gen']
     ignore = input_para['distribution_ignore']
-    pic_data_augmentation.augmentation(input_file_list, 
-                                        output_path, 
-                                        labels_dict, 
-                                        lable_output_path,
-                                        threshed=threshed,
-                                        max_gen=max_gen,
-                                        batch_size=1,
-                                        save_prefix='bone',
-                                        save_format='png', 
-                                        ignore=ignore)
+    # pic_data_augmentation.augmentation(input_file_list, 
+    #                                     output_path, 
+    #                                     labels_dict, 
+    #                                     lable_output_path,
+    #                                     threshed=threshed,
+    #                                     max_gen=max_gen,
+    #                                     batch_size=1,
+    #                                     save_prefix='bone',
+    #                                     save_format='png', 
+    #                                     ignore=ignore)
 
 
-    # 数据划分
+    # # 数据划分
     label_path = os.path.join(input_para['augumentation_male_output'], 'labels.txt')
     input_dir = input_para['augumentation_male_output']
     output_dir = input_para['male_split_output']
     k_fold = input_para['male_k_fold']
 
-    data_split(input_dir, 
-                output_dir, 
-                label_path, 
-                k_fold=k_fold)
+    # data_split(input_dir, 
+    #             output_dir, 
+    #             label_path, 
+    #             k_fold=k_fold)
 
 
     # # 数据格式转换
     # # male
-    # train_data = input_para['male_split_output']
-    # male_tfrecord_output = input_para['male_tfrecord_output']
+    train_data = input_para['male_split_output']
+    male_tfrecord_output = input_para['male_tfrecord_output']
     # data_convert_to_tfrecord(train_data, 
     #                         male_tfrecord_output,
-    #                         **input_para)
+    #                         input_para)
 
 
-    # # 训练
-    # train_dir = input_para['train_dir']
-    # graph_dir = model_save_para['graph_dir']
-    # test_dir = input_para['male_split_output']
-    # for network_setting in net_factory
-    #     run_model(male_tfrecord_output, **input_para, **network_setting)
-    #     convert_model(train_dir,
-    #                 male_tfrecord_output,
-    #                 **network_setting, 
-    #                 **model_save_para, 
-    #                 **input_para)
+    # 训练
+    train_dir = input_para['train_dir']
+    graph_dir = model_save_para['graph_dir']
+    test_dir = input_para['male_split_output']
+    for network_setting in net_factory:
 
-    #     prediction_train_data(graph_dir,
-    #                     test_dir,
-    #                     label_path,
-    #                     **prediction_para, 
-    #                     **network_setting)
+        print("[INFO] use model %s" % network_setting['model_name'])
+        run_model(male_tfrecord_output, input_para, network_setting)
+        convert_model(train_dir,
+                        male_tfrecord_output,
+                        network_setting, 
+                        model_save_para, 
+                        input_para)
+
+        prediction_train_data(graph_dir,
+                                test_dir,
+                                label_path,
+                                prediction_para, 
+                                network_setting)
+
+
+
+
 
     # prediction_output = prediction_para['prediction_output']
-    # prediction_model = train_model(prediction_output)
+    # train_data, labels = get_prediction_data(prediction_output)
+
+
+    # prediction_model = train_model(train_data, labels)
     
     # test_data = input_para['validation_male_output']
     # label_path = os.path.join(test_data, 'labels.txt')

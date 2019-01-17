@@ -14,12 +14,12 @@ import tensorflow as tf
 
 slim = tf.contrib.slim
 
-_FILE_PATTERN = 'satellite_%s*'
+_FILE_PATTERN = '*_%s*'
 LABELS_FILENAME = 'lable.txt'
 
 _SPLITS_TO_SIZES = {
-    'train': 680,
-    'validation': 53,
+    'train': 5894,
+    'validation': 1407,
 }
 
 _ITEMS_TO_DESCRIPTIONS = {
@@ -27,7 +27,7 @@ _ITEMS_TO_DESCRIPTIONS = {
     'label': 'The label id of the image, integer between 1 and 18',
 }
 
-_NUM_CLASSES = 18
+_NUM_CLASSES = 131
 
 
 def read_label_file(dataset_dir, filename=LABELS_FILENAME):

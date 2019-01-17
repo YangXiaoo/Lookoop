@@ -23,7 +23,7 @@ def get_checkpoint(train_dir):
 			tmp_iter = int(f.split('-')[-1].split('.')[0])
 			if tmp_iter > max_iter:
 				least_f = f
-
+	least_f = ".".join(least_f.split('.')[:-1])
 	ret = os.path.join(train_dir, least_f)
 
 	return ret

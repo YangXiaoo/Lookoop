@@ -233,7 +233,7 @@ prediction_para = {
     'is_save' : True,
     'width' : 224, # auto
     'height' : 224, # auto
-    'prediction_output' : r'C:\Study\test\tensorflow-bone\prediction_output'
+    'prediction_output' : r'C:\Study\test\kaggle-bonage\prediction_output' # C:\Study\test\kaggle-bonage\prediction_output
 }
 
 
@@ -561,18 +561,19 @@ if __name__ == '__main__':
     test_dir = input_para['male_split_output']
     for network_setting in net_factory:
         print("[INFO] use model %s" % network_setting['model_name'])
-        run_model(male_tfrecord_output, input_para, network_setting)
-        convert_model(train_dir,
-                        male_tfrecord_output,
-                        network_setting, 
-                        model_save_para, 
-                        input_para)
+        # run_model(male_tfrecord_output, input_para, network_setting)
+        # convert_model(train_dir,
+        #                 male_tfrecord_output,
+        #                 network_setting, 
+        #                 model_save_para, 
+        #                 input_para)
 
         prediction_train_data(graph_dir,
                                 test_dir,
                                 label_path,
                                 prediction_para, 
                                 network_setting)
+        break
 
 
     # prediction_output = prediction_para['prediction_output']

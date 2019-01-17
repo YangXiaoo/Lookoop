@@ -73,7 +73,7 @@ def freeze_graph_with_def_protos(graph_dir_def,
                 except KeyError:
                     # This tensor doesn't exist in the graph (for example it's
                     # 'global_step' or a similar housekeeping element) so skip it.
-                    print('error: ', key)
+                    print("[WARNING] skip %s, cause this tensor doesn't exist in the graph." % key)
                     continue
                 var_list[key] = tensor
             saver = saver_lib.Saver(var_list=var_list)

@@ -19,7 +19,7 @@ LABELS_FILENAME = 'lable.txt'
 
 _SPLITS_TO_SIZES = {
     'train': 5894,
-    'validation': 1407,
+    'test': 1407,
 }
 
 _ITEMS_TO_DESCRIPTIONS = {

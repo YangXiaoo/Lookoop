@@ -74,9 +74,13 @@ def loadImg(pic_file):
 
 
 def mkdir(file_list):
-    for f in file_list:
-        if not os.path.isdir(f):
-            os.makedirs(f)
+    if isinstance(file_list, list):
+        for f in file_list:
+            if not os.path.isdir(f):
+                os.makedirs(f)
+    else:
+        if not os.path.isdir(file_list):
+            os.makedirs(file_list)
     return 
 
 
@@ -87,7 +91,7 @@ def cleanDir(tmp_dir):
     return 
 
 
-def genPic(img, max_gen=50, **data):
+def genPic(img, max_gen=5, **data):
     i = 0
     for batch in datagen.flow(img, **data):
         i += 1
@@ -97,7 +101,7 @@ def genPic(img, max_gen=50, **data):
     return 
 
 
-def getLables(tmp_lable_container, 
+def getlabels(tmp_lable_container, 
                 lable, 
                 pic_files, 
                 file_dic):
@@ -106,9 +110,11 @@ def getLables(tmp_lable_container,
         f_dir, base_name = os.path.split(f)
         if base_name in file_dic:
             while base_name not in file_dic:
-                print("rename file: %s ..." % f)
                 time.sleep(1)
-                base_name = 'rename_' + str(random.randrange(1,10000)) + '_' + base_name
+                t = datetime.datetime.now()
+                mid_name = str(t).split(' ')[-1].replace('.', '_').replace(':', '_')
+                base_name = 'rename_' + mid_name + '_' + base_name
+                print("file exist, rename file %s as %s" % (f, base_name))
             os.rename(f, os.path.join(f_dir, base_name))
         file_dic.append(base_name)
         tmp_lable_container.append(base_name + ' ' + lable + '\n')
@@ -126,35 +132,70 @@ def movePic(tmp_dir, output_path):
     return 
 
 
-def getLablesDict(lable_path):
+def getlabelsDict(lable_path, is_handle=False):
+    """
+    对图像m-3-3.4.png
+    return:
+        {pic_0:class_0, pic_1:class_1, ...}
+    """
     lable = open(lable_path)
     data = lable.readlines()
     ret = {}
     for line in data:
         # print(line[:-1].split(' ')) # ['mm', '(2).png', '10']
         tmp = line[:-1].split(' ')
-        key, value = ''.join(tmp[:-1]), tmp[-1]
-        if int(value) > 19:
-            value = value[:-1]
+        if is_handle:
+            key, value = ''.join(tmp[:-1]), tmp[-1]
+            if int(value) > 19:
+                value = value[:-1]
+        else:
+            key, value = tmp
         ret[key] = value
     lable.close()
+    return ret
+
+def transformDict(label_dict):
+    """
+    将相同标签的图片分到一起
+
+    return:
+        type(dict) : {class_0:[pic_0, pic_1, ], class_1:[pic_0_0, pic_1_1, ]}
+    """
+    ret = {}
+    for k,v in label_dict.items():
+        if v not in ret:
+            ret[v] = []
+        ret[v].append(k)
+
     return ret
 
 
 def augmentation(input_path, 
                 output_path, 
-                lables, 
+                labels, 
                 lable_output_path,
+                threshed=100,
+                max_gen=5,
                 batch_size=1,
                 save_prefix='bone',
-                save_format='png'):
+                save_format='png', 
+                ignore=False):
     """
     input_path: 待处理数据路径
     output_path: 输出路径
-    lables: 待处理数据对应标签, {'pic_01.png':label_01, 'pic_02.png':label_02,...}
+    labels: 待处理数据对应标签, {'pic_01.png':label_01, 'pic_02.png':label_02,...}
     lable_output_path: 重新生成的标签输出路径
+    threshed: 每个年龄的最大图片数
+    max_gen:单张图片扩充数
+    ignore:
+        True : 每张图片扩充数为max_gen
+        False : 每张图片扩充数 max_gen=threshed//该年龄图片数量
     """
     files = getFiles(input_path)
+    age_label = transformDict(labels)
+    age_count = {}
+    for k,v in age_label.items():
+        age_count[k] = len(v)
 
     tmp_lable_container = [] # 存储标签
     start_time = datetime.datetime.now()
@@ -171,6 +212,17 @@ def augmentation(input_path,
         count += 1
         print(count, '/', total)
         try:
+            base_name = os.path.basename(f)
+            # 复制当前使用的图片至指定目录
+            movePic(f, output_path)
+            tmp_lable_container.append(base_name + ' ' + labels[base_name] + '\n')
+
+            if not ignore:
+                tmp_age_count = age_count[labels[base_name]]
+                if tmp_age_count > threshed:
+                    continue 
+                else:
+                    max_gen = threshed // tmp_age_count
             # 载入图片
             img = loadImg(f)
             tmp_dir_sub = os.path.join(tmp_dir, str(i))
@@ -183,18 +235,14 @@ def augmentation(input_path,
                 'save_prefix':save_prefix, 
                 'save_format':save_format
             }
-            genPic(img, max_gen=5, **input_par)
+            genPic(img, max_gen=max_gen, **input_par)
 
             # 获得标签
-            base_name = os.path.basename(f)
-            getLables(tmp_lable_container, lables[base_name], tmp_dir_sub, file_dic)
-            tmp_lable_container.append(base_name + ' ' + lables[base_name] + '\n')
+            
+            getlabels(tmp_lable_container, labels[base_name], tmp_dir_sub, file_dic)
 
             # 将缓存中的图片移动到指定目录
             movePic(tmp_dir, output_path)
-
-            # 复制当前使用的图片至指定目录
-            movePic(f, output_path)
 
             # 打印信息到输出台
             printToConsole(start_time, f, count, total, 5)
@@ -225,7 +273,7 @@ def augmentation(input_path,
 if __name__ == '__main__':
 
     lable_path = r'C:\Study\test\kaggle-bonage\train-male\train.txt'
-    lables = getLablesDict(lable_path)
+    labels = getlabelsDict(lable_path)
 
     input_path =  r'C:\Study\test\kaggle-bonage\train-male'
 
@@ -233,7 +281,7 @@ if __name__ == '__main__':
     lable_output_path = r'C:\Study\test\kaggle-bonage\test'
     augmentation(input_path, 
                 output_path, 
-                lables, 
+                labels, 
                 lable_output_path,
                 batch_size=1,
                 save_prefix='bone',

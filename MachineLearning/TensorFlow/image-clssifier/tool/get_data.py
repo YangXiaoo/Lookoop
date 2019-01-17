@@ -35,10 +35,10 @@ def mkdir(file_list):
     return 
 
 
-def _split_data(age_pic, train_size):
+def _split_data(age_pic, train_size, threshed=5):
     """
-    age_pic: {bone_age : [pic_id, ]}
-    train_size: [0, 1]
+    age_pic: {bone_age : [pic_id, ], ...}
+    train_size: range(0, 1)
 
     return :
         ret_train: [pic_id, ]
@@ -46,7 +46,11 @@ def _split_data(age_pic, train_size):
     """
     ret_train, ret_validation = [], []
     for k,v in age_pic.items():
-        split = int(math.floor(len(v) * (1- train_size)))
+        age_count = len(v)
+        if int(math.floor(age_count * threshed)) < threshed:
+            split = 0
+        else:
+            split = int(math.floor(age_count * (1- train_size)))
         ret_validation.extend(v[:split])
         ret_train.extend(v[split:])
 
@@ -85,21 +89,49 @@ def _get_data_lables(train_output,
 
     return: None
     """
-    print("get_labels...")
-    group = [[train_output, train_data, 'labels.txt'],
-            [validation_output, validation_data, 'labels.txt']]
+    print("getting data...")
+    train_files = []
+    train_labels = []
+    validation_files = []
+    validation_labels = []
+    group = [[train_output, train_data, train_files, train_labels, 'labels.txt'],
+            [validation_output, validation_data, validation_files, validation_labels, 'labels.txt']]
+
     for g in group:
-        output, data, label_txt = g 
-        labels = open(os.path.join(output, label_txt), 'w')
+        output, data, files, labels, label_txt = g 
+        # labels = open(os.path.join(output, label_txt), 'w')
         for pic_id in data:
             f = file_dict[pic_id]
             pic_basename = os.path.basename(f)
             out_dir = os.path.join(output, pic_basename)
-            labels.write(pic_basename + ' ' + sort_bone_age[csv_dict[pic_id][0]] + '\n')
-            dummy_smg = os.popen("copy %s %s" % (f, out_dir))
-        labels.close()
+            tmp_label = pic_basename + ' ' + sort_bone_age[csv_dict[pic_id][0]] + '\n'
+            files.append([f, out_dir])
+            labels.append(tmp_label)
+            # labels.write(tmp_label)
+            # dummy_smg = os.popen("copy %s %s" % (f, out_dir))
+        # labels.close()
 
-    return None
+    return [[train_output, train_files, train_labels], [validation_output, validation_files, validation_labels]]
+
+def _write_result(result):
+    """
+    将数据标签写入文件
+    移动图片至输出路径
+    Args:
+        result: [[train_output, train_files, train_labels], [validation_output, validation_files, validation_labels]]
+
+        return : None
+    """
+    for g in result:
+        output, files, labels = g 
+        with open(os.path.join(output, 'labels.txt'), 'w') as f:
+            for line in labels:
+                f.write(line)
+
+        for f,out_dir in files:
+            dummy_smg = os.popen("copy %s %s" % (f, out_dir))
+
+
 
 
 def main(pic_path,
@@ -109,7 +141,9 @@ def main(pic_path,
         validation_male_output,
         validation_female_output,
         lables_output,
-        train_size=0.7):   
+        train_size=0.7,
+        threshed=5, 
+        is_wirte=True):   
     """
     获得标签并分类
     """
@@ -167,16 +201,17 @@ def main(pic_path,
 
 
     # 获取文件列表，打乱顺序划分训练集与验证集
-    male_train, male_validation = _split_data(male_age_pic, train_size)
+    male_train, male_validation = _split_data(male_age_pic, train_size, threshed)
     # print(len(male_train))
-    female_train, female_validation = _split_data(female_age_pic, train_size)
+    female_train, female_validation = _split_data(female_age_pic, train_size, threshed)
 
     # 获得pic_id到路径的映射
     file_dict = _get_pic_map(pic_files)
 
 
     # male
-    _get_data_lables(train_male_output, 
+    print("male...")
+    ret_1 = _get_data_lables(train_male_output, 
                     validation_male_output, 
                     male_train, 
                     male_validation,
@@ -185,14 +220,17 @@ def main(pic_path,
                     csv_dict)
 
     # female
-    _get_data_lables(train_female_output, 
+    print("female...")
+    ret_2 = _get_data_lables(train_female_output, 
                     validation_female_output, 
                     female_train, 
                     female_validation,
                     sort_female_bone_age,
                     file_dict,
                     csv_dict)
-
+    if is_wirte:
+        _write_result(ret_1)
+        _write_result(ret_2)
     os.startfile(train_male_output)
 
 

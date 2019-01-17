@@ -10,7 +10,7 @@ from test_image_classifier import run_inference_on_image
 
 from tool import data_convert
 from tool import disposal_data
-from tool import get_labels
+from tool import get_data
 from tool import pic_data_augmentation
 from tool import tfrecord
 from tool import api
@@ -38,14 +38,20 @@ input_para = {
     'augumentation_female_output' : r'C:\Study\test\kaggle-bonage\female_augument',
     'augumentation_female_label_output' : r'C:\Study\test\kaggle-bonage\female_augument',
 
+    'thresheded' : 100, # 每个年龄图片数量超过这个值则不会扩充
+    'max_gen' : 5, # 默认单张图片扩充数量
+    'distribution_ignore' : False, # 默认不忽略数据分布
+
+
 
     # k-fold 划分训练集
     # male
     'male_split_output' : r'C:\Study\test\kaggle-bonage\train-male_disposal_out', # K-fold输出路径
-    'male_k_fold' : 4, # default 5
+    'male_k_fold' : 5, # default 5
     # female 
     'female_split_output' : r'C:\Study\test\kaggle-bonage\train-female_disposal_out', 
-    'female_k_fold' : 4, # default 5
+    'female_k_fold' : 5, # default 5
+
 
     # data convert
     # male
@@ -230,44 +236,11 @@ prediction_para = {
 }
 
 
-def get_data(pic_path, 
-            csv_path, 
-            train_male_output,
-            train_female_output, 
-            validation_male_output,
-            validation_female_output, 
-            lables_output,
-            train_size=0.8):
-    """
-    数据处理
-    """
-    # 图片抽取整理并生成标签
-    get_labels.main(pic_path, 
-                    csv_path, 
-                    train_male_output,
-                    train_female_output, 
-                    validation_male_output,
-                    validation_female_output, 
-                    lables_output,
-                    train_size=train_size)
 
 
-def data_augumentation(input_path, 
-                        output_path, 
-                        lable_path, 
-                        lable_output_path,
-                        batch_size=1,
-                        save_prefix='bone',
-                        save_format='png'):
-    # 数据扩充
-    lables = pic_data_augumentation.getLablesDict(lable_path)
-    pic_data_augumentation.augmentation(input_path, 
-                                        output_path, 
-                                        lables, 
-                                        lable_output_path,
-                                        batch_size=1,
-                                        save_prefix='bone',
-                                        save_format='png')
+
+
+
 
 
 
@@ -287,8 +260,8 @@ def data_split(input_dir,
 
 
 def data_convert_to_tfrecord(train_dir, 
-                                tfrecord_output,
-                                **input_para):
+                            tfrecord_output,
+                            **input_para):
     # 数据格式转换
     split_entries = os.listdir(train_dir)
 
@@ -500,37 +473,50 @@ def model_collection_prediction(prediction_model,
 
 if __name__ == '__main__':
     # # 抽取数据
-    get_data(input_para['pic_path'], 
-            input_para['csv_path'], 
-            input_para['train_male_output'],
-            input_para['train_female_output'], 
-            input_para['validation_male_output'],
-            input_para['validation_female_output'], 
-            input_para['lables_output'],
-            train_size=0.8)
-
+    threshed = input_para['male_k_fold']
+    train_size = 0.9
+    get_data.main(input_para['pic_path'], 
+                input_para['csv_path'], 
+                input_para['train_male_output'],
+                input_para['train_female_output'], 
+                input_para['validation_male_output'],
+                input_para['validation_female_output'], 
+                input_para['lables_output'],
+                train_size=train_size,
+                threshed=threshed,
+                is_write=False)
 
     # # 数据扩充
-    # label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
-    # data_augumentation(input_para['train_male_output'], 
-    #                     input_para['augumentation_male_output'], 
-    #                     lable_path, 
-    #                     input_para['augumentation_male_label_output'],
-    #                     batch_size=1,
-    #                     save_prefix='bone',
-    #                     save_format='png')
-
-
-    # 数据划分
     label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
-    input_dir = input_para['train_male_output']
-    output_dir = input_para['male_split_output']
-    k_fold = input_para['male_k_fold']
+    lables = pic_data_augumentation.getLablesDict(lable_path)
+    input_path = input_para['train_male_output']
+    output_path = input_para['augumentation_male_output']
+    lable_output_path = input_para['augumentation_male_label_output']
+    thresheded = input_para['thresheded']
+    max_gen = input_para['max_gen']
+    ignore = input_para['distribution_ignore']
+    pic_data_augumentation.augmentation(input_path, 
+                                        output_path, 
+                                        labels, 
+                                        lable_output_path,
+                                        thresheded=100,
+                                        max_gen=5,
+                                        batch_size=1,
+                                        save_prefix='bone',
+                                        save_format='png', 
+                                        ignore=False)
 
-    data_split(input_dir, 
-                output_dir, 
-                label_path, 
-                k_fold=k_fold)
+
+    # # 数据划分
+    # label_path = os.path.join(input_para['augumentation_male_output'], 'labels.txt')
+    # input_dir = input_para['augumentation_male_output']
+    # output_dir = input_para['male_split_output']
+    # k_fold = input_para['male_k_fold']
+
+    # data_split(input_dir, 
+    #             output_dir, 
+    #             label_path, 
+    #             k_fold=k_fold)
 
 
     # # 数据格式转换

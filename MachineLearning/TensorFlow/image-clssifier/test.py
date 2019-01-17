@@ -76,27 +76,64 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 
 
 
-nums = [1,20,3,4]
-nums_2 = [10,20,30,40]
-nums_1 = np.array(nums)
-nums_2 = np.array(nums_2)
-dicts = {'nums_1':nums_1, 'nums_2':nums_2}
-for k,v in dicts.items():
-    dicts[k] = v / 2
+# nums = [1,20,3,4]
+# nums_2 = [10,20,30,40]
+# nums_1 = np.array(nums)
+# nums_2 = np.array(nums_2)
+# dicts = {'nums_1':nums_1, 'nums_2':nums_2}
+# for k,v in dicts.items():
+#     dicts[k] = v / 2
 
-# print(dicts)
-empty = np.array([])
-r = np.append(empty, nums_1)
-# print(r)
+# # print(dicts)
+# empty = np.array([])
+# r = np.append(empty, nums_1)
+# # print(r)
 
-# n = []
-# for i in nums:
-#     n.append(i)
-# print(n)
+# # n = []
+# # for i in nums:
+# #     n.append(i)
+# # print(n)
 
-ret = [nums_1 == nums_2] 
-ret = np.array(ret)  + 0
-print(ret.sum())
+# ret = [nums_1 == nums_2] 
+# ret = np.array(ret)  + 0
+# print(ret.sum())
 
 
-print(int('12'))
+# print(int('12'))
+
+
+# # 查看图像年龄分布
+# lable_path = r'C:\Study\test\kaggle-bonage\validation-male\labels.txt'
+# with open(lable_path) as f:
+#     data = f.readlines()
+#     count = {}
+#     for d in data:
+#         age = d[:-1].split(' ')[-1]
+#         count[age] = count.get(age, 0) + 1
+# sort_count = sorted(count.items(), key=lambda x:int(x[0]))
+# for a,c in sort_count:
+#     if c < 5:
+#         print(a, c)
+# print(sort_count)
+
+
+
+# nums = [1,2,3,4,5,6]
+# thresh = len(nums)
+# print(nums[thresh:])
+# print(nums[:thresh])
+# import datetime
+# t = datetime.datetime.now()
+# print(str(t).split(' ')[-1].replace('.', '_').replace(':', '_'))
+
+nums_1 = []
+nums_2 = []
+nums_3 = []
+nums_4 = []
+group = [[nums_1, nums_2], [nums_3, nums_4]]
+for g in group:
+    n_1, n_2 = g
+    n_1.append([[1]])
+    n_2.append(2)
+
+print(nums_1)

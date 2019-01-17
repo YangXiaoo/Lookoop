@@ -47,6 +47,9 @@ def mkdir(file_list):
 def transformDict(label_dict):
     """
     将相同标签的图片分到一起
+
+    return:
+        type(dict) : {class_0:[pic_0, pic_1, ], class_1:[pic_0_0, pic_1_1, ]}
     """
     ret = {}
     for k,v in label_dict.items():
@@ -69,7 +72,7 @@ def disposal(input_dir, output_dir, labels_dict, k_fold=5):
 
     k_list = []
     for i in range(k_fold):
-        tmp_list = {}
+        tmp_list = {} # {pic_0:class_0, pic_1:class_1}
         for k,v in tans_label_dict.items():
             tmp_data = {}
             tmp_class_len = len(v)

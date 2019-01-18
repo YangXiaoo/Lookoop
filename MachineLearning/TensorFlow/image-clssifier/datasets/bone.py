@@ -24,7 +24,7 @@ _SPLITS_TO_SIZES = {
 
 _ITEMS_TO_DESCRIPTIONS = {
     'image': 'A color image of varying height and width.',
-    'label': 'The label id of the image, integer between 1 and 18',
+    'label': 'The label id of the image.',
 }
 
 _NUM_CLASSES = 131
@@ -46,11 +46,16 @@ def read_label_file(dataset_dir, filename=LABELS_FILENAME):
     return labels_to_class_names
 
 
-def get_split(split_name, dataset_dir, file_pattern=None, reader=None):
+def get_split(split_name, 
+                dataset_dir, 
+                split_to_size=_SPLITS_TO_SIZES,
+                num_classes=_NUM_CLASSES,
+                file_pattern=None, 
+                reader=None):
     """
     返回数据实例
     """
-    if split_name not in _SPLITS_TO_SIZES:
+    if split_name not in split_to_size:
         raise ValueError('split name %s was not recognized.' % split_name)
 
     if not file_pattern:
@@ -86,7 +91,7 @@ def get_split(split_name, dataset_dir, file_pattern=None, reader=None):
         data_sources=file_pattern,
         reader=reader,
         decoder=decoder,
-        num_samples=_SPLITS_TO_SIZES[split_name],
+        num_samples=split_to_size[split_name],
         items_to_descriptions=_ITEMS_TO_DESCRIPTIONS,
-        num_classes=_NUM_CLASSES,
+        num_classes=num_classes,
         labels_to_names=labels_to_names)

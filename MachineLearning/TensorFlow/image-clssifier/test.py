@@ -166,7 +166,33 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 
 
 #######################
-nums_1 = [1,2,3]
-nums_2 = [4,5,6]
-nums_1.extend(nums_2)
-print(nums_1)
+# nums_1 = [1,2,3]
+# nums_2 = [4,5,6]
+# nums_1.extend(nums_2)
+# print(nums_1)
+
+# import cv2
+
+# img = cv2.imread(r'C:\Study\test\kaggle-bonage\train-male_disposal_out\0\test\6\2133.png')
+# print(img.shape)
+
+ret = np.load(r'C:\Study\test\kaggle-bonage\prediction_output\vgg_16\0\prediction.npy')
+ret_1 = ret[()]
+for k in ret_1.values():
+	print(k.shape)
+
+# d = {'1':3}
+# np.save('loacal_test.npy', d)
+# ret_d = np.load('loacal_test.npy')
+# print(ret_d[()].keys())
+
+
+# class Test(object):
+# 	def __init__(self):
+# 		self.value = 1
+
+# # test = Test()
+# # print(test.value)
+# # np.save("test_class.npy", test)
+# test = np.load("test_class.npy")
+# print(test[()].value)

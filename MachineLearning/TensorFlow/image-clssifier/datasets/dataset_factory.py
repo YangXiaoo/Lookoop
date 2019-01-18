@@ -14,7 +14,13 @@ datasets_map = {
 	'datasets' : bone,
 }
 
-def get_dataset(name, split_name, dataset_dir, file_pattern=None, reader=None):
+def get_dataset(name, 
+				split_name, 
+				dataset_dir, 
+				split_to_size,
+				num_classes,
+				file_pattern=None, 
+				reader=None):
 	"""
 	name : 指定数据读取函数, datasets_map中的key
 	split_name : 读取TFRecord时分隔训练数据与测试数据
@@ -29,5 +35,7 @@ def get_dataset(name, split_name, dataset_dir, file_pattern=None, reader=None):
 	return datasets_map[name].get_split(
 		split_name,
       	dataset_dir,
+      	split_to_size,
+      	num_classes,
       	file_pattern,
       	reader)

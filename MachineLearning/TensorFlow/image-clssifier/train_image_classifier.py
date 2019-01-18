@@ -75,6 +75,10 @@ input_para = {
     'dataset_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/data', # 数据存储
     'labels_offset' : 0,  # 标签偏移
 
+    'num_classes' : 18,
+    'split_to_size' : {'train': 5894,
+                        'test': 1407,},
+
     # 'model_name' : 'vgg_16', # vgg
     # 'model_name' : inception_v3, # inception3
     # 'model_name' : 'nasnet_large', # NASnet
@@ -146,7 +150,9 @@ def main(input_para):
         dataset = dataset_factory.get_dataset(
             input_para['dataset_name'],
             input_para['dataset_split_name'],
-            input_para['dataset_dir'])
+            input_para['dataset_dir'],
+            input_para['split_to_size'],
+            input_para['num_classes'])
 
         # 选择训练模型
         network_fn = nets_factory.get_network_fn(

@@ -117,34 +117,34 @@ if __name__ == "__main__":
     # 1、导入训练数据
     feature, label = loadData(inputfile)
     print(np.shape(feature), np.shape(label))
-    x = []
-    y = []
-    for i in range(np.shape(feature)[0]):
-        x.append(feature[i, 1])
-        y.append(feature[i, 2])
-    x = np.array(x)
-    y = np.array(y)
-    color = np.arctan2(y, x)
-    # 绘制散点图
-    plt.scatter(x, y, s = 75, c = color, alpha = 0.5)
-    # 设置坐标轴范围
-    plt.xlim((-5, 5))
-    plt.ylim((-5, 5))
+    # x = []
+    # y = []
+    # for i in range(np.shape(feature)[0]):
+    #     x.append(feature[i, 1])
+    #     y.append(feature[i, 2])
+    # x = np.array(x)
+    # y = np.array(y)
+    # color = np.arctan2(y, x)
+    # # 绘制散点图
+    # plt.scatter(x, y, s = 75, c = color, alpha = 0.5)
+    # # 设置坐标轴范围
+    # plt.xlim((-5, 5))
+    # plt.ylim((-5, 5))
 
-    # 不显示坐标轴的值
-    plt.xticks(())
-    plt.yticks(())
+    # # 不显示坐标轴的值
+    # plt.xticks(())
+    # plt.yticks(())
 
-    plt.show()
+    # plt.show()
 
-    k = 4
-    # 2、训练Softmax模型
-    weights = train(feature, label, k, 10000, 0.4)
-    print(weights)
+    # k = 4
+    # # 2、训练Softmax模型
+    # weights = train(feature, label, k, 10000, 0.4)
+    # print(weights)
 
-    # 3. 预测   
-    m, n = np.shape(weights)
-    data = load_data(4000, m)
-    res = predict(data, weights)
-    print(res)
+    # # 3. 预测   
+    # m, n = np.shape(weights)
+    # data = load_data(4000, m)
+    # res = predict(data, weights)
+    # print(res)
 

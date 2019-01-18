@@ -49,7 +49,9 @@ def main(input_para):
         dataset = dataset_factory.get_dataset(
             input_para['dataset_name'], 
             input_para['data_split'],
-            input_para['dataset_dir'])
+            input_para['dataset_dir'],
+            input_para['split_to_size'],
+            input_para['num_classes'])
         network_fn = nets_factory.get_network_fn(
             input_para['model_name'],
             num_classes=(dataset.num_classes - input_para['labels_offset']),

@@ -16,6 +16,8 @@ import numpy as np
 from six.moves import urllib
 import tensorflow as tf
 
+from preprocessing import vgg_preprocessing
+
 __all__ = [
     ''
 ]
@@ -120,21 +122,13 @@ def preprocess_for_eval(image,
         if image.dtype != tf.float32:
             image = tf.image.convert_image_dtype(image, dtype=tf.float32)
 
-        # 裁剪图片
-        if central_fraction:
-            image = tf.image.central_crop(image, central_fraction=central_fraction)
-
         if height and width:
             # Resize the image to the specified height and width.
             image = tf.expand_dims(image, 0)
-            image = tf.image.resize_bilinear(
-                image, 
-                [height, width],
-                align_corners=False)
+            image = tf.image.resize_bilinear(image, 
+                                            [height, width],
+                                            align_corners=False)
             image = tf.squeeze(image, [0])
-
-        image = tf.subtract(image, 0.5)
-        image = tf.multiply(image, 2.0)
 
         return image
 
@@ -143,34 +137,52 @@ def run_inference_on_image(input_par):
     print("predcition..")
     image_list = {}
     file_list = getFiles(input_par['image_file'])
-    with tf.Graph().as_default():
-        for img in file_list:
-            base_name = os.path.basename(img)
-            image_data = tf.gfile.FastGFile(img, 'rb').read()
-            image_data = tf.image.decode_jpeg(image_data)
-            image_data = preprocess_for_eval(image_data, input_par['width'], input_par['height'])
-            image_data = tf.expand_dims(image_data, 0)
-            with tf.Session() as sess:
-                image_data = sess.run(image_data)
-                image_list[base_name] = image_data
+    # with tf.Graph().as_default():
+    #     print("[INFO] loading picture.")
+    #     for k,img in enumerate(file_list):
+    #         base_name = os.path.basename(img)
+    #         image_data = tf.gfile.FastGFile(img, 'rb').read()
+    #         image_data = tf.image.decode_jpeg(image_data)
+    #         image_data = preprocess_for_eval(image_data, input_par['width'], input_par['height'])
+    #         image_data = tf.expand_dims(image_data, 0)
+    #         with tf.Session() as sess:
+    #             image_data = sess.run(image_data)
+    #             image_list[base_name] = image_data
+    #         if k == 100:
+    #             break
 
-        label_dict = getlabelsDict(input_par['label_path'])
-
-    # 加载保存的模型
-    create_graph(sess, input_par['model_path'])
+    label_dict = getlabelsDict(input_par['label_path'])
     with tf.Session() as sess:
+        # 加载保存的模型
+        create_graph(sess, input_par['model_path'])
         prediction_output = {} # {'2_m-1-1.9.png': data}
-        softmax_tensor = sess.graph.get_tensor_by_name(input_par['tensor_name'])
-        # node_lookup = NodeLookup(input_par['label_path'])
+        tensor = sess.graph.get_tensor_by_name(input_par['tensor_name'])
         print("[INFO] predicting image data...")
-        for k,image_data in image_list.items():
-
-            predictions = sess.run(softmax_tensor,
-                               {'input:0': image_data})
-            print(k, predictions.shape)
-            prediction_output[str(label_dict[k]) + '_' + k] = predictions
+        # for k,image_data in image_list.items():
+        for k,img in enumerate(file_list):
+            base_name = os.path.basename(img)
+            print("[INFO] Predicting %s" % base_name)
+            image_data = tf.gfile.FastGFile(img, 'rb').read()
+            image_data = tf.image.decode_jpeg(image_data, channels=3)
+            # print(image_data.shape)
+            image_data = vgg_preprocessing.preprocess_for_eval(image_data, input_par['height'], input_par['width'], 256)
+            image_data = tf.expand_dims(image_data, 0)
+            image_data = sess.run(image_data)
+            try:
+                prediction = sess.run(tensor, {'input:0': image_data})
+                prediction = np.squeeze(prediction)
+                print("[Temp INFO] ", prediction)
+                label = label_dict[base_name]
+                prediction_output[label + '_' + base_name] = prediction
+            except Exception as e:
+                print("[Error] %s" % str(e))
+            # # 测试
+            # if k == 5:
+            #     break
         if input_par['is_save']:
+            print("[INFO] Saving predictions.")
             np.save(input_par['prediction_output'], prediction_output)
+            print("[INFO] Saved in %s" % input_par['prediction_output'])
 
         return prediction_output
 

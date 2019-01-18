@@ -231,8 +231,8 @@ def main(pic_path,
                     csv_dict)
 
     # # 保存验证集
-    # _write_result([ret_1[1]])
-    # _write_result([ret_2[1]])
+    _write_result([ret_1[1]])
+    _write_result([ret_2[1]])
 
     # 训练集待处理可以不保存
     if is_write:

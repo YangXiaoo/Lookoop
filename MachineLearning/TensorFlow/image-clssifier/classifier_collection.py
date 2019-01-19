@@ -434,7 +434,7 @@ def prediction_train_data(graph_dir,
                             prediction_para, 
                             network_setting):
     """
-    对test_dir下的所有数据进行预测并将结果保存在prediction_para['prediction_output']/network_setting['model_name']下
+    对test_dir下的所有数据进行预测并将结果保存在 prediction_para['prediction_output']/network_setting['model_name']下
     Args:
         graph_dir: 所有graph的路径
         test_dir: 待预测数据路径

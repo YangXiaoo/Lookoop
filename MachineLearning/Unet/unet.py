@@ -22,16 +22,19 @@ class myUnet(object):
 				test_data_path,
 				predict_data_output,
 				img_save_path,
+				model_save_path,
 				height, 
 				width, 
+				suffix,
 				train_batch_size=2,
-				nb_epoch=10,
+				epochs=10,
 				validation_split=0.2,
 				optimizer=Adam(lr = 1e-4), 
 				loss='binary_crossentropy', 
 				metrics=['accuracy']):
 		self.height = height
 		self.width = width
+		self.suffix = suffix
 		self.optimizer = optimizer
 		self.loss = loss
 		self.metrics = metrics
@@ -41,8 +44,9 @@ class myUnet(object):
 		self.predict_data_output = predict_data_output
 		self.img_save_path = img_save_path
 		self.train_batch_size = train_batch_size
-		self.nb_epoch = nb_epoch # 遍历轮询次数
+		self.epochs = epochs # 遍历轮询次数
 		self.validation_split = validation_split
+		self.model_save_path = os.path.join(model_save_path, 'my_unet.hdf5')
 
 
 	def load_data(self):
@@ -114,56 +118,59 @@ class myUnet(object):
 
 
 	def train(self):
-		print("loading data")
+		print("[INFO] loading data")
 		imgs_train, imgs_mask_train, imgs_test = self.load_data()
-		print("loading data done")
+		print("[INFO] loading data done")
 		model = self.get_unet()
-		print("got unet")
-		model_checkpoint = ModelCheckpoint('my_unet.hdf5', monitor='loss', verbose=1, save_best_only=True)
+		model_checkpoint = ModelCheckpoint(self.model_save_path, monitor='loss', verbose=1, save_best_only=True)
 		print('Fitting model...')
-		model.fit(imgs_train, imgs_mask_train, batch_size=self.train_batch_size, nb_epoch=self.nb_epoch, verbose=1, validation_split=self.validation_split, shuffle=True, callbacks=[model_checkpoint])
+		model.fit(imgs_train, imgs_mask_train, batch_size=self.train_batch_size, epochs=self.epochs, verbose=1, validation_split=self.validation_split, shuffle=True, callbacks=[model_checkpoint])
 
-		print('predict test data')
+		print('[INFO] Predicting test data.')
 		imgs_mask_test = model.predict(imgs_test, batch_size=1, verbose=1)
 		np.save(self.predict_data_output, imgs_mask_test)
 
 	def save_img(self):
-		print("array to image")
+		print("[INFO] array to image")
 		imgs = np.load(self.predict_data_output)
 		for i in range(imgs.shape[0]):
 			img = imgs[i]
-			for i in range(img.shape[0]):
-				
-				print(max(img[i]), min(img[i]))
+			for j in range(img.shape[0]):
+				print(max(img[j]), min(img[j]))
 			img = img * 255  # [img > 0.1] = 255
 			# img[img < 0.1] = 0
 			img = array_to_img(img)
-			img.save("%s/%d.jpg" % (self.img_save_path, i))
+			img.save("%s/%d%s" % (self.img_save_path, i, self.suffix))
 			
 			break
 
 
 if __name__ == '__main__':
-	train_data_path = r'C:\Study\github\others\Unet-master\Unet-master\imgs_train.npy'
-	train_labels_path = r'C:\Study\github\others\Unet-master\Unet-master\imgs_mask_train.npy'
-	test_data_path = r'C:\Study\github\others\Unet-master\Unet-master\imgs_test.npy'
+	train_data_path = r'C:\Study\test\unet\imgs_train.npy'
+	train_labels_path = r'C:\Study\test\unet\imgs_mask_train.npy'
+	test_data_path = r'C:\Study\test\unet\imgs_test.npy'
 
-	predict_data_output = r'C:\Users\Yauno\Documents\Tencent Files\1270009836\FileRecv\prediction_test.npy'
-	img_save_path = r'C:\Study\github\others\Unet-master\Unet-master\image_prediction_test'
+	predict_data_output = r'C:\Study\test\unet\prediction_test.npy'
 
+	img_save_path = r'C:\Study\test\unet\image_prediction_test'
+	model_save_path = r'C:\Study\test\unet'
 
-	mkdir(img_save_path)
+	suffix = '.png'
+
+	mkdir([img_save_path, model_save_path])
 
 	myunet = myUnet(train_data_path,
 					train_labels_path,
 					test_data_path,
 					predict_data_output,
 					img_save_path,
+					model_save_path,
 					height=512, 
 					width=512,
+					suffix=suffix,
 					train_batch_size=1, # 4
-					nb_epoch=1, # 100
-					validation_split=0.8, # 0
+					epochs=10, # 100
+					validation_split=0.1, # 0
 					optimizer=Adam(lr=1e-4), 
 					loss='binary_crossentropy', 
 					metrics=['accuracy'])

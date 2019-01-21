@@ -18,11 +18,13 @@ def preprocessing(img):
     Returns:
         img : type(mat or array),image
     """
+    # 方法一
     # imged = 1
     # img[img > imged] = 1
     # img[img < imged] = 0
     # return img
 
+    # 方法二
     img = img[:,:,0].copy()
     # print(img.shape)
     m, n = img.shape
@@ -37,17 +39,14 @@ def preprocessing(img):
             queue.append([row - 1, col])
             visited[row - 1][col] = True
 
-        # 往右搜索
         if row + 1 < m and not visited[row + 1][col] and img[row + 1][col] != 0:
             queue.append([row + 1, col])
             visited[row + 1][col] = True
 
-        # 往上搜索
         if col - 1 >= 0 and not visited[row][col - 1] and img[row][col - 1] != 0:
             queue.append([row, col -1])
             visited[row][col - 1] = True
 
-        # 往下搜搜
         if col + 1 < n and not visited[row][col + 1] and img[row][col + 1] != 0:
             queue.append([row, col + 1])
             visited[row][col + 1] = True  
@@ -61,15 +60,15 @@ def preprocessing(img):
 
     image = np.expand_dims(img, axis=2)
     image = np.concatenate((image, image, image), axis=-1)
+
     return image
-
-
 
 
 
 def mian(original_pic_dir,
         prediction_pic_dir,
         output_dir,
+        mask_ouput_dir,
         img_size=224):
     """
     使用预测的结果对原图像进行处理
@@ -78,10 +77,12 @@ def mian(original_pic_dir,
         original_pic_dir : 经过归一化后原图像路径
         prediction_pic_dir ： 由unet预测保存的图像路径
         output_dir ： 保存图像路径
+        mask_output_dir : 预测图像处理后保存目录
         img_size : 输出图像尺寸
 
     Retures: None
     """
+    
     # original_pic = get_files(original_pic_path)
     # original_pic = get_files(original_pic_path)
 
@@ -96,6 +97,11 @@ def mian(original_pic_dir,
         prediction_img = cv2.imread(prediction_pic_path)
 
         prediction_img = preprocessing(prediction_img) # 暂时未完成
+
+        # mask_img = prediction_img.copy()
+        # mask_img[mask_img == 1] = 256
+        # mask_img_path = os.path.join(mask_output_dir, f)
+        # cv2.imwrite(mask_img_path, mask_img)
 
         new_img = np.multiply(original_img, prediction_img)
         new_img = cv2.resize(new_img, (img_size, img_size), interpolation=cv2.INTER_LINEAR)
@@ -115,11 +121,13 @@ if __name__ == '__main__':
     original_pic_dir = r'D:\deep_learning\unet\100-test_norm'
     prediction_pic_dir = r'D:\deep_learning\unet\image_prediction_test'
     output_dir = r'D:\deep_learning\unet\image_result'
+    mask_output_dir = r'D:\deep_learning\unet\image_mask'
     img_size = 224
 
-    mkdir(output_dir)
+    mkdir([output_dir, mask_output_dir])
 
     mian(original_pic_dir,
         prediction_pic_dir,
         output_dir,
+        mask_output_dir,
         img_size)

@@ -152,23 +152,25 @@ null_value = house.isnull().sum()
 sort_null = null_value[null_value > 0].sort_values(ascending=False)
 print(sort_null)
 # """
-# PoolQC          1453 # pool quality, object
+# PoolQC          1453 # pool quality, object, score
 # MiscFeature     1406 # Miscellaneous feature not covered in other categories, object
 # Alley           1369 # Type of alley access to property, object
-# Fence           1179 # Fence quality, object
-# FireplaceQu      690 # Fireplace quality, object
+# Fence           1179 # Fence quality, object, score
+# FireplaceQu      690 # Fireplace quality, object, score
 # LotFrontage      259 # Linear feet of street connected to property, int
 # GarageYrBlt       81 # Year garage was built, int
 # GarageType        81 # Garage location, object
 # GarageFinish      81 # Interior finish of the garage, object
-# GarageQual        81 # Garage quality, object
-# GarageCond        81 # Garage condition, object
-# BsmtFinType2      38 # Rating of basement finished area (if multiple types), object
+# GarageQual        81 # Garage quality, object, score
+# GarageCond        81 # Garage condition, object, score
+# BsmtFinType2      38 # Rating of basement finished area (if multiple types), object, score
 # BsmtExposure      38 # Refers to walkout or garden level walls, object
-# BsmtFinType1      37 # Rating of basement finished area, object
-# BsmtCond          37 # Evaluates the general condition of the basement, object
-# BsmtQual          37 # Evaluates the height of the basement, object
+# BsmtFinType1      37 # Rating of basement finished area, object, score
+# BsmtCond          37 # Evaluates the general condition of the basement, object, score
+# BsmtQual          37 # Evaluates the height of the basement, object, score
 # MasVnrArea         8 # Masonry veneer area in square feet(砖石贴面面积(平方英尺)), int
 # MasVnrType         8 # Masonry veneer type, object
 # Electrical         1 # Electrical system, object
 # """
+
+# 补全缺失值

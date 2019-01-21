@@ -1,18 +1,14 @@
 # coding:UTF-8
 import pandas as pd
-
-
 import warnings # current version of seaborn generates a bunch of warnings that we'll ignore
 warnings.filterwarnings("ignore")
 import seaborn as sns
 import matplotlib.pyplot as plt
 sns.set(style="white", color_codes=True)
 
-
-bone = pd.read_csv(r'C:\Users\Yauno\Downloads\rsna-bone-age\boneage-training-dataset.csv') # the bone dataset is now a Pandas DataFrame
-
+bone = pd.read_csv(r'C:\Users\Yauno\Downloads\rsna-bone-age\boneage-training-dataset.csv')
 bone.head()
-# print(bone.head()) # 打印前5排数据
+print(bone.head()) # 打印前5排数据
 """
      id  boneage   male
 0  1377      180  False

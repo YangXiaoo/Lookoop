@@ -621,15 +621,15 @@ if __name__ == '__main__':
     threshed = input_para['male_k_fold']
     train_size = 0.9
     male_ret, female_ret = get_data.main(input_para['pic_path'], 
-                input_para['csv_path'], 
-                input_para['train_male_output'],
-                input_para['train_female_output'], 
-                input_para['validation_male_output'],
-                input_para['validation_female_output'], 
-                input_para['lables_output'],
-                train_size=train_size,
-                threshed=threshed,
-                is_write=False)
+                                        input_para['csv_path'], 
+                                        input_para['train_male_output'],
+                                        input_para['train_female_output'], 
+                                        input_para['validation_male_output'],
+                                        input_para['validation_female_output'], 
+                                        input_para['lables_output'],
+                                        train_size=train_size,
+                                        threshed=threshed,
+                                        is_write=False)
 
     # 数据扩充
     # 若没有扩充则用此路径
@@ -637,6 +637,7 @@ if __name__ == '__main__':
     # labels = pic_data_augumentation.getLablesDict(lable_path)
     # input_path = input_para['train_male_output']
 
+    # 由数据抽取返回的结果中获得需要扩展的图片路径和对应标签
     input_file_list = []
     output, files, labels = male_ret
     for f, out_dir in files:

@@ -18,6 +18,8 @@ def preprocessing(img):
     Returns:
         img : type(mat or array),image
     """
+
+
     # 方法一
     # imged = 1
     # img[img > imged] = 1
@@ -26,6 +28,8 @@ def preprocessing(img):
 
     # 方法二
     img = img[:,:,0].copy()
+    kernel = np.zeros((3,3), np.uint8)
+    img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, kernel)
     # print(img.shape)
     m, n = img.shape
     r, c = m // 2, n // 2 # 种子起始点

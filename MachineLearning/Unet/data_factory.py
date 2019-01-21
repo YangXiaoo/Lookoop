@@ -103,9 +103,9 @@ def create_train_data(train_path,
     # print(len(train_files), train_files[0])
     # assert 0 == 1
 
-    # test
-    len_train = 40
-    len_labels = 40
+    # # test
+    # len_train = 40
+    # len_labels = 40
     img_data = np.ndarray((len_train, height, width, 1), dtype=np.uint8)
     img_labels = np.ndarray((len_labels, height, width, 1), dtype=np.uint8)
 
@@ -137,9 +137,9 @@ def create_train_data(train_path,
         if not i % 10:
             print("[INFO] processed: %s" % i)
 
-        # test
-        if i == (len_train - 1):
-            break
+        # # test
+        # if i == (len_train - 1):
+        #     break
 
     np.save(output_train_data, img_data)
     np.save(output_labels_data, img_labels)
@@ -181,8 +181,8 @@ def create_test_data(data_path,
     """
     print("[INFO] Creating test datasets.")
     files = get_files(data_path)
-    # len_files = len(files)
-    len_files = 20
+    len_files = len(files)
+    # len_files = 20
     img_data = np.ndarray((len_files, height, width, 1), dtype=np.uint8)
 
     for i in range(len(files)):
@@ -199,9 +199,9 @@ def create_test_data(data_path,
         if not i % 10:
             print("[INFO] processed: %s" % i)
 
-        # test
-        if i == (len_files - 1):
-            break
+        # # test
+        # if i == (len_files - 1):
+        #     break
 
     np.save(output_path, img_data)
     print("[INFO] Test data created successfully.")

@@ -223,15 +223,15 @@ def load_test_data(data_path):
 
 
 if __name__ == '__main__':
-    train_path = r'C:\Study\test\unet\400-train'
-    labels_path = r'C:\Study\test\unet\400-labels'
-    output_train_data = r'C:\Study\test\unet\imgs_train.npy'
-    output_labels_data = r'C:\Study\test\unet\imgs_mask_train.npy'
+    train_path = r'D:\deep_learning\unet\400-train'
+    labels_path = r'D:\deep_learning\unet\400-labels'
+    output_train_data = r'D:\deep_learning\unet\imgs_train.npy'
+    output_labels_data = r'D:\deep_learning\unet\imgs_mask_train.npy'
 
-    test_data_path = r'C:\Study\test\unet\100-test'
-    test_output_path = r'C:\Study\test\unet\imgs_test.npy'
+    test_data_path = r'D:\deep_learning\unet\100-test'
+    test_output_path = r'D:\deep_learning\unet\imgs_test.npy'
 
-    normalization_pic_path = r'C:\Study\test\unet\100-test_norm'
+    normalization_pic_path = r'D:\deep_learning\unet\100-test_norm'
 
     height = 512
     width = 512

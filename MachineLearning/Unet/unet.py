@@ -135,25 +135,25 @@ class myUnet(object):
 		imgs = np.load(self.predict_data_output)
 		for i in range(imgs.shape[0]):
 			img = imgs[i]
-			for j in range(img.shape[0]):
-				print(max(img[j]), min(img[j]))
+			# for j in range(img.shape[0]):
+			# 	print(max(img[j]), min(img[j]))
 			img = img * 255  # [img > 0.1] = 255
 			# img[img < 0.1] = 0
 			img = array_to_img(img)
 			img.save("%s/%d%s" % (self.img_save_path, i, self.suffix))
 			
-			break
+			# break
 
 
 if __name__ == '__main__':
-	train_data_path = r'C:\Study\test\unet\imgs_train.npy'
-	train_labels_path = r'C:\Study\test\unet\imgs_mask_train.npy'
-	test_data_path = r'C:\Study\test\unet\imgs_test.npy'
+	train_data_path = r'D:\deep_learning\unet\imgs_train.npy'
+	train_labels_path = r'D:\deep_learning\unet\imgs_mask_train.npy'
+	test_data_path = r'D:\deep_learning\unet\imgs_test.npy'
 
-	predict_data_output = r'C:\Study\test\unet\prediction_test.npy'
+	predict_data_output = r'D:\deep_learning\unet\prediction_test.npy'
 
-	img_save_path = r'C:\Study\test\unet\image_prediction_test'
-	model_save_path = r'C:\Study\test\unet'
+	img_save_path = r'D:\deep_learning\unet\image_prediction_test'
+	model_save_path = r'D:\deep_learning\unet'
 
 	suffix = '.png'
 

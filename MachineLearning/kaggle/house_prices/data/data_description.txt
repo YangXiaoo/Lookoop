@@ -378,7 +378,7 @@ Bedroom: Bedrooms above grade (does NOT include basement bedrooms)
 
 Kitchen: Kitchens above grade
 
-KitchenQual: Kitchen quality
+KitchenQual: Kitchen quality # 若为None则取中位数
 
        Ex	Excellent
        Gd	Good

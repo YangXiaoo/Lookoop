@@ -291,7 +291,7 @@ def data_convert_to_tfrecord(train_dir,
                             tfrecord_output,
                             input_para):
     """
-    数据转换为哦TFRecord格式
+    数据转换为TFRecord格式
     Args:
         train_dir: 需要转换的数据集路径
         tfrecord_output: 输出路径

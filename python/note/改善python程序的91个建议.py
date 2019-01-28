@@ -33,3 +33,45 @@ print(isinstance('string', str))
 
 
 # 21. ++i 与 i += 1
+
+# 23. else
+# (1)
+def print_prime(n):
+	for i in range(n):
+		for j in range(2, i):
+			if i % j == 0:
+				break # 这里终止后不执行后面打印操作
+		else:
+			print("%s is prime." % i) # 内嵌for 循环正常执行完后执行打印操作
+
+print_prime(10)
+
+
+# (2)
+try:
+	pass
+except:
+	pass
+else:
+	pass
+finally:
+	pass
+
+
+# 25. finally
+def finally_test(a):
+	try:
+		print("\ntesting...")
+		if a <= 0:
+			raise ValueError("data can not be negative.")
+		else:
+			return a
+	except ValueError as e:
+		print("%s" % e)
+	finally:
+		print("end")
+		return -1
+
+for i in range(-1, 2):
+	ret = finally_test(i) # 最后返回永远都是-1, 因为返回a之前要执行finall, 而finally直接就返回了-1
+	print("return value: %s" % ret)

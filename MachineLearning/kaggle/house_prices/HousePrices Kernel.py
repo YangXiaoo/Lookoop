@@ -882,7 +882,7 @@ stack_model.fit(a,b)
 # In[60]:
 
 
-pred = np.exp(stack_model.predict(test_X_scaled))
+pred = np.exp(stack_model.predict( ))
 
 
 # In[61]:

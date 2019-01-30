@@ -19,7 +19,7 @@ f_handler.setLevel(logging.ERROR)
 f_handler.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line: %(lineno)d] - %(levelname)s - %(message)s"))
 
 
-console = logging.StreamHandler()
+console = logging.StreamHandler()ffffffe 
 console.setLevel(logging.DEBUG)
 console.setFormatter(logging.Formatter("%(asctime)s - %(filename)s[line: %(lineno)d] - %(levelname)s - %(message)s"))
 

@@ -6,11 +6,12 @@ import numpy as np
 import os
 import cv2
 import datetime
+import pickle
 from softmax import train
 import matplotlib
 import matplotlib.pyplot as plt
 matplotlib.use('Agg')
-from api import getFiles, saveImage, saveError, printToConsole, moveNoise, loadData, getHistogram, regionGrowing, getThreshValuebySoftmax, handleHistogram, loadWeights, batchProcess, printEst, saveEst
+from api import getFiles, saveImage, saveError, printToConsole, moveNoise, loadData, getHistogram, regionGrowing, getThreshValuebySoftmax, handleHistogram, loadWeights, batchProcess, printEst, saveEst, moveMargin, normalization
 
 def handle(dirs, out_dir, clip, w0):
     start_time = datetime.datetime.now()
@@ -68,8 +69,8 @@ def handle(dirs, out_dir, clip, w0):
 
 
 if __name__ == '__main__':
-    file_path = "C:\\Study\\test\\1ssssssss"
-    out_dir = "C:\\Study\\test\\softmax_no_norm_no_limited"
+    file_path = r"C:\Study\test\bone\2"
+    out_dir = "C:\\Study\\test\\softmax_norm_test"
     # weights_file = "weights.npy"
     # w0 = loadWeights(weights_file)
     # w0 = np.load(weights_file)
@@ -81,15 +82,19 @@ if __name__ == '__main__':
     # print(np.shape(feature), np.shape(label))
     # print(feature)
     k = 256
-    w0 = train(feature, label, k, 200000, 0.1)
+    w0 = train(feature, label, k, 10000, 0.1)
+
+    fp = open("pickle_weight_test.dat", "wb")
+    pickle.dump(w0, fp)
+    fp.close()
 
     handle(file_path, out_dir, (45,-45,45,-45), w0)
 
-    # 分割评估
-    file_path = "C:\\Study\\test\\100-gt" # 标准分割图像目录路径
-    out_dir = "C:\\Study\\test\\est_results" #结果保存目录
-    print("softmax")
-    file_path_2 = "C:\\Study\\test\\softmax_no_norm_no_limited" # 方法一得到分割图像路径
-    res = batchProcess(file_path, file_path_2)
-    printEst(res, "softmax")
-    saveEst(res, "softmax", out_dir)
+    # # 分割评估
+    # file_path = "C:\\Study\\test\\100-gt" # 标准分割图像目录路径
+    # out_dir = "C:\\Study\\test\\est_results" #结果保存目录
+    # print("softmax")
+    # file_path_2 = "C:\\Study\\test\\softmax_no_norm_no_limited" # 方法一得到分割图像路径
+    # res = batchProcess(file_path, file_path_2)
+    # printEst(res, "softmax")
+    # saveEst(res, "softmax", out_dir)

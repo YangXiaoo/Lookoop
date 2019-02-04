@@ -66,6 +66,6 @@ def handle(dirs, out_dir, clip):
 
 
 if __name__ == '__main__':
-    file_path = "C:\\Study\\test\\image\\test"
+    file_path = r"C:\Study\test\bone\2"
     out_dir = "C:\\Study\\test\\histogram_test"
     handle(file_path, out_dir, (45,-45,45,-45))

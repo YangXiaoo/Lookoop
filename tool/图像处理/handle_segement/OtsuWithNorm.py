@@ -1,12 +1,12 @@
 # coding:UTF-8
-# 2018-11-13
-# OTSU，未归一化
+# 2018-11-17
+# 使用信息熵作为阈值进行分割，归一化处理
 
 import numpy as np
 import os
 import cv2
 import datetime
-from api import getFiles, saveImage, saveError, printToConsole, getMean, moveNoise, maxContour, , moveMargin, normalization
+from api import getFiles, saveImage, saveError, printToConsole, maxEntrop, moveNoise, regionGrowing, moveMargin, normalization 
 
 def handle(dirs, out_dir, clip):
     start_time = datetime.datetime.now()
@@ -32,13 +32,21 @@ def handle(dirs, out_dir, clip):
             img = img[x:w , y:h]
             # 去除噪点
             img = moveNoise(img, 7)
-            # 二值化
+
             threshold, thrshed_img = cv2.threshold(img, 20, 255,cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-            # 使用轮廓法(速度快)分割
-            img_segement, thresh_img = maxContour(img, thrshed_img)
-            # 保存
-            saveImage(img_dirs, "_new", img_segement)
+            saveImage(img_dirs, "_threshed_raw", thrshed_img)
+
+            # 使用区域生长法分割
+            img_segement, thresh_img = regionGrowing(img, thrshed_img)
             saveImage(img_dirs, "_threshed", thresh_img)
+
+            # 去除多余边缘
+            img_remove_margin = moveMargin(img_segement, thresh_img)
+            saveImage(img_dirs, "_remove_margin", img_remove_margin)
+
+            # 扩充为正方形并缩小为256x256
+            img_new = normalization(img_remove_margin)
+            saveImage(img_dirs, "_new", img_new)
 
             # 打印信息到输出台
             printToConsole(start_time, f, count, total, 5)
@@ -55,6 +63,6 @@ def handle(dirs, out_dir, clip):
 
 
 if __name__ == '__main__':
-    file_path = "C:\\Study\\test\\otsuss"
-    out_dir = "C:\\Study\\test\\otsu_threshed"
+    file_path = r"C:\Study\test\bone\2"
+    out_dir = "C:\\Study\\test\\Otsu_norm"
     handle(file_path, out_dir, (45,-45,45,-45))

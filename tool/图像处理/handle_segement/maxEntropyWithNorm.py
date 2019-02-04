@@ -6,7 +6,7 @@ import numpy as np
 import os
 import cv2
 import datetime
-from api import getFiles, saveImage, saveError, printToConsole, maxEntrop, moveNoise, regionGrowing
+from api import getFiles, saveImage, saveError, printToConsole, maxEntrop, moveNoise, regionGrowing, moveMargin, normalization 
 
 def handle(dirs, out_dir, clip):
     start_time = datetime.datetime.now()
@@ -37,7 +37,7 @@ def handle(dirs, out_dir, clip):
             
             # 二值化
             threshold, thrshed_img = cv2.threshold(img, threshed*0.4, 255, cv2.THRESH_BINARY)
-           saveImage(img_dirs, "_threshed_raw", thrshed_img)
+            saveImage(img_dirs, "_threshed_raw", thrshed_img)
 
             # 使用区域生长法分割
             img_segement, thresh_img = regionGrowing(img, thrshed_img)
@@ -66,6 +66,6 @@ def handle(dirs, out_dir, clip):
 
 
 if __name__ == '__main__':
-    file_path = "C:\\Study\\test\\1ssssssss"
+    file_path = r"C:\Study\test\bone\2"
     out_dir = "C:\\Study\\test\\maxEntrop_without_norm"
     handle(file_path, out_dir, (45,-45,45,-45))

@@ -17,6 +17,7 @@ class Book(object):
 			ret.append('{} : {}'.format(k, v))
 		return '\n'.join(ret)
 
+
 class Prototype(object):
 	"""原型"""
 	def __init__(self):
@@ -41,6 +42,7 @@ class Prototype(object):
 		new_obj.__dict__.update(**attr)
 
 		return new_obj
+
 
 def main():
 	book_1 = Book('name', 'author', 'price', publisher='yauno', publish_date='1995-03-07')

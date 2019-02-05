@@ -36,15 +36,15 @@ def handle(dirs, out_dir, clip):
             threshed = getMean(img)
             # 二值化
             threshold, thrshed_img = cv2.threshold(img, threshed*0.86, 255, cv2.THRESH_BINARY)
-            # saveImage(img_dirs, "_threshed_raw", thrshed_img)
+            saveImage(img_dirs, "_threshed_raw", thrshed_img)
 
             # 使用轮廓法(速度快)分割
             img_segement, thresh_img = maxContour(img, thrshed_img)
-            # saveImage(img_dirs, "_threshed", thresh_img)
+            saveImage(img_dirs, "_threshed", thresh_img)
 
             # 去除多余边缘
             img_remove_margin = moveMargin(img_segement, thresh_img)
-            # saveImage(img_dirs, "_remove_margin", img_remove_margin)
+            saveImage(img_dirs, "_remove_margin", img_remove_margin)
 
             # 扩充为正方形并缩小为256x256
             img_new = normalization(img_remove_margin)

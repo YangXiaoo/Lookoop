@@ -493,7 +493,7 @@ def maxContour(img, thresh):
     img_w, img_h = img.shape
     mask = np.zeros((img.shape[0], img.shape[1]), np.uint8)
     # 找轮廓
-    image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE )
+    image, contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
 
     # 寻找最大轮廓
     max_contour = None

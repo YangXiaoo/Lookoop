@@ -3,6 +3,7 @@
 
 import os
 import numpy as np 
+import pickle
 
 from export_inference_graph import main as export_graph_main
 from freeze_graph import main as freeze_graph_main
@@ -122,7 +123,6 @@ input_para = {
     # 数据设置
     # 'dataset_name' : 'bone', # 加载数据集的模块名，上面数据集已经设置
     'dataset_split_name' : 'train', # 划分数据集的名称
-    'dataset_dir' : '',
     'labels_offset' : 0,  # 标签偏移
 
     'num_classes' : 131, # 分类数量
@@ -132,8 +132,6 @@ input_para = {
     # 'model_name' : '', # 使用时自动设置
     'preprocessing_name' : None, # 预处理函数名
     'batch_size' : 2, # batch size
-    'train_image_size' : 224, # default
-
 
 
     'max_number_of_steps' : 50, # 最大迭代次数
@@ -148,14 +146,14 @@ input_para = {
 net_factory = [
     # vgg_16
     {
-        'model_name' : 'vgg_16',
-        'train_image_size' : 224,
-        'output_tensor_name' : 'vgg_16/fc8/squeezed',
+        'model_name' : 'vgg_16', # 模型名称
+        'train_image_size' : 224, # 训练尺寸
+        'output_tensor_name' : 'vgg_16/fc8/squeezed', # 最后一层节点名称
 
         # Fine-Tuning
         'checkpoint_path' : None, # .ckpt微调文件路径
         'checkpoint_exclude_scopes' : 'vgg_16/fc6,vgg_16/fc7,vgg_16/fc8', # 不加载的节点
-        'trainable_scopes' : None,
+        'trainable_scopes' : None, # 微调模型重新训练范围
     },
 
     # inception_v3
@@ -210,12 +208,9 @@ net_factory = [
 
 model_save_para = {
         'is_training' : False, #default
-        'default_image_size' : 224, 
-        'dataset_name' : '', # 对应input_para的'dataset_name'，不用手动设置
         'labels_offset' : 0,
         'graph_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/graph', # C:\Study\test\kaggle-bonage\graph
         'data_split' : 'test',
-        'dataset_dir' : '', # 处理后TF格式的数据集
         'num_classes' : 131, # 分类数量
         'split_to_size' : {'train': 5894, # 训练图片个数，自动更改该值
                             'test': 1407},
@@ -682,8 +677,8 @@ if __name__ == '__main__':
     train_data = input_para['male_split_output']
     male_tfrecord_output = input_para['male_tfrecord_output']
     data_convert_to_tfrecord(train_data, 
-                            male_tfrecord_output,
-                            input_para)
+                             male_tfrecord_output,
+                             input_para)
 
 
     # 训练
@@ -695,9 +690,9 @@ if __name__ == '__main__':
         print("[INFO] use model %s" % network_setting['model_name'])
         # 训练
         run_model(male_tfrecord_output, 
-                    original_dir, 
-                    input_para, 
-                    network_setting)
+                  original_dir, 
+                  input_para, 
+                  network_setting)
 
         # 转换模型
         convert_model(train_dir,
@@ -720,6 +715,11 @@ if __name__ == '__main__':
 
 
     prediction_model = train_model(train_data, labels) # 训练融合模型
+
+
+    fp = open("pickle_prediction_model.dat", "wb")
+    pickle.dump(prediction_model, fp)
+    fp.close()
     
     test_data = input_para['validation_male_output']
     label_path = os.path.join(test_data, 'labels.txt')

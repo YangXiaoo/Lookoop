@@ -113,6 +113,7 @@ def _get_data_lables(train_output,
 
     return [[train_output, train_files, train_labels], [validation_output, validation_files, validation_labels]]
 
+
 def _write_result(result):
     """
     将数据标签写入文件
@@ -133,6 +134,91 @@ def _write_result(result):
             dummy_smg = os.popen("copy %s %s" % (f, out_dir))
 
 
+def without_split(pic_path,
+                  csv_path,
+                  output_path,
+                  labels_output,
+                  is_write=True):
+    """男女数据不分开
+    Args:
+        pic_path: 图片路径
+        csv_path: 标签路径
+        output_path: 输出路径
+        is_write: 是否直接写入图片
+    Returns:
+
+    """
+    print('[INFO] loading data...')
+    csv_file = pd.read_csv(csv_path, header=0, encoding='utf8')  
+    csv_data = pd.DataFrame(csv_file)  
+    rows = len(csv_data) 
+
+    mkdir(output_path)
+
+    pic_files = get_files(pic_path)
+
+    # 获得csv数据
+    csv_dict = {} # {pic_id:[boneage, male]}
+    male_age_pic = {} # {bone_age:[pic_id, ]}
+    female_age_pic = {}
+    for i in range(rows):
+        pic_id = str(csv_data['id'][i])
+        bone_age = str(csv_data['boneage'][i])
+        is_male = str(csv_data['male'][i])
+        csv_dict[pic_id] = [bone_age, is_male]
+        if is_male == 'True':
+            if bone_age not in male_age_pic:
+                male_age_pic[bone_age] = []
+            male_age_pic[bone_age].append(pic_id)
+        else:
+            if bone_age not in female_age_pic:
+                female_age_pic[bone_age] = []
+            female_age_pic[bone_age].append(pic_id)
+
+    # 对年龄进行分类
+    male_bone_age = sorted(male_age_pic.keys(), key=lambda x:int(x))
+    female_bone_age = sorted(female_age_pic.keys(), key=lambda x:int(x))
+    sort_male_bone_age, sort_female_bone_age = {}, {} # {true_age:rename_class}
+    for k,v in enumerate(male_bone_age):
+        sort_male_bone_age[v] = str(k) 
+    age_based = len(male_bone_age)
+    for k,v in enumerate(female_bone_age):
+        sort_female_bone_age[v] = str(int(k) + int(age_based))
+
+
+    label_output = os.path.join(labels_output, 'labels.txt')
+    with open(label_output, 'a') as f:
+        for data in (male_bone_age, female_bone_age):
+            for k,v in data.items():
+                f.write('{} {}\n'.format(v, k))
+
+    file_dict = _get_pic_map(pic_files) # {pic_id : [file_path,]}
+    lines = []
+    for pid,f in file_dict.items():
+        basename = os.path.basename(f)
+        cur_data = csv_dict[pid]
+        if cur_data[1] == 'True':
+            line = '{} {}\n'.format(basename, sort_male_bone_age[cur_data[0]])
+        else:
+            line = '{} {}\n'.format(basename, sort_female_bone_age[cur_data[0]])
+        lines.append(line)
+
+
+    if is_write:
+        for f in pic_files:
+            out_dir = os.path.join(output_path, os.path.basename(f))
+            dummy_smg = os.popen("copy %s %s" % (f, out_dir))
+        label_output = os.path.join(output_path, 'labels.txt')
+        with open(label_output, 'w') as label:
+            label.write(lines)
+
+    labels_dict = {}
+    for l in lines:
+        pic_name, bone_age = l[:-1].split(' ')
+        labels_dict[pic_name] = bone_age
+
+        
+    return pic_files, labels_dict
 
 
 def main(pic_path,
@@ -213,22 +299,22 @@ def main(pic_path,
     # male
     print("male...")
     ret_1 = _get_data_lables(train_male_output, 
-                    validation_male_output, 
-                    male_train, 
-                    male_validation,
-                    sort_male_bone_age,
-                    file_dict,
-                    csv_dict)
+                            validation_male_output, 
+                            male_train, 
+                            male_validation,
+                            sort_male_bone_age,
+                            file_dict,
+                            csv_dict)
 
     # female
     print("female...")
     ret_2 = _get_data_lables(train_female_output, 
-                    validation_female_output, 
-                    female_train, 
-                    female_validation,
-                    sort_female_bone_age,
-                    file_dict,
-                    csv_dict)
+                            validation_female_output, 
+                            female_train, 
+                            female_validation,
+                            sort_female_bone_age,
+                            file_dict,
+                            csv_dict)
 
     # # 保存验证集
     _write_result([ret_1[1]])

@@ -133,6 +133,10 @@ def _write_result(result):
         for f,out_dir in files:
             dummy_smg = os.popen("copy %s %s" % (f, out_dir))
 
+def test_data(pic_path,
+              csv_path,
+              output_path):
+    pass
 
 def without_split(pic_path,
                   csv_path,

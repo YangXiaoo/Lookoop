@@ -31,7 +31,6 @@ input_para = {
     'test_pic_path' : '',
     'test_csv_path' : '',
     'test_output' : '',
-    'test_lables_output' : 'test.txt', # 不要需要设置
 
     # 数据扩充参数
     # male
@@ -614,15 +613,15 @@ def model_collection_prediction(prediction_model,
 
 if __name__ == '__main__':
     # 抽取数据
-    input_file_list, labels_dict = get_data.main(input_para['train_pic_path'], 
-                                                input_para['train_csv_path'], 
-                                                input_para['train_output'],
-                                                input_para['lables_output'],
-                                                is_write=False)
+    input_file_list, labels_dict = get_data.without_split(input_para['train_pic_path'], 
+                                                            input_para['train_csv_path'], 
+                                                            input_para['train_output'],
+                                                            input_para['lables_output'],
+                                                            is_write=False)
 
-    get_data.test_data(input_para['test_pic_path'], 
-                      input_para['test_csv_path'], 
-                      input_para['test_output'])
+    # get_data.test_data(input_para['test_pic_path'], 
+    #                   input_para['test_csv_path'], 
+    #                   input_para['test_output'])
 
     output_path = input_para['augumentation_output']
     lable_output_path = input_para['augumentation_label_output']

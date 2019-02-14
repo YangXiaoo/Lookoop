@@ -78,3 +78,10 @@ public class StatePatternDemo {
 		System.out.println(context.getState().toString());
 	}
 }
+
+/*
+	Player is in start state
+	Start State
+	Player is in stop state
+	Stop State
+*/

@@ -1,3 +1,7 @@
+/**
+抽象类只能被继承
+继承接口必须重写方法
+**/
 public abstract class Game {
 	abstract void initialize();
 	abstract void startPlay();

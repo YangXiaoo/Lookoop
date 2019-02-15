@@ -29,11 +29,11 @@ class Producer(threading.Thread):
                 if products < 10:
                     products += 1;
                     print ("Producer(%s):deliver one, now products:%s" %(self.name, products))
-                    condition.notify()#不释放锁定，因此需要下面一句
+                    condition.notify() # 从等待池中挑选一个线程并通知由下一句释放锁定
                     condition.release()
                 else:
                     print ("Producer(%s):already 10, stop deliver, now products:%s" %(self.name, products))
-                    condition.wait();#自动释放锁定
+                    condition.wait(); # 商品数量已近满了所以讲当前线程放入等待池等待被通知
                 time.sleep(2)
 
 class Consumer(threading.Thread):

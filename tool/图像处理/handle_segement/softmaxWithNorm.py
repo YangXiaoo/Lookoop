@@ -10,6 +10,7 @@ import pickle
 from softmax import train
 import matplotlib
 import matplotlib.pyplot as plt
+import traceback
 matplotlib.use('Agg')
 from api import getFiles, saveImage, saveError, printToConsole, moveNoise, loadData, getHistogram, regionGrowing, getThreshValuebySoftmax, handleHistogram, loadWeights, batchProcess, printEst, saveEst, moveMargin, normalization
 
@@ -61,6 +62,8 @@ def handle(dirs, out_dir, clip, w0):
             # 错误情况
             saveError(e, out_dir, f)
             fail += 1
+            traceback.print_exc()
+
 
     end_time = datetime.datetime.now()
     expend = end_time - start_time
@@ -82,7 +85,7 @@ if __name__ == '__main__':
     # print(np.shape(feature), np.shape(label))
     # print(feature)
     k = 256
-    w0 = train(feature, label, k, 10000, 0.1)
+    w0 = train(feature, label, k, 100000, 0.1)
 
     fp = open("pickle_weight_test.dat", "wb")
     pickle.dump(w0, fp)

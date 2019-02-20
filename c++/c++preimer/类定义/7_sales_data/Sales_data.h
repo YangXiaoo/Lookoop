@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <string>
-
+ 
 
 class Sales_data {
 private:

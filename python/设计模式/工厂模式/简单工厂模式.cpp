@@ -60,6 +60,7 @@ public:
 		}
 	}
 };
+
 int main()
 {
 	Factory productCreator;

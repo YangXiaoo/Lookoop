@@ -15,11 +15,11 @@ int main(int argc, char const *argv[])
 
 	// case 0, 获取指定文件夹下所有指定格式文件的全路径
 	vector<string> patt_0 = {".png"};
-	int model_0 = 0; // default
-	patt_0, model_0 are default parameter
-	Files files(file_path, patt_0, model_0);
+	// int model_0 = 0; // default
+	// patt_0, model_0 are default parameter
+	Files files(file_path);
 	vector<string> files_list_0;
-	files.get_files(files_list_0);
+	files.get_files(files_list_0, patt_0);
 	// print
 	print(files_list_0, "FULL_PATH: ");
 
@@ -28,6 +28,12 @@ int main(int argc, char const *argv[])
 	vector<string> files_list_1;
 	files.get_files(files_list_1, patt_1);
 	print(files_list_1, "FULL_PATH_1: ");
+
+	// case 0_2
+	vector<string> files_list_01;
+	files.get_files(files_list_01);
+	print(files_list_01, "FULL_PATH_2: ");
+
 
 	// case 1, 获取指定文件夹下所有指定格式文件名的全路径
 	vector<string> files_list_2;
@@ -38,13 +44,14 @@ int main(int argc, char const *argv[])
 	// case 2, 获取指定文件夹下的所有当前文件名, 深度为1
 	vector<string> files_list_3;
 	int model_2 = 2;
-	files.get_files(files_list_3, patt_1, model_2);
+	files.get_files(files_list_3, patt_0, model_2);
 	print(files_list_3, "CUR_FILE: ");
 
 	// case 3, 获取指定文件夹下的所有当前文件夹名称, 深度为1
 	vector<string> files_list_4;
 	int model_3 = 3;
-	files.get_files(files_list_4, patt_1, model_3);
+	vector<string> patt_2 = {};
+	files.get_files(files_list_4, patt_2, model_3);
 	print(files_list_4, "CUR_DIR: ");
 
 
@@ -54,8 +61,7 @@ int main(int argc, char const *argv[])
 	// files.get_files(files_list_5, patt_1, Files::FULL_PATH);
 	// print(files_list_5, "use enum: ");
 
-	string dummy;
-	cin >> dummy;
+	system("pause");
 	return 0;
 }
 

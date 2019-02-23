@@ -23,8 +23,8 @@ class Files {
 
 	void _model_choose(int model);
 	void get_files(std::vector<string> &files_list,
-				   				  std::vector<string> patt = std::vector<string>(),
-				   				  int model = s_default_read_model);
+				   std::vector<string> patt = std::vector<string>(),
+				   int model = s_default_read_model);
 
  private:
 	enum { FULL_PATH, 		// 完整文件路径

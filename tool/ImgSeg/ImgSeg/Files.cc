@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <io.h>
+#include <iterator>
 using namespace std;
 
 #include "Files.h"
@@ -41,10 +42,8 @@ const int Files::s_default_read_model = 0; // 默认读取文件模式
  * @return &files_list : 返回遍历后的容器
  */
 void Files::get_files(vector<string> &files_list,
-                                vector<string> patt, int model) {
-    if (!patt.empty()) {
-        filter_patt = patt;
-    }
+                      vector<string> patt, int model) {
+    filter_patt = patt;
 
     if (model != read_model) {
         _model_choose(model);
@@ -58,15 +57,18 @@ void Files::get_files(vector<string> &files_list,
 /* 文件格式是否匹配 */
 template <typename file_t>
 bool Files::_patt_in_name(file_t &file_info) {
+	bool flag = false;
     if (!filter_patt.empty()) {
         for (const auto it : filter_patt) {
             if (!it.empty()){
                 string cur_file_name(begin(file_info.name), end(file_info.name));
                 string::size_type pos = cur_file_name.find(it);
-                if (pos == string::npos)
-                    return false;
+                if (pos != string::npos)
+                    flag = true;
             }
         }
+		if (!flag)
+			return false;
     } 
     return true;
 }

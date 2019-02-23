@@ -18,6 +18,13 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Files.cc" />
+    <ClCompile Include="Files_Test.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Files.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{23FF25F7-EE77-4FB2-9258-9146CE0A1C96}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -27,26 +34,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -68,9 +75,17 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <ExecutablePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(ExecutablePath)</ExecutablePath>
+    <IncludePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(IncludePath)</IncludePath>
+    <ReferencePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(ReferencePath)</ReferencePath>
+    <LibraryPath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(LibraryPath)</LibraryPath>
+    <ExecutablePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -142,12 +157,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClInclude Include="Files.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Files.cc" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -20,24 +20,22 @@ def configure_learning_rate(num_samples_per_epoch, global_step, input_par):
         decay_steps /= input_par['replicas_to_aggregate']
 
     if input_par['learning_rate_decay_type'] == 'exponential':
-        return tf.train.exponential_decay(
-            input_par['learning_rate'],
-            global_step,
-            decay_steps,
-            input_par['learning_rate_decay_factor'],
-            staircase=True,
-            name='exponential_decay_learning_rate')
+        return tf.train.exponential_decay(input_par['learning_rate'],
+                                            global_step,
+                                            decay_steps,
+                                            input_par['learning_rate_decay_factor'],
+                                            staircase=True,
+                                            name='exponential_decay_learning_rate')
     elif input_par['learning_rate_decay_type'] == 'fixed':
         return tf.constant(input_par['learning_rate'], name='fixed_learning_rate')
     elif input_par['learning_rate_decay_type'] == 'polynomial':
-        return tf.train.polynomial_decay(
-            input_par['learning_rate'],
-            global_step,
-            decay_steps,
-            input_par['end_learning_rate'],
-            power=1.0,
-            cycle=False,
-            name='polynomial_decay_learning_rate')
+        return tf.train.polynomial_decay(input_par['learning_rate'],
+                                         global_step,
+                                         decay_steps,
+                                         input_par['end_learning_rate'],
+                                         power=1.0,
+                                         cycle=False,
+                                         name='polynomial_decay_learning_rate')
     else:
         raise ValueError(
             'learning_rate_decay_type [%s] was not recognized',

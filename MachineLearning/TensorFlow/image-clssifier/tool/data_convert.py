@@ -41,6 +41,8 @@ def get_class_labels(train_dir, labels_file):
 
     labels_file
     return 
+
+    
 if __name__ == '__main__':
     get_class_labels(input_para['train_dir']), input_para['labels_file']
     tfrecord.main(input_para)

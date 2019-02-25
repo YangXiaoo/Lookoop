@@ -21,6 +21,9 @@
     <ClCompile Include="Files.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="opencv_demo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Files.h">

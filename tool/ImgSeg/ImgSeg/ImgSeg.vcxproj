@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Files.cc" />
     <ClCompile Include="Files_Test.cpp" />
+    <ClCompile Include="opencv_demo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Files.h" />

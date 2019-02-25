@@ -134,7 +134,7 @@ input_para = {
     'batch_size' : 2, # batch size
 
 
-    'max_number_of_steps' : 50, # 最大迭代次数
+    'max_number_of_steps' : 5000, # 最大迭代次数
 
 
     # Fine-Tuning
@@ -685,7 +685,7 @@ if __name__ == '__main__':
     train_dir = input_para['train_dir']
     graph_dir = model_save_para['graph_dir']
     test_dir = input_para['male_split_output']
-    original_dir = output_dir
+    original_dir = input_para['male_split_output']
     for network_setting in net_factory:
         print("[INFO] use model %s" % network_setting['model_name'])
         # 训练

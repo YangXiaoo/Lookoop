@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "Files.h"
+#include "FileTool.h"
 
 using namespace std;
 inline void print(vector<string> &lists, string decl);

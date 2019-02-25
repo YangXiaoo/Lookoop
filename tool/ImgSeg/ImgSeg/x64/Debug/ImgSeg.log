@@ -1,8 +1,10 @@
-﻿  Files.cc
-C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\Files.cc : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\Files.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  Files_Test.cpp
+﻿  Files_Test.cpp
 C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\Files_Test.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\Files.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  正在生成代码...
-  ImgSeg.vcxproj -> C:\Study\github\Lookoops\tool\ImgSeg\x64\Debug\ImgSeg.exe
+C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\FileTool.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\FileTool.h(36): error C2065: “string”: 未声明的标识符
+C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\FileTool.h(36): error C2923: “std::vector”: 对于参数“_Ty”，“string”不是有效的 模板 类型变量
+C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\FileTool.h(36): error C3203: “allocator”: 未专用化的 类 模板 不能用作 模板 变量，该变量属于 模板 参数“_Alloc”，应为 real 类型
+C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\FileTool.h(40): error C2065: “string”: 未声明的标识符
+C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\FileTool.h(39): error C2923: “std::vector”: 对于参数“_Ty”，“string”不是有效的 模板 类型变量
+C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\FileTool.h(39): error C3203: “allocator”: 未专用化的 类 模板 不能用作 模板 变量，该变量属于 模板 参数“_Alloc”，应为 real 类型
+C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\FileTool.h(39): fatal error C1903: 无法从以前的错误中恢复；正在停止编译

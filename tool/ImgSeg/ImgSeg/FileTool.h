@@ -20,14 +20,22 @@ inline bool folder_exist(const std::string &folder_path);
 inline int mkdirs(const std::string &folder_path);
 
 
-/* 连接路径 */
-inline std::string path_join(std::string pre_path, std::string suf_path);
-
-
 /* 替换字符串中指定字符串 */
 inline void str_replace(std::string &str, 
 						std::string &old_smb, 
 						std::string &new_smb);
+
+
+/* 连接路径 */
+inline std::string path_join(std::string pre_path, std::string suf_path);
+
+
+/* 文件名 */
+inline std::string path_basename(const std::string path);
+
+
+/* 文件后缀 */
+inline std::vector<string> path_splitxt(const std::string path);
 
 
 /* 读取文件路径 */
@@ -36,19 +44,26 @@ class Files {
 	using Model = void (Files::*)(std::string, std::vector<string>&);	// 指向一种文件读取方法的指针
 
 	Files() = default;
+	Files(std::string dir) : dir_path(dir), filter_patt(patt), read_model(FULL_PATH) { }
+	Files(std::string dir, std::vector<string> patt = std::vector<string>{})
+		  : dir_path(dir), filter_patt(patt), read_model(FULL_PATH) { }
 	Files(std::string dir,
-		  std::vector<string> patt = std::vector<string>{},
-		  int model = s_default_read_model)
-		  : dir_path(dir), filter_patt(patt), read_model(FULL_PATH) { _model_choose(model); };
+	  	  std::vector<string> patt = std::vector<string>{},
+	  	  int model = s_default_read_model)
+	  	  : dir_path(dir), filter_patt(patt), read_model(FULL_PATH) { _model_choose(model); };
 	Files(const Files&) = delete; 				// 复制构造函数
 	Files &operator=(const string&) = delete; 	// 赋值构造函数
 
 	// ~Files() noexcept;
 
 	void _model_choose(int model);
+	void get_files(std::vector<string> &files_list);
+	void get_files(std::vector<string> &files_list,
+				   std::vector<string> patt = std::vector<string>());
+	void get_files(std::vector<string> &files_list, int model);
 	void get_files(std::vector<string> &files_list,
 				   std::vector<string> patt = std::vector<string>(),
-				   int model = s_default_read_model);
+				   int model);
 
  private:
 	enum { FULL_PATH, 		// 完整文件路径

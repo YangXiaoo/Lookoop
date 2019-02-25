@@ -13,7 +13,7 @@
 
 using namespace std;
 
-bool file_exist(const string file_path) {
+bool file_exist(const string &file_path) {
     // ifstream f(file_path.c_str());
     // return f.good();
 
@@ -26,7 +26,7 @@ bool file_exist(const string file_path) {
 }
 
 
-bool folder_exist(const string folder_path) {
+bool folder_exist(const string &folder_path) {
 	char *folder = folder_path.c_str();
 	if (_access(folder, 0) == -1) {
 		return false;
@@ -35,11 +35,11 @@ bool folder_exist(const string folder_path) {
 }
 
 
-int mkdirs(const string folder_path) {
+int mkdirs(const string &folder_path) {
 	int folder_create = 0;
 
 	for (auto it = folder_path.begin(); it != folder_path.end(); ++it) {
-		if (*it == "\\") {
+		if (*it == "\\" || *it == "/") {
 			string cur_path(folder_path.begin(), --it);
 			++it;
 			if (_access(cur_path.c_str(), 0) == -1)
@@ -63,10 +63,10 @@ void str_replace(string &str, string &old_smb, string &new_smb) {
 
 string path_join(string pre_path, string suf_path) {
 	string joined_path;
-	string backlash = {"\\"};
-	string slash = {"/"}; // 为了Linux上能用, 统一标识符
-	str_replace(pre_path, backlash, slash);
-	str_replace(suf_path, backlash, slash);
+	string backslash = {"\\"};
+	string slash = {"/"}; // 为了Linux上能用, 统一分隔符
+	str_replace(pre_path, backslash, slash);
+	str_replace(suf_path, backslash, slash);
 
 	string last_str = *pre_path.crbegin();
 	if (last_str != slash) 
@@ -79,6 +79,32 @@ string path_join(string pre_path, string suf_path) {
 	joined_path = pre_path + suf_path;
 
 	return joined_path;
+}
+
+
+/* 文件名 */
+string path_basename(const string path) {
+	string slash = {"/"}, backslash = {"\\"};
+	string::size_type pos;
+	pos = path.rfind(slash);
+	if (pos == string::npos)
+		pos = path.rfind(backslash);
+	string file_name(++pos, path.end());
+
+	return file_name;
+}
+
+
+/* 文件后缀 */
+vector<string> path_splitxt(const string path) {
+	string split_smb = {"."};
+	string::size_type = pos;
+	pos = path.rfind(split_smb);
+	vector<string> file;
+	file.push_back(string(path.begin(), --pos));
+	file.push_back(string(pos, path.end()));
+
+	return file;
 }
 
 
@@ -114,16 +140,36 @@ const int Files::s_default_read_model = 0; // 默认读取文件模式
 /** 
  * 直接对外接口
  * @param files_list : 空vector<string>
- * @return &files_list : 返回遍历后的容器
+ * @output &files_list : 返回遍历后的容器
  */
-void Files::get_files(vector<string> &files_list,
-                      vector<string> patt, int model) {
+void Files::get_files(vector<string> &files_list) {
+	// Model[read_model]指向一个读取模式成员函数
+    (this->*s_Model[read_model])(dir_path, files_list);
+}
+
+
+/* 重载 */
+void Files::get_files(vector<string> &files_list, vector<string> patt) {
     filter_patt = patt;
+    // Model[read_model]指向一个读取模式成员函数
+    (this->*s_Model[read_model])(dir_path, files_list);
+}
 
-    if (model != read_model) {
-        _model_choose(model);
-    }
 
+/* 重载 */
+void Files::get_files(vector<string> &files_list, int model) {
+    _model_choose(model);
+    // Model[read_model]指向一个读取模式成员函数
+    (this->*s_Model[read_model])(dir_path, files_list);
+}
+
+
+/* 重载 */
+void Files::get_files(vector<string> &files_list, 
+					  vector<string> patt,
+					  int model) {
+    filter_patt = patt;
+    _model_choose(model);
     // Model[read_model]指向一个读取模式成员函数
     (this->*s_Model[read_model])(dir_path, files_list);
 }

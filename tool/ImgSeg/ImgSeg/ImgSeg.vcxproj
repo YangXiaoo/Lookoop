@@ -19,17 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Files.cc" />
-    <ClCompile Include="Files_Test.cpp" />
-    <ClCompile Include="opencv_demo.cpp" />
+    <ClCompile Include="FileTool.cc" />
+    <ClCompile Include="gen_diff_threshed_img.cc" />
+    <ClCompile Include="ImgCore.cc" />
+    <ClCompile Include="utils.cc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Files.h" />
+    <ClInclude Include="FileTool.h" />
+    <ClInclude Include="ImgCore.h" />
+    <ClInclude Include="utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{23FF25F7-EE77-4FB2-9258-9146CE0A1C96}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>ImgSeg</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -41,7 +45,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -85,7 +89,7 @@
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(IncludePath)</IncludePath>
     <ReferencePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(ReferencePath)</ReferencePath>
-    <LibraryPath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(LibraryPath)</LibraryPath>
+    <LibraryPath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;C:\software\opencv3.4_vs2017\install\x64\vc15\lib;$(LibraryPath)</LibraryPath>
     <ExecutablePath>C:\Study\github\Lookoops\tool\ImgSeg\ImgSeg\include;$(ExecutablePath)</ExecutablePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

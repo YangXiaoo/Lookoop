@@ -86,3 +86,13 @@ Mat mc = m.row(c);
 Range(int _start, int _end); // 左闭右开, 返回序列
 Mat m_rrange = m.rowRange(Range(2, 4));
 Mat m_crange = m.colRange(Range(2, 4));
+
+// 克隆
+Mat m_clone = m.rowRange(2, 4).clone(); 
+
+// Rect类, 返回的矩阵指向原矩阵
+Mat roi_1 = m(Rect(Point(2, 1), Point(3, 2))); // 左上角的坐标右下角的坐标
+Mat roi_2 = m(Rect(2, 1, 2, 2)); // x, y, 宽度, 高度
+Mat roi_3 = m(Rect(Point(2, 1), Size(2, 2))); //左上角的坐标, 尺寸
+
+

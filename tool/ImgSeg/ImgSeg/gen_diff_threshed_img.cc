@@ -19,6 +19,7 @@
 
 #include "FileTool.h"
 #include "ImgCore.h"
+#include "utils.h"
 
 using namespace cv;
 using namespace std;
@@ -29,31 +30,44 @@ using namespace std;
 /* 生成单张图片并保存 */
 void _generate_pic(Mat src, double value, 
                   double mean_value, string out_dir, 
-                  string pic_path);
+                  string pic_path, int pic_number);
 /* 生成不用阈值分割的图片 */
-void gen_diff_threshed_img(const string &pic_dir, 
-                           const string &out_dir,
+void gen_diff_threshed_img(const string pic_dir, 
+                           string out_dir,
                            const vector<string> filer_patt,
-                           const vector<int> &clip_size);
-/* 生成不同范围的阈值 */
-vector<int> _generate_threshed_val(double mean_value);
+                           const vector<int> clip_size);
+///* 生成不同范围的阈值 */
+//vector<int> _generate_threshed_val(double mean_value);
 
+void _generate_pic(Mat src, double value,
+				   double mean_value, string out_dir,
+				   string pic_path, int pic_number) {
+	cout << "[INFO] generating image path: " << pic_path << endl;
+	Mat _dst, dst;
+	threshold(src, _dst, value, 255, THRESH_BINARY);
+	move_noise(_dst, dst, 5, MORPH_CLOSE);
+	// 保存
+	string base_name = path_basename(pic_path);
+	vector<string> file = path_splitxt(base_name);
 
-int main(int argc, char const *argv[])
-{
-    string pic_dir = {""};
-    string out_dir = {""};
-    vector<string> filer_patt = {".png", ".jpg"};
-    vector<int> clip_size = {40, -40, 40, -40};
-    gen_diff_threshed_img(pic_dir, out_dir, filer_patt, clip_size);
-    return 0;
+	ostringstream rename_file;
+
+	if ((int)mean_value == (int)value)
+		rename_file << pic_number << "_" << file[0] << "_threshed_value_"
+		<< value << "_mean" << file[1];
+	else
+		rename_file << pic_number << "_" << file[0] << "_threshed_value_"
+		<< value << file[1];
+
+	string new_path = path_join(out_dir, rename_file.str());
+	imwrite(new_path, dst);
 }
 
 
-void gen_diff_threshed_img(const string &pic_dir, 
-                           const string &out_dir,
+void gen_diff_threshed_pic(const string pic_dir, 
+                           string out_dir,
                            const vector<string> filer_patt,
-                           const vector<int> &clip_size) 
+                           const vector<int> clip_size) 
 {   
     if (!folder_exist(out_dir)) {
         mkdirs(out_dir);
@@ -63,30 +77,45 @@ void gen_diff_threshed_img(const string &pic_dir,
     Files file(pic_dir);
     vector<string> files_list;
     file.get_files(files_list, filer_patt);
+    // print
+    for (const auto it : files_list) {
+        cout << "[INFO] file path: " << it << endl;
+    }
 
     string out_lables, out_data, out_record;
     out_lables = path_join(out_dir, "labels.txt");
-    out_dir = path_join(out_dir, "data.txt");
+    out_data = path_join(out_dir, "data.txt");
     out_record = path_join(out_dir, "record.txt");
-
+    // print
+    // cout << "[INFO] output files path:" << endl;
+    cout << out_lables << endl;
+    cout << out_data << endl;
+    cout << out_record << endl;
+         
     ofstream file_record(out_record);
     ofstream img_data(out_data);
     ofstream labels(out_lables);
 
     int count = 0;
     for (auto &file : files_list) {
-        cout << "[INFO] generate: " << file << endl;
+        ++count;
+        cout << "[INFO] processing: " << file << endl;
 
         file_record << count << " " << file << "\n";
 
         Mat img = imread(file, 0);
+        // cout << "[INFO] img channel: " << img.channels() << endl;
 
-        int m = img.rows, n = img.cols;
+        int r = img.rows, c = img.cols;
         int x = clip_size[0], w = clip_size[1];
         int y = clip_size[2], h = clip_size[3];
+        // print
+        // cout << "[INFO] r, c, x, w, y, h: " << r << " "
+        //      << c << " " << x << " " << w << " " 
+        //      << y << " " << h <<endl;
 
         // 裁剪
-        Mat img_resize = img(Rect(x, y, m + w, n + h)).clone();
+        Mat img_resize = img(Rect(Point(x, y), Point(c + w, r + h))).clone();
 
         Mat img_mv_noise;
         // 去噪
@@ -95,31 +124,33 @@ void gen_diff_threshed_img(const string &pic_dir,
         // 不需要
         // double mean_value = mean(img_mv_noize)[0];
         Mat img_mean, img_sd;
-        meanStdDev(img_mv_noize, img_mean, img_sd);
+        meanStdDev(img_mv_noise, img_mean, img_sd);
         double mean_value = img_mean.at<double>(0,0);
         double sd_mean = img_sd.at<double>(0,0);
 
         // 计算直方图
-        Mat hist = Mat::zeros(Size(256, 1), cv_32UC1);
+        Mat hist = Mat::zeros(Size(256, 1), CV_32FC1);
+        // cout << "[INFO] hist.size(): " << hist.size() << endl;
         get_histogram(img_mv_noise, hist);
 
-        
+        cout << "[INFO] writing image histogram data." << endl;
+        img_data << count << " ";
         for (int r = 0; r != hist.rows; ++r) {
-            img_data << count << " ";
             for (int c = 0; c != hist.cols; ++c) {
-                img_data << hist.at<int>(r, c) << " ";
+                img_data << hist.at<float>(c) << " ";
             }
         }
         img_data << "\n";
 
         labels << count << " " << "\n";
 
-        vector<double> threshed_value;
-        threshed_value.emplace(gen_range(0, mean_value, -2, 20));
-        threshed_value.emplace(gen_range(mean_value+2, 255, 2, 5));
+        vector<int> threshed_value;
+		int mean = mean_value;
+		gen_range(threshed_value, 0, mean, -2, 20);
+		gen_range(threshed_value, mean+2, 255, 2, 5);
 
         for (auto value : threshed_value) {
-            thread th_gen(_generate_pic, img_mv_noise, value, mean_value, out_dir, file);
+            thread th_gen(_generate_pic, img_mv_noise, value, mean_value, out_dir, file, count);
             th_gen.detach();
         }
     }
@@ -129,32 +160,6 @@ void gen_diff_threshed_img(const string &pic_dir,
     img_data.close();
     labels.close();
 }
-
-
-void _generate_pic(Mat src, double value, 
-                  double mean_value, string out_dir, 
-                  string pic_path) {
-        Mat dst;
-        threshold(src, dst, value, 255, THRESH_BINARY)；
-        move_noise(img_resize, img_mv_noise, 5, MORPH_CLOSE);
-        // 保存
-        string base_name = path_basename(pic_path);
-        vector<string> file = path_splitxt(pic_path);
-
-        ostringstream rename_file;
-
-        if (mean_value == value) 
-            rename_file << file[0] << "_threshed_value_" 
-                        << value << "_mean" << file[1];
-        else
-            rename_file << file[0] << "_threshed_value_"
-                        << value << file[1];
-
-        string new_path = path_join(out_dir, rename_file.str());
-        imwrite(new_path, dst);
-}
-
-
 
 
 vector<int> _generate_threshed_val(double mean_value) {
@@ -178,3 +183,27 @@ vector<int> _generate_threshed_val(double mean_value) {
 
     return threshed_value; 
 }
+
+
+
+// 运行
+// int main(int argc, char const *argv[])
+// {
+// 	string pic_dir; //  = { "C:\\Study\\test\\bone\\2" };
+// 	string out_dir; //  = { "C:\\Study\\test\\bone\\2_threshed" };
+//     cout << "input image dir: " << endl;
+//     cin >> pic_dir;
+//     cout << "input output dir: " << endl;
+//     cin >> out_dir;
+// 	vector<string> filer_patt = { ".png", ".jpg" };
+// 	vector<int> clip_size = { 40, -40, 40, -40 };
+
+//     // // test
+//     // if (!folder_exist(out_dir)) {
+//     //     cout << mkdirs(out_dir) << endl;
+//     // }
+
+// 	gen_diff_threshed_pic(pic_dir, out_dir, filer_patt, clip_size);
+//     system("pause");
+// 	return 0;
+// }

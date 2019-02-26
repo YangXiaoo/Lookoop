@@ -13,10 +13,10 @@
 
 using namespace std;
 
+/* 文件是否存在 */
 bool file_exist(const string &file_path) {
     // ifstream f(file_path.c_str());
     // return f.good();
-
 	fstream _file;
 	_file.open(file_path, ios::in);
 	if (!_file) {
@@ -26,55 +26,68 @@ bool file_exist(const string &file_path) {
 }
 
 
-bool folder_exist(const string &folder_path) {
-	char *folder = folder_path.c_str();
-	if (_access(folder, 0) == -1) {
+/* 文件夹是否存在 */
+bool folder_exist(string &folder_path) {
+	// char *folder = folder_path.c_str();
+	if (_access(folder_path.c_str(), 0) == -1) {
 		return false;
 	}
 	return true;
 }
 
 
-int mkdirs(const string &folder_path) {
+/* 创建文件夹 */
+int mkdirs(string &folder_path) {
 	int folder_create = 0;
-
 	for (auto it = folder_path.begin(); it != folder_path.end(); ++it) {
-		if (*it == "\\" || *it == "/") {
-			string cur_path(folder_path.begin(), --it);
-			++it;
-			if (_access(cur_path.c_str(), 0) == -1)
-				mkdir(cur_path.c_str());
-			++folder_create;
+		if (*it == '\\' || *it == '/') {
+			string cur_path(folder_path.begin(), it);
+			if (_access(cur_path.c_str(), 0) == -1) {
+				_mkdir(cur_path.c_str());
+				++folder_create;	
+			}
+
 		}
+	}
+	string cur_path(folder_path.begin(), folder_path.end());
+	if (_access(cur_path.c_str(), 0) == -1) {
+		_mkdir(cur_path.c_str());
+		++folder_create;	
 	}
 
 	return folder_create;
 }
 
 
-void str_replace(string &str, string &old_smb, string &new_smb) {
-	for (auto it = str.begin(); it != str.end(); ++it) {
-		if (*it == old_smb) {
-			*it = new_smb;
-		}
+/* 替换字符串中指定字符串 */
+void str_replace(string &str, const string &old_smb, const string &new_smb) {
+	// cout << "[INFO] str_replace()" << endl;
+	string::size_type pos = 0;
+	string::size_type old_len = old_smb.size();
+	string::size_type new_len = new_smb.size();
+	while ((pos = str.find(old_smb, pos)) != string::npos) {
+		str.replace(pos, old_len, new_smb);
+		pos += new_len;
 	}
 }
 
 
+/* 连接路径 */
 string path_join(string pre_path, string suf_path) {
+	// cout << "[INFO] call path_join()" << endl;
 	string joined_path;
 	string backslash = {"\\"};
 	string slash = {"/"}; // 为了Linux上能用, 统一分隔符
 	str_replace(pre_path, backslash, slash);
 	str_replace(suf_path, backslash, slash);
 
-	string last_str = *pre_path.crbegin();
-	if (last_str != slash) 
+	// string last_str(pre_path.back());
+	if (pre_path.back() != '/')
 		pre_path += slash;
 
-	string fst_str = *suf_path.rbegin();
-	if (fst_str == slash)
-		suf_path.pop_front();
+	// string fst_str(suf_path.front());
+	if (suf_path.front() == '/')
+		suf_path.erase(suf_path.begin());
 
 	joined_path = pre_path + suf_path;
 
@@ -86,23 +99,26 @@ string path_join(string pre_path, string suf_path) {
 string path_basename(const string path) {
 	string slash = {"/"}, backslash = {"\\"};
 	string::size_type pos;
+	// string::size_type end = path.size();
 	pos = path.rfind(slash);
 	if (pos == string::npos)
 		pos = path.rfind(backslash);
-	string file_name(++pos, path.end());
+	string file_name(path.substr(++pos));
+	// cout << "[INFO] file basename: " << file_name << endl;
 
 	return file_name;
 }
 
 
-/* 文件后缀 */
+/* 文件名分开 */
 vector<string> path_splitxt(const string path) {
 	string split_smb = {"."};
-	string::size_type = pos;
+	string::size_type pos;
+	string::size_type end = path.size();
 	pos = path.rfind(split_smb);
 	vector<string> file;
-	file.push_back(string(path.begin(), --pos));
-	file.push_back(string(pos, path.end()));
+	file.push_back(path.substr(0, pos));
+	file.push_back(path.substr(pos, end));
 
 	return file;
 }

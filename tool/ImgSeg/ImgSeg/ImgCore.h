@@ -3,7 +3,7 @@
 
 #include "opencv2/core/core.hpp"
 #include "opencv2/imgproc/imgproc.hpp"
-
+using namespace cv;
 
 /* 去除噪音
 op:
@@ -15,7 +15,7 @@ op:
  */
 void move_noise(const Mat img_in, 
 				Mat &img_out, 
-				const int kernel, 
+				int kernel, 
 				int op, 
 				const int repeat=5);
 

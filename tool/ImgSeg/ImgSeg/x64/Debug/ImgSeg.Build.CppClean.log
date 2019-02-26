@@ -1,7 +1,9 @@
-c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\vc142.pdb
-c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\vc142.idb
-c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\files_test.obj
-c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\files.obj
+c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\vc141.pdb
+c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\vc141.idb
+c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\utils.obj
+c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\imgcore.obj
+c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\gen_diff_threshed_img.obj
+c:\study\github\lookoops\tool\imgseg\imgseg\x64\debug\filetool.obj
 c:\study\github\lookoops\tool\imgseg\x64\debug\imgseg.exe
 c:\study\github\lookoops\tool\imgseg\x64\debug\imgseg.ilk
 c:\study\github\lookoops\tool\imgseg\x64\debug\imgseg.pdb

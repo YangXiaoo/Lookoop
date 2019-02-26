@@ -2,7 +2,13 @@
 // 常用工具
 
 #include <vector>
+#include <string>
+
+
+#ifndef UTILS
+#define UTILS
 
 /* 生成序列 */
-template <typename _Ty>
-std::vector<_Ty> gen_range(_Ty low, _Ty high, int gap, int max_gen);
+void gen_range(std::vector<int> &container, int low, int high, int gap, int max_gen);
+
+#endif // UTILS

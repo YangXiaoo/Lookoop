@@ -15,18 +15,27 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Files_Test.cpp">
+    <ClCompile Include="FileTool.cc">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Files.cc">
+    <ClCompile Include="gen_diff_threshed_img.cc">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="opencv_demo.cpp">
+    <ClCompile Include="ImgCore.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="utils.cc">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Files.h">
+    <ClInclude Include="FileTool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ImgCore.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="utils.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

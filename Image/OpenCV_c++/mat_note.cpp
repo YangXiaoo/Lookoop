@@ -53,6 +53,7 @@ typedef Vec<int, 2> Vec2i;
 typedef Vec<float, 4> Vec4f;
 typedef Vec<double, 3> Vec3d;
 
+
 // 构建多通道mat对象
 Mat mm = (Mat_<Vec3f>(2, 2)<<Vec3f(1, 2 3), Vec3f(4, 5, 6), Vec3f(7, 8, 9), Vec3f(10, 11, 12));
 for (int r = 0; r < mm.rows; ++r) {

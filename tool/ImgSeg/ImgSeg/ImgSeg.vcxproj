@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="DataTest.cc" />
     <ClCompile Include="FileTool.cc" />
     <ClCompile Include="gen_diff_threshed_img.cc" />
     <ClCompile Include="ImgCore.cc" />

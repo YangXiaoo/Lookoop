@@ -27,6 +27,9 @@
     <ClCompile Include="utils.cc">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="DataTest.cc">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileTool.h">

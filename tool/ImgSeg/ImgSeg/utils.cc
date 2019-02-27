@@ -2,6 +2,7 @@
 // 常用工具
 #include <vector>
 #include <string>
+#include <map>
 
 #include <fstream>
 #include <iostream>
@@ -74,7 +75,7 @@ void Data::get_data(vector<string> &container, int col_base) {
 
 /*********************** Trans ***********************/
 void Trans::_get_data() {
-    if (_p_data.isempty()) {
+    if (_p_data.size() == 0) {
         get_data(_p_data);
     }
 }
@@ -91,7 +92,7 @@ _tran_type Trans::convert_to(const std::vector<std::string> &data, const std::st
 
 
 template <typename _tran_type>
-void Trans::convert_to(const std::vector<std::string> &data, _tran_type &new_data, const std:string &type) {
+void Trans::convert_to(const std::vector<std::string> &data, _tran_type &new_data, const std::string &type) {
     for (auto it = data.begin(); it != data.end(); ++it) {
         new_data.push_back(_bin_ops[type](*it));
     }
@@ -99,7 +100,7 @@ void Trans::convert_to(const std::vector<std::string> &data, _tran_type &new_dat
 
 // new_data为空容器
 template <typename _tran_type>
-void Trans::convert_to(_tran_type &new_data, const std:string &type) {
+void Trans::convert_to(_tran_type &new_data, const std::string &type) {
     _get_data();
     for (auto it = _p_data.begin(); it != _p_data.end(); ++it) {
         new_data.push_back(_bin_ops[type](*it));
@@ -107,7 +108,7 @@ void Trans::convert_to(_tran_type &new_data, const std:string &type) {
 }
 
 template <typename _tran_type>
-_tran_type Trans::convert_to(const std:string &type) {
+_tran_type Trans::convert_to(const std::string &type) {
     _get_data();
     _tran_type new_data, 
     for (auto it = _p_data.begin(); it != _p_data.end(); ++it) {
@@ -117,12 +118,13 @@ _tran_type Trans::convert_to(const std:string &type) {
 }
 
 
-const _bin_ops = {
-    {"int", stoi},
-    {"long", stol},
-    {"unsigned long", stoul},
-    {"float", stof},
-    {"double", stod}
-};
+// template <typename _t>
+// map<string, function<_t(vector<string>)>> Trans::_bin_ops = {
+//     {"int", stoi},
+//     {"long", string::stol},
+//     {"unsigned long", string::stoul},
+//     {"float", string::stof},
+//     {"double", string::stod}
+// };
 
 /*********************** end Trans ***********************/

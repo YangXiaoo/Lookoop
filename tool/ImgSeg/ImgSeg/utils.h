@@ -37,27 +37,27 @@ class Trans: public Data {
  public:
  	Trans();
  	// 继承父类构造
- 	Trans(const std::string &path) : Data(const std::string &path) {};
+ 	Trans(const std::string &path) : Data(path) {};
 	Trans(const std::vector<std::string> &data) : _p_data(data) {};
 
  	template <typename _tran_type>
 	_tran_type convert_to(const std::vector<std::string> &data, const std::string &type);
 
 	template <typename _tran_type>
-	void convert_to(const std::vector<std::string> &data, _tran_type &new_data, const std:string &type);
+	void convert_to(const std::vector<std::string> &data, _tran_type &new_data, const std::string &type);
 
 	template <typename _tran_type>
-	void convert_to(_tran_type &new_data, const std:string &type);
+	void convert_to(_tran_type &new_data, const std::string &type);
 
 	template <typename _tran_type>
-	_tran_type convert_to(const std:string &type);
+	_tran_type convert_to(const std::string &type);
 
 	void _get_data();
+
  private:
  	std::vector<std::string> _p_data;
-
  	template <typename _t>
- 	static const std::map<std::string, std::function<_t(std::vector<string>)>> _bin_ops;
-}
+ 	static std::map<std::string, std::function<_t(std::vector<std::string>)>> _bin_ops;
+};
 	
 #endif // UTILS

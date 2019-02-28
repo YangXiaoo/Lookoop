@@ -20,21 +20,40 @@ using namespace cv;
 class Model {
  public:
  	virtual ~Model(){};
- 	virtual void train() = 0;
- 	virtual void predict() = 0;
- 	virtual void cal_error() = 0;
+ 	virtual Mat train() = 0;
+ 	virtual int predict() = 0;
+ 	virtual float cal_error() = 0;
 };
 
+// softmax多分类
 class Softmax : public Model {
-
+ public:
+ 	Mat train();
+ 	int predict();
+ 	float cal_error();
+ private:
+ 	// 权重
+ 	Mat weight;
 };
+
+
 
 class ML {
  public:
- 	Ml() = default;
- 	ML(const std::string &ml_name)
- 	void train();
+ 	ML() = default;
+ 	// softmax构造
+ 	ML(const std::string &ml_name, 
+ 	   const Mat &feature, 
+ 	   const Mat labels, int k, 
+ 	   long long max_iter, float alpha=0.1) noexcept { _choose_model(ml_name); };
+ 	// 训练
+ 	Mat train() { _model->train(); };
+ 	// 预测
+ 	int predict() {  _model->train(); };
+ 	// 根据名字选择接口
+ 	void _choose_model(const std::string &ml_name);
  private:
- 	int 
+ 	Model* _model;
+ 	std::string _model_name;
 };
 #endif

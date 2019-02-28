@@ -1,6 +1,16 @@
-﻿  utils.cc
+﻿  DataTest.cc
+c:\study\github\lookoops\tool\imgseg\imgseg\utils.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  gen_diff_threshed_img.cc
+c:\study\github\lookoops\tool\imgseg\imgseg\gen_diff_threshed_img.cc : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\filetool.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\imgcore.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\utils.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\gen_diff_threshed_img.cc(148): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+c:\study\github\lookoops\tool\imgseg\imgseg\gen_diff_threshed_img.cc(169): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+c:\study\github\lookoops\tool\imgseg\imgseg\gen_diff_threshed_img.cc(177): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+  utils.cc
 c:\study\github\lookoops\tool\imgseg\imgseg\utils.cc : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 c:\study\github\lookoops\tool\imgseg\imgseg\utils.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
 c:\study\github\lookoops\tool\imgseg\imgseg\filetool.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-DataTest.obj : error LNK2019: 无法解析的外部符号 "public: void __cdecl Trans::convert_to<class std::vector<float,class std::allocator<float> > >(class std::vector<float,class std::allocator<float> > &,class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > const &)" (??$convert_to@V?$vector@MV?$allocator@M@std@@@std@@@Trans@@QEAAXAEAV?$vector@MV?$allocator@M@std@@@std@@AEBV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@2@@Z)，该符号在函数 main 中被引用
-C:\Study\github\Lookoops\tool\ImgSeg\x64\Debug\ImgSeg.exe : fatal error LNK1120: 1 个无法解析的外部命令
+  正在生成代码...
+  ImgSeg.vcxproj -> C:\Study\github\Lookoops\tool\ImgSeg\x64\Debug\ImgSeg.exe

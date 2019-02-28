@@ -6,6 +6,10 @@
 #include <map>
 #include <functional>
 
+// OpenCV
+#include "opencv2/core/core.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+using namespace cv;
 
 #ifndef UTILS
 #define UTILS
@@ -23,6 +27,10 @@ class Data {
  	// 读取数据
  	std::vector<std::vector<std::string>> get_data(int col_base=_base);
 	void get_data(std::vector<std::vector<std::string>> &container, int col_base = _base);
+	// 根据索引划分数据
+	void get_data(std::vector<std::vector<std::string>> &left_data, 
+				  std::vector<std::vector<std::string>> &right_data, 
+				  int split, int col_base = _base);
 	// 检查文件是否存在
 	void _check();
  private:
@@ -39,8 +47,11 @@ class Trans: public Data {
  	// 继承父类构造
  	Trans(const std::string &path) : Data(path) {};
 	Trans(const std::vector<std::vector<std::string>> &data) : _p_data(data) {};
+	// 转换为指定格式
 	template <typename _tran_type>
 	void convert_to(_tran_type &new_data);
+	// 转换为矩阵<float>类型
+	void convert_to_mat(Mat &new_data);
 	void _get_data();
  private:
  	std::vector<std::vector<std::string>> _p_data;

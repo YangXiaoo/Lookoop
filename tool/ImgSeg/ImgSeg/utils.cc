@@ -7,6 +7,10 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+// OpenCV
+#include "opencv2/core/core.hpp"
+#include "opencv2/imgproc/imgproc.hpp"
+using namespace cv;
 
 #include "utils.h"
 #include "FileTool.h"
@@ -73,7 +77,26 @@ vector<vector<string>> Data::get_data(int col_base) {
 void Data::get_data(vector<vector<string>> &container, int col_base) {
     container = get_data(col_base);
 }
-/*********************** end Data ***********************/
+
+
+// 通过指定数据划分索引将数据划分为两部分, 
+// 在机器学习中一般指训练集与标签。
+void get_data(vector<vector<string>> &left_data, 
+              vector<vector<string>> &right_data, 
+              int split, int col_base) {
+    vector<vector<string>> container;
+    container = get_data(col_base);
+    int col = container[0].size();
+    if (split < 0) {
+        split = col + split;
+    }
+    for (int r = 0; r != container.size(); ++r) {
+        left_data.push_back(container[0].substr(0, split));
+        right_data.push_back(container[0].substr(split, col));
+    }
+}
+
+/*********************** ~ Data ***********************/
 
 
 /*********************** Trans ***********************/
@@ -168,4 +191,14 @@ void Trans::convert_to(vector<vector<double>> &new_data) {
         new_data.push_back(tmp_data);
     }
 }
-/*********************** end Trans ***********************/
+
+
+// 转换为矩阵
+void Trans::convert_to_mat(Mat &new_data) {
+    for (int r = 0; r != _p_data.size(); ++r) {
+        for (int c = 0; c != _p_data[0].size(); ++c) {
+            new_data.at<float>(r, c) = stof(_p_data[r][c]);
+        }
+    }
+}
+/*********************** ~ Trans ***********************/

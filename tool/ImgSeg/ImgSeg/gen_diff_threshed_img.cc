@@ -125,8 +125,8 @@ void gen_diff_threshed_pic(const string pic_dir,
         // double mean_value = mean(img_mv_noize)[0];
         Mat img_mean, img_sd;
         meanStdDev(img_mv_noise, img_mean, img_sd);
-        double mean_value = img_mean.at<double>(0,0);
-        double sd_mean = img_sd.at<double>(0,0);
+        double mean_value = img_mean.at<double>(0, 0);
+        double sd_mean = img_sd.at<double>(0, 0);
 
         // 计算直方图
         Mat hist = Mat::zeros(Size(256, 1), CV_32FC1);

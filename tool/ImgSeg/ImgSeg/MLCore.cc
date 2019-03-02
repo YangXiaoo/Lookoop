@@ -55,3 +55,4 @@ int Softmax::predict(Mat &test_data) {
 
 }
 
+ 

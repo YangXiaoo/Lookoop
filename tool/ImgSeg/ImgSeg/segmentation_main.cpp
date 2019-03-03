@@ -19,6 +19,7 @@ void single_seg(const string &img_path, const string &output_dir, const vector<i
 /* 使用Softmax训练数据 */
 void softmax_train(const string &train_data_path, Mat &weights, int k, long long max_iter);
 
+atomic<int> count(1);
 
 int main(int argc, char const *argv[])
 {
@@ -40,7 +41,7 @@ int main(int argc, char const *argv[])
     Files file(pic_dir);
     vector<string> files_list;
     file.get_files(files_list, filer_patt);
-    
+
     for (auto file : files_list) {
     	try {
     		cout << "[INFO] handling file: " << file << endl;
@@ -49,8 +50,5 @@ int main(int argc, char const *argv[])
     		cout << e << endl;
     	}
     }
-
-
-
 	return 0;
 }

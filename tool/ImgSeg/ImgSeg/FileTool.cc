@@ -1,7 +1,7 @@
 // FileTool.cc
 // 2019-2-25
 #include <vector>
-#include<iostream>
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <direct.h> // mkdir()
@@ -96,7 +96,7 @@ string path_join(string pre_path, string suf_path) {
 
 
 /* 文件名 */
-string path_basename(const string path) {
+string path_basename(const string &path) {
 	string slash = {"/"}, backslash = {"\\"};
 	string::size_type pos;
 	// string::size_type end = path.size();
@@ -111,7 +111,7 @@ string path_basename(const string path) {
 
 
 /* 文件名分开 */
-vector<string> path_splitxt(const string path) {
+vector<string> path_splitext(const string &path) {
 	string split_smb = {"."};
 	string::size_type pos;
 	string::size_type end = path.size();
@@ -123,6 +123,18 @@ vector<string> path_splitxt(const string path) {
 	return file;
 }
 
+/* 文件所在目录路径 */
+string path_dirpath(const string &path) {
+	string slash = {"/"}, backslash = {"\\"};
+	string::size_type pos;
+	// string::size_type end = path.size();
+	pos = path.rfind(slash);
+	if (pos == string::npos)
+		pos = path.rfind(backslash);
+	string dir_path(path.substr(0, pos));
+
+	return dir_path;
+}
 
 /*********************** class-Files ***********************/
 
@@ -212,12 +224,7 @@ bool Files::_patt_in_name(file_t &file_info) {
 
 
 
-/** 
- * 获取指定文件夹下所有指定格式文件
- * @param path : 文件夹目录路径
- * @param files_list : 空vector<string>
- * @return &files_list : 返回遍历后的容器
- */
+// 获取指定文件夹下所有指定格式文件的全路径
 void Files::get_full_path(string path, vector<string> &files_list) {
 
 	// typedef long int intptr_t; 

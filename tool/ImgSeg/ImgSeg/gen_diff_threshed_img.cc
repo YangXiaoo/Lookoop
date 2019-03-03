@@ -48,7 +48,7 @@ void _generate_pic(Mat src, double value,
 	move_noise(_dst, dst, 5, MORPH_CLOSE);
 	// 保存
 	string base_name = path_basename(pic_path);
-	vector<string> file = path_splitxt(base_name);
+	vector<string> file = path_splitext(base_name);
 
 	ostringstream rename_file;
 
@@ -129,8 +129,7 @@ void gen_diff_threshed_pic(const string pic_dir,
         double sd_mean = img_sd.at<double>(0, 0);
 
         // 计算直方图
-        Mat hist = Mat::zeros(Size(256, 1), CV_32FC1);
-        // cout << "[INFO] hist.size(): " << hist.size() << endl;
+        Mat hist;
         get_histogram(img_mv_noise, hist);
 
         cout << "[INFO] writing image histogram data." << endl;

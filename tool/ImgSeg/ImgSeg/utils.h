@@ -56,5 +56,10 @@ class Trans: public Data {
  private:
  	std::vector<std::vector<std::string>> _p_data;
 };
-	
+
+
+
+/* 获得数据 */
+void get_train_data(const std::string &file_path, Mat &feature, 
+					Mat &labels, int col_base=0);
 #endif // UTILS

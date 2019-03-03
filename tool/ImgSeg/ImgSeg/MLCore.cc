@@ -7,16 +7,19 @@
 #include <cmath>
 
 #include "opencv2/core/core.hpp"
-#include "opencv2/imgproc/imgproc.hpp"
+
 using namespace cv;
 using namespace std;
 
 #include "MLCore.h"
 
+#define MAX 0x3f3f3f3f
+#define MIN  0xc0c0c0c0
 /*********************** Softmax***********************/
-
 // 训练
-Mat Softmax::train() {
+Mat Softmax::fit(const Mat &feature, const Mat labels) {
+	_feature = feature;
+	_labels = labels;
 	int m = _feature.rows, n = _feature.cols;
 	_weight = Mat::ones(Size(n, k), CV_32FC1);
 	int it = 0;
@@ -47,12 +50,28 @@ Mat Softmax::train() {
 
 // 计算误差
 float Softmax::cal_error(Mat err) {
-
+	int m = err.rows;
+	float sum_cost = 0.0;
+	for (int i = 0; i != m, ++i) {
+		if (err.at(i, _labels.at<int>(i, 0)) / sum(err.rowRange(Range(i, i+1))) > 0) {
+			sum_cost -= log(err.at(i, _labels.at<int>(i, 0)) / sum(err.rowRange(Range(i, i+1))));
+		} else {
+			sum_cost -= 0
+		}
+	}
+	return sum_cost / m;
 }
 
 // 预测
-int Softmax::predict(Mat &test_data) {
-
+int Softmax::predict(const Mat &test_data) {
+	Mat p = test_data * _weight; // p : 1 x m x m x n = 1 x n
+	float max_val = MIN;
+	int max_index = -1;
+	for (int i = 0; i != p.cols; ++i) {
+		if (p.at(0, i) > max_val) {
+			max_val = p.at(0, i);
+			max_index = i;
+		}
+	}
+	return max_index;
 }
-
- 

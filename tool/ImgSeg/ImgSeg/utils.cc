@@ -202,3 +202,24 @@ void Trans::convert_to_mat(Mat &new_data) {
     }
 }
 /*********************** ~ Trans ***********************/
+
+
+/* 获得数据 */
+void get_train_data(const std::string &file_path, Mat &_feature, 
+                    Mat &_labels, int col_base)
+{
+    cout << "[INFO] loading data." << endl;
+    Data file(file_path);
+    // 划分数据
+    vector<vector<string>> feature;
+    vector<vector<string>> labels;
+    file.get_data(feature, labels, -1, col_base);
+    Mat fea = Mat::zeros(Size(feature.size(), feature[0].size()), CV_32FC1);
+    Mat val = Mat::zeros(Size(labels.size(), labels[0].size()), CV_32FC1)
+    Trans t(feature);
+    t.convert_to_mat(fea);
+    Trans t(labels);
+    t.convert_to_mat(val);
+    _feature = fea;
+    _labels = val;
+}

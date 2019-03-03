@@ -30,11 +30,15 @@ std::string path_join(std::string pre_path, std::string suf_path);
 
 
 /* 文件名 */
-std::string path_basename(const std::string path);
+std::string path_basename(const std::string &path);
 
 
 /* 文件后缀 */
-std::vector<std::string> path_splitxt(const std::string path);
+std::vector<std::string> path_splitext(const std::string &path);
+
+
+/* 文件所在目录路径 */
+std::string path_dirpath(const std::string &path);
 
 
 /* 读取文件路径 */
@@ -79,7 +83,12 @@ class Files {
  public:
 	template <typename file_t> bool _patt_in_name(file_t &file_info);
 	// bool _patt_in_name(struct _finddata_t);
-	// 获取指定文件夹下所有指定格式文件的全路径
+	/** 
+	 * 获取指定文件夹下所有指定格式文件
+	 * @param path : 文件夹目录路径
+	 * @param files_list : 空vector<string>
+	 * @return &files_list : 返回遍历后的容器
+	 */
 	void get_full_path(std::string path, std::vector<std::string> &files_list);
 	// 获取指定文件夹下所有指定格式文件名的全路径	
 	void get_file_name(std::string path, std::vector<std::string> &files_list);

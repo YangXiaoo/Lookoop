@@ -19,15 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataTest.cc" />
     <ClCompile Include="FileTool.cc" />
     <ClCompile Include="gen_diff_threshed_img.cc" />
     <ClCompile Include="ImgCore.cc" />
+    <ClCompile Include="MLCore.cc" />
+    <ClCompile Include="softmax_test.cpp" />
     <ClCompile Include="utils.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileTool.h" />
     <ClInclude Include="ImgCore.h" />
+    <ClInclude Include="MLCore.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

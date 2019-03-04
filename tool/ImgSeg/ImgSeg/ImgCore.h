@@ -40,7 +40,7 @@ void save_imgage(const std::string &img_path, const Mat img, const std::string &
 
 
 /* 去除周围空白区域 */
-void move_margin(const Mat img, const Mat &threshed_img, Mat &out_put);
+void remove_margin(const Mat img, const Mat &threshed_img, Mat &out_put);
 
 /* 归一化 */
 void norm_to_size(const Mat img, const Mat &output, int size=256);
@@ -49,28 +49,29 @@ void norm_to_size(const Mat img, const Mat &output, int size=256);
 class Model {
  public:
  	virtual ~Model(){};
- 	virtual void apply(const Mat &src, const Mat &threshed_img, Mat &dst) = 0;
+ 	virtual void apply(const Mat &src, const Mat &threshed_img, Mat &dst_src, Mat &dst_threshed) = 0;
 };
 
 
 class Roi_region : public Model {
  public:
- 	void apply(const Mat &src, const Mat &threshed_img, Mat &dst);
+ 	void apply(const Mat &src, const Mat &threshed_img, Mat &dst_src, Mat &dst_threshed);
 };
 
 class Max_region : public Model {
  public:
- 	void apply(const Mat &src, const Mat &threshed_img, Mat &dst);
+ 	void apply(const Mat &src, const Mat &threshed_img, Mat &dst_src, Mat &dst_threshed);
 };
 
 
 class Seg {
  public:
- 	Seg(const std::string &seg_model=_model_name) : _model_name(seg_model) { _choose_model(seg_model); };
+ 	Seg() = default;
+ 	Seg(int seg_model=0) : _model_name(seg_model) { _choose_model(seg_model); };
  	~Seg() {free_ptr(_model)};
  	void _choose_model(int model_name);
- 	void apply(const Mat &src, const Mat &threshed_img, Mat &dst);
+ 	void apply(const Mat &src, const Mat &threshed_img, Mat &dst_src, Mat &dst_threshed);
  private:
- 	static int _model_name=0;
+ 	int _model_name;
  	Model *_model;
-}
+};

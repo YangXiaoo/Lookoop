@@ -2,7 +2,6 @@
 // 常用工具
 #include <vector>
 #include <string>
-#include <map>
 
 #include <fstream>
 #include <iostream>
@@ -79,22 +78,33 @@ void Data::get_data(vector<vector<string>> &container, int col_base) {
 }
 
 
-// 通过指定数据划分索引将数据划分为两部分, 
-// 在机器学习中一般指训练集与标签。
-void get_data(vector<vector<string>> &left_data, 
-              vector<vector<string>> &right_data, 
-              int split, int col_base) {
-    vector<vector<string>> container;
-    container = get_data(col_base);
-    int col = container[0].size();
-    if (split < 0) {
-        split = col + split;
-    }
-    for (int r = 0; r != container.size(); ++r) {
-        left_data.push_back(container[0].substr(0, split));
-        right_data.push_back(container[0].substr(split, col));
-    }
-}
+// // 通过指定数据划分索引将数据划分为两部分, 
+// // 在机器学习中一般指训练集与标签。
+// void Data::get_data(vector<vector<string>> &left_data,
+//               vector<vector<string>> &right_data, 
+//               int split, int col_base) {
+//     vector<vector<string>> container;
+//     container = get_data(col_base);
+//     int col = container[0].size();
+//     if (split < 0) {
+//         split = col + split;
+//     }
+// 	vector<string> tmp_left;
+//     vector<string> tmp_right;
+//     for (int r = 0; r != container.size(); ++r) {
+// 		auto tmp_container = container[r];
+// 		for (int c = 0; c != split; ++c) {
+// 			tmp_left.push_back(tmp_container[c]);
+// 		}
+// 		for (int c = split; c != col; ++c) {
+// 			tmp_right.push_back(tmp_container[c]);
+// 		}
+//         left_data.emplace_back(tmp_left);
+//         right_data.emplace_back(right);
+// 		tmp_left.clear();
+// 		tmp_right.clear();
+//     }
+// }
 
 /*********************** ~ Data ***********************/
 
@@ -211,15 +221,12 @@ void get_train_data(const std::string &file_path, Mat &_feature,
     cout << "[INFO] loading data." << endl;
     Data file(file_path);
     // 划分数据
-    vector<vector<string>> feature;
-    vector<vector<string>> labels;
-    file.get_data(feature, labels, -1, col_base);
-    Mat fea = Mat::zeros(Size(feature.size(), feature[0].size()), CV_32FC1);
-    Mat val = Mat::zeros(Size(labels.size(), labels[0].size()), CV_32FC1)
-    Trans t(feature);
-    t.convert_to_mat(fea);
-    Trans t(labels);
-    t.convert_to_mat(val);
-    _feature = fea;
-    _labels = val;
+	vector<vector<string>> data;
+    file.get_data(data, col_base);
+    Mat _data = Mat::zeros(Size(data[0].size(), data.size()), CV_32FC1);
+    Trans t(data);
+    t.convert_to_mat(_data);
+    int col = _data.cols;
+    _feature = _data.colRange(Range(0, col - 1));
+    _labels = _data.colRange(Range(col - 1, col));
 }

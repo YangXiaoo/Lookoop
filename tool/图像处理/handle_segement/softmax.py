@@ -17,6 +17,9 @@ def train(feature, label, k, max_iteration, alpha):
     end, pre, gap = 0.0001, 1e5, 1
     while i <= max_iteration and gap > end:
         y = np.exp(feature * weights) # m x k
+        # print(y[0, 0])
+        # print((feature * weights)[0, 0])
+        # assert False
         if i % 500 == 0:
             error_rate = cost(y, label)
             gap = abs(error_rate - pre)
@@ -24,6 +27,7 @@ def train(feature, label, k, max_iteration, alpha):
             print("iteration: %d, error rate: %.10f, gap: %.10f" % (i, error_rate, gap))
         row_sum = -y.sum(axis=1) # 按行相加 m x 1         
         row_sum = row_sum.repeat(k, axis=1) # 每个样本都需要除以总值， 所以转换为 m x k
+        # print(row_sum.shape) # (406, 256)
         y = y / row_sum # 得到-P(y|x,w)
         for x in range(m):
             y[x, label[x, 0]]  += 1

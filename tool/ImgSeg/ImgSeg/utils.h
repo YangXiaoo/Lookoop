@@ -27,10 +27,10 @@ class Data {
  	// 读取数据
  	std::vector<std::vector<std::string>> get_data(int col_base=_base);
 	void get_data(std::vector<std::vector<std::string>> &container, int col_base = _base);
-	// 根据索引划分数据
-	void get_data(std::vector<std::vector<std::string>> &left_data, 
-				  std::vector<std::vector<std::string>> &right_data, 
-				  int split, int col_base = _base);
+	// // 根据索引划分数据
+	// void get_data(std::vector<std::vector<std::string>> &left_data, 
+	// 			  std::vector<std::vector<std::string>> &right_data, 
+	// 			  int split, int col_base = _base);
 	// 检查文件是否存在
 	void _check();
  private:

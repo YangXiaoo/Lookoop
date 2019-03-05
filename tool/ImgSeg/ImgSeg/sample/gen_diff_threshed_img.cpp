@@ -186,23 +186,23 @@ vector<int> _generate_threshed_val(double mean_value) {
 
 
 // 运行
-// int main(int argc, char const *argv[])
-// {
-// 	string pic_dir; //  = { "C:\\Study\\test\\bone\\2" };
-// 	string out_dir; //  = { "C:\\Study\\test\\bone\\2_threshed" };
-//     cout << "input image dir: " << endl;
-//     cin >> pic_dir;
-//     cout << "input output dir: " << endl;
-//     cin >> out_dir;
-// 	vector<string> filer_patt = { ".png", ".jpg" };
-// 	vector<int> clip_size = { 40, -40, 40, -40 };
+int main(int argc, char const *argv[])
+{
+	string pic_dir; //  = { "C:\\Study\\test\\bone\\2" };
+	string out_dir; //  = { "C:\\Study\\test\\bone\\2_threshed" };
+    cout << "input image dir: " << endl;
+    cin >> pic_dir;
+    cout << "input output dir: " << endl;
+    cin >> out_dir;
+	vector<string> filer_patt = { ".png", ".jpg" };
+	vector<int> clip_size = { 40, -40, 40, -40 };
 
-//     // // test
-//     // if (!folder_exist(out_dir)) {
-//     //     cout << mkdirs(out_dir) << endl;
-//     // }
+    // // test
+    // if (!folder_exist(out_dir)) {
+    //     cout << mkdirs(out_dir) << endl;
+    // }
 
-// 	gen_diff_threshed_pic(pic_dir, out_dir, filer_patt, clip_size);
-//     system("pause");
-// 	return 0;
-// }
+	gen_diff_threshed_pic(pic_dir, out_dir, filer_patt, clip_size);
+    system("pause");
+	return 0;
+}

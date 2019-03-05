@@ -73,18 +73,20 @@ int get_threshed_value_by_softmax(const Mat &img, const Mat &weight) {
 
 
 /* 保存图片 */
-void save_imgage(const std::string &img_path, const Mat img, const std::string &mid_name) {
+void save_image(const std::string &img_path, const Mat &img, const std::string &mid_name) {
 	string basename = path_basename(img_path);
 	vector<string> file = path_splitext(basename);
 	string dir_path = path_dirpath(img_path);
 	string img_name = file[0] + mid_name + file[1];
 	string output_path = path_join(dir_path, img_name);
+	cout << "[DEBUG] call save_image(): " << output_path << endl;
 	imwrite(output_path, img);
 }
 
 
 /* 去除周围空白区域 */
 void remove_margin(const Mat img, const Mat &threshed_img, Mat &output) {
+	cout << "[DEBUG] call remove_margin()" << endl;
 	int row = img.rows, col = img.cols;
 	Rect rect = boundingRect(threshed_img);
 	Point tl = rect.tl(), br = rect.br();
@@ -104,6 +106,7 @@ void remove_margin(const Mat img, const Mat &threshed_img, Mat &output) {
 
 /* 归一化 */
 void norm_to_size(const Mat img, const Mat &output, int size) {
+	cout << "[DEBUG] call norm_to_size()" << endl;
 	int row = img.rows, col = img.cols;
 	int gap = abs(row - col);
 	Mat tmp_out;
@@ -127,15 +130,18 @@ void norm_to_size(const Mat img, const Mat &output, int size) {
 void Roi_region::apply(const Mat &src, const Mat &threshed_img, 
 	        		   Mat &dst_src, Mat &dst_threshed) 
 {
+	cout << "[DEBUG] call Roi_region::apply() "<< endl;
 	int row = src.rows, col = src.cols;
 	int mid_r = row / 2, mid_c = col /2; // 种子
 	vector<vector<bool>> visited(row, vector<bool>(col, false));
+	// cout << "[DEBUG] visited: " << visited[0][0] << endl;
 	deque<vector<int>> dequeue;
 	dequeue.push_back({mid_r, mid_c});
 	visited[mid_r][mid_c] = true;
 	while (!dequeue.empty()) {
 		long size = dequeue.size();
-		while (size != 0) {
+		// cout << "[DEBUG] Roi_region::apply() while: "<< size << endl;
+		while (size > 0) {
 			vector<int> _tmp = dequeue.back();
 			dequeue.pop_back();
 			int r = _tmp[0], c = _tmp[1];
@@ -164,18 +170,27 @@ void Roi_region::apply(const Mat &src, const Mat &threshed_img,
 			}
 			--size;
 		}
+		// cout << "[DEBUG] Roi_region::apply() after while: "<< size << endl;
 	}
+	cout << "[DEBUG] Roi_region::apply() get results "<< endl;
+	cout << "[DEBUG] call Roi_region::apply(), row:  " << row 
+		 << ", col:" << col << endl;
 
 	dst_src = src.clone();
-	dst_threshed= threshed_img.clone();
+	dst_threshed = threshed_img.clone();
+	// Mat bg = Mat::zeros(Size(col, row), CV_8UC1);
 	for (int r = 0; r != row; ++r) {
-		for (int c = 0; c != col; ++col) {
+		// cout << "[DEBUG] row: " << r << endl;
+		for (int c = 0; c != col; ++c) {
 			if (!visited[r][c]) {
 				dst_src.at<uchar>(r, c) = 0;
 				dst_threshed.at<uchar>(r, c) = 0;
 			}
 		}
 	}
+
+	// dst_src = dst_src.mul(bg);
+	// dst_threshed = dst_threshed.mul(bg);
 	return;
 }
 
@@ -257,4 +272,10 @@ void Seg::_choose_model(int model_name) {
 		case 0 : _model = new Roi_region(); break;
 		case 1 : _model = new Max_region(); break;
 	}
+}
+
+void Seg::apply(const Mat &src, const Mat &threshed_img, 
+				Mat &dst_src, Mat &dst_threshed)
+{
+	_model->apply(src, threshed_img, dst_src, dst_threshed);
 }

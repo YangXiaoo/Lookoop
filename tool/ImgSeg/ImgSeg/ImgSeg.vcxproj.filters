@@ -33,6 +33,9 @@
     <ClCompile Include="softmax_test.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="segmentation_main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileTool.h">

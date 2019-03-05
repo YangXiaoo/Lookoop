@@ -36,7 +36,7 @@ int get_threshed_value_by_softmax(const Mat &img, const Mat &weight);
  * @para img_path 图像完整路径
  * @para mid_name 图像保存后的中间名
  */
-void save_imgage(const std::string &img_path, const Mat img, const std::string &mid_name="");
+void save_image(const std::string &img_path, const Mat &img, const std::string &mid_name="");
 
 
 /* 去除周围空白区域 */
@@ -66,9 +66,9 @@ class Max_region : public Model {
 
 class Seg {
  public:
- 	Seg() = default;
+ 	Seg() = delete;
  	Seg(int seg_model=0) : _model_name(seg_model) { _choose_model(seg_model); };
- 	~Seg() {free_ptr(_model)};
+ 	~Seg() {free_ptr(_model);};
  	void _choose_model(int model_name);
  	void apply(const Mat &src, const Mat &threshed_img, Mat &dst_src, Mat &dst_threshed);
  private:

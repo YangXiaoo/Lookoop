@@ -23,6 +23,7 @@
     <ClCompile Include="gen_diff_threshed_img.cc" />
     <ClCompile Include="ImgCore.cc" />
     <ClCompile Include="MLCore.cc" />
+    <ClCompile Include="segmentation_main.cpp" />
     <ClCompile Include="softmax_test.cpp" />
     <ClCompile Include="utils.cc" />
   </ItemGroup>

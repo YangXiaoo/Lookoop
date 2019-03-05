@@ -19,19 +19,18 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FileTool.cc" />
-    <ClCompile Include="gen_diff_threshed_img.cc" />
-    <ClCompile Include="ImgCore.cc" />
-    <ClCompile Include="MLCore.cc" />
-    <ClCompile Include="segmentation_main.cpp" />
-    <ClCompile Include="softmax_test.cpp" />
-    <ClCompile Include="utils.cc" />
+    <ClInclude Include="include\FileTool.hpp" />
+    <ClInclude Include="include\ImgCore.hpp" />
+    <ClInclude Include="include\MLCore.hpp" />
+    <ClInclude Include="include\utils.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FileTool.h" />
-    <ClInclude Include="ImgCore.h" />
-    <ClInclude Include="MLCore.h" />
-    <ClInclude Include="utils.h" />
+    <ClCompile Include="sample\gen_diff_threshed_img.cpp" />
+    <ClCompile Include="sample\segmentation_main.cpp" />
+    <ClCompile Include="src\FileTool.cpp" />
+    <ClCompile Include="src\ImgCore.cpp" />
+    <ClCompile Include="src\MLCore.cpp" />
+    <ClCompile Include="src\utils.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{23FF25F7-EE77-4FB2-9258-9146CE0A1C96}</ProjectGuid>

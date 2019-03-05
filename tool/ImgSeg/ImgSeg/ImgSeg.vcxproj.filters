@@ -15,40 +15,37 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FileTool.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="gen_diff_threshed_img.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="ImgCore.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="utils.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="MLCore.cc">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="softmax_test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="segmentation_main.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
+    <ClInclude Include="include\FileTool.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ImgCore.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\MLCore.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="include\utils.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="FileTool.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ImgCore.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="utils.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="MLCore.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
+    <ClCompile Include="sample\gen_diff_threshed_img.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="sample\segmentation_main.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\FileTool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ImgCore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\MLCore.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

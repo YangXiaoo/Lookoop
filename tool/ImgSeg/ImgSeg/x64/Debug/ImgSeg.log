@@ -1,7 +1,42 @@
-﻿  ImgCore.cc
-c:\study\github\lookoops\tool\imgseg\imgseg\imgcore.cc : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-c:\study\github\lookoops\tool\imgseg\imgseg\imgcore.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-c:\study\github\lookoops\tool\imgseg\imgseg\filetool.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-c:\study\github\lookoops\tool\imgseg\imgseg\imgcore.cc(142): warning C4267: “初始化”: 从“size_t”转换到“long”，可能丢失数据
-c:\study\github\lookoops\tool\imgseg\imgseg\imgcore.cc(213): warning C4267: “初始化”: 从“size_t”转换到“long”，可能丢失数据
+﻿  gen_diff_threshed_img.cpp
+c:\study\github\lookoops\tool\imgseg\imgseg\sample\gen_diff_threshed_img.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\filetool.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\imgcore.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\utils.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\sample\gen_diff_threshed_img.cpp(147): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+c:\study\github\lookoops\tool\imgseg\imgseg\sample\gen_diff_threshed_img.cpp(168): warning C4244: “初始化”: 从“double”转换到“int”，可能丢失数据
+c:\study\github\lookoops\tool\imgseg\imgseg\sample\gen_diff_threshed_img.cpp(176): warning C4244: “=”: 从“double”转换到“int”，可能丢失数据
+  segmentation_main.cpp
+c:\study\github\lookoops\tool\imgseg\imgseg\sample\segmentation_main.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\mlcore.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\imgcore.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\filetool.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\utils.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\sample\segmentation_main.cpp(68): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  FileTool.cpp
+c:\study\github\lookoops\tool\imgseg\imgseg\src\filetool.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\filetool.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  ImgCore.cpp
+c:\study\github\lookoops\tool\imgseg\imgseg\src\imgcore.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\imgcore.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\filetool.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\src\imgcore.cpp(161): warning C4267: “初始化”: 从“size_t”转换到“long”，可能丢失数据
+c:\study\github\lookoops\tool\imgseg\imgseg\src\imgcore.cpp(232): warning C4267: “初始化”: 从“size_t”转换到“long”，可能丢失数据
+  MLCore.cpp
+c:\study\github\lookoops\tool\imgseg\imgseg\include\mlcore.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\src\mlcore.cpp(16): warning C4005: “MAX”: 宏重定义
+  c:\software\opencv3.4_vs2017\install\include\opencv2\core\cvdef.h(329): note: 参见“MAX”的前一个定义
+c:\study\github\lookoops\tool\imgseg\imgseg\src\mlcore.cpp(17): warning C4005: “MIN”: 宏重定义
+  c:\software\opencv3.4_vs2017\install\include\opencv2\core\cvdef.h(325): note: 参见“MIN”的前一个定义
+c:\study\github\lookoops\tool\imgseg\imgseg\src\mlcore.cpp(98): warning C4305: “初始化”: 从“unsigned int”到“float”截断
+  utils.cpp
+c:\study\github\lookoops\tool\imgseg\imgseg\src\utils.cpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\utils.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\include\filetool.hpp : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\study\github\lookoops\tool\imgseg\imgseg\src\utils.cpp(226): warning C4267: “参数”: 从“size_t”转换到“_Tp”，可能丢失数据
+          with
+          [
+              _Tp=int
+          ]
+  正在生成代码...
   ImgSeg.vcxproj -> C:\Study\github\Lookoops\tool\ImgSeg\x64\Debug\ImgSeg.exe

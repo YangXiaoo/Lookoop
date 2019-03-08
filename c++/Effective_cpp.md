@@ -49,3 +49,51 @@ Dirctory tmp_dir(); 		// 创建一个tmp_dir不会受tfs是已经先被初始化
 ## 6. 若不想使用编译器自动生成的函数，就该明确拒绝
 - c++11使用=delete。
 - 将相应的成员函数声明为private并且不予实现。或者写一个基类将基类的构造或析构函数作为private成员。
+
+## 7. 为多态基类声明virtual析构函数
+- 带有多态性质的基类若没有虚析构，删除指向基类的指针对象可能不会释放掉派生类资源
+- 若多态性质class拥有任何virtual，它必须拥有一个virtual析构函数
+- 若class不是作为基类或不具备多态性质(ploymorphically)，就不该声明virtual析构函数。
+
+## 8. 别让异常逃离析构函数
+- 析构函数不要抛出异常。
+```cpp
+class DBConn {
+ public:
+	void close() {			// 提供用户使用新函数
+		db.close();
+		closed = true;
+	}
+	~DBConn() {
+		if (!closed) {
+			try {
+				db.close();
+			}
+			catch(...) {
+				...			// 捕捉错误并吞下
+			}
+		}
+	}
+ private:
+ DBConnection db;
+ bool closed;
+}
+```
+
+## 9. 绝不在构造和析构工程中调用virtual函数
+- 不会下降至派生类
+
+## 10. 令operator=返回一个reference to *this
+- 为实现`连锁赋值`，赋值操作符必须返回一个reference指向操作符左侧的实参。
+
+## 11. 在operator=中处理"自我赋值"
+因为在赋值过程中可能自己赋值给自己，可能会造成指针指向null
+见p54
+三种解决办法：
+- identity test,不具备异常安全性
+- 手工排序语句，先记住原先的指针，然后将原先指针指向新指针，删除原先指针。
+- 使用copy-and-swap
+
+## 12. 复制对象时勿忘其每一个成分
+- 若copy构造函数与copy assignment操作符有相似代码，消除重复代码做法是建立一个新的成员函数给两者调用。这样的成员函数往往是private，并且常被命名为init。
+

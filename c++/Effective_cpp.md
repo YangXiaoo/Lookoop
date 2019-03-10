@@ -224,3 +224,19 @@ make sure public inheritance modles "is-a"
 - pure virtual：只具体制定接口继承。必须重新定义。
 - impure virtual: 制定接口继承及缺省实现继承。可以不用重新定义，这样继承缺省版本。
 - non-virtual:指定接口函数以及强制性实现继承。不需要重新定义。
+
+## 35. 考虑virtual函数以外的其他选择
+- function的行为像一般函数指针。
+
+## 36. 绝不重新定义继承而来的non-virtual函数
+- Never redefine an inherited non-virtual function
+
+
+## 37. 绝不重新定义继承而来的缺省参数值
+- 缺省参数值都是静态绑定，而virtual函数-唯一应该覆写的东西-却是动态绑定。
+
+## 38. 通过复合塑模出has-a或根据某事物实现出
+- Model "has-a" or "is-implemented-in-terms-of" through composition
+
+## 39. 明智审慎地使用private继承
+- EBO(empty base optimization)，一般只在单一继承下使用

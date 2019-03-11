@@ -240,3 +240,5 @@ make sure public inheritance modles "is-a"
 
 ## 39. 明智审慎地使用private继承
 - EBO(empty base optimization)，一般只在单一继承下使用
+
+## 40. 

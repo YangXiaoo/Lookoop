@@ -241,4 +241,29 @@ make sure public inheritance modles "is-a"
 ## 39. 明智审慎地使用private继承
 - EBO(empty base optimization)，一般只在单一继承下使用
 
-## 40.
+## 40. 明智而审慎地使用多重继承
+- 如果virtual base class不带任何数据，将是最具实用价值的情况
+
+## 41. 了解隐式接口和编译期多态
+- 对于classes而言接口是显式的，以函数签名为中心。多态则是通过virtual函数发生在运行期。
+- 对于template参数而言，接口是隐式的，奠基于有效表达式。多态则是通过template具现化和函数重载解析发生在编译期。
+
+## 42. 了解typename的双重意义
+- 声明template参数时，关键词class和typename可以互换。
+- 使用关键词typename标识嵌套从属类型名称；但是不得在base class line或member initialization list内以它作为base class修饰符。
+
+## 43. 学习处理模板化基类
+解决c++不进入templatized base classes观察的行为失效有三种办法：
+- base class函数调用动作之前加上`this->`。
+- 使用using声明式。
+- 显式指明被调用的函数位于base class内。
+
+## 44. 将与参数无关的代码抽离templates
+- templates生成多个class和多个函数，所以任何template代码都不该与某个造成膨胀的template参数产生相依关系。
+
+## 45. 应用成员函数模板接受所有兼容类型
+- 使用member function templates生成“可接受所有兼容类型”的函数。
+- 如果你声明member templates用于“泛华copy函数”或“泛华assignment操作”，你还是需要声明正常的copy构造函数和copy assignment操作符。
+
+## 46. 需要类型转换函数时请为模板定义非成员函数
+- Define non-member functions inside templates when type conversions are desired

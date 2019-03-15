@@ -762,7 +762,7 @@
 	LinkedBlockingDeque是Deque的并发实现,在队列为空的时候,它的takeFirst,takeLast会阻塞等待队列处于可用状态
 
 29. Map
-	HashMap // 线程非安全
+	HashMap // 线程非安全, 允许使用null键和null值
 	TreeMap	// 线程不安全，不允许null
 	HashTable // 线程安全，比较慢
 	HashMap<String, Integer> map = new HashMap<>();

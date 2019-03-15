@@ -253,7 +253,7 @@
 	Character.isLetterOrDigit(tail)
 	Character.toLowerCase('E'); // 'e'
 
-17. String
+16.1. String
 	
 	String s = "Yauno";
 	String c = "Yauno123";
@@ -279,6 +279,8 @@
 
 	s.subSequence(1,3); // "-X-"
 
+	String message = String.format("hello, %s. Next year, you'll be %d", name, age);
+
 
 	String substring(int beginIndex, int endIndex) // 包含起始位置，不包括结束索引位置
 
@@ -291,20 +293,259 @@
 	String m = new String("   xbb   ");
 	m.trim(); // "xbb"
 
+16.2 Scanner
+	Scanner in = new Scanner(System.in);
+	String s = in.nextLine(); // 读取输入下一行内容
+	String sNext = in.next(); // 读取下一个单词，以空格作为分隔符
+	int nextint = in.nextInt();
+	double nextdouble = in.nextDouble();
+	boolean hasnxt = in.hasNext();
+	boolean hasnextint = in.hasNextInt();
+	boolean hasdouble = in.hasNextDouble();
+
+17 Arrays 
+  17.1. Arrays.asList(T… data) 
+	// 注意：该方法返回的是Arrays内部静态类ArrayList，而不是我们平常使用的ArrayList,，该静态类ArrayList没有覆盖父类的add, remove等方法，所以如果直接调用，会报UnsupportedOperationException异常
+
+	// 将数组转换为集合，接收一个可变参
+	17.1.1 List<Integer> list = Arrays.asList(1, 2, 3);
+	list.forEach(System.out::println); // 1 2 3
+
+	Integer[] data = {1, 2, 3};
+	List<Integer> list = Arrays.asList(data);
+
+	// 如果将基本数据类型的数组作为参数传入， 
+	// 该方法会把整个数组当作返回的List中的第一个元素
+	int[] data = {1, 2, 3};
+	17.1.2 List<int[]> list = Arrays.asList(data);
+	System.out.println(list.size()); // 1
+	System.out.println(Arrays.toString(list.get(0))); // [1, 2, 3]
+
+  17.2、Arrays.fill()
+
+	17.2.1 Arrays.fill(Object[] array, Object obj)
+	// 用指定元素填充整个数组（会替换掉数组中原来的元素）
+	Integer[] data = {1, 2, 3, 4};
+	Arrays.fill(data, 9);
+	System.out.println(Arrays.toString(data)); // [9, 9, 9, 9]
+
+	17.2.2 Arrays.fill(Object[] array, int fromIndex, int toIndex, Object obj)
+	// 用指定元素填充数组，从起始位置到结束位置，取头不取尾（会替换掉数组中原来的元素）
+	Integer[] data = {1, 2, 3, 4};
+	Arrays.fill(data, 0, 2, 9);
+
+  17.3、Arrays.sort()
+	17.3.1 Arrays.sort(Object[] array)
+	// 对数组元素进行排序（串行排序）
+	String[] data = {"1", "4", "3", "2"};
+	System.out.println(Arrays.toString(data)); // [1, 4, 3, 2]
+	Arrays.sort(data);
+	System.out.println(Arrays.toString(data)); // [1, 2, 3, 4]
+
+	17.3.2 Arrays.sort(T[] array, Comparator<? super T> comparator)
+	// 使用自定义比较器，对数组元素进行排序（串行排序）
+	String[] data = {"1", "4", "3", "2"};
+	System.out.println(Arrays.toString(data)); // [1, 4, 3, 2]
+	// 实现降序排序，返回-1放左边，1放右边，0保持不变
+	Arrays.sort(data, (str1, str2) -> {
+	    if (str1.compareTo(str2) > 0) {
+	        return -1;
+	    } else {
+	        return 1;
+	    }
+	});
+
+	// other
+	17.3.3 Arrays.sort(Object[] array, int fromIndex, int toIndex)
+
+
+	17.3.4 Arrays.sort(T[] array, int fromIndex, int toIndex, Comparator<? super T> c)
+	使用自定义比较器，对数组元素的指定范围进行排序（串行排序）
+	String[] data = {"1", "4", "3", "2"};
+	System.out.println(Arrays.toString(data)); // [1, 4, 3, 2]
+	// 对下标[0, 3)的元素进行降序排序，即对1，4，3进行降序排序，2保持不变
+	Arrays.sort(data, 0, 3, (str1, str2) -> {
+	    if (str1.compareTo(str2) > 0) {
+	        return -1;
+	    } else {
+	        return 1;
+	    }
+	});
+	System.out.println(Arrays.toString(data)); // [4, 3, 1, 2]
+
+  17.4、Arrays.parallelSort() 
+	// 注意：其余重载方法与 sort() 相同
+
+	17.4.1 Arrays.parallelSort(T[] array)
+		// 对数组元素进行排序（并行排序），当数据规模较大时，会有更好的性能
+		String[] data = {"1", "4", "3", "2"};
+		Arrays.parallelSort(data);
+		System.out.println(Arrays.toString(data)); // [1, 2, 3, 4]
+
+  17.5、Arrays.binarySearch() 
+	// 注意：在调用该方法之前，必须先调用sort()方法进行排序，如果数组没有排序， 
+	// 那么结果是不确定的，此外如果数组中包含多个指定元素，则无法保证将找到哪个元素
+
+	17.5.1 Arrays.binarySearch(Object[] array, Object key)
+	// 使用 二分法 查找数组内指定元素的索引值
+
+	// 这里需要先看下binarySearch()方法的源码，对了解该方法有很大的帮助 
+
+
+	// 搜索元素是数组元素，则返回该元素的索引值
+	// 如果不是数组元素，则返回 - (索引值 + 1)，具体的用法可以看下面的例子
+	// 搜索元素是数组元素，返回该元素索引值
+
+	Integer[] data = {1, 3, 5, 7};
+	Arrays.sort(data);
+	System.out.println(Arrays.binarySearch(data, 1)); // 0
+
+	// 搜索元素不是数组元素，且小于数组中的最小值
+	Integer[] data = {1, 3, 5, 7};
+	Arrays.sort(data);
+	// 此时程序会把数组看作 {0, 1, 3, 5, 7}，此时0的索引值为0，则搜索0时返回 -(0 + 1) = -1
+	System.out.println(Arrays.binarySearch(data, 0)); // -1
+
+	// 搜索元素不是数组元素，且大于数组中的最大值
+	Integer[] data = {1, 3, 5, 7};
+	Arrays.sort(data);
+	// 此时程序会把数组看作 {1, 3, 5, 7， 9}，此时9的索引值为4，则搜索8时返回 -(4 + 1) = -5
+	System.out.println(Arrays.binarySearch(data, 8)); // -5
+
+	// 搜索元素不是数组元素，但在数组范围内
+	Integer[] data = {1, 3, 5, 7};
+	Arrays.sort(data);
+	// 此时程序会把数组看作 {1, 2, 3, 5, 7}，此时2的索引值为1，则搜索2时返回 -(1 + 1) = -2
+	System.out.println(Arrays.binarySearch(data, 2)); // -2
+
+	17.5.2 Arrays.binarySearch(Object[] array, int fromIndex, int toIndex, Object obj)
+	// 使用 二分法 查找数组内指定范围内的指定元素的索引值
+	Integer[] data = {1, 3, 5, 7};
+	Arrays.sort(data);
+	// {1, 3}，3的索引值为1
+	System.out.println(Arrays.binarySearch(data, 0, 2, 3)); // 1
+
+  17.6、Arrays.copyOf()
+	17.6.1 Arrays.copyOf(T[] original, int newLength)
+	// 拷贝数组，其内部调用了 System.arraycopy() 方法，从下标0开始，如果超过原数组长度，会用null进行填充
+	Integer[] data1 = {1, 2, 3, 4};
+	Integer[] data2 = Arrays.copyOf(data1, 2);
+	System.out.println(Arrays.toString(data2)); // [1, 2]
+	Integer[] data2 = Arrays.copyOf(data1, 5);
+	System.out.println(Arrays.toString(data2)); // [1, 2, 3, 4, null]
+
+  17.7、Arrays.copyOfRange(T[] original, int from, int to)
+	// 拷贝数组，指定起始位置和结束位置，如果超过原数组长度，会用null进行填充
+	Integer[] data1 = {1, 2, 3, 4};
+	Integer[] data2 = Arrays.copyOfRange(data1, 0, 2);
+	System.out.println(Arrays.toString(data2)); // [1, 2]
+	Integer[] data2 = Arrays.copyOfRange(data1, 0, 5);
+	System.out.println(Arrays.toString(data2)); // [1, 2, 3, 4, null]
+
+  17.8、Arrays.equals(Object[] array1, Object[] array2)
+	// 判断两个数组是否相等，实际上比较的是两个数组的哈希值，即 Arrays.hashCode(data1) == Arrays.hashCode(data2)
+	Integer[] data1 = {1, 2, 3};
+	Integer[] data2 = {1, 2, 3};
+	System.out.println(Arrays.equals(data1, data2)); // true
+
+  17.9、Arrays.deepEquals(Object[] array1, Object[] array2)
+	// 判断两个多维数组是否相等，实际上比较的是两个数组的哈希值，即 Arrays.hashCode(data1) == Arrays.hashCode(data2)
+	Integer[][] data1 = {{1,2,3}, {1,2,3}};
+	Integer[][] data2 = {{1,2,3}, {1,2,3}};
+	System.out.println(Arrays.deepEquals(data1, data2)); // true
+
+  17.10、Arrays.hashCode(Object[] array)
+	// 返回数组的哈希值
+	Integer[] data = {1, 2, 3};
+	System.out.println(Arrays.hashCode(data)); // 30817
+
+  17.11、Arrays.deepHashCode(Object[] array)
+	// 返回多维数组的哈希值
+	Integer[][] data = {{1, 2, 3}, {1, 2, 3}};
+	System.out.println(Arrays.deepHashCode(data)); // 987105
+
+  17.12、Arrays.toString(Object[] array)
+	// 返回数组元素的字符串形式
+	Integer[] data = {1, 2, 3};
+	System.out.println(Arrays.toString(data)); // [1, 2, 3]
+
+  17.13、Arrays.deepToString(Object[] array)
+	// 返回多维数组元素的字符串形式
+	Integer[][] data = {{1, 2, 3}, {1, 2, 3}};
+	System.out.println(Arrays.deepToString(data)); // [[1, 2, 3], [1, 2, 3]]
+
+  17.14、Arrays.setAll(T[] array, IntFunction
+	Integer[] data = {1, 2, 3, 4};
+	// i为索引值
+	Arrays.setAll(data, i -> data[i] * 2);
+	System.out.println(Arrays.toString(data)); // [2, 4, 6, 8]
+
+  17.15、Arrays.parallelSetAll(T[] array, IntFunction
+	Integer[] data = {2, 3, 4, 5};
+	// 第一个元素2不变，将其与第二个元素3一起作为参数x, y传入，得到乘积6，作为数组新的第二个元素
+	// 再将6和第三个元素4一起作为参数x, y传入，得到乘积24，作为数组新的第三个元素，以此类推
+	Arrays.parallelPrefix(data, (x, y) -> x * y);
+	System.out.println(Arrays.toString(data)); // [2, 6, 24, 120]
+
+
+  17.16、Arrays.spliterator(T[] array)
+	// 返回数组的分片迭代器，用于并行遍历数组
+	public class Students {
+
+	    private String name;
+
+	    private Integer age;
+
+	    public Students(String name, Integer age) {
+	        this.name = name;
+	        this.age = age;
+	    }
+	    // 省略get、set方法
+	}
+
+	public static void main(String[] args) {
+	    Students[] data = new Students[5];
+	    IntStream.range(0,5).forEach(i -> data[i] = new Students("小明"+i+"号", i));
+	    // 返回分片迭代器
+	    Spliterator<Students> spliterator = Arrays.spliterator(data);
+	    spliterator.forEachRemaining(stu -> {
+	        System.out.println("学生姓名: " + stu.getName() + "  " + "学生年龄: " + stu.getAge());
+	        // 学生姓名: 小明0号  学生年龄: 0
+	        // 学生姓名: 小明1号  学生年龄: 1
+	        // 学生姓名: 小明2号  学生年龄: 2
+	        // 学生姓名: 小明3号  学生年龄: 3
+	        // 学生姓名: 小明4号  学生年龄: 4
+	    });
+	}
+
+  17.17、Arrays.stream(T[] array)
+	// 返回数组的流Stream，然后我们就可以使用Stream相关的许多方法了
+	Integer[] data = {1, 2, 3, 4};
+	List<Integer> list = Arrays.stream(data).collect(toList());
+	System.out.println(list); // [1, 2, 3, 4]
+
+
 18. StringBuffer & StringBuilder
 	和 String 类不同的是，这两个类的对象能够被多次修改并且不产生新的未使用对象。
 	StringBuffer 速度弱于 StringBuilder,但线程安全时喜不适用 StringBuffer 
 
 	StringBuffer s = new StringBuffer("yauno");
+	String ss = s.toString();
 	public StringBuffer append(String s)
 	public StringBuffer reverse()
 	public delete(int start, int end)
 	public insert(int offset, int i)
 	replace(int start, int end, String s)
 
+
 19. 时间
 	Date date = new Date();
 	date.toString();
+
+	LocalDate date = new LocalDate.now();
+	int month = date.getMonthValue();
+	int day = date.getDayOfMonth();
+	...
 
 20. 可变参数
 	typeName... parameterName
@@ -469,8 +710,7 @@
 	E 	pollFirst()	弹出队列头部元素,队列为空时返回null 
 	E 	pollLast()	弹出队列尾部元素,队列为空时返回null 
 
-	同 Queue一样 Deque的实现也可以划分成通用实现和并发实现.通用实现主要有两个实现类ArrayDeque和LinkedList.
-
+	同Queue一样Deque的实现也可以划分成通用实现和并发实现.通用实现主要有两个实现类ArrayDeque和LinkedList.
 29. HashMap
 	HashMap<String, Integer> map = new HashMap<>();
 	map.put("sss", 1);
@@ -488,75 +728,3 @@
 	Stack<Integer> stack = new Stack<>();
 	stack.push(xx);
 	stack.pop(xx);
-
-
-32. java extend 和 implements 的区别
-	1. 在类的声明中，通过关键字extends来创建一个类的子类。一个类通过关键字implements声明自己使用一个或者多个接口。
-	extends 是继承某个类, 继承之后可以使用父类的方法, 也可以重写父类的方法; implements 是实现多个接口, 接口的方法一般为空的, 必须重写才能使用
-	2.extends是继承父类，只要那个类不是声明为final或者那个类定义为abstract的就能继承，JAVA中不支持多重继承，但是可以用接口 来实现，这样就要用到implements，继承只能继承一个类，但implements可以实现多个接口，用逗号分开就行了
-	比如 class A extends B implements C,D,E
-
-33. final
-在java中，final的含义在不同的场景下有细微的差别，但总体上来说，它指的是“这是不可变的”。下面，我们来讲final的四种主要用法。
-
-1.修饰数据
-在编写程序时，我们经常需要说明一个数据是不可变的，我们成为常量。在java中，用final关键字修饰的变量，只能进行一次赋值操作，并且在生存期内不可以改变它的值。更重要的是，final会告诉编译器，这个数据是不会修改的，那么编译器就可能会在编译时期就对该数据进行替换甚至执行计算，这样可以对我们的程序起到一点优化。不过在针对基本类型和引用类型时，final关键字的效果存在细微差别。我们来看下面的例子：
-
-复制代码
- 1 class Value {
- 2     int v;
- 3     public Value(int v) {
- 4         this.v = v;
- 5     }
- 6 }
- 7 
- 8 public class FinalTest {
- 9     
-10     final int f1 = 1;
-11     final int f2;
-12     public FinalTest() {
-13         f2 = 2;
-14     }
-15 
-16     public static void main(String[] args) {
-17         final int value1 = 1;
-18         // value1 = 4;
-19         final double value2;
-20         value2 = 2.0;
-21         final Value value3 = new Value(1);
-22         value3.v = 4;
-23     }
-24 }
-复制代码
-上面的例子中，我们先来看一下main方法中的几个final修饰的数据，在给value1赋初始值之后，我们无法再对value1的值进行修改，final关键字起到了常量的作用。从value2我们可以看到，final修饰的变量可以不在声明时赋值，即可以先声明，后赋值。value3时一个引用变量，这里我们可以看到final修饰引用变量时，只是限定了引用变量的引用不可改变，即不能将value3再次引用另一个Value对象，但是引用的对象的值是可以改变的，从内存模型中我们看的更加清晰：
-
-
-
-上图中，final修饰的值用粗线条的边框表示它的值是不可改变的，我们知道引用变量的值实际上是它所引用的对象的地址，也就是说该地址的值是不可改变的，从而说明了为什么引用变量不可以改变引用对象。而实际引用的对象实际上是不受final关键字的影响的，所以它的值是可以改变的。
-
-另一方面，我们看到了用final修饰成员变量时的细微差别，因为final修饰的数据的值是不可改变的，所以我们必须确保在使用前就已经对成员变量赋值了。因此对于final修饰的成员变量，我们有且只有两个地方可以给它赋值，一个是声明该成员时赋值，另一个是在构造方法中赋值，在这两个地方我们必须给它们赋初始值。
-
-最后我们需要注意的一点是，同时使用static和final修饰的成员在内存中只占据一段不能改变的存储空间。
-
-2.修饰方法参数
-前面我们可以看到，如果变量是我们自己创建的，那么使用final修饰表示我们只会给它赋值一次且不会改变变量的值。那么如果变量是作为参数传入的，我们怎么保证它的值不会改变呢？这就用到了final的第二种用法，即在我们编写方法时，可以在参数前面添加final关键字，它表示在整个方法中，我们不会（实际上是不能）改变参数的值：
-
-复制代码
-public class FinalTest {
-
-    /* ... */
-
-    public void finalFunc(final int i, final Value value) {
-        // i = 5; 不能改变i的值
-        // v = new Value(); 不能改变v的值
-        value.v = 5; // 可以改变引用对象的值
-    }
-}
-复制代码
-3.修饰方法
-第三种方式，即用final关键字修饰方法，它表示该方法不能被覆盖。这种使用方式主要是从设计的角度考虑，即明确告诉其他可能会继承该类的程序员，不希望他们去覆盖这个方法。这种方式我们很容易理解，然而，关于private和final关键字还有一点联系，这就是类中所有的private方法都隐式地指定为是final的，由于无法在类外使用private方法，所以也就无法覆盖它。
-
-4.修饰类
-了解了final关键字的其他用法，我们很容易可以想到使用final关键字修饰类的作用，那就是用final修饰的类是无法被继承的。
-
-上面我们讲解了final的四种用法，然而，对于第三种和第四种用法，我们却甚少使用。这不是没有道理的，从final的设计来讲，这两种用法甚至可以说是鸡肋，因为对于开发人员来讲，如果我们写的类被继承的越多，就说明我们写的类越有价值，越成功。即使是从设计的角度来讲，也没有必要将一个类设计为不可继承的。Java标准库就是一个很好的反例，特别是Java 1.0/1.1中Vector类被如此广泛的运用，如果所有的方法均未被指定为final的话，它可能会更加有用。如此有用的类，我们很容易想到去继承和重写他们，然而，由于final的作用，导致我们对Vector类的扩展受到了一些阻碍，导致了Vector并没有完全发挥它应有的全部价值。

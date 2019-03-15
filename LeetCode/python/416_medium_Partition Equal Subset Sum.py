@@ -40,7 +40,7 @@ class Solution:
 
         return (_sum / 2)  in possible
 
-
+# https://leetcode.com/problems/partition-equal-subset-sum/discuss/90588/Concise-C%2B%2B-Solution-summary-with-DFS-DP-BIT
 # bool canPartition(vector<int>& nums) {
 #     int sum = accumulate(nums.begin(), nums.end(), 0), target = sum >> 1;
 #     if (sum & 1) return false;

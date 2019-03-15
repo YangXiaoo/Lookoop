@@ -79,7 +79,7 @@ def classFile(files):
 
 
 def main():
-    dirs = "C:\\Study\\github\\Lookoop\\LeetCode"
+    dirs = r"C:\Study\github\Lookoops\LeetCode"
     files = file(dirs)
     res = handle(files)
 

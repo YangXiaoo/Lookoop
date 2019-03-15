@@ -650,32 +650,53 @@
 	https://www.cnblogs.com/111testing/p/6602603.html
 	List:元素是有序的(怎么存的就怎么取出来，顺序不会乱)，元素可以重复（角标1上有个3，角标2上也可以有个3）因为该集合体系有索引，
 
-	ArrayList：底层的数据结构使用的是数组结构（数组长度是可变的百分之五十延长）（特点是查询很快，但增删较慢）线程不同步
+	26.1 ArrayList：底层的数据结构使用的是数组结构（数组长度是可变的百分之五十延长）（特点是查询很快，但增删较慢）线程不同步
 
-	LinkedList：底层的数据结构是链表结构（特点是查询较慢，增删较快）
-	Vector：底层是数组数据结构 线程同步（数组长度是可变的百分之百延长）（无论查询还是增删都很慢，被ArrayList替代了）
+	26.2 LinkedList：底层的数据结构是链表结构（特点是查询较慢，增删较快）
+	26.3 Vector：底层是数组数据结构 线程同步（数组长度是可变的百分之百延长）（无论查询还是增删都很慢，被ArrayList替代了）
 	List接口的常用实现类有ArrayList和LinkedList，在使用List集合时，通常情况下声明为List类型，实例化时根据实际情况的需要，实例化为ArrayList或LinkedList，例如：
 	List<String> l = new ArrayList<String>();// 利用ArrayList类实例化List集合
 	List<String> l2 = new LinkedList<String>();// 利用LinkedList类实例化List集合
-
-	// 实例
 	String a = "A", b = "B", c = "C";
 	List<String> list = new LinkedList<String>();
+
 	list.add(a);
+	list.remove(0); 
+	list.remove("A");
 	list.size(); // int[] s  --->  s.length;
 	list.contains("a,b,c");
 	list.clear();
 	list.set(1, b);// 将索引位置为1的对象e修改为对象b
 	list.add(2, c);// 将对象c添加到索引位置为2的位置
 	for (int i = 0; i < list.size(); i++) {
-	System.out.println(list.get(i));// 利用get(int index)方法获得指定索引位置的对象
+		System.out.println(list.get(i));// 利用get(int index)方法获得指定索引位置的对象
 	}
+	// for的形式
+	for (int i=0;i<arr.size();i++) {...}
+	// foreach的形式： 
+	for (int　i：arr) {...}
+	// iterator的形式：
+	Iterator it = arr.iterator();
+	while (it.hasNext()){ object o =it.next(); ...}
+
 
 27. Queue
-	https://www.cnblogs.com/lemon-flm/p/7877898.html
-	Queue: FIFO 数据结构，与 Set, List 同一级别，都是继承 Collection, 用 LinkedList 实现 Queue 接口
-
-	列队的方法，不全都是 Queue 的
+	// Queue: FIFO 数据结构，与 Set, List 同一级别，都是继承 Collection, 用 LinkedList 实现 Queue 接口
+	// https://www.cnblogs.com/lemon-flm/p/7877898.html
+	// 非阻塞
+	PriorityQueue
+	ConcurrentLinkedQueue
+	// 双端列队
+	Deque
+	// 阻塞列队
+	BlockingQueue为接口
+	ArrayBlockingQueue // 一个由数组支持的有界队列。在构造时需要指定容量， 并可以选择是否需要公平性，如果公平参数被设置true，等待时间最长的线程会优先得到处理（其实就是通过将ReentrantLock设置为true来 达到这种公平性的：即等待时间最长的线程会先操作）。通常，公平性会使你在性能上付出代价，只有在的确非常需要的时候再使用它。它是基于数组的阻塞循环队 列，此队列按 FIFO（先进先出）原则对元素进行排序。
+　　LinkedBlockingQueue //一个由链接节点支持的可选有界队列。容量是没有上限的（说的不准确，在不指定时容量为Integer.MAX_VALUE，不要然的话在put时怎么会受阻呢），但是也可以选择指定其最大容量，它是基于链表的队列，此队列按 FIFO（先进先出）排序元素。
+　　PriorityBlockingQueue //一个由优先级堆支持的无界优先级队列。是一个带优先级的 队列，而不是先进先出队列。元素按优先级顺序被移除，该队列也没有上限（看了一下源码，PriorityBlockingQueue是对 PriorityQueue的再次包装，是基于堆数据结构的，而PriorityQueue是没有容量限制的，与ArrayList一样，所以在优先阻塞 队列上put时是不会受阻的。虽然此队列逻辑上是无界的，但是由于资源被耗尽，所以试图执行添加操作可能会导致 OutOfMemoryError），但是如果队列为空，那么取元素的操作take就会阻塞，所以它的检索操作take是受阻的。另外，往入该队列中的元 素要具有比较能力。
+　　DelayQueue //一个由优先级堆支持的、基于时间的调度队列。是一个存放Delayed 元素的无界阻塞队列，只有在延迟期满时才能从中提取元素。该队列的头部是延迟期满后保存时间最长的 Delayed 元素。如果延迟都还没有期满，则队列没有头部，并且poll将返回null。当一个元素的 getDelay(TimeUnit.NANOSECONDS) 方法返回一个小于或等于零的值时，则出现期满，poll就以移除这个元素了。此队列不允许使用 null 元素。
+　　SynchronousQueue //一个利用 BlockingQueue 接口的简单聚集（rendezvous）机制。
+	BlockingQueue<String> queue = new ArrayBlockingQueue<String>();
+	阻塞列队的方法
 　　add      增加一个元索                     如果队列已满，则抛出一个IIIegaISlabEepeplian异常
 　　remove   移除并返回队列头部的元素    如果队列为空，则抛出一个NoSuchElementException异常
 　　element  返回队列头部的元素             如果队列为空，则抛出一个NoSuchElementException异常
@@ -685,7 +706,34 @@
 　　put      添加一个元素                      如果队列满，则阻塞
 　　take     移除并返回队列头部的元素     如果队列为空，则阻塞
 
-	remove、element、offer 、poll、peek,isEmpty() 其实是属于Queue接口。 
+	remove、element、offer、poll、peek,isEmpty() 是属于Queue接口。 
+
+	// 遍历
+	Queue<String> waitingQueue = new LinkedList<>();
+	// 遍历using Java 8 forEach()
+    waitingQueue.forEach(name -> {
+        System.out.println(name);
+    });
+
+    // 遍历 iterator()
+    Iterator<String> waitingQueueIterator = waitingQueue.iterator();
+    while (waitingQueueIterator.hasNext()) {
+        String name = waitingQueueIterator.next();
+        System.out.println(name);
+    }
+
+    // 遍历 iterator() and Java 8 forEachRemaining()
+    waitingQueueIterator = waitingQueue.iterator();
+    waitingQueueIterator.forEachRemaining(name -> {
+        System.out.println(name);
+    });
+
+    // 遍历using simple for-each loop ===");
+    for(String name: waitingQueue) {
+        System.out.println(name);
+    }
+
+
 28. Deque
 	https://www.cnblogs.com/bushi/p/6681543.html
 	修饰符和返回值	方法名	描述
@@ -711,20 +759,84 @@
 	E 	pollLast()	弹出队列尾部元素,队列为空时返回null 
 
 	同Queue一样Deque的实现也可以划分成通用实现和并发实现.通用实现主要有两个实现类ArrayDeque和LinkedList.
-29. HashMap
+	LinkedBlockingDeque是Deque的并发实现,在队列为空的时候,它的takeFirst,takeLast会阻塞等待队列处于可用状态
+
+29. Map
+	HashMap // 线程非安全
+	TreeMap	// 线程不安全，不允许null
+	HashTable // 线程安全，比较慢
 	HashMap<String, Integer> map = new HashMap<>();
 	map.put("sss", 1);
-	map.containsKey(xx);
-	map.constains(xx);
+	map.get("sss"); // 不存在返回null
+	map.pullAll(Map<? extends K,? extends V> m);
+	boolean iscontain =  map.containsKey(xx);
+	boolean iscontain =  map.constainsValue(xx);
+	boolean isempty = map.isEmpty(); 
 	map.remove(xx);
+	map.clear();
+	int size = map.size();
+	// 遍历法1
+	Iterator it = map.keySet().iterator();
+	    //获取迭代器
+	    while(it.hasNext()){
+	        Object key = it.next();
+	        System.out.println(map.get(key));
+	    }
+	// 遍历法2
+    Collection<String> vs = map.values();
+    Iterator<String> it = vs.iterator();
+    while (it.hasNext()) {
+        String value = it.next();
+        System.out.println(" value=" + value);
+    }
+    // 法3, 效率最高
+    // 返回的Map.Entry对象的Set集合 Map.Entry包含了key和value对象
+    Set<Map.Entry<Integer, String>> es = map.entrySet();
+    Iterator<Map.Entry<Integer, String>> it = es.iterator();
+    while (it.hasNext()) {
+        // 返回的是封装了key和value对象的Map.Entry对象
+        Map.Entry<Integer, String> en = it.next();
+        // 获取Map.Entry对象中封装的key和value对象
+        Integer key = en.getKey();
+        String value = en.getValue();
+        System.out.println("key=" + key + " value=" + value);
+    }
 
 30. Set
+	30.1 HashSet // HashSet不允许重复（HashMap的key不允许重复，如果出现重复就覆盖）,
+	 			 // 允许null值，非线程安全
+
+	30.2 TreeSet // 使用元素的自然顺序对元素进行排序。
+				 // 或者根据创建 set 时提供的 Comparator进行排序，具体取决于使用的构造方法
 	Set<ListNode> set = new HashSet<>();
 	set.contains(xx);
 	set.remove(xx);
 	set.add(xx)
+	set.clear();
+	set.clone(); // 浅复制
+	set.isEmpty();
+	// 遍历1
+	Set<String> set = new HashSet<String>();  
+	Iterator<String> it = set.iterator();  
+	while (it.hasNext()) {  
+	  String str = it.next();  
+	  System.out.println(str);  
+	}  
+	// 遍历2
+	// for(foreach)循环遍历
+	for (String str : set) {  
+	      System.out.println(str);  
+	} 
 
 31. Stack
 	Stack<Integer> stack = new Stack<>();
-	stack.push(xx);
-	stack.pop(xx);
+	boolean empty() // 测试堆栈是否为空。
+	Object peek( ) // 查看堆栈顶部的对象，但不从堆栈中移除它。
+	Object pop( ) // 移除堆栈顶部的对象，并作为此函数的值返回该对象。
+	Object push(Object element) // 把项压入堆栈顶部。
+	int search(Object element) // 返回对象在堆栈中的位置，以 1 为基数。
+	             boolean       empty()
+	synchronized E             peek()
+	synchronized E             pop()
+	             E             push(E object)
+	synchronized int           search(Object o)

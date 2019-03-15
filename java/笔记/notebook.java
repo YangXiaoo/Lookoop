@@ -762,9 +762,40 @@
 	LinkedBlockingDeque是Deque的并发实现,在队列为空的时候,它的takeFirst,takeLast会阻塞等待队列处于可用状态
 
 29. Map
-	HashMap // 线程非安全, 允许使用null键和null值
+	HashMap // 线程非安全, 允许使用null键和null值, 会使用equals比较key对象
 	TreeMap	// 线程不安全，不允许null
 	HashTable // 线程安全，比较慢
+	LinkedHashMap // 
+	EnumMap // https://blog.csdn.net/ljh_learn_from_base/article/details/77991970 
+	// 实例
+		class EnumMapTest {
+			public enum Color{//默认继承  extends Enum类，所以枚举也是个类，既然是类就有构造函数，变量，方法等
+				RED, BLUE, BLACK, YELLOW, GREEN;//下标为0,1,2,3,4
+				@Override
+				public String toString() {
+					return super.toString()+"..."+super.ordinal();//ordinal()方法获取下标
+				}
+			}
+		 
+			public static void main(String[] args) {
+				EnumMap<Color, String> map = new EnumMap<>(Color.class);
+		         //System.out.println(Color.GREEN);
+				map.put(Color.YELLOW, "黄色");
+				map.put(Color.BLUE, null);
+				// map.put(null, "无"); //会报NullPonitException的错误
+				map.put(Color.RED, "红色");
+				map.put(Color.GREEN, "绿色");
+		        map.get(Color.BLACK);
+				for (Map.Entry<Color, String> entry : map.entrySet()) {
+					System.out.println(entry.getKey() + ":" + entry.getValue());
+				}
+				System.out.println(map);
+			}
+		}
+
+	WeakHashMap // 键和值都可以是null
+	IdentityHashMap // 使用 == 比较key对象, 要想key内容能够重复 (指的
+					// 是两个对象的地址不一样，key1!=key2）。则要使用IdentityHashMap类
 	HashMap<String, Integer> map = new HashMap<>();
 	map.put("sss", 1);
 	map.get("sss"); // 不存在返回null
@@ -808,6 +839,7 @@
 
 	30.2 TreeSet // 使用元素的自然顺序对元素进行排序。
 				 // 或者根据创建 set 时提供的 Comparator进行排序，具体取决于使用的构造方法
+	30.3 SortSet // 
 	Set<ListNode> set = new HashSet<>();
 	set.contains(xx);
 	set.remove(xx);

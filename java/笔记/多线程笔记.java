@@ -129,3 +129,60 @@
 														// 行同步。
 	
 	// 7-原子性
+	public static AtomicLong largest = new AtomicLong();
+	// Java SE 8 中更新largest
+	largest.updateAndGet(x -> Math.max(x, observed));
+	largest.accumulateAndGet(observed, Math::max);
+
+	// 8-死锁
+	// need do something
+
+	// 9-线程局部变量
+	// ThreadLocal 适用于每个线程需要自己独立的实例且该实例需要在多个方法中被使用, 
+	// 即变量在线程间隔离而在方法或类间共享的场景
+
+	// 问题原型
+	public static final SimpleDateFormat dateFormat = 
+		new SimpleDateFormat("yyyy-MM-dd");
+
+	String dateStamp = dateFormat.format(new Date);	// 不是线程安全
+
+	// 解决办法
+	public static final ThreadLocal<SimpleDateFormat> dateFormat = 
+		ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
+	String dateStamp = dateFormat.get().format(new Date);	// 使用
+
+	// 另一种初始化
+	private static ThreadLocal<StringBuilder> counter = 
+		new ThreadLocal<StringBuilder>() {
+      	@Override
+      	protected StringBuilder initialValue() {
+        	return new StringBuilder();
+      	}
+    };
+    String counterToString = counter.get().toString();
+
+    // 10-锁测试与超时
+    // lock方法不能被中断,而带有超时参数的tryLock，如果在等待期间被中断，将抛出
+    // InterruptedException异常, 允许程序打破死锁。
+    if (mylock.tryLock(100, TimeUnit.MILLISECONDS)) {	// 成功返回true, 失败返回
+    	try { ... }										// false。
+    	final { mylock.unlock(); }
+    } else {
+    	// do something
+    }
+
+    // 11-读/写锁
+    private ReentrantReadWriteLock wrl = new ReentrantReadWriteLock();
+    private Lock readLock = wrl.readLock();
+    private Lock writeLock = wrl.writeLock();
+
+5. 阻塞队列
+	// 见代码
+
+6. 线程安全的集合
+
+7. Callable与Future
+	// 见代码
+
+8. 执行器  

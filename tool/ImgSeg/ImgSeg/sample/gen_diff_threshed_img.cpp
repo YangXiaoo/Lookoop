@@ -31,11 +31,13 @@ using namespace std;
 void _generate_pic(Mat src, double value, 
                   double mean_value, string out_dir, 
                   string pic_path, int pic_number);
+
 /* 生成不用阈值分割的图片 */
 void gen_diff_threshed_img(const string pic_dir, 
                            string out_dir,
                            const vector<string> filer_patt,
                            const vector<int> clip_size);
+
 ///* 生成不同范围的阈值 */
 //vector<int> _generate_threshed_val(double mean_value);
 

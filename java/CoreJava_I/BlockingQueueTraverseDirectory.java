@@ -1,17 +1,22 @@
-// BlockingQueueReadFileTest.java
+// BlockingQueueTraverseDirectory.java
 // 2019-3-17
 
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.*;
 
-public class BlockingQueueReadFileTest {
+public class BlockingQueueTraverseDirectory {
     private static final int FILE_QUEUE_SIZE = 10;
     private static final int SEARCH_THREADS = 100;
     private static final File DUUMY = new File("");
+    private static ConcurrentLinkedQueue<File> results = new ConcurrentLinkedQueue<>();
     private static BlockingQueue<File> queue = new ArrayBlockingQueue<>(FILE_QUEUE_SIZE);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+        // https://blog.csdn.net/u011277123/article/details/54090304
+        // 使用CountDownLatch或者同步屏障或Thread.join()或Thread.sleep()等待
+        // 其余线程结束再运行另一个线程
+
         String directory = "C:\\Study\\github\\Lookoops\\java\\CoreJava_I";
         String keyword = ".java";
 
@@ -46,6 +51,10 @@ public class BlockingQueueReadFileTest {
 
             new Thread(searcher).start();
         }
+
+        System.out.println("[INFO] waiting for 5 sec to see results");
+        Thread.sleep(5000);
+        System.out.println(results.toString());
     }
 
     /**
@@ -74,7 +83,8 @@ public class BlockingQueueReadFileTest {
                 lineNumber++;
                 String line = in.nextLine();
                 if (line.contains(keyword)) {
-                    System.out.printf("%s:%d:%s%n", file.getPath(), lineNumber, line);
+                    results.offer(file);
+                    System.out.printf("[INFO] %s:%d:%s%n", file.getPath(), lineNumber, line);
                 }
             }
         }
@@ -89,7 +99,8 @@ public class BlockingQueueReadFileTest {
         try {
             String fileName = file.getName();
             if (fileName.contains(keyword)) {
-                System.out.printf("%s\n", file.getPath());
+                results.offer(file);
+                System.out.printf("[INFO] %s\n", file.getPath());
             }
         } catch (Exception e) {
             e.printStackTrace();

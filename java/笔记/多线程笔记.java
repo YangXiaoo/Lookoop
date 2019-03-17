@@ -186,3 +186,28 @@
 	// 见代码
 
 8. 执行器  
+
+
+9. 线程安全与不安全
+	// 线程不安全
+	ArrayList
+	LinkedList
+	HashMap
+	HashSet
+	TreeMap
+	TreeSet
+	StringBulider
+	// 线程安全
+	Vector 
+	HashTable
+	StringBuffer
+
+	// 使用同步包装器实现线程安全, 但还是需要同步方法
+	List<T> synchArrayList = Collections.synchronizedList(new ArrayList<T>());
+	Map<K, V> synchMap = Collections.synchronizedMap(new HashMap<K, V>());
+
+	// java.util.concurrent提供的线程安全集合
+	ConcurrentHashMap
+	ConcurrentSkipListMap
+	ConcurrentSkipListSet
+	ConcurrentLinkedQueue

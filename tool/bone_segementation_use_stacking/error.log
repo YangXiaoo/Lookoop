@@ -1,0 +1,32 @@
+2019-03-18 00:28:05,652 - api.py[line: 468] - ERROR - Error: name 'total' is not defined
+2019-03-18 00:28:05,653 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-1-2.4.png, skiped.
+saved in C:\Study\test\bone\sklearn_test_failed
+2019-03-18 00:28:05,653 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-1-2.4.png
+2019-03-18 00:28:15,444 - api.py[line: 468] - ERROR - Error: name 'total' is not defined
+2019-03-18 00:28:15,445 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-10-10.6.png, skiped.
+saved in C:\Study\test\bone\sklearn_test_failed
+2019-03-18 00:28:15,445 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-10-10.6.png
+2019-03-18 00:28:26,305 - api.py[line: 468] - ERROR - Error: name 'total' is not defined
+2019-03-18 00:28:26,305 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-10-10.61.png, skiped.
+saved in C:\Study\test\bone\sklearn_test_failed
+2019-03-18 00:28:26,306 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-10-10.61.png
+2019-03-18 00:28:29,277 - api.py[line: 468] - ERROR - Error: name 'total' is not defined
+2019-03-18 00:28:29,277 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-10-9.5.png, skiped.
+saved in C:\Study\test\bone\sklearn_test_failed
+2019-03-18 00:28:29,278 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-10-9.5.png
+2019-03-18 00:28:32,824 - api.py[line: 468] - ERROR - Error: name 'total' is not defined
+2019-03-18 00:28:32,824 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-10-9.9.png, skiped.
+saved in C:\Study\test\bone\sklearn_test_failed
+2019-03-18 00:28:32,824 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-10-9.9.png
+2019-03-18 00:28:46,911 - api.py[line: 468] - ERROR - Error: name 'total' is not defined
+2019-03-18 00:28:46,912 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-11-11.02.png, skiped.
+saved in C:\Study\test\bone\sklearn_test_failed
+2019-03-18 00:28:46,912 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-11-11.02.png
+2019-03-18 00:28:55,879 - api.py[line: 468] - ERROR - Error: name 'total' is not defined
+2019-03-18 00:28:55,879 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-11-11.22.png, skiped.
+saved in C:\Study\test\bone\sklearn_test_failed
+2019-03-18 00:28:55,879 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-11-11.22.png
+2019-03-18 00:29:03,023 - api.py[line: 468] - ERROR - Error: name 'total' is not defined
+2019-03-18 00:29:03,023 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-11-14.0.png, skiped.
+saved in C:\Study\test\bone\sklearn_test_failed
+2019-03-18 00:29:03,024 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-11-14.0.png

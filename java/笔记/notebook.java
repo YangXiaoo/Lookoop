@@ -260,6 +260,7 @@
 	int res = s.compareTo(c); // 返回差值；小于则返回小于0；等于返回0
 	int res = s.compareToIgnoreCase(n);
 	String res = s.concat(c);
+	void s.contains(keyword);
 	int index = s.indexOf('0');
 	int lastindex = s.lastindexOf('n'); // lastindexOf(int ch, int fromIndex) 第二个参数为从指定位置开始搜索，默认为最后一位
 	int leng = s.length();

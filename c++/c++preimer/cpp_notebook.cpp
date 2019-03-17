@@ -147,3 +147,92 @@
 	q.top();	// 返回最高优先元素, 但不删除钙元素,只适用于priority_queue
 	q.push(item);
 	q.emplace(args);
+
+
+// ************************************************************************** //
+// 关联容器
+按关键字有序保存的元素
+	// 必须在关键词上定义一个严格弱序即“小于等于”
+	map 
+	set 
+	multimap
+	multiset 
+无序集合
+	unordered_map
+	unordered_set
+	unordered_multimap
+	unordered_multiset
+
+1. 初始化
+	map<string, size_t> my_map = { {"yauno", 24},
+								  {"xx", 100} };
+  	++my_map['key'];	// value默认为0，现在为1
+  	// set
+  	vector<int> vt = {1, 2, 3, 4};
+  	set<string> my_set(vt.cbegin(), vt.cend());
+  	multiset<int> my_multiset(vt.cbegin(), vt.cend());
+
+2. pair类型
+	// 初始化
+	pair<T1, T2> p;
+	pair<T1, T2> p(v1, v2);
+	pair<T1, T2> p = {v1, v2};
+	pair<T1, T2> p = make_pair(v1, v2);	// 返回用v1, v2初始化的pair
+
+	// 方法
+	p.first();	// 第一个成员
+	p.second();	// 第二个成员
+	p1 relop p2;	// 关系运算符按字典序定义
+	p1 == p2;
+	p1 != p2;
+
+3， 关联容器的额外类型
+	key_type, mapped_type, value_type。除此之外还有[p295]一般容器的类型。
+
+4. 添加元素
+	c.insert(v);		// v是value_type类型对象。返回指向新元素的迭代器
+	c.emplace(args);	// args用来构建一个元素。返回指向新元素的迭代器
+	c.insert(b, e);		// b,e是迭代器。返回void
+	c.insert(il);		// il为花括号列表。返回void
+	c.insert(p, v);		// 与insert(v)类似，但p指出从哪里开始搜索新元素应该存储的位置
+	c.emplace(p, args);	// 同上
+
+5. 删除元素
+	c.erase(k);		// 返回一个size_type值，指出删除的元素数量
+	c.erase(p);		// 删除迭代器p指定的元素，返回一个p之后元素的迭代器。若p指向尾元素
+					// 则返回c.end()
+	c.erase(b, e);	// 删除迭代器b,e范围内的元素。返回e
+
+6. map, unordered_map下标操作
+	c[k];	// 返回关键字k的元素，若k不在c中，添加一个关键字为k的元素,其值初始化
+	c.at(k);	// 若k不在，则抛出out_of_range异常
+
+7. 访问元素
+	c.find(k);		// 返回一个迭代器，指向第一个关键字为k的元素；若k不存在，则返回尾
+					// 后迭代器
+	c.count(k);		// 返回关键字等于k的元素的数量
+	c.lower_bound(k);	// 返回一个迭代器，指向第一个关键字不小于k的元素
+	c.upper_bound(k);	// 返回一个迭代器，指向第一个关键字大于k的元素
+	c.equal_range(k);	// 返回一个迭代器pair, 表示关键字等于k的元素的范围。若k不存在，
+						// pair的两个成员均为c.end()
+
+8. 无序容器管理操作
+	// 桶接口
+	c.bucket_count();
+	c.max_bucket_count();
+	c.bucket_size(n);		// 第n个桶中有多少元素
+	c.bucket(k);			// 关键字为k的元素在哪个桶
+
+	// 桶迭代
+	local_iterator
+	const_local_iterator
+	c.begin(), c.end()
+	c.rbegin(), c.rend()
+
+	// 哈希策略
+	c.load_factor();		// 每个桶的平均元素数量
+	c.max_load_factor();	// c试图维护的平均桶大小
+	c.rehash(n);			// 重组存储，使得bucket_count>=n, 
+							// 且bucket_count>size/max_load_factor
+	c.reverse(n);			// 重组存储，使得c可以保存n个元素且不必rehash
+

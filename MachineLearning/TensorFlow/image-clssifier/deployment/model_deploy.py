@@ -287,13 +287,13 @@ class DeploymentConfig(object):
         """
         if clone_index >= self._num_clones:
             raise ValueError('clone_index must be less than num_clones')
-        device = ''
+        device = None
         if self._num_ps_tasks > 0:
             device += self._worker_device
         if self._clone_on_cpu:
             device += '/device:CPU:0'
         else:
-            device += '/device:GPU:%d' % clone_index
+            device += None # '/device:GPU:%d' % clone_index
         return device
 
     def clone_scope(self, clone_index):

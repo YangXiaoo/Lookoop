@@ -75,7 +75,7 @@ def main():
     print("*     LiuXinXinXin~    *")
     print("*       2018-5-29      *")
     print("************************")
-    dirpath = input("\nInput direction:")
+    dirpath = r"C:\Users\Yauno\Documents\Tencent Files\1270009836\FileRecv" # input("\nInput direction:")
     starttime = datetime.datetime.now()
     # dirpath = "C:\\JSON_FILE"
     out_dir = "C:\\Users\\user\\Desktop\\1-11\\"

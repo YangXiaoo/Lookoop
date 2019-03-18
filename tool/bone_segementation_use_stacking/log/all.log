@@ -3396,3 +3396,330 @@ Expend time: 0:20:33.339702
 2019-03-18 14:00:41,004 - api.py[line: 830] - INFO - 100 / 100 done, picture: m-9-9.5_new , accuracy rate: 0.980039 , error rate:  0.006279 , loss rate: 0.026115, dice: 0.983537
 2019-03-18 14:00:41,005 - api.py[line: 830] - INFO - stack_model mean results, accuracy rate: 0.456000 , error rate:  0.221856 , loss rate: 0.015974, dice: 0.837724
 2019-03-18 14:00:41,005 - api.py[line: 908] - INFO - saving results...
+2019-03-18 20:37:57,427 - segSingalModel.py[line: 138] - INFO - using KNeighbors to train data
+2019-03-18 20:40:19,867 - segSingleModel.py[line: 138] - INFO - using KNeighbors to train data
+2019-03-18 20:40:43,634 - segSingleModel.py[line: 138] - INFO - using KNeighbors to train data
+2019-03-18 20:40:43,634 - segSingleModel.py[line: 86] - INFO - Getting data.
+2019-03-18 20:40:43,700 - segSingleModel.py[line: 92] - INFO - There is no model save in ./data/pickle_model_KNeighbors.dat, training model
+2019-03-18 20:40:44,154 - segSingleModel.py[line: 94] - DEBUG - train model time: 0:00:00.520609
+2019-03-18 20:40:44,161 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-1-2.4.png
+2019-03-18 20:40:44,162 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-2-1.7.png
+2019-03-18 20:40:44,163 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-2-2.91.png
+2019-03-18 20:40:44,165 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-3-3.1.png
+2019-03-18 20:40:44,166 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-3-3.5.png
+2019-03-18 20:40:44,168 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-3-4.03.png
+2019-03-18 20:40:44,170 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-4-4.35.png
+2019-03-18 20:40:44,205 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-4-4.5.png
+2019-03-18 20:40:44,435 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-4-5.21.png
+2019-03-18 20:40:44,483 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-4-5.8.png
+2019-03-18 20:40:48,477 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [16.]
+2019-03-18 20:40:48,746 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:40:50,254 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [69.]
+2019-03-18 20:40:50,427 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:40:51,223 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [65.]
+2019-03-18 20:40:51,505 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [34.]
+2019-03-18 20:40:51,625 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:40:51,715 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:40:53,069 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [36.]
+2019-03-18 20:40:53,105 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:40:53,767 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [21.]
+2019-03-18 20:40:53,881 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:40:54,841 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [40.]
+2019-03-18 20:40:54,930 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:40:56,947 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [33.]
+2019-03-18 20:40:57,376 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:41:00,257 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [86.]
+2019-03-18 20:41:00,400 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:41:05,365 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [36.]
+2019-03-18 20:41:05,688 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:41:06,399 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:06,707 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:18,662 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:20,688 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:26,621 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:27,209 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:27,889 - segSingleModel.py[line: 67] - INFO - 1/10 done
+2019-03-18 20:41:28,320 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:28,470 - segSingleModel.py[line: 67] - INFO - 2/10 done
+2019-03-18 20:41:33,195 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:33,606 - segSingleModel.py[line: 67] - INFO - 3/10 done
+2019-03-18 20:41:36,090 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:36,576 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:41:37,086 - segSingleModel.py[line: 67] - INFO - 4/10 done
+2019-03-18 20:41:37,122 - segSingleModel.py[line: 67] - INFO - 5/10 done
+2019-03-18 20:41:37,215 - segSingleModel.py[line: 67] - INFO - 6/10 done
+2019-03-18 20:41:37,530 - segSingleModel.py[line: 67] - INFO - 7/10 done
+2019-03-18 20:41:37,834 - segSingleModel.py[line: 67] - INFO - 8/10 done
+2019-03-18 20:41:37,882 - segSingleModel.py[line: 67] - INFO - 9/10 done
+2019-03-18 20:41:38,556 - segSingleModel.py[line: 67] - INFO - 10/10 done
+2019-03-18 20:41:38,558 - segSingleModel.py[line: 126] - INFO - 
+total: 10
+successful: 10
+skip: 0
+failed: 0
+Expend time: 0:00:54.924911
+2019-03-18 20:41:38,686 - segSingleModel.py[line: 143] - INFO - ********************************************************************************
+2019-03-18 20:41:38,694 - api.py[line: 846] - DEBUG - fm-1-2.4_new.png
+2019-03-18 20:42:05,696 - api.py[line: 830] - INFO - 1 / 100 done, picture: fm-1-2.4_new , accuracy rate: 0.995846 , error rate:  0.009172 , loss rate: 0.013288, dice: 0.988643
+2019-03-18 20:42:05,696 - api.py[line: 846] - DEBUG - fm-10-10.61_new.png
+2019-03-18 20:42:05,696 - api.py[line: 838] - WARNING - fm-10-10.61_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,696 - api.py[line: 846] - DEBUG - fm-10-10.6_new.png
+2019-03-18 20:42:05,697 - api.py[line: 838] - WARNING - fm-10-10.6_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,697 - api.py[line: 846] - DEBUG - fm-10-9.5_new.png
+2019-03-18 20:42:05,697 - api.py[line: 838] - WARNING - fm-10-9.5_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,697 - api.py[line: 846] - DEBUG - fm-10-9.9_new.png
+2019-03-18 20:42:05,697 - api.py[line: 838] - WARNING - fm-10-9.9_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,697 - api.py[line: 846] - DEBUG - fm-11-11.02_new.png
+2019-03-18 20:42:05,697 - api.py[line: 838] - WARNING - fm-11-11.02_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,698 - api.py[line: 846] - DEBUG - fm-11-11.22_new.png
+2019-03-18 20:42:05,698 - api.py[line: 838] - WARNING - fm-11-11.22_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,698 - api.py[line: 846] - DEBUG - fm-11-14.0_new.png
+2019-03-18 20:42:05,698 - api.py[line: 838] - WARNING - fm-11-14.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,698 - api.py[line: 846] - DEBUG - fm-11-9.61_new.png
+2019-03-18 20:42:05,698 - api.py[line: 838] - WARNING - fm-11-9.61_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,698 - api.py[line: 846] - DEBUG - fm-12-11.6_new.png
+2019-03-18 20:42:05,699 - api.py[line: 838] - WARNING - fm-12-11.6_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,699 - api.py[line: 846] - DEBUG - fm-12-11.9_new.png
+2019-03-18 20:42:05,699 - api.py[line: 838] - WARNING - fm-12-11.9_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,699 - api.py[line: 846] - DEBUG - fm-12-13.4 (2)_new.png
+2019-03-18 20:42:05,699 - api.py[line: 838] - WARNING - fm-12-13.4 (2)_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,699 - api.py[line: 846] - DEBUG - fm-12-14.7_new.png
+2019-03-18 20:42:05,699 - api.py[line: 838] - WARNING - fm-12-14.7_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,700 - api.py[line: 846] - DEBUG - fm-13-11.1_new.png
+2019-03-18 20:42:05,700 - api.py[line: 838] - WARNING - fm-13-11.1_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,700 - api.py[line: 846] - DEBUG - fm-13-13.62_new.png
+2019-03-18 20:42:05,700 - api.py[line: 838] - WARNING - fm-13-13.62_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,701 - api.py[line: 846] - DEBUG - fm-14-14.0_new.png
+2019-03-18 20:42:05,701 - api.py[line: 838] - WARNING - fm-14-14.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,701 - api.py[line: 846] - DEBUG - fm-14-15.9_new.png
+2019-03-18 20:42:05,701 - api.py[line: 838] - WARNING - fm-14-15.9_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,701 - api.py[line: 846] - DEBUG - fm-15-15.0_new.png
+2019-03-18 20:42:05,701 - api.py[line: 838] - WARNING - fm-15-15.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,701 - api.py[line: 846] - DEBUG - fm-15-15.9_new.png
+2019-03-18 20:42:05,702 - api.py[line: 838] - WARNING - fm-15-15.9_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,702 - api.py[line: 846] - DEBUG - fm-15-16.31_new.png
+2019-03-18 20:42:05,702 - api.py[line: 838] - WARNING - fm-15-16.31_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,702 - api.py[line: 846] - DEBUG - fm-16-16.31_new.png
+2019-03-18 20:42:05,702 - api.py[line: 838] - WARNING - fm-16-16.31_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,703 - api.py[line: 846] - DEBUG - fm-16-17.31_new.png
+2019-03-18 20:42:05,703 - api.py[line: 838] - WARNING - fm-16-17.31_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,703 - api.py[line: 846] - DEBUG - fm-17-12.3_new.png
+2019-03-18 20:42:05,703 - api.py[line: 838] - WARNING - fm-17-12.3_new.png skiped, cause it not exist in output path
+2019-03-18 20:42:05,703 - api.py[line: 846] - DEBUG - fm-2-1.7_new.png
+2019-03-18 20:42:22,071 - api.py[line: 830] - INFO - 2 / 100 done, picture: fm-2-1.7_new , accuracy rate: 0.999223 , error rate:  0.009828 , loss rate: 0.009059, dice: 0.990466
+2019-03-18 20:42:22,071 - api.py[line: 846] - DEBUG - fm-2-2.91_new.png
+2019-03-18 20:42:39,728 - api.py[line: 830] - INFO - 3 / 100 done, picture: fm-2-2.91_new , accuracy rate: 0.611117 , error rate:  0.284698 , loss rate: 0.006530, dice: 0.829569
+2019-03-18 20:42:39,728 - api.py[line: 846] - DEBUG - fm-3-3.1_new.png
+2019-03-18 20:43:18,003 - api.py[line: 830] - INFO - 4 / 100 done, picture: fm-3-3.1_new , accuracy rate: 0.989702 , error rate:  0.008630 , loss rate: 0.018839, dice: 0.986074
+2019-03-18 20:43:18,003 - api.py[line: 846] - DEBUG - fm-3-3.5_new.png
+2019-03-18 20:43:35,834 - api.py[line: 830] - INFO - 5 / 100 done, picture: fm-3-3.5_new , accuracy rate: -1.126591 , error rate:  0.680360 , loss rate: 0.000616, dice: 0.483727
+2019-03-18 20:43:35,834 - api.py[line: 846] - DEBUG - fm-3-4.03_new.png
+2019-03-18 20:44:01,227 - api.py[line: 830] - INFO - 6 / 100 done, picture: fm-3-4.03_new , accuracy rate: 0.993804 , error rate:  0.004596 , loss rate: 0.010764, dice: 0.992261
+2019-03-18 20:44:01,227 - api.py[line: 846] - DEBUG - fm-4-4.35_new.png
+2019-03-18 20:44:23,479 - api.py[line: 830] - INFO - 7 / 100 done, picture: fm-4-4.35_new , accuracy rate: 0.995794 , error rate:  0.004419 , loss rate: 0.008606, dice: 0.993445
+2019-03-18 20:44:23,480 - api.py[line: 846] - DEBUG - fm-4-4.5_new.png
+2019-03-18 20:44:45,636 - api.py[line: 830] - INFO - 8 / 100 done, picture: fm-4-4.5_new , accuracy rate: 0.991297 , error rate:  0.009945 , loss rate: 0.018561, dice: 0.985541
+2019-03-18 20:44:45,636 - api.py[line: 846] - DEBUG - fm-4-5.21_new.png
+2019-03-18 20:44:53,786 - api.py[line: 830] - INFO - 9 / 100 done, picture: fm-4-5.21_new , accuracy rate: 0.991626 , error rate:  0.006491 , loss rate: 0.014810, dice: 0.989235
+2019-03-18 20:44:53,786 - api.py[line: 846] - DEBUG - fm-4-5.8_new.png
+2019-03-18 20:45:01,048 - api.py[line: 830] - INFO - 10 / 100 done, picture: fm-4-5.8_new , accuracy rate: 0.985037 , error rate:  0.017288 , loss rate: 0.002584, dice: 0.989964
+2019-03-18 20:45:01,049 - api.py[line: 846] - DEBUG - fm-5-4.91_new.png
+2019-03-18 20:45:01,049 - api.py[line: 838] - WARNING - fm-5-4.91_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,049 - api.py[line: 846] - DEBUG - fm-5-5.912_new.png
+2019-03-18 20:45:01,049 - api.py[line: 838] - WARNING - fm-5-5.912_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,049 - api.py[line: 846] - DEBUG - fm-6-5.8_new.png
+2019-03-18 20:45:01,049 - api.py[line: 838] - WARNING - fm-6-5.8_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,049 - api.py[line: 846] - DEBUG - fm-6-6.0_new.png
+2019-03-18 20:45:01,050 - api.py[line: 838] - WARNING - fm-6-6.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,050 - api.py[line: 846] - DEBUG - fm-6-7.4_new.png
+2019-03-18 20:45:01,050 - api.py[line: 838] - WARNING - fm-6-7.4_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,050 - api.py[line: 846] - DEBUG - fm-7-10.9_new.png
+2019-03-18 20:45:01,050 - api.py[line: 838] - WARNING - fm-7-10.9_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,050 - api.py[line: 846] - DEBUG - fm-7-6.2_new.png
+2019-03-18 20:45:01,050 - api.py[line: 838] - WARNING - fm-7-6.2_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,051 - api.py[line: 846] - DEBUG - fm-7-7.2_new.png
+2019-03-18 20:45:01,051 - api.py[line: 838] - WARNING - fm-7-7.2_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,051 - api.py[line: 846] - DEBUG - fm-7-7.4_new.png
+2019-03-18 20:45:01,051 - api.py[line: 838] - WARNING - fm-7-7.4_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,051 - api.py[line: 846] - DEBUG - fm-7-8.41_new.png
+2019-03-18 20:45:01,051 - api.py[line: 838] - WARNING - fm-7-8.41_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,051 - api.py[line: 846] - DEBUG - fm-8-10.81_new.png
+2019-03-18 20:45:01,051 - api.py[line: 838] - WARNING - fm-8-10.81_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,052 - api.py[line: 846] - DEBUG - fm-8-10.83_new.png
+2019-03-18 20:45:01,052 - api.py[line: 838] - WARNING - fm-8-10.83_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,052 - api.py[line: 846] - DEBUG - fm-8-7.81_new.png
+2019-03-18 20:45:01,052 - api.py[line: 838] - WARNING - fm-8-7.81_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,052 - api.py[line: 846] - DEBUG - fm-8-9.23_new.png
+2019-03-18 20:45:01,052 - api.py[line: 838] - WARNING - fm-8-9.23_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,052 - api.py[line: 846] - DEBUG - fm-8-9.53_new.png
+2019-03-18 20:45:01,052 - api.py[line: 838] - WARNING - fm-8-9.53_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,052 - api.py[line: 846] - DEBUG - fm-9-10.62_new.png
+2019-03-18 20:45:01,052 - api.py[line: 838] - WARNING - fm-9-10.62_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,053 - api.py[line: 846] - DEBUG - fm-9-11.0_new.png
+2019-03-18 20:45:01,053 - api.py[line: 838] - WARNING - fm-9-11.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,053 - api.py[line: 846] - DEBUG - fm-9-7.8_new.png
+2019-03-18 20:45:01,053 - api.py[line: 838] - WARNING - fm-9-7.8_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,053 - api.py[line: 846] - DEBUG - fm-9-9.31_new.png
+2019-03-18 20:45:01,053 - api.py[line: 838] - WARNING - fm-9-9.31_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,053 - api.py[line: 846] - DEBUG - fm-9-9.6_new.png
+2019-03-18 20:45:01,053 - api.py[line: 838] - WARNING - fm-9-9.6_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,053 - api.py[line: 846] - DEBUG - fm-9-9.81_new.png
+2019-03-18 20:45:01,053 - api.py[line: 838] - WARNING - fm-9-9.81_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,053 - api.py[line: 846] - DEBUG - fm-9-9.8_new.png
+2019-03-18 20:45:01,054 - api.py[line: 838] - WARNING - fm-9-9.8_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,054 - api.py[line: 846] - DEBUG - m-10-11 (1)_new.png
+2019-03-18 20:45:01,054 - api.py[line: 838] - WARNING - m-10-11 (1)_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,054 - api.py[line: 846] - DEBUG - m-10-12.6_new.png
+2019-03-18 20:45:01,054 - api.py[line: 838] - WARNING - m-10-12.6_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,054 - api.py[line: 846] - DEBUG - m-10-9.0_new.png
+2019-03-18 20:45:01,054 - api.py[line: 838] - WARNING - m-10-9.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,055 - api.py[line: 846] - DEBUG - m-11-10.6_new.png
+2019-03-18 20:45:01,055 - api.py[line: 838] - WARNING - m-11-10.6_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,055 - api.py[line: 846] - DEBUG - m-11-12.6_new.png
+2019-03-18 20:45:01,055 - api.py[line: 838] - WARNING - m-11-12.6_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,055 - api.py[line: 846] - DEBUG - m-12-11.9_new.png
+2019-03-18 20:45:01,056 - api.py[line: 838] - WARNING - m-12-11.9_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,056 - api.py[line: 846] - DEBUG - m-12-12.63_new.png
+2019-03-18 20:45:01,056 - api.py[line: 838] - WARNING - m-12-12.63_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,057 - api.py[line: 846] - DEBUG - m-12-13.0_new.png
+2019-03-18 20:45:01,057 - api.py[line: 838] - WARNING - m-12-13.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,057 - api.py[line: 846] - DEBUG - m-13-11.8_new.png
+2019-03-18 20:45:01,057 - api.py[line: 838] - WARNING - m-13-11.8_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,057 - api.py[line: 846] - DEBUG - m-13-12.8_new.png
+2019-03-18 20:45:01,057 - api.py[line: 838] - WARNING - m-13-12.8_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,058 - api.py[line: 846] - DEBUG - m-14-13.2_new.png
+2019-03-18 20:45:01,058 - api.py[line: 838] - WARNING - m-14-13.2_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,058 - api.py[line: 846] - DEBUG - m-14-13.4_new.png
+2019-03-18 20:45:01,058 - api.py[line: 838] - WARNING - m-14-13.4_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,059 - api.py[line: 846] - DEBUG - m-15-15.2_new.png
+2019-03-18 20:45:01,059 - api.py[line: 838] - WARNING - m-15-15.2_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,059 - api.py[line: 846] - DEBUG - m-15-15.71_new.png
+2019-03-18 20:45:01,059 - api.py[line: 838] - WARNING - m-15-15.71_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,059 - api.py[line: 846] - DEBUG - m-15-16.82_new.png
+2019-03-18 20:45:01,059 - api.py[line: 838] - WARNING - m-15-16.82_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,060 - api.py[line: 846] - DEBUG - m-16-13.9_new.png
+2019-03-18 20:45:01,060 - api.py[line: 838] - WARNING - m-16-13.9_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,060 - api.py[line: 846] - DEBUG - m-16-16.1_new.png
+2019-03-18 20:45:01,060 - api.py[line: 838] - WARNING - m-16-16.1_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,060 - api.py[line: 846] - DEBUG - m-16-16.8_new.png
+2019-03-18 20:45:01,060 - api.py[line: 838] - WARNING - m-16-16.8_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,060 - api.py[line: 846] - DEBUG - m-16-17.0_new.png
+2019-03-18 20:45:01,061 - api.py[line: 838] - WARNING - m-16-17.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,061 - api.py[line: 846] - DEBUG - m-17-18 (2)_new.png
+2019-03-18 20:45:01,061 - api.py[line: 838] - WARNING - m-17-18 (2)_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,061 - api.py[line: 846] - DEBUG - m-17-18.2_new.png
+2019-03-18 20:45:01,061 - api.py[line: 838] - WARNING - m-17-18.2_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,062 - api.py[line: 846] - DEBUG - m-17-18_new.png
+2019-03-18 20:45:01,062 - api.py[line: 838] - WARNING - m-17-18_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,062 - api.py[line: 846] - DEBUG - m-2-2.0_new.png
+2019-03-18 20:45:01,062 - api.py[line: 838] - WARNING - m-2-2.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,062 - api.py[line: 846] - DEBUG - m-3-3.7_new.png
+2019-03-18 20:45:01,062 - api.py[line: 838] - WARNING - m-3-3.7_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,062 - api.py[line: 846] - DEBUG - m-4-4.61_new.png
+2019-03-18 20:45:01,062 - api.py[line: 838] - WARNING - m-4-4.61_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,062 - api.py[line: 846] - DEBUG - m-4-5.4_new.png
+2019-03-18 20:45:01,063 - api.py[line: 838] - WARNING - m-4-5.4_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,063 - api.py[line: 846] - DEBUG - m-5--6.5_new.png
+2019-03-18 20:45:01,063 - api.py[line: 838] - WARNING - m-5--6.5_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,063 - api.py[line: 846] - DEBUG - m-5-3.6_new.png
+2019-03-18 20:45:01,063 - api.py[line: 838] - WARNING - m-5-3.6_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,063 - api.py[line: 846] - DEBUG - m-5-6.3_new.png
+2019-03-18 20:45:01,063 - api.py[line: 838] - WARNING - m-5-6.3_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,064 - api.py[line: 846] - DEBUG - m-5-6.8_new.png
+2019-03-18 20:45:01,064 - api.py[line: 838] - WARNING - m-5-6.8_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,064 - api.py[line: 846] - DEBUG - m-6-6.41_new.png
+2019-03-18 20:45:01,064 - api.py[line: 838] - WARNING - m-6-6.41_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,064 - api.py[line: 846] - DEBUG - m-6-6.7_new.png
+2019-03-18 20:45:01,064 - api.py[line: 838] - WARNING - m-6-6.7_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,065 - api.py[line: 846] - DEBUG - m-6-7.5_new.png
+2019-03-18 20:45:01,065 - api.py[line: 838] - WARNING - m-6-7.5_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,065 - api.py[line: 846] - DEBUG - m-6-8.0_new.png
+2019-03-18 20:45:01,065 - api.py[line: 838] - WARNING - m-6-8.0_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,065 - api.py[line: 846] - DEBUG - m-7-6.61_new.png
+2019-03-18 20:45:01,065 - api.py[line: 838] - WARNING - m-7-6.61_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,065 - api.py[line: 846] - DEBUG - m-7-7.4_new.png
+2019-03-18 20:45:01,065 - api.py[line: 838] - WARNING - m-7-7.4_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,065 - api.py[line: 846] - DEBUG - m-7-8.4 (2)_new.png
+2019-03-18 20:45:01,066 - api.py[line: 838] - WARNING - m-7-8.4 (2)_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,066 - api.py[line: 846] - DEBUG - m-7-8.4_new.png
+2019-03-18 20:45:01,066 - api.py[line: 838] - WARNING - m-7-8.4_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,066 - api.py[line: 846] - DEBUG - m-7-8.6_new.png
+2019-03-18 20:45:01,066 - api.py[line: 838] - WARNING - m-7-8.6_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,066 - api.py[line: 846] - DEBUG - m-8-7.2_new.png
+2019-03-18 20:45:01,066 - api.py[line: 838] - WARNING - m-8-7.2_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,066 - api.py[line: 846] - DEBUG - m-8-8.2_new.png
+2019-03-18 20:45:01,067 - api.py[line: 838] - WARNING - m-8-8.2_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,067 - api.py[line: 846] - DEBUG - m-8-8.4_new.png
+2019-03-18 20:45:01,067 - api.py[line: 838] - WARNING - m-8-8.4_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,067 - api.py[line: 846] - DEBUG - m-8-8.5_new.png
+2019-03-18 20:45:01,067 - api.py[line: 838] - WARNING - m-8-8.5_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,067 - api.py[line: 846] - DEBUG - m-8-8.71_new.png
+2019-03-18 20:45:01,067 - api.py[line: 838] - WARNING - m-8-8.71_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,067 - api.py[line: 846] - DEBUG - m-9-10.7_new.png
+2019-03-18 20:45:01,067 - api.py[line: 838] - WARNING - m-9-10.7_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,067 - api.py[line: 846] - DEBUG - m-9-9.5_new.png
+2019-03-18 20:45:01,068 - api.py[line: 838] - WARNING - m-9-9.5_new.png skiped, cause it not exist in output path
+2019-03-18 20:45:01,068 - api.py[line: 830] - INFO - KNeighbors mean results, accuracy rate: 0.742686 , error rate:  0.103543 , loss rate: 0.010366, dice: 0.922892
+2019-03-18 20:45:01,068 - api.py[line: 908] - INFO - saving results...
+2019-03-18 20:45:01,070 - segSingleModel.py[line: 138] - INFO - using SVC to train data
+2019-03-18 20:45:01,070 - segSingleModel.py[line: 86] - INFO - Getting data.
+2019-03-18 20:45:01,132 - segSingleModel.py[line: 92] - INFO - There is no model save in ./data/pickle_model_SVC.dat, training model
+2019-03-18 20:45:01,681 - segSingleModel.py[line: 94] - DEBUG - train model time: 0:04:18.047082
+2019-03-18 20:45:01,687 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-1-2.4.png
+2019-03-18 20:45:01,687 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-2-1.7.png
+2019-03-18 20:45:01,688 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-2-2.91.png
+2019-03-18 20:45:01,751 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-3-3.1.png
+2019-03-18 20:45:01,782 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-3-3.5.png
+2019-03-18 20:45:01,878 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-3-4.03.png
+2019-03-18 20:45:01,953 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-4-4.35.png
+2019-03-18 20:45:02,028 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-4-4.5.png
+2019-03-18 20:45:02,307 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-4-5.21.png
+2019-03-18 20:45:02,331 - segSingleModel.py[line: 31] - INFO - starting process : C:\Study\test\bone\singal_model\fm-4-5.8.png
+2019-03-18 20:45:05,637 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [69.]
+2019-03-18 20:45:05,739 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:05,769 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [15.]
+2019-03-18 20:45:06,038 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:08,671 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [90.]
+2019-03-18 20:45:09,024 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:09,663 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [33.]
+2019-03-18 20:45:09,849 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:10,071 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [36.]
+2019-03-18 20:45:10,209 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:10,749 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [30.]
+2019-03-18 20:45:10,821 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:11,092 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [36.]
+2019-03-18 20:45:11,362 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:12,272 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [36.]
+2019-03-18 20:45:12,488 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:16,005 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [86.]
+2019-03-18 20:45:16,249 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:18,336 - segSingleModel.py[line: 47] - DEBUG - predict threshold value: [37.]
+2019-03-18 20:45:18,475 - segSingleModel.py[line: 51] - DEBUG - using region growing to segmentate img
+2019-03-18 20:45:19,162 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:21,813 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:34,153 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:34,395 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:35,954 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:39,019 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:39,751 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:42,094 - segSingleModel.py[line: 67] - INFO - 11/10 done
+2019-03-18 20:45:43,313 - segSingleModel.py[line: 67] - INFO - 12/10 done
+2019-03-18 20:45:43,386 - segSingleModel.py[line: 67] - INFO - 13/10 done
+2019-03-18 20:45:43,440 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:44,468 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:45,321 - segSingleModel.py[line: 67] - INFO - 14/10 done
+2019-03-18 20:45:46,178 - segSingleModel.py[line: 57] - DEBUG - remove margin
+2019-03-18 20:45:46,827 - segSingleModel.py[line: 67] - INFO - 15/10 done
+2019-03-18 20:45:46,908 - segSingleModel.py[line: 67] - INFO - 16/10 done
+2019-03-18 20:45:47,069 - segSingleModel.py[line: 67] - INFO - 17/10 done
+2019-03-18 20:45:47,474 - segSingleModel.py[line: 67] - INFO - 18/10 done
+2019-03-18 20:45:48,376 - segSingleModel.py[line: 67] - INFO - 19/10 done
+2019-03-18 20:45:48,469 - segSingleModel.py[line: 67] - INFO - 20/10 done
+2019-03-18 20:45:48,470 - segSingleModel.py[line: 126] - INFO - 
+total: 10
+successful: 20
+skip: 0
+failed: 0
+Expend time: 0:05:04.836006
+2019-03-18 20:45:48,541 - segSingleModel.py[line: 143] - INFO - ********************************************************************************
+2019-03-18 20:45:48,545 - api.py[line: 846] - DEBUG - fm-1-2.4_new.png

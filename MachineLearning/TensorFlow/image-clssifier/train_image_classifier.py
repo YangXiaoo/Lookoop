@@ -152,20 +152,18 @@ def main(input_para):
             input_para['dataset_split_name'],
             input_para['dataset_dir'],
             input_para['split_to_size'],
-            input_para['num_classes'])
+            input_para['num_classes']) 
 
         # 选择训练模型
-        network_fn = nets_factory.get_network_fn(
-            input_para['model_name'],
-            num_classes=(dataset.num_classes - input_para['labels_offset']),
-            weight_decay=input_para['weight_decay'],
-            is_training=True)
+        network_fn = nets_factory.get_network_fn(input_para['model_name'],
+                                                 num_classes=(dataset.num_classes - input_para['labels_offset']),
+                                                 weight_decay=input_para['weight_decay'],
+                                                 is_training=True)
 
         # 选择预处理函数
         preprocessing_name = input_para['preprocessing_name'] or input_para['model_name']
-        image_preprocessing_fn = preprocessing_factory.get_preprocessing(
-            preprocessing_name,
-            is_training=True)
+        image_preprocessing_fn = preprocessing_factory.get_preprocessing(preprocessing_name,
+                                                                         is_training=True)
 
         # 设置数据加载, 主机加载数据
         # DatasetDataProvider参数设置

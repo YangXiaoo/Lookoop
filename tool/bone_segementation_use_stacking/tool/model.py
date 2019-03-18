@@ -33,7 +33,17 @@ def cv_rmse(model, X, y):
 
 
 def _get_model_name():
-    names = ["KNeighbors", "SVC", "DecisionTree", "RandomForest", "ExtraTrees", "AdaBoost", "GradientBoosting", "Bagging","GaussianNB","LogisticRegression","XGB"]
+    names = ["KNeighbors", 
+             "SVC", 
+             "DecisionTree", 
+             "RandomForest", 
+             "ExtraTrees", 
+             "AdaBoost", 
+             "GradientBoosting", 
+             "Bagging",
+             "GaussianNB",
+             "LogisticRegression",
+             "XGB"]
 
     train_models = [
         KNeighborsClassifier(leaf_size=200, n_neighbors=1),
@@ -135,3 +145,22 @@ def _test_train_model(_train_raw, _labels):
     model.fit(train_dataset, _y)
 
     return model
+
+def train_by_model(model_name, _train_raw, _labels):
+    """使用一种模型进行训练"""
+    train_raw = pre_process(_train_raw)
+    train_dataset = pd.DataFrame(train_raw)
+    labels = pd.DataFrame(_labels)
+
+    """标签与数据组合"""
+    _train = np.hstack((train_dataset, labels))
+    train = pd.DataFrame(_train)
+    _y = train[256] # 另一种格式的标签
+
+    """训练模型"""
+    names, models = _get_model_name()
+    model = models[names.index(model_name)]
+    model.fit(train_dataset, _y)
+
+    return model
+

@@ -37,12 +37,29 @@ def pre_process(data, alpha=0.99, is_total=False):
     return ret
 
 
+def mkdirs(file_list):
+    """
+    创建文件目录
+    """
+    if isinstance(file_list, list):
+        for f in file_list:
+            if not os.path.isdir(f):
+                os.makedirs(f)
+    else:
+        if not os.path.isdir(file_list):
+            os.makedirs(file_list)
+    return 
+
+
 def get_logger(logger_path):
     """设置日志"""
     # LOG_FORMAT = "%(asctime)s - %(levelname)s - %(user)s[%(ip)s] - %(message)s"
     # DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
 
     # logging.basicConfig(format=LOG_FORMAT, datefmt=DATE_FORMAT)
+    if logger_path:
+        mkdirs(logger_path)
+        
     logger = logging.getLogger('mylogger')
     logger.setLevel(logging.DEBUG)
     all_log = os.path.join(logger_path, "all.log")
@@ -58,7 +75,7 @@ def get_logger(logger_path):
 
     console = logging.StreamHandler()
     console.setLevel(logging.DEBUG)
-    console.setFormatter(logging.Formatter("%(asctime)s[%(levelname)s] %(message)s"))
+    console.setFormatter(logging.Formatter("%(asctime)s - [%(levelname)s] %(message)s"))
 
     logger.addHandler(rf_handler)
     logger.addHandler(f_handler)

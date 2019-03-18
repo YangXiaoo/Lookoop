@@ -30,3 +30,7 @@ saved in C:\Study\test\bone\sklearn_test_failed
 2019-03-18 00:29:03,023 - api.py[line: 469] - ERROR - failed to handle C:\Study\test\bone\sklearn_test\fm-11-14.0.png, skiped.
 saved in C:\Study\test\bone\sklearn_test_failed
 2019-03-18 00:29:03,024 - api.py[line: 470] - ERROR - path: C:\Study\test\bone\sklearn_test_failed\fm-11-14.0.png
+2019-03-18 09:33:15,765 - api.py[line: 474] - ERROR - Error: local variable 'count' referenced before assignment
+2019-03-18 09:33:15,765 - api.py[line: 475] - ERROR - failed to handle C:\Study\test\bone\thread_test_out_without\fm-1-2.4.png, skiped.
+saved in C:\Study\test\bone\thread_test_out_without_failed
+2019-03-18 09:33:15,765 - api.py[line: 476] - ERROR - path: C:\Study\test\bone\thread_test_out_without_failed\fm-1-2.4.png

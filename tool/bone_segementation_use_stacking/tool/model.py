@@ -24,7 +24,7 @@ from xgboost import XGBClassifier
 from sklearn.model_selection import cross_val_score, GridSearchCV, KFold
 from sklearn.base import BaseEstimator, TransformerMixin, RegressorMixin, clone
 from sklearn.metrics import mean_squared_error
-
+from sklearn.preprocessing import Imputer 
 
 def cv_rmse(model, X, y):
     """获得均差"""
@@ -33,22 +33,20 @@ def cv_rmse(model, X, y):
 
 
 def _get_model_name():
-    names = ["KNeighbors", "SVC", "DecisionTree", "RandomForest", "ExtraTrees", "AdaBoost", "GradientBoosting", "Voting","Bagging","GaussianNB","LogisticRegression","XGB"]
+    names = ["KNeighbors", "SVC", "DecisionTree", "RandomForest", "ExtraTrees", "AdaBoost", "GradientBoosting", "Bagging","GaussianNB","LogisticRegression","XGB"]
 
     train_models = [
-        KNeighborsClassifier(),
-        SVC(),
-        DecisionTreeClassifier(),
+        KNeighborsClassifier(leaf_size=200, n_neighbors=1),
+        SVC(degree=2, gamma=5, kernel='poly'),
+        DecisionTreeClassifier(class_weight='balanced', max_depth=50, max_features='sqrt', random_state=20),
         RandomForestClassifier(),
         ExtraTreesClassifier(),
-        AdaBoostClassifier(),
+        AdaBoostClassifier(learning_rate=0.1, n_estimators=50, random_state=50),
         GradientBoostingClassifier (),
-        VotingClassifier(estimators=[('lr', LogisticRegression()), ('rf', RandomForestClassifier()), ('gnb', GaussianNB())],
-                         voting='soft', flatten_transform=True),
-        BaggingClassifier(),
+        BaggingClassifier(max_features=0.5, max_samples=0.5, n_estimators=100, oob_score=True, random_state=40),
         GaussianNB(),
         LogisticRegression(),
-        XGBClassifier(),
+        XGBClassifier(gamma=0.1, learning_rate=0.1, max_depth=10, min_child_weight=0.5, n_estimators=200, objective='multi:softmax', subsample=0.8),
     ]
 
     return names, train_models
@@ -73,7 +71,7 @@ class stacking(BaseEstimator, RegressorMixin, TransformerMixin):
     def __init__(self, model, fusion_model):
         self.model = model
         self.fusion_model = fusion_model
-        self.kf = KFold(n_splits=14, random_state=50, shuffle=True)
+        self.kf = KFold(n_splits=5, random_state=50, shuffle=True)
         
     def fit(self, X, y):
         self.model_saved = [list() for i in self.model] 
@@ -81,6 +79,7 @@ class stacking(BaseEstimator, RegressorMixin, TransformerMixin):
         
         for i,mod in enumerate(self.model):
             for train_index, value_index in self.kf.split(X, y):
+                # print("[DEBUG] train_index: %s, value_index: %s" % (train_index, value_index))
                 tmp_model = clone(mod)
                 tmp_model.fit(X[train_index], y[train_index])
                 self.model_saved[i].append(tmp_model)
@@ -110,9 +109,13 @@ def train_model(_train_raw, _labels):
     _y = train[256] # 另一种格式的标签
 
     """训练模型"""
+    X = Imputer().fit_transform(train_dataset)
+    y = Imputer().fit_transform(_y.values.reshape(-1,1)).ravel()
+
+    """训练模型"""
     _, train_models = _get_model_name()
     stack_model = stacking(train_models, LogisticRegression())
-    stack_model.fit(train_dataset, _y)
+    stack_model.fit(X, y)
 
     return stack_model
 

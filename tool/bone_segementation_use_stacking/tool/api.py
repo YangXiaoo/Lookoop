@@ -18,6 +18,8 @@ matplotlib.use('Agg')
 __suffix = ["png", "jpg"]
 __total = 256
 
+
+
 def getFiles(dirpath):
     file = []
     for root, dirs, files in os.walk(dirpath, topdown=False):
@@ -809,7 +811,44 @@ def getAccuracy(standard_file, file_path):
     return accuracy_rate, error_rate, loss_rate, dice
 
 
-def batchProcess(file_path_1, file_path_2):
+def _get_dict(file_path):
+    """获得文件名对应路径
+    @param file_path 文件列表，全路径
+    @return {file_name:file_path, ...}
+    """
+    ret = {}
+    for f in file_path:
+        basename = os.path.basename(f)
+        if basename not in ret:
+            ret[basename] = f 
+    return ret
+
+
+def _print_info(message, logger=None):
+    """日志辅助打印函数"""
+    if logger:
+        logger.info(message)
+    else:
+        print("[INFO] ", message)
+
+
+def _print_warning(message, logger=None):
+    """日志辅助打印函数"""
+    if logger:
+        logger.warning(message)
+    else:
+        print("[WARNING] ", message)
+
+
+def _print_debug(message, logger=None):
+    """日志辅助打印函数"""
+    if logger:
+        logger.debug(message)
+    else:
+        print("[DEBUG] ", message)
+
+
+def batchProcess(file_path_1, file_path_2, logger=None):
     """
     file_path_1:标准分割图像路径
     file_path_2：使用不同方法分割后的图像路径
@@ -817,21 +856,27 @@ def batchProcess(file_path_1, file_path_2):
     return : {"pic_1":[accuracy_rate, error_rate, loss_rate]}
     """
     start_time = datetime.datetime.now()
-    files_1 = sorted(getFiles(file_path_1))
-    files_2 = sorted(getFiles(file_path_2))
+    # files_1 = sorted(getFiles(file_path_1))
+    # files_2 = sorted(getFiles(file_path_2))
+    files_1 = _get_dict(getFiles(file_path_1))
+    files_2 = _get_dict(getFiles(file_path_2))
     len_files = len(files_1)
     res = {}
     # 逐一处理
     count = 1
-    for i in range(len_files):
-        # print("Process %d: %s"% (count, files_1[i]))
-        
-        accuracy_rate, error_rate, loss_rate, dice = getAccuracy(files_1[i], files_2[i])
+    for k in files_1:
+        _print_debug(k, logger)
+        if k not in files_2:
+            _print_warning("%s skiped, cause it not exist in output path" % k, logger)
+            continue
+        accuracy_rate, error_rate, loss_rate, dice = getAccuracy(files_1[k], files_2[k])
         # print(files_2[i])
-        basename = os.path.basename(files_1[i])
+        basename = os.path.basename(files_1[k])
         pic_name = os.path.splitext(basename)[0]
         res[pic_name] = [accuracy_rate, error_rate, loss_rate, dice]
-        printToConsole(start_time, files_1[i], count, len_files, 5)
+        # printToConsole(start_time, files_1[i], count, len_files, 5)
+        tmp_info = "%s / %s done, picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (count, len_files, pic_name, accuracy_rate, error_rate, loss_rate, dice)
+        _print_info(tmp_info, logger)
         count += 1
 
     return res
@@ -850,17 +895,9 @@ def printEst(res, way, logger=None):
         total_loss += v[2]
         dice += v[3]
         count += 1
-        tmp_info = "picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (k, v[0], v[1], v[2], v[3])
-        if logger:
-            logger.info(tmp_info)
-        else:
-            print(tmp_info)
     info = "%s mean results, accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (way, total_ac/count, total_err/count, total_loss/count, dice/count)
 
-    if logger:
-        logger.info(info)
-    else:
-        print(info)
+    _print_info(info, logger)
 
 
 def saveEst(res, way, out_dir, logger=None):
@@ -888,50 +925,6 @@ def saveEst(res, way, out_dir, logger=None):
     f.write(out_puts)
     f.close()
 
-
-###################生成标签########################
-def generateImageLable(dirs, data_dir, handle=True, preffix=True):
-    """
-    数据路径: C:/software/caffe/caffe-master/data/xunlian/val/m-10-10.4 (2).png
-    dirs: 训练数据与测试数据目录，list类型 dirs = ["train", "val"]
-    data_dir： 训练数据与测试数据所在目录路径
-    handle： 是否处理m-10-10.4 (2).png 这样带"()"的文件名, 默认处理该文件并生成标签. 默认参数True,意思是可以不输入handle=True
-    handle=False：跳过该文件不处理
-    preffix=True : 添加所在目录val\m-10-10.4 (2).png, 默认参数True
-    preffix=False : 不添加所在目录m-10-10.4 (2).png
-
-    生成的标签分别保存在dirs中的目录下["train", "val"]即C:/software/caffe/caffe-master/data/xunlian/val/val.txt
-    """
-    count = 0
-    for d in dirs:
-        d_dir = os.path.join(data_dir, d)
-        dir_pre = d + "/"
-
-        file = os.path.join(d_dir, d + ".txt")
-        d_file = open(file, "w")
-        files = os.listdir(d_dir)
-        
-        for f in files:
-            count += 1
-            s = f.split("-")[-1]
-            year = s.split(".png")[0]
-            # print(s.split(".png")[0])
-            if '(' in year:
-                year = year.split(" ")[0]
-                # print("重复: ", year)
-                if not handle:
-                    continue
-            try:
-                year = int(round(float(year)))
-                if preffix:
-                    d_file.write("{0}{1} {2}\n".format(dir_pre, f, year))
-                else:
-                    d_file.write("{0} {1}\n".format(f, year))
-            except:
-                pass
-            
-        d_file.close()
-    print("Successful total: " + str(count))
 
 
 def delFileChar(file):

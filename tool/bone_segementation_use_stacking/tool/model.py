@@ -108,7 +108,7 @@ def train_model(_train_raw, _labels):
     train = pd.DataFrame(_train)
     _y = train[256] # 另一种格式的标签
 
-    """训练模型"""
+    """数据清理"""
     X = Imputer().fit_transform(train_dataset)
     y = Imputer().fit_transform(_y.values.reshape(-1,1)).ravel()
 

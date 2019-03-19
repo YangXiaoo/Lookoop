@@ -22,7 +22,6 @@ fail, success, skip, count, total = 0, 0, 0, 0, 0   # 全局变量
 start_time = datetime.datetime.now()                # 运行时间
 
 
-
 def _sub_seg(out_dir, pic_path, stack_model, clip):
     """线程任务"""
     global fail, success, skip, count, total

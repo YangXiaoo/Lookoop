@@ -29,9 +29,10 @@ def _seg_test(dirs, out_dir, train_data_path, clip):
     global fail, success, skip, count, total
     logger.info("Getting data.")
     _train_raw, _labels = util.get_train_data(train_data_path, 2)
+    # logger.debug("_train_raw.size: {}, _labels.size(): {}".format(np.shape(_train_raw)), np.shape(_labels))
     logger.info("Training data.")
     # stack_model = models._test_train_model(_train_raw, _labels) 
-    stack_model = models.train_model(_train_raw, _labels)
+    stack_model = models._test_train_model(_train_raw, _labels)
 
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
@@ -184,11 +185,11 @@ def seg(dirs, out_dir, train_data_path, clip, retrain=False):
 if __name__ == '__main__':
     file_path = r"C:\Study\test\bone\100" # r"C:\Study\test\bone\thread_test"
     out_dir = r"C:\Study\test\bone\sklearn"
-    train_data_path = r"./data\data.txt"
+    train_data_path = r"C:\Users\Yauno\Documents\Tencent Files\1270009836\FileRecv\data_2.txt"
     clip = (45,-45,45,-45)
 
-    # _seg_test(file_path, out_dir, train_data_path, clip)  # 单线程
-    seg(file_path, out_dir, train_data_path, clip)          # 多线程
+    _seg_test(file_path, out_dir, train_data_path, clip)  # 单线程
+    # seg(file_path, out_dir, train_data_path, clip)          # 多线程
 
     file_path = r"C:\Study\test\bone\100-gt"            # 标准分割图像目录路径
     out_dir = "C:\\Study\\test\\bone\\est_results_test" # 结果保存目录

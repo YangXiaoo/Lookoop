@@ -1,4 +1,4 @@
-﻿// findKthToTail.cpp
+// findKthToTail.cpp
 // 2019-3-19
 /**
  * 寻找链表中的倒数第k个节点

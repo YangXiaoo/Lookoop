@@ -8,18 +8,26 @@ import logging.handlers
 import datetime
 import time
 
-def get_train_data(train_data_path, _base=1):
+def get_train_data(train_data_path, _base=1, col=256):
     # 获取数据转换为矩阵
     train_data, labels = [], []
     with open(train_data_path) as f:
         for line in f.readlines():
-            line_data = line.strip().split("\t")
-            _data = []
-            for d in line_data[_base:-1]:
-                _data.append(float(d))
-            train_data.append(_data)
-            labels.append(int(line_data[-1]))
-    return np.mat(train_data), np.array(labels).T
+            try:
+                line_data = line.strip().split("\t")
+                _data = []
+                for d in line_data[_base:-1]:
+                    _data.append(float(d))
+                if len(_data) != col:
+                    print("[ERROR] line number: {}".format(line_data[0]))
+                    continue
+                train_data.append(_data)
+                labels.append(int(line_data[-1]))
+                # print("[DEBUG] line number: {}, _data.size(): {}, labels: {}".format(line_data[0], len(_data), line_data[-1]))
+            except:
+                print("[ERROR] line_data: {}".format(line_data))
+                continue
+    return np.array(train_data), np.array(labels).T
 
 
 def pre_process(data, alpha=0.99, is_total=False):

@@ -1,3 +1,4 @@
+// 2019-3-20
 #include <stdio.h>
 #include <vector>
 #include <iostream>
@@ -90,5 +91,10 @@ int main(int argc, char const *argv[])
 	test2();
 	return 0;
 }
-
-
+// output:
+// caling test1
+// we%20are%20happy
+// passed.
+// caling test2
+// %20
+// passed.

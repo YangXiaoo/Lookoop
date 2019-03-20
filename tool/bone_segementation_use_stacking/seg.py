@@ -107,11 +107,13 @@ def _sub_seg(out_dir, pic_path, stack_model, clip):
         logger.debug('predict threshold value: %s' % thresh_value)
         # 二值化
         threshold, thrshed_img = cv2.threshold(img, thresh_value, 255, cv2.THRESH_BINARY)
+        api.saveImage(img_dirs, "_thrshed_img_raw", thrshed_img)
         # 使用区域生长法分割
         logger.debug('using region growing to segmentate img')
         img_segement, thresh_img = api.regionGrowing(img, thrshed_img)
         # 保存
         api.saveImage(img_dirs, "_new", img_segement)
+        api.saveImage(img_dirs, "_thrshed_img_seg", thrshed_img)
 
         # 去除多余边缘
         logger.debug('remove margin')

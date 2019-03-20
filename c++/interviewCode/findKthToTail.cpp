@@ -14,36 +14,36 @@ using namespace std;
 
 ListNode* findKthToTail(ListNode* head, unsigned int k);
 
-// int main(int argc, char const *argv[])
-// {
-// 	vector<int> list = { 1, 2, 3, 4, 5 };
-// 	ListNode* head;
-// 	head = get_link_list(list);
+int main(int argc, char const *argv[])
+{
+	vector<int> list = { 1, 2, 3, 4, 5 };
+	ListNode* head;
+	head = get_link_list(list);
 	
-// 	// 测试
-// 	for (unsigned int k = 0; k < 8; ++k) {
-// 		ListNode* kth_node = findKthToTail(head, k);
-// 		// cout << "倒数第 " << k << " 个节点值为: " << kth_node->val;
-// 		if (kth_node)
-// 			printf("倒数第 %d 个节点的值为 %d\n", k, kth_node->val);
-// 		else
-// 			if (k < 1)
-// 				printf("k %d is smaller than 1\n", k);
-// 			else
-// 				printf("k %d is larger than the length of link-list\n", k);
-// 	}
-// 		// print
-// 		//k 0 is smaller than 1
-// 		//倒数第 1 个节点的值为 5
-// 		//倒数第 2 个节点的值为 4
-// 		//倒数第 3 个节点的值为 3
-// 		//倒数第 4 个节点的值为 2
-// 		//倒数第 5 个节点的值为 1
-// 		//k 6 is larger than the length of link - list
-// 		//k 7 is larger than the length of link - list
+	// 测试
+	for (unsigned int k = 0; k < 8; ++k) {
+		ListNode* kth_node = findKthToTail(head, k);
+		// cout << "倒数第 " << k << " 个节点值为: " << kth_node->val;
+		if (kth_node)
+			printf("倒数第 %d 个节点的值为 %d\n", k, kth_node->val);
+		else
+			if (k < 1)
+				printf("k %d is smaller than 1\n", k);
+			else
+				printf("k %d is larger than the length of link-list\n", k);
+	}
+		// print
+		// k 0 is smaller than 1
+		// 倒数第 1 个节点的值为 5
+		// 倒数第 2 个节点的值为 4
+		// 倒数第 3 个节点的值为 3
+		// 倒数第 4 个节点的值为 2
+		// 倒数第 5 个节点的值为 1
+		// k 6 is larger than the length of link - list
+		// k 7 is larger than the length of link - list
 
-// 	return 0;
-// }
+	return 0;
+}
 
 
 ListNode* findKthToTail(ListNode* head, unsigned int k) {

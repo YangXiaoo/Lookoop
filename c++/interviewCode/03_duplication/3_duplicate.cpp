@@ -1,10 +1,13 @@
+
+// 2019-3-20
 #include <stdio.h>
 #include <vector>
 #include <iostream>
 
 #include "util.hpp"		// 定义链表
 using namespace std;
-/**
+
+/** 
  * 数组中重复的数组
  * Given an array nums containing n + 1 integers where each integer is between 1
  * and n (inclusive), prove that at least one duplicate number must exist. Assume

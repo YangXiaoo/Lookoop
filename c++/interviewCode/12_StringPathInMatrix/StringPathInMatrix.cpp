@@ -8,7 +8,7 @@
 using namespace std;
 
 /* 矩阵中的路径 */
-bool helper(vector<string>& matrix, vector<vector<bool>> visited,
+bool helper(vector<string>& matrix, vector<vector<bool>>& visited,
 			int r, int c, string& str, int& p);
 
 bool hasPath(vector<string>& matrix, string& str) {
@@ -16,49 +16,51 @@ bool hasPath(vector<string>& matrix, string& str) {
 	if (str.empty()) return true;
 
 	int row = matrix.size(), col = matrix[0].size();
-	int lens = str.size();
 
+	printf("getting visited\n");
 	vector<vector<bool>> visited;
-	for (auto i : matrix) {
+	for (int i = 0; i < row; ++i) {
 		vector<bool> tmp;
-		for (auto j : matrix[i]) {
+		for (int j = 0; j < row; ++j) {
 			tmp.push_back(false);
 		}
-		visited.emplace(tmp);
+		visited.push_back(tmp);
 	}
-
+	printf("visited.size(): %d\n", visited.size());
+	printf("getting path\n");
 	bool ret = false;
-	for (int i = 0; i != row; ++i) {
-		for (int j = 0; j != col; ++j) {
-			ret = helper(matrix, visited, i, j, str, 0);
-			if (ret)
-				return ret;
+	int p = 0;
+		for (int i = 0; i < row; ++i) {
+			for (int j = 0; j < col; ++j) {
+				if (helper(matrix, visited, i, j, str, p))
+					return ret;
+			}
 		}
-	}
 
 	return ret;
 }
 
-bool helper(vector<string>& matrix, vector<vector<bool>> visited,
+bool helper(vector<string>& matrix, vector<vector<bool>>& visited,
 			int r, int c, string& str, int& p) {
 	if (p == str.size()) return true;
 
 	bool ret = false;
 
-	if (r >= 0 && r < matrix.size() - 1 
-		&& c >= 0 && c < matrix[0].size()
-		&& !visited[r][c]  && matrix[r][c] == str[p]) 
+	if (r >= 0 && r < matrix.size() - 1
+		&& c >= 0 && c < matrix[0].size() - 1
+		&& !visited[r][c] && matrix[r][c] == str[p])
 	{
 		visited[r][c] = true;
 		++p;
-		ret = helper(matrix, visited, r+1, c, str, p)
-			  || helper(matrix, visited, r-1, c, str, p)
-			  || helper(matrix, visited, r, c+1, str, p)
-			  || helper(matrix, visited, r, c-1, str, p);
+		ret = helper(matrix, visited, r + 1, c, str, p)
+			|| helper(matrix, visited, r - 1, c, str, p)
+			|| helper(matrix, visited, r, c + 1, str, p)
+			|| helper(matrix, visited, r, c - 1, str, p);
 	}
 
 	if (!ret) {
 		--p;
+		printf("debug\n");
 		visited[r][c] = false;
 	}
 
@@ -66,7 +68,8 @@ bool helper(vector<string>& matrix, vector<vector<bool>> visited,
 }
 
 
-void test(const char* call_name, vector<string>& matrix, string& str, bool except) {
+void test(const char* call_name, vector<string>& matrix, 
+		  string& str, bool except) {
 	printf("%s, result: ", call_name);
 
 	bool ret = hasPath(matrix, str);
@@ -78,9 +81,9 @@ void test(const char* call_name, vector<string>& matrix, string& str, bool excep
 
 int main(int argc, char const *argv[])
 {
-	vector<string> matrix = {{ "abtg" },
+	vector<string> matrix = { { "abtg" },
 							 { "cfcs" },
-							 { "jdeh"}};
+							 { "jdeh"} };
 
 	string str1 = { "bfce" };
 	string str2 = { "abfb" };

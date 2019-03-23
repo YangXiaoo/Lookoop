@@ -84,7 +84,7 @@ int main(int argc, char const *argv[])
 	vector<string> matrix = { { "abtg" },
 							  { "cfcs" },
 							  { "jdeh"} };
-
+ 
 	string str1 = { "bfce" };
 	string str2 = { "abfb" };
 

@@ -1,7 +1,5 @@
 // 2019-3-24
 #include <stdio.h>
-#include <vector>
-#include <cmath>
 
 using namespace std;
 
@@ -21,6 +19,6 @@ int countOne_2(int n) {
 	int count = 0;
 	while (n) {
 		++count;
-		n = (n - 1) & n;	// 例：1100减1然后与1100求&，会减少最右端第一个为1的位数
+		n = (n - 1) & n;	// 例：1100减1然后与1100求&，会减少最右端第一个为1的位数 
 	}
 }

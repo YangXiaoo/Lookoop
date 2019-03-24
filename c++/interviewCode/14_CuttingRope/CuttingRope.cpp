@@ -1,8 +1,6 @@
 // 2019-3-24
 #include <stdio.h>
 #include <vector>
-#include <exception>
-#include <stack>
 #include <cmath>
 
 using namespace std;

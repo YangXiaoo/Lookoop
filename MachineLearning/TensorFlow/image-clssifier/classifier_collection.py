@@ -353,7 +353,7 @@ def run_model(tfrecord_output,
 
     tmp_train_dir = os.path.join(input_para['train_dir'], network_setting['model_name'])
     api.mkdirs(tmp_train_dir)
-    k, lower = 0, 1
+    k, lower = 0, 3
     for s in tfrecord_files:
         if k < lower:
             continue
@@ -713,7 +713,7 @@ if __name__ == '__main__':
                                 label_path,
                                 prediction_para, 
                                 network_setting)
-        # break
+        break
 
 
     prediction_output = prediction_para['prediction_output']

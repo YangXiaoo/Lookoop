@@ -142,7 +142,7 @@ def main(input_para):
             num_ps_tasks=input_para['num_ps_tasks'])
 
         # 初始化迭代计数器
-        with tf.device(deploy_config.variables_device()):
+        with tf.device(deploy_config.train_on_gpu()):
             global_step = slim.create_global_step() 
 
 
@@ -177,7 +177,7 @@ def main(input_para):
         # record_key：（不是很理解）
         # seed=None：打乱是的种子
         # scope=None：范围
-        with tf.device(deploy_config.inputs_device()):
+        with tf.device(deploy_config.train_on_gpu()):
             provider = slim.dataset_data_provider.DatasetDataProvider(
                 dataset,
                 num_readers=input_para['num_readers'],
@@ -210,7 +210,7 @@ def main(input_para):
             """
             在多个平台运行数据
             """
-            with tf.device(deploy_config.inputs_device()):
+            with tf.device(deploy_config.train_on_gpu()):
                 images, labels = batch_queue.dequeue()
             logits, end_points = network_fn(images) # 模型训练输出网络和输出节点
 
@@ -268,7 +268,7 @@ def main(input_para):
             moving_average_variables, variable_averages = None, None
 
         # 求解方法
-        with tf.device(deploy_config.optimizer_device()): # '/job:/device:CPU:0'
+        with tf.device(deploy_config.train_on_gpu()): # '/job:/device:CPU:0'
             learning_rate = tf_configure.configure_learning_rate(
                 dataset.num_samples, 
                 global_step,

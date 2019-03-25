@@ -271,6 +271,11 @@ class DeploymentConfig(object):
     def worker_device(self):
         return self._worker_device
 
+    @property
+    def train_on_gpu(self):
+        return ''
+    
+
 
     def caching_device(self):
         """
@@ -287,13 +292,13 @@ class DeploymentConfig(object):
         """
         if clone_index >= self._num_clones:
             raise ValueError('clone_index must be less than num_clones')
-        device = None
+        device = ''
         if self._num_ps_tasks > 0:
             device += self._worker_device
         if self._clone_on_cpu:
             device += '/device:CPU:0'
         else:
-            device += None # '/device:GPU:%d' % clone_index
+            device += '' # '/device:GPU:%d' % clone_index
         return device
 
     def clone_scope(self, clone_index):

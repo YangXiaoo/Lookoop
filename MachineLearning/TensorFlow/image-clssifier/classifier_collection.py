@@ -370,7 +370,6 @@ def run_model(tfrecord_output,
         train_main(input_para)
 
 
-
 def convert_model(train_dir,
                     test_data_dir,
                     tfrecord_output,

@@ -4,10 +4,10 @@
 import os
 import time
 
-basedir = r'C:\Study\github\Blog\admin'
+basedir = r'C:\Study\github\Lookoops\tool'
 filelists = []
 # 指定想要统计的文件类型
-whitelist = ['py']
+whitelist = ['py', 'cpp', 'hpp']
 #遍历文件, 递归遍历文件夹中的所有
 def getFile(basedir):
     global filelists

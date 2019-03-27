@@ -177,7 +177,7 @@ def main(input_para):
         # record_key：（不是很理解）
         # seed=None：打乱是的种子
         # scope=None：范围
-        with tf.device(deploy_config.train_on_gpu()):
+        with tf.device(deploy_config.inputs_device()):
             provider = slim.dataset_data_provider.DatasetDataProvider(
                 dataset,
                 num_readers=input_para['num_readers'],

@@ -694,18 +694,18 @@ if __name__ == '__main__':
     for network_setting in net_factory:
         print("[INFO] use model %s" % network_setting['model_name'])
         # 训练
-        run_model(male_tfrecord_output, 
-                  original_dir, 
-                  input_para, 
-                  network_setting)
+        # run_model(male_tfrecord_output, 
+        #           original_dir, 
+        #           input_para, 
+        #           network_setting)
 
         # 转换模型
         convert_model(train_dir,
-                        test_dir,
-                        male_tfrecord_output,
-                        network_setting, 
-                        model_save_para, 
-                        input_para)
+                      test_dir,
+                      male_tfrecord_output,
+                      network_setting, 
+                      model_save_para, 
+                      input_para)
         # 使用当前模型对剩下的fold进行预测
         _ = prediction_train_data(graph_dir,
                                 test_dir,

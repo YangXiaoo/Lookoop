@@ -275,8 +275,6 @@ class DeploymentConfig(object):
     def train_on_gpu(self):
         return ''
     
-
-
     def caching_device(self):
         """
         返回缓存变量的设备

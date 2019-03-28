@@ -353,11 +353,11 @@ def run_model(tfrecord_output,
 
     tmp_train_dir = os.path.join(input_para['train_dir'], network_setting['model_name'])
     api.mkdirs(tmp_train_dir)
-    k, lower = 0, 3
-    for s in tfrecord_files:
+    lower = 4
+    for k, s in enumerate(tfrecord_files):
         if k < lower:
+            print("[INFO] skip model %s, training on data %s" % (network_setting['model_name'], s))
             continue
-        k += 1
         print("[INFO] Use model %s, training on data %s" % (network_setting['model_name'], s))
         tmp_data_original = os.path.join(original_dir, str(s), 'train')
         train_size = len(api.get_files(tmp_data_original))

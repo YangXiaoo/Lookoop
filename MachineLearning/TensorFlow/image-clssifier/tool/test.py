@@ -1,8 +1,12 @@
 # coding:utf-8
 import os
-# file_dir = r'C:\Study\test\kaggle-bonage\train-male_disposal_out'
-# ret = os.listdir(file_dir)
-# print(ret)
-dicts = {'4': '0', '6': '1', '9': '2', '10': '3'}
-ret = sorted(dicts.keys(), key=lambda x : int(x))
-print(ret)
+
+
+
+low = 4
+for k, i in enumerate(range(5)):
+	
+	if k < low:
+		print("skip traindata: {}".format(k))
+		continue
+	print("trianing: {}".format(k))

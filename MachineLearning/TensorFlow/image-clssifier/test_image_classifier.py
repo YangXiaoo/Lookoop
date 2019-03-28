@@ -153,6 +153,8 @@ def run_inference_on_image(input_par):
 
     label_dict = getlabelsDict(input_par['label_path'])
     with tf.Session() as sess:
+        init = tf.global_variables_initializer()
+        sess.run(init)
         # 加载保存的模型
         create_graph(sess, input_par['model_path'])
         prediction_output = {} # {'2_m-1-1.9.png': data}

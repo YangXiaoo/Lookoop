@@ -1,4 +1,5 @@
 #!C:\ProgramData\Anaconda2
+#先提取图片再转换
 import os
 import sys 
 import datetime

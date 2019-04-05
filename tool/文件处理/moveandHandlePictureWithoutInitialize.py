@@ -1,137 +1,203 @@
-#!C:\ProgramData\Anaconda2
-#先提取图片再转换
+# coding:utf-8
+# 2019-3-17
+
+# import matplotlib.pyplot as plt
+import numpy as np
 import os
-import sys 
+import cv2
 import datetime
-import time
-# pip install opencv-python
-# pip install scikit-image
-# pip install numpy
-try:
-    import cv2 
-except:
-    os.system("pip install opencv-python")
-    import cv2
+import logging
+import pickle
+from threading import Thread, Lock
 
-try:
-    from skimage import io  
-except:
-    os.system("pip install scikit-image")
-    from skimage import io
+from tool import util
+from tool import model as models
+from tool import api
 
-try:
-    import numpy as np
-except:
-    os.system("pip install numpy")
-    import numpy as np
+# 日志设置
+LOGGER_PATH = r"C:\Study\github\Lookoops\tool\bone_segementation_use_stacking\log"
+logger = util.get_logger(LOGGER_PATH)
+logger.setLevel(logging.DEBUG)   # 设置日志级别，设置INFO时时DEBUG不可见
 
-try:
-    from PIL import Image
-except:
-    os.system("pip install Pillow")
-    from PIL import Image
-    
-def get_filename(dirpath):
-    file = []
-    direction = []
-    for root, dirs, files in os.walk(dirpath, topdown=False):
-        for name in files:
-            path = os.path.join(root, name)
-            file.append(path)
-        for p in dirs:
-            direction.append(p)
-    return file
+fail, success, skip, count, total = 0, 0, 0, 0, 0   # 全局变量
+start_time = datetime.datetime.now()                # 运行时间
+lock = Lock()                                       # 锁
 
-def get_path(pic_file, out_dir, dirpath):
-    suffix = '.png'
-    prefix = 'label'
-    basename = os.path.basename(pic_file)
-    file = os.path.splitext(basename)
-    file_prefix = file[0]
-    dirname = os.path.dirname(pic_file)
-    dir_path = dirname.split(dirpath)[-1]
-    dir_ = dir_path.strip('\\')
-    dir_name = os.path.join(out_dir,dir_)
-    # print dir_name
+
+def _seg_test(dirs, out_dir, train_data_path, clip):
+    """不使用线程"""
+    global fail, success, skip, count, total
+    logger.info("Getting data.")
+    _train_raw, _labels = util.get_train_data(train_data_path, 2)
+    # logger.debug("_train_raw.size: {}, _labels.size(): {}".format(np.shape(_train_raw)), np.shape(_labels))
+    logger.info("Training data.")
+    # stack_model = models._test_train_model(_train_raw, _labels) 
+    stack_model = models._test_train_model(_train_raw, _labels)
+
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+    files = api.getFiles(dirs)
+    total = len(files)
+    threads = []
+    for pic_path in files:
+        info = "starting process : %s" % pic_path
+        logger.info(info)
+        img_dirs = os.path.join(out_dir, pic_path.split("\\")[-1])
+        if os.path.isfile(api.getName(img_dirs, "_new")):
+            skip += 1
+            logger.warning("skip %s"% img_dirs)
+            continue
+        try:
+            # 读取图片
+            img = cv2.imread(pic_path, 0)
+            # 切边
+            x,w,y,h = clip
+            img = img[x:w , y:h]
+            # 获得预测值
+            hist = api.getHistogram(img)
+            _data = util.pre_process(hist)
+            thresh_value = stack_model.predict(_data)
+            logger.debug('predict threshold value: %s' % thresh_value)
+            # 二值化
+            threshold, thrshed_img = cv2.threshold(img, thresh_value, 255, cv2.THRESH_BINARY)
+            # 使用区域生长法分割
+            logger.debug('using region growing to segmentate img')
+            img_segement, thresh_img = api.regionGrowing(img, thrshed_img)
+            # 保存
+            api.saveImage(img_dirs, "_new", img_segement)
+
+            # 去除多余边缘
+            logger.debug('remove margin')
+            img_remove_margin = api.moveMargin(img_segement, thresh_img)
+            api.saveImage(img_dirs, "_remove_margin", img_remove_margin)
+
+            # 扩充为正方形并缩小为256x256
+            # logger.debug('call normalization to require size')
+            img_new = api.normalization(img_remove_margin)
+            api.saveImage(img_dirs, "_new", img_new)
+            count += 1
+            success += 1
+            logger.info("%s/%s done" % (count, total))
+        except Exception as e:
+            # 错误情况
+            api.saveError(e, out_dir, img_dirs, logger)
+            fail += 1
+
+
+def _sub_seg(out_dir, pic_path, stack_model, clip):
+    """线程任务"""
+    global fail, success, skip, count, total
+    info = "starting process : %s" % pic_path
+    logger.info(info)
+    img_dirs = os.path.join(out_dir, pic_path.split("\\")[-1])
+    if os.path.isfile(api.getName(img_dirs, "_new")):
+        skip += 1
+        logger.warning("skip %s"% img_dirs)
+        return 
     try:
-        os.makedirs(dir_name)
-    except Exception,e:
-        pass
-    return dir_name
+        # 读取图片
+        img = cv2.imread(pic_path, 0)
+        # 切边
+        x,w,y,h = clip
+        img = img[x:w , y:h]
+        # 获得预测值
+        hist = api.getHistogram(img)
+        _data = util.pre_process(hist)
+        thresh_value = stack_model.predict(_data)
+        logger.debug('predict threshold value: %s' % thresh_value)
+        # 二值化
+        threshold, thrshed_img = cv2.threshold(img, thresh_value, 255, cv2.THRESH_BINARY)
+        api.saveImage(img_dirs, "_thrshed_img_raw", thrshed_img)
+        # 使用区域生长法分割
+        logger.debug('using region growing to segmentate img')
+        img_segement, thresh_img = api.regionGrowing(img, thrshed_img)
+        # 保存
+        api.saveImage(img_dirs, "_new", img_segement)
+        api.saveImage(img_dirs, "_thrshed_img_seg", thrshed_img)
 
-def handle_picture(f,s,out_dir,s_path,s_name,su,er):
-    suffix = "png"
-    height = 512
-    width = 512
-    f_img = Image.open(f)
-    f_img = f_img.convert("L")
-    s_img = Image.open(s)
-    s_img = s_img.convert("L")
-    im_f = f_img 
-    data_f = im_f.getdata()
-    data_f = np.matrix(data_f)
-    # print data_f
-    im_s = s_img 
-    data_s = im_s.getdata()
-    data_s = np.matrix(data_s)
-    mt_f = np.array(f_img)
-    # mt_f = mt_f.reshape([512,512])
-    # mt_f = np.reshape(mt_f,(512,512))
-    mt_s = np.array(s_img)
-    # print data_s
-    fail = []
-    dir_name = get_path(s, out_dir, s_path)
-    file_name = os.path.join(dir_name,s_name)
-    try:
-        data = mt_f * mt_s
-        new = Image.fromarray(data)
-        new.save(file_name,suffix) 
-        su = su + 1
-        print("OK: [ %s ]" %file_name)
+        # 去除多余边缘
+        logger.debug('remove margin')
+        img_remove_margin = api.moveMargin(img_segement, thresh_img)
+        api.saveImage(img_dirs, "_remove_margin", img_remove_margin)
 
-    except Exception,e:
-        error = str(e)+": [ "+file_name+" ]\n"
-        fail.append(error)
-        er = er + 1
-
-    return fail,su,er
+        # 扩充为正方形并缩小为256x256
+        # logger.debug('call normalization to require size')
+        img_new = api.normalization(img_remove_margin)
+        api.saveImage(img_dirs, "_norm", img_new)
+        count += 1
+        success += 1
+        logger.info("%s/%s done" % (count, total))
+    except Exception as e:
+        # 错误情况
+        api.saveError(e, out_dir, img_dirs, logger)
+        fail += 1
 
 
-def main():
-    # f_path = raw_input("\nInput original picture direction:")
-    f_path = "D:\\page\\2"
-    # s_path = raw_input("\nInput direction:")
-    s_path = "D:\\page\\11"
-    out_dir = "C:\\HANDLE_FILE\\"
-    starttime = datetime.datetime.now()
+def seg(dirs, out_dir, train_data_path, clip, retrain=False):
+    """分割主程序
+    1. 训练模型
+    2. 获取图片
+    3. 多线程分割
+    """
+    global fail, success, skip, count, total
+    logger.info("Getting data.")
+    _train_raw, _labels = util.get_train_data(train_data_path, 2)
+    model_save = "./data/pickle_model.dat"
 
-    f_file_list = get_filename(f_path)
-    s_file_list = get_filename(s_path)
-    su = 0
-    er = 0
-    sk = 0
-    for f in f_file_list:
-        f_name = os.path.basename(f)
-        for s in s_file_list:
-            s_name = os.path.basename(s)
-            if s_name == f_name:
-                fail,su,er = handle_picture(f,s,out_dir,s_path,s_name,su,er)
-                s_file_list.remove(s)
-            else:
-                print("Skip: [ %s ]" % s)
-                sk = sk + 1
+    stack_model = None
+    if not os.path.isfile(model_save):
+        logger.info("There is no model save in %s, training model" % model_save)
+        stack_model = models.train_model(_train_raw, _labels)
+        logger.debug("train model time: %s" % str(datetime.datetime.now() - start_time))
+        fp = open(model_save, "wb")
+        pickle.dump(stack_model, fp)
+        fp.close()
+    else:
+        if retrain:
+            logger.info("model save in %s, but you choose to re-train" % model_save)
+            stack_model = models.train_model(_train_raw, _labels)
+            logger.debug("train model time: %s" % str(datetime.datetime.now() - start_time))
+        else:
+            logger.info("%s exists, load it." % model_save)
+            stack_model = pickle.load(open(model_save,'rb'))
 
-    endtime = datetime.datetime.now()
-    expend = endtime - starttime
-    if fail:
-        print("*****************************************************")
-        print fail
-    print("*****************************************************")
-    print("Begn: [ %s ]" % starttime)
-    print("Time: [ %s ]" % expend)
-    print("Succ: [ %s ]" % su)
-    print("Skip: [ %s ]" % sk)
-    print("Erro: [ %s ]" % er)
+    if not os.path.isdir(out_dir):
+        os.mkdir(out_dir)
+    files = api.getFiles(dirs)
+    total = len(files)
+    threads = []
+
+    for f in files:
+        t = Thread(target=_sub_seg, args=(out_dir, f, stack_model, clip))
+        threads.append(t)
+
+    for t in threads:
+        t.start()
+
+    for t in threads:
+        t.join()
+
+
+    end_time = datetime.datetime.now()
+    expend = end_time - start_time
+    logger.info("\ntotal: %d\nsuccessful: %d\nskip: %d\nfailed: %d\nExpend time: %s" %(total, success, skip, fail, expend))
+    os.startfile(out_dir)
+
 
 if __name__ == '__main__':
-    main()
+    file_path = r"C:\Study\test\bone\100" # r"C:\Study\test\bone\thread_test"
+    out_dir = r"C:\Study\test\bone\sklearn"
+    train_data_path = r"C:\Users\Yauno\Documents\Tencent Files\1270009836\FileRecv\data_2.txt"
+    clip = (45,-45,45,-45)
+
+    _seg_test(file_path, out_dir, train_data_path, clip)  # 单线程
+    # seg(file_path, out_dir, train_data_path, clip)          # 多线程
+
+    file_path = r"C:\Study\test\bone\100-gt"            # 标准分割图像目录路径
+    out_dir = "C:\\Study\\test\\bone\\est_results_test" # 结果保存目录
+    file_path_2 = r"C:\Study\test\bone\sklearn"         # 得到de分割图像路径
+    logger.info("*"*80)
+    # 写成类重构
+    res = api.batchProcess(file_path, file_path_2, logger)
+    api.printEst(res, "stack_model", logger)
+    api.saveEst(res, "stack_model", out_dir, logger)

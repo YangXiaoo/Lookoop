@@ -914,6 +914,7 @@
 	boolean empty() // 测试堆栈是否为空。
 	Object peek( ) // 查看堆栈顶部的对象，但不从堆栈中移除它。
 	Object pop( ) // 移除堆栈顶部的对象，并作为此函数的值返回该对象。
+	Integer size = stack.size();
 	Object push(Object element) // 把项压入堆栈顶部。
 	int search(Object element) // 返回对象在堆栈中的位置，以 1 为基数。
 	             boolean       empty()

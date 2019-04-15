@@ -612,7 +612,7 @@
 	        File f = new File("test.txt");
 
 	        // 构建FileOutputStream对象，文件不存在会自动创建
-	        FileOutputStream fout = new FileOutputStream(f);
+	        FileOutputStream fout = new FileOutputStream(f);	// 可以将字符流转为字节流
 
 	        // 构建OutputStreamWriter对象，参数可以指定编码，默认操作系统编码，windows上市gbk
 	        OutputStreamWriter writer = new OutputStreamWriter(fout, "UTF-8");
@@ -631,7 +631,7 @@
 	        FileInputStream fin = new FileInputStream(f);
 	        InputStreamReader reader = new InputStreamReader(fin, "UTF-8");
 
-	        StringBuffer sb = new StringBuffer();
+	        StringBuffer sb = new StringBuffer();	// 属于处理流中的缓冲流， 可以将读取的内容存在内存里面
 	        while (reader.ready()) {
 	        	// 转换成char加入到StringBuffer对象中
 	        	sb.append((char) reader.read());
@@ -881,6 +881,27 @@
         String value = en.getValue();
         System.out.println("key=" + key + " value=" + value);
     }
+
+    // 根据key排序
+    Map< Integer, String> map=new TreeMap<>();
+    map.put(5, "a");
+    map.put(3, "c");
+    map.put(4, "b");
+    map.put(2, "d");
+    map.put(1, "e");
+    List<Entry<Integer,String>> list =new ArrayList<Entry<Integer,String>>(map.entrySet());
+    Collections.sort(list, new Comparator<Entry<Integer, String>>() {
+
+        @Override
+        public int compare(Entry<Integer, String> o1, Entry<Integer, String> o2) {
+            // TODO Auto-generated method stub
+            return o1.getValue().compareTo(o2.getValue());
+        }
+    });
+    for(Entry<Integer, String> aEntry:list) {
+        System.out.println(aEntry.getKey()+":"+aEntry.getValue());
+    }
+
 
 30. Set
 	30.1 HashSet // HashSet不允许重复（HashMap的key不允许重复，如果出现重复就覆盖）,

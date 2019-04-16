@@ -1,0 +1,225 @@
+2019-03-20 21:35:04,124 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:36:11,864 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:36:58,334 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:39:21,393 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:39:21,448 - seg.py[line: 32] - INFO - Training data.
+2019-03-20 21:40:31,496 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:40:31,546 - seg.py[line: 32] - INFO - Training data.
+2019-03-20 21:42:51,544 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:44:37,762 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:45:18,331 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:46:00,739 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:46:00,798 - seg.py[line: 32] - DEBUG - _train_raw.size: (1, 500)
+2019-03-20 21:46:00,798 - seg.py[line: 33] - INFO - Training data.
+2019-03-20 21:47:06,634 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:47:06,685 - seg.py[line: 32] - DEBUG - _train_raw.size: (500,)
+2019-03-20 21:47:06,685 - seg.py[line: 33] - INFO - Training data.
+2019-03-20 21:48:29,476 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:50:25,723 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:54:03,123 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:54:15,976 - seg.py[line: 30] - INFO - Getting data.
+2019-03-20 21:54:16,034 - seg.py[line: 33] - INFO - Training data.
+2019-03-20 21:54:17,155 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-1-2.4.png
+2019-03-20 21:54:17,158 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-1-2.4.png
+2019-03-20 21:54:17,159 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-10-10.6.png
+2019-03-20 21:54:17,159 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-10-10.6.png
+2019-03-20 21:54:17,159 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-10-10.61.png
+2019-03-20 21:54:17,160 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-10-10.61.png
+2019-03-20 21:54:17,160 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-10-9.5.png
+2019-03-20 21:54:17,160 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-10-9.5.png
+2019-03-20 21:54:17,160 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-10-9.9.png
+2019-03-20 21:54:17,161 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-10-9.9.png
+2019-03-20 21:54:17,161 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-11-11.02.png
+2019-03-20 21:54:17,162 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-11-11.02.png
+2019-03-20 21:54:17,162 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-11-11.22.png
+2019-03-20 21:54:17,163 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-11-11.22.png
+2019-03-20 21:54:17,163 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-11-14.0.png
+2019-03-20 21:54:17,163 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-11-14.0.png
+2019-03-20 21:54:17,164 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-11-9.61.png
+2019-03-20 21:54:17,164 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-11-9.61.png
+2019-03-20 21:54:17,164 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-12-11.6.png
+2019-03-20 21:54:17,164 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-12-11.6.png
+2019-03-20 21:54:17,165 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-12-11.9.png
+2019-03-20 21:54:17,165 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-12-11.9.png
+2019-03-20 21:54:17,165 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-12-13.4 (2).png
+2019-03-20 21:54:17,165 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-12-13.4 (2).png
+2019-03-20 21:54:17,166 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-12-14.7.png
+2019-03-20 21:54:17,166 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-12-14.7.png
+2019-03-20 21:54:17,166 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-13-11.1.png
+2019-03-20 21:54:17,167 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-13-11.1.png
+2019-03-20 21:54:17,167 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-13-13.62.png
+2019-03-20 21:54:17,167 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-13-13.62.png
+2019-03-20 21:54:17,167 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-14-14.0.png
+2019-03-20 21:54:17,168 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-14-14.0.png
+2019-03-20 21:54:17,168 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-14-15.9.png
+2019-03-20 21:54:17,169 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-14-15.9.png
+2019-03-20 21:54:17,169 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-15-15.0.png
+2019-03-20 21:54:17,169 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-15-15.0.png
+2019-03-20 21:54:17,169 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-15-15.9.png
+2019-03-20 21:54:17,170 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-15-15.9.png
+2019-03-20 21:54:17,170 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-15-16.31.png
+2019-03-20 21:54:17,170 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-15-16.31.png
+2019-03-20 21:54:17,170 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-16-16.31.png
+2019-03-20 21:54:17,173 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-16-16.31.png
+2019-03-20 21:54:17,174 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-16-17.31.png
+2019-03-20 21:54:17,174 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-16-17.31.png
+2019-03-20 21:54:17,174 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-17-12.3.png
+2019-03-20 21:54:17,175 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-17-12.3.png
+2019-03-20 21:54:17,176 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-2-1.7.png
+2019-03-20 21:54:17,176 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-2-1.7.png
+2019-03-20 21:54:17,176 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-2-2.91.png
+2019-03-20 21:54:17,177 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-2-2.91.png
+2019-03-20 21:54:17,177 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-3-3.1.png
+2019-03-20 21:54:17,177 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-3-3.1.png
+2019-03-20 21:54:17,178 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-3-3.5.png
+2019-03-20 21:54:17,178 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-3-3.5.png
+2019-03-20 21:54:17,178 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-3-4.03.png
+2019-03-20 21:54:17,179 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-3-4.03.png
+2019-03-20 21:54:17,179 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-4-4.35.png
+2019-03-20 21:54:17,179 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-4-4.35.png
+2019-03-20 21:54:17,179 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-4-4.5.png
+2019-03-20 21:54:17,180 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-4-4.5.png
+2019-03-20 21:54:17,180 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-4-5.21.png
+2019-03-20 21:54:17,181 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-4-5.21.png
+2019-03-20 21:54:17,181 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-4-5.8.png
+2019-03-20 21:54:17,181 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-4-5.8.png
+2019-03-20 21:54:17,181 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-5-4.91.png
+2019-03-20 21:54:17,182 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-5-4.91.png
+2019-03-20 21:54:17,182 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-5-5.912.png
+2019-03-20 21:54:17,183 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-5-5.912.png
+2019-03-20 21:54:17,183 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-6-5.8.png
+2019-03-20 21:54:17,184 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-6-5.8.png
+2019-03-20 21:54:17,184 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-6-6.0.png
+2019-03-20 21:54:17,185 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-6-6.0.png
+2019-03-20 21:54:17,185 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-6-7.4.png
+2019-03-20 21:54:17,186 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-6-7.4.png
+2019-03-20 21:54:17,186 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-7-10.9.png
+2019-03-20 21:54:17,186 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-7-10.9.png
+2019-03-20 21:54:17,186 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-7-6.2.png
+2019-03-20 21:54:17,187 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-7-6.2.png
+2019-03-20 21:54:17,187 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-7-7.2.png
+2019-03-20 21:54:17,188 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-7-7.2.png
+2019-03-20 21:54:17,188 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-7-7.4.png
+2019-03-20 21:54:17,189 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-7-7.4.png
+2019-03-20 21:54:17,189 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-7-8.41.png
+2019-03-20 21:54:17,189 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-7-8.41.png
+2019-03-20 21:54:17,189 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-8-10.81.png
+2019-03-20 21:54:17,190 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-8-10.81.png
+2019-03-20 21:54:17,190 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-8-10.83.png
+2019-03-20 21:54:17,191 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-8-10.83.png
+2019-03-20 21:54:17,191 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-8-7.81.png
+2019-03-20 21:54:17,191 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-8-7.81.png
+2019-03-20 21:54:17,191 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-8-9.23.png
+2019-03-20 21:54:17,193 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-8-9.23.png
+2019-03-20 21:54:17,194 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-8-9.53.png
+2019-03-20 21:54:17,194 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-8-9.53.png
+2019-03-20 21:54:17,194 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-9-10.62.png
+2019-03-20 21:54:17,195 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-9-10.62.png
+2019-03-20 21:54:17,195 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-9-11.0.png
+2019-03-20 21:54:17,195 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-9-11.0.png
+2019-03-20 21:54:17,195 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-9-7.8.png
+2019-03-20 21:54:17,196 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-9-7.8.png
+2019-03-20 21:54:17,196 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-9-9.31.png
+2019-03-20 21:54:17,197 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-9-9.31.png
+2019-03-20 21:54:17,197 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-9-9.6.png
+2019-03-20 21:54:17,197 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-9-9.6.png
+2019-03-20 21:54:17,197 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-9-9.8.png
+2019-03-20 21:54:17,198 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-9-9.8.png
+2019-03-20 21:54:17,198 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\fm-9-9.81.png
+2019-03-20 21:54:17,198 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\fm-9-9.81.png
+2019-03-20 21:54:17,198 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-10-11 (1).png
+2019-03-20 21:54:17,199 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-10-11 (1).png
+2019-03-20 21:54:17,199 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-10-12.6.png
+2019-03-20 21:54:17,200 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-10-12.6.png
+2019-03-20 21:54:17,200 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-10-9.0.png
+2019-03-20 21:54:17,200 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-10-9.0.png
+2019-03-20 21:54:17,201 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-11-10.6.png
+2019-03-20 21:54:17,201 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-11-10.6.png
+2019-03-20 21:54:17,201 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-11-12.6.png
+2019-03-20 21:54:17,201 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-11-12.6.png
+2019-03-20 21:54:17,201 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-12-11.9.png
+2019-03-20 21:54:17,202 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-12-11.9.png
+2019-03-20 21:54:17,202 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-12-12.63.png
+2019-03-20 21:54:17,203 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-12-12.63.png
+2019-03-20 21:54:17,203 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-12-13.0.png
+2019-03-20 21:54:17,203 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-12-13.0.png
+2019-03-20 21:54:17,203 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-13-11.8.png
+2019-03-20 21:54:17,204 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-13-11.8.png
+2019-03-20 21:54:17,204 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-13-12.8.png
+2019-03-20 21:54:17,205 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-13-12.8.png
+2019-03-20 21:54:17,206 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-14-13.2.png
+2019-03-20 21:54:17,208 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-14-13.2.png
+2019-03-20 21:54:17,208 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-14-13.4.png
+2019-03-20 21:54:17,209 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-14-13.4.png
+2019-03-20 21:54:17,209 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-15-15.2.png
+2019-03-20 21:54:17,210 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-15-15.2.png
+2019-03-20 21:54:17,210 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-15-15.71.png
+2019-03-20 21:54:17,210 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-15-15.71.png
+2019-03-20 21:54:17,210 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-15-16.82.png
+2019-03-20 21:54:17,211 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-15-16.82.png
+2019-03-20 21:54:17,211 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-16-13.9.png
+2019-03-20 21:54:17,211 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-16-13.9.png
+2019-03-20 21:54:17,211 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-16-16.1.png
+2019-03-20 21:54:17,212 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-16-16.1.png
+2019-03-20 21:54:17,212 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-16-16.8.png
+2019-03-20 21:54:17,212 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-16-16.8.png
+2019-03-20 21:54:17,213 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-16-17.0.png
+2019-03-20 21:54:17,213 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-16-17.0.png
+2019-03-20 21:54:17,213 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-17-18 (2).png
+2019-03-20 21:54:17,214 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-17-18 (2).png
+2019-03-20 21:54:17,214 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-17-18.2.png
+2019-03-20 21:54:17,214 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-17-18.2.png
+2019-03-20 21:54:17,214 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-17-18.png
+2019-03-20 21:54:17,215 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-17-18.png
+2019-03-20 21:54:17,215 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-2-2.0.png
+2019-03-20 21:54:17,215 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-2-2.0.png
+2019-03-20 21:54:17,215 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-3-3.7.png
+2019-03-20 21:54:17,216 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-3-3.7.png
+2019-03-20 21:54:17,216 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-4-4.61.png
+2019-03-20 21:54:17,217 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-4-4.61.png
+2019-03-20 21:54:17,217 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-4-5.4.png
+2019-03-20 21:54:17,217 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-4-5.4.png
+2019-03-20 21:54:17,217 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-5--6.5.png
+2019-03-20 21:54:17,219 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-5--6.5.png
+2019-03-20 21:54:17,219 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-5-3.6.png
+2019-03-20 21:54:17,220 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-5-3.6.png
+2019-03-20 21:54:17,220 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-5-6.3.png
+2019-03-20 21:54:17,220 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-5-6.3.png
+2019-03-20 21:54:17,220 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-5-6.8.png
+2019-03-20 21:54:17,222 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-5-6.8.png
+2019-03-20 21:54:17,222 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-6-6.41.png
+2019-03-20 21:54:17,223 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-6-6.41.png
+2019-03-20 21:54:17,223 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-6-6.7.png
+2019-03-20 21:54:17,223 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-6-6.7.png
+2019-03-20 21:54:17,223 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-6-7.5.png
+2019-03-20 21:54:17,224 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-6-7.5.png
+2019-03-20 21:54:17,224 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-6-8.0.png
+2019-03-20 21:54:17,224 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-6-8.0.png
+2019-03-20 21:54:17,224 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-7-6.61.png
+2019-03-20 21:54:17,225 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-7-6.61.png
+2019-03-20 21:54:17,226 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-7-7.4.png
+2019-03-20 21:54:17,227 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-7-7.4.png
+2019-03-20 21:54:17,227 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-7-8.4 (2).png
+2019-03-20 21:54:17,228 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-7-8.4 (2).png
+2019-03-20 21:54:17,228 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-7-8.4.png
+2019-03-20 21:54:17,229 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-7-8.4.png
+2019-03-20 21:54:17,229 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-7-8.6.png
+2019-03-20 21:54:17,229 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-7-8.6.png
+2019-03-20 21:54:17,230 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-8-7.2.png
+2019-03-20 21:54:17,230 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-8-7.2.png
+2019-03-20 21:54:17,230 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-8-8.2.png
+2019-03-20 21:54:17,231 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-8-8.2.png
+2019-03-20 21:54:17,231 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-8-8.4.png
+2019-03-20 21:54:17,231 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-8-8.4.png
+2019-03-20 21:54:17,231 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-8-8.5.png
+2019-03-20 21:54:17,232 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-8-8.5.png
+2019-03-20 21:54:17,232 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-8-8.71.png
+2019-03-20 21:54:17,232 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-8-8.71.png
+2019-03-20 21:54:17,232 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-9-10.7.png
+2019-03-20 21:54:17,233 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-9-10.7.png
+2019-03-20 21:54:17,233 - seg.py[line: 44] - INFO - starting process : C:\Study\test\bone\100\m-9-9.5.png
+2019-03-20 21:54:17,234 - seg.py[line: 48] - WARNING - skip C:\Study\test\bone\sklearn\m-9-9.5.png
+2019-03-20 21:54:17,234 - seg.py[line: 197] - INFO - ********************************************************************************
+2019-03-20 21:54:17,244 - api.py[line: 846] - DEBUG - fm-1-2.4_new.png
+2019-03-20 21:54:34,924 - api.py[line: 830] - INFO - 1 / 100 done, picture: fm-1-2.4_new , accuracy rate: 0.986974 , error rate:  0.006472 , loss rate: 0.019414, dice: 0.986887
+2019-03-20 21:54:34,924 - api.py[line: 846] - DEBUG - fm-10-10.61_new.png

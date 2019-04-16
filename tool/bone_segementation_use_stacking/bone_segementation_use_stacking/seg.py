@@ -157,10 +157,6 @@ def seg(dirs, out_dir, train_data_path, clip, retrain=False):
             logger.info("model save in %s, but you choose to re-train " % model_save)
             stack_model = models.train_model(_train_raw, _labels)
             logger.debug("train model time: %s" % str(datetime.datetime.now() - start_time))
-            # 保存
-            fp = open(model_save, "wb")
-            pickle.dump(stack_model, fp)
-            fp.close()
         else:
             logger.info("%s exists, load it." % model_save)
             stack_model = pickle.load(open(model_save,'rb'))
@@ -189,19 +185,19 @@ def seg(dirs, out_dir, train_data_path, clip, retrain=False):
 
 
 if __name__ == '__main__':
-    file_path = r"C:\Study\test\bone\100"   # r"C:\Study\test\bone\thread_test"
-    out_dir = r"C:\Study\test\bone\sklearn" # 分割图像保存路径
-    train_data_path = r"./data\500.txt"     # 训练数据
+    file_path = r"C:\Study\test\bone\100" # r"C:\Study\test\bone\thread_test"
+    out_dir = r"C:\Study\test\bone\sklearn"
+    train_data_path = r"./data\500.txt"
     clip = (45,-45,45,-45)
 
     # _seg_test(file_path, out_dir, train_data_path, clip, retrain=True)  # 单线程
     seg(file_path, out_dir, train_data_path, clip, retrain=True)          # 多线程
 
-    file_path = r"C:\Study\test\bone\100-gt"            # 标准分割图像目录路径
-    est_out_dir = "C:\\Study\\test\\bone\\est_results_test" # 精确率结果保存目录
-    file_path_2 = r"C:\Study\test\bone\sklearn"         # 得到de分割图像路径
-    logger.info("*"*80)
-    # 写成类重构
-    res = api.batchProcess(file_path, file_path_2, logger)
-    api.printEst(res, "stack_model", logger)
-    api.saveEst(res, "stack_model", est_out_dir, logger)
+    # file_path = r"C:\Study\test\bone\100-gt"            # 标准分割图像目录路径
+    # out_dir = "C:\\Study\\test\\bone\\est_results_test" # 结果保存目录
+    # file_path_2 = r"C:\Study\test\bone\sklearn"         # 得到de分割图像路径
+    # logger.info("*"*80)
+    # # 写成类重构
+    # res = api.batchProcess(file_path, file_path_2, logger)
+    # api.printEst(res, "stack_model", logger)
+    # api.saveEst(res, "stack_model", out_dir, logger)

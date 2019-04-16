@@ -28,7 +28,7 @@ public class SequenceOfBST {
 
 		int j = leftIndex;
 		for (; j < sequence.length; ++j) {
-			if (sequence[j] < root) 
+			if (sequence[j] < root)  
 				return false;
 		}
 
@@ -53,3 +53,5 @@ public class SequenceOfBST {
 			verify.test("test2", list2);	
 		}	
 }
+// test1, result: true
+// test2, result: false

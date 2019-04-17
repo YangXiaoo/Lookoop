@@ -180,7 +180,7 @@ def create_test_data(data_path,
     创建测试集, 并将归一化后的数据保存到指定路径
     """
     print("[INFO] Creating test datasets.")
-    files = get_files(data_path)
+    files = sorted(get_files(data_path))
     len_files = len(files)
     # len_files = 20
     img_data = np.ndarray((len_files, height, width, 1), dtype=np.uint8)
@@ -191,7 +191,7 @@ def create_test_data(data_path,
         # suffix = '.' + pic_name.split('.')[-1]
         img_test = cv2.imread(file_path, 0)
         img_test = normalization(img_test, (height, width))
-        tmp_save_path = os.path.join(normalization_pic_path, str(i) + suffix)
+        tmp_save_path = os.path.join(normalization_pic_path, pic_name.split('.')[0] + str(i) + suffix)
         cv2.imwrite(tmp_save_path, img_test)
         img = np.array(img_test)
         img_data[i] = np.reshape(img ,(height, width, 1))

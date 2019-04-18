@@ -174,6 +174,17 @@
 	double pi = 3.1415;
 	char x = 'x';
 
+	12.1 转换
+		string 和int之间的转换
+		string转换成int  :Integer.valueOf("12")
+		int转换成string : String.valueOf(12)
+
+
+		char和int之间的转换
+		首先将char转换成string
+		String str=String.valueOf('2')
+		Integer.valueof(str) 或者Integer.PaseInt(str)
+		Integer.valueof返回的是Integer对象，Integer.paseInt返回的是int
 
 13. 局部变量
 	局部变只在声明他的方法、构造方法或语句块中可见; 局部变量是在栈上分配的; 局部变量没有默认值，必须经过初始化才可以使用。
@@ -717,6 +728,11 @@
 	list.clear();
 	list.set(1, b);// 将索引位置为1的对象e修改为对象b
 	list.add(2, c);// 将对象c添加到索引位置为2的位置
+	list.subList(from, to).clear(); // 截断不影响原列表
+	list.subList(from, to); 	// 影响原列表
+	list.isEmpty();
+	list.toArray();
+	
 	for (int i = 0; i < list.size(); i++) {
 		System.out.println(list.get(i));// 利用get(int index)方法获得指定索引位置的对象
 	}

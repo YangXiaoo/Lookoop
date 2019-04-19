@@ -245,7 +245,9 @@ def saveImage(img_dirs, mid_name, image):
     image_file = os.path.join("\\".join(img_dirs.split("\\")[:-1]), file_prefix + mid_name + suffix)
     cv2.imwrite(image_file, image)
 
+
 def getName(img_dirs, mid_name):
+    """给定图像路径和重新命名的中间名称,返回重新命名的路径"""
     basename = os.path.basename(img_dirs)
     file = os.path.splitext(basename)
     file_prefix = file[0]

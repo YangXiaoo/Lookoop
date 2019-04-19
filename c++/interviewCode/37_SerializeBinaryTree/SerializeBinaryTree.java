@@ -12,6 +12,7 @@ class TreeNode {
 }
 
 public class SerializeBinaryTree {
+	private int count;
 	public List<String> serialize(TreeNode root) {
 		List<String> serialList = new ArrayList<>();
 
@@ -35,15 +36,17 @@ public class SerializeBinaryTree {
 	public TreeNode deSerialize(List<String> serialList) {
 
 		TreeNode root = new TreeNode();
+		count = 0;
 		deSerializeHelper(root, serialList);
 		return root;
 	}
 
 	public void deSerializeHelper(TreeNode root, List<String> serialList) {
-		if (serialList.isEmpty()) {
+		if (serialList.size() == count) {
 			return;
 		}
-		String val = serialList.get(0);
+		String val = serialList.get(count);
+		count++;
 		if (val == "null") {
 			root = null;
 			return;
@@ -52,8 +55,8 @@ public class SerializeBinaryTree {
 		}
 		root.left = new TreeNode();
 		root.right = new TreeNode();
-		deSerializeHelper(root.left, serialList.subList(1, serialList.size()));
-		deSerializeHelper(root.right, serialList.subList(2, serialList.size()));
+		deSerializeHelper(root.left, serialList);
+		deSerializeHelper(root.right, serialList);
 	}
 
 	public void test(String testName, List<String> serialList) {

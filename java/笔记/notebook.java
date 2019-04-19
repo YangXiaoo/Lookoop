@@ -732,6 +732,7 @@
 	list.subList(from, to); 	// 影响原列表
 	list.isEmpty();
 	list.toArray();
+	list.addAll(anotherList);
 	
 	for (int i = 0; i < list.size(); i++) {
 		System.out.println(list.get(i));// 利用get(int index)方法获得指定索引位置的对象

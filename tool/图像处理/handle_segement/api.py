@@ -1003,7 +1003,7 @@ def getHistogramMean(data):
     return total_pixel / total
 
 
-def standardPicClip(dir_path, out_dir, clip=(45,-45,45,-45)):
+def standardPicClip(dir_path, out_dir, midName="_new", clip=(45,-45,45,-45)):
     """
     对图像进行切边
     dir_path：原图路径
@@ -1017,7 +1017,7 @@ def standardPicClip(dir_path, out_dir, clip=(45,-45,45,-45)):
         out_path = os.path.join(out_dir, f.split("\\")[-1])
         x,w,y,h = clip
         img = img[x:w , y:h]
-        saveImage(out_path, "_new", img)
+        saveImage(out_path, midName, img)
     os.startfile(out_dir)
 
 

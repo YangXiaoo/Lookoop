@@ -867,19 +867,22 @@ def batchProcess(file_path_1, file_path_2, logger=None):
     # 逐一处理
     count = 1
     for k in files_1:
-        _print_debug(k, logger)
-        if k not in files_2:
-            _print_warning("%s skiped, cause it not exist in output path" % k, logger)
-            continue
-        accuracy_rate, error_rate, loss_rate, dice = getAccuracy(files_1[k], files_2[k])
-        # print(files_2[i])
-        basename = os.path.basename(files_1[k])
-        pic_name = os.path.splitext(basename)[0]
-        res[pic_name] = [accuracy_rate, error_rate, loss_rate, dice]
-        # printToConsole(start_time, files_1[i], count, len_files, 5)
-        tmp_info = "%s / %s done, picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (count, len_files, pic_name, accuracy_rate, error_rate, loss_rate, dice)
-        _print_info(tmp_info, logger)
-        count += 1
+        try:
+            _print_debug(k, logger)
+            if k not in files_2:
+                _print_warning("%s skiped, cause it not exist in output path" % k, logger)
+                continue
+            accuracy_rate, error_rate, loss_rate, dice = getAccuracy(files_1[k], files_2[k])
+            # print(files_2[i])
+            basename = os.path.basename(files_1[k])
+            pic_name = os.path.splitext(basename)[0]
+            res[pic_name] = [accuracy_rate, error_rate, loss_rate, dice]
+            # printToConsole(start_time, files_1[i], count, len_files, 5)
+            tmp_info = "%s / %s done, picture: %s , accuracy rate: %5f , error rate:  %5f , loss rate: %5f, dice: %5f" % (count, len_files, pic_name, accuracy_rate, error_rate, loss_rate, dice)
+            _print_info(tmp_info, logger)
+            count += 1
+        except Exception as e:
+            _print_warning(str(e))
 
     return res
 

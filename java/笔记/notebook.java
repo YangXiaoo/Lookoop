@@ -75,6 +75,9 @@
 	float 0.0f
 	double 0.0d
 
+	Long.parseLong(String)
+	String.valueOf(int)
+
 5. 返回
 
 	int storage(String s)
@@ -960,3 +963,42 @@
 	synchronized E             pop()
 	             E             push(E object)
 	synchronized int           search(Object o)
+
+32. 集合方法 
+	// https://www.cnblogs.com/yoyohong/p/7644650.html
+	// 排序
+	Collections.sort(list, new Comparator<Student>() {
+	    @Override
+	    public int compare(Student o1, Student o2) {
+	        return o1.getId() - o2.getId();
+	    }
+	});
+	// 获取最大最小值
+	int max = Collections.max(list);
+	int min = Collections.min(list);
+	
+	Collections.shuffle(list)
+	
+	int index1 = Collections.binarySearch(list2, "Thursday");
+	// 替换集合中指定元素
+	boolean flag = Collections.replaceAll(list2, "Sunday", "tttttt");
+
+	//反转集合中的元素的顺序
+        Collections.reverse(list2);
+
+    // 交换集合中指定元素
+    Collections.swap(list2, 0, 3);
+
+    //替换集合中的所有元素，用对象object
+    Collections.fill(list2, "替换");
+
+ 	//生成一个指定大小与内容的集合
+    List<String> list4 = Collections.nCopies(5, "哈哈");
+
+	//为集合生成一个Enumeration
+    List<String> list5 = Arrays.asList("I love my country!".split(" "));
+    System.out.println(list5);
+    Enumeration<String> e = Collections.enumeration(list5);
+    while (e.hasMoreElements()) {
+        System.out.println(e.nextElement());
+    }

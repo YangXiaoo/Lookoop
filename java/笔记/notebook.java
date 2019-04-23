@@ -78,6 +78,8 @@
 	Long.parseLong(String)
 	Integer.valueOf(char)
 	String.valueOf(int)
+	char c = '0';		// 'a'
+	int cInt = c - '0';	// 'a'
 
 5. 返回
 

@@ -76,6 +76,7 @@
 	double 0.0d
 
 	Long.parseLong(String)
+	Integer.valueOf(char)
 	String.valueOf(int)
 
 5. 返回

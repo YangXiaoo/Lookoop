@@ -4,10 +4,10 @@
 import os
 import time
 
-basedir = r'C:\Study\github\Lookoops\tool'
+basedir = r'C:\Study\github\Lookoops\LeetCode'
 filelists = []
 # 指定想要统计的文件类型
-whitelist = ['py', 'cpp', 'hpp']
+whitelist = ['py', 'cpp', 'hpp', 'java']
 #遍历文件, 递归遍历文件夹中的所有
 def getFile(basedir):
     global filelists
@@ -23,7 +23,7 @@ def countLine(fname):
     for file_line in open(fname, encoding='utf-8').readlines():
         if file_line != '' and file_line != '\n': #过滤掉空行
             count += 1
-    print(fname + '----' , count)
+    # print(fname + '----' , count)
     return count
 
 if __name__ == '__main__' :

@@ -904,8 +904,11 @@
         String value = en.getValue();
         System.out.println("key=" + key + " value=" + value);
     }
-
-    // 根据key排序
+    // 方法4
+    for (Map.Entry<Integer, String> it : map.entrySet()) {
+    	System.out.println("key=" + it.getKey() + " value=" + it.getValue());
+    }
+    // 根据value排序
     Map< Integer, String> map=new TreeMap<>();
     map.put(5, "a");
     map.put(3, "c");

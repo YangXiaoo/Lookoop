@@ -25,3 +25,4 @@ tool/bone_segementation_use_stacking/data/pickle_model.dat
 *.ilk
 c++/interviewCode/code/.vs/code/v15/.suo
 c++/interviewCode/51_InversePair/InversePair.class
+c++/interviewCode/53_NumberOfK/NumberOfK.class

@@ -289,6 +289,7 @@
 	String[] split(String regex, int limit) // limit默认为全分割
 
 	String s = new String("Y-X-y-x");
+	String s = new String(char[])
 	s.split("-", 2) // ["Y","X-y-x"]
 
 	s.startWith('Y') // true
@@ -356,6 +357,28 @@
 	String toUpperCase(Locale locale) // 使用给定 Locale 的规则将此 String 中的所有字符都转换为大写。
 	String trim() // 返回字符串的副本，忽略前导空白和尾部空白。
 	static String valueOf(primitive data type x) // 返回给定data type类型x参数的字符串表示形式。
+
+	//////////////////////////////////////////////////////
+	StringBuilder
+	// https://www.cnblogs.com/skywang12345/p/string02.html
+	StringBuilder builder = new StringBuilder(String str);
+	builder.append(T);
+	builder.charAt(int index);
+	StringBuilder     delete(int start, int end)
+	StringBuilder     deleteCharAt(int index)
+	int     indexOf(String subString, int start)
+	int     indexOf(String string)
+	StringBuilder     insert(int offset, Object obj)
+	int     length()
+	StringBuilder     replace(int start, int end, String string)
+	StringBuilder     reverse()
+	void     setCharAt(int index, char ch)
+	void     setLength(int length)
+	CharSequence     subSequence(int start, int end)
+	String     substring(int start)
+	String     substring(int start, int end)
+	String     toString()
+	void     trimToSize()
 
 
 

@@ -24,8 +24,9 @@ out_dir = "C:\\Study\\test\\out_test" # 保存目录
 if not os.path.isdir(out_dir):
     os.mkdir(out_dir)
 
-files = getFiles(file_path)
-for f in files:
+files = sorted(getFiles(file_path))
+count = 0
+for i, f in enumerate(files):
     basename = os.path.basename(f)
     preffix = basename.split('.')[0]
     if preffix != "label":
@@ -34,6 +35,8 @@ for f in files:
     img = np.matrix(Image.open(f))
     back = np.ones(img.shape) * 256
     ret = np.multiply(img, back)
-    ret_path = os.path.join(out_dir, f.split('\\')[-2] + '.png')
+    # ret_path = os.path.join(out_dir, f.split('\\')[-2] + '.png')
+    ret_path = os.path.join(out_dir, str(count) + '.png')
     cv2.imwrite(ret_path, ret)
+    count += 1
 os.startfile(out_dir)

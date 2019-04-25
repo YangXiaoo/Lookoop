@@ -236,3 +236,15 @@
 							// 且bucket_count>size/max_load_factor
 	c.reverse(n);			// 重组存储，使得c可以保存n个元素且不必rehash
 
+/////////////////////////
+#include <deque>
+	// https://www.cnblogs.com/engineerLF/p/5393006.html
+	deque<int> deq;
+	deq.fornt();
+	deq.back();
+	deq.push_back(int)；
+
+	// 头尾删除
+	deq.pop_front();
+	deq.pop_back();
+	

@@ -1,4 +1,4 @@
-// 2019-4-25
+// 2019-4-25~26
 // 队列的最大值
 // leetcode-239
 #include <stdio.h>
@@ -8,22 +8,24 @@ using namespace std;
 
 vector<int> maxInWindow(const vector<int>& nums, unsigned int size) {
 	vector<int> ret;	// 定义返回列表
-	deque<int> deq;
+	deque<int> deq;		// 定义每个窗口最大值
 	for (int i = 0; i < nums.size(); ++i) {
-		while (deq && (nums[deq.back()] <= nums[i])) {
-			deq.pop_back(i);
+		while (!deq.empty() && (nums[deq.back()] <= nums[i])) {
+			deq.pop_back();
 		}
 
 		deq.push_back(i);
-
-		if (deq.front() == i - size)
+		// printf("%d, ", deq.front());
+		if (deq.front() == (i - size))
 			deq.pop_front();
 
+		// printf("%d, ", deq.front());
 		ret.push_back(nums[deq.front()]);
 	}
 
-	for (int j = 0; j < size; ++j) {
-		ret.erase(j);
+	vector<int>::iterator it = ret.begin();
+	for (int j = 1; j < size; ++j) {
+		it = ret.erase(it);
 	}
 
 	return ret;
@@ -31,22 +33,23 @@ vector<int> maxInWindow(const vector<int>& nums, unsigned int size) {
 
 
 void test(const char* testName, const vector<int>& nums, unsigned int size, const vector<int>& expect) {
-	printf(", result: ");
+	printf("%s, result: ", testName);
 	vector<int> ret = maxInWindow(nums, size);
 	for (auto x : ret) {
-		printf("%s ", x);
+		printf("%d ", x);
 	}
-	printf(", expect: ", );
-	for (auto x : expect) {
-		printf("%s ", x);
+	printf(", expect: ");
+	for (auto s : expect) {
+		printf("%d ", s);
 	}
 }
 
 int main(int argc, char const *argv[])
 {
-	vector<int> nums1 = {2,3,4,2,6,2,5,1};
-	vector<int> expect1 = {4,4,6,6,6,5};
+	vector<int> nums1 = { 2,3,4,2,6,2,5,1 };
+	vector<int> expect1 = { 4,4,6,6,6,5 };
 	int windowSize = 3;
 	test("test-1", nums1, windowSize, expect1);
+
 	return 0;
 }

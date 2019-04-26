@@ -97,16 +97,18 @@ class PathSum {
 
     public void dfs(TreeNode node, List<TreeNode> tmp) {
     	if (node != null) {
+    		tmp.add(node);
+
     		if (nodeSum(tmp) == sum) {
     			path.add(new ArrayList(tmp));
     		} else {
-    			tmp.add(node);
     			dfs(node.left, tmp);
     			dfs(node.right, tmp);
+	    		// System.out.println(tmp.toString());
+	    		
     		}
-    		// System.out.println(tmp.toString());
-    		if (!tmp.isEmpty())
-    			tmp.remove(tmp.size() - 1);
+
+    		tmp.remove(tmp.size() - 1);
     	}
     }
 

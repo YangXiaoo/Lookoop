@@ -22,8 +22,9 @@ public class PathInTree {
 
 		if (root.left == null && root.right == null) {
 			tmp.add(root.val);
-			if (equal(tmp, sum)):
+			if (equal(tmp, sum)) {
 				path.add(new LinkedList(tmp));
+			}
 			tmp.remove(tmp.size()-1);
 		} else {
 			tmp.add(root.val);

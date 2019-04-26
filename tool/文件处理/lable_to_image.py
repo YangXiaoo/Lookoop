@@ -38,5 +38,5 @@ for i, f in enumerate(files):
     # ret_path = os.path.join(out_dir, f.split('\\')[-2] + '.png')
     ret_path = os.path.join(out_dir, str(count) + '.png')
     cv2.imwrite(ret_path, ret)
-    count += 1
+    count += 1 
 os.startfile(out_dir)

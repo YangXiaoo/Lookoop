@@ -29,34 +29,36 @@ public class SerializeBinaryTree {
 			String val = String.valueOf(root.val);
 			serialList.add(val);
 
+
 			serializeHelper(root.left, serialList);
 			serializeHelper(root.right, serialList);
 	}
 
 	public TreeNode deSerialize(List<String> serialList) {
 
-		TreeNode root = new TreeNode();
+		TreeNode root = null;
 		count = 0;
-		deSerializeHelper(root, serialList);
+		root = deSerializeHelper(root, serialList);
 		return root;
 	}
 
-	public void deSerializeHelper(TreeNode root, List<String> serialList) {
+	public TreeNode deSerializeHelper(TreeNode node, List<String> serialList) {
 		if (serialList.size() == count) {
-			return;
+			return null;
 		}
 		String val = serialList.get(count);
 		count++;
 		if (val == "null") {
-			root = null;
-			return;
-		} else {
-			root.val = Integer.parseInt(val);
-		}
-		root.left = new TreeNode();
-		root.right = new TreeNode();
-		deSerializeHelper(root.left, serialList);
-		deSerializeHelper(root.right, serialList);
+			return null;
+		} 
+
+		node = new TreeNode(Integer.parseInt(val));
+		System.out.println("deSerialize-debug: " + node.val + ", val: " + val);
+
+		node.left = deSerializeHelper(node, serialList);
+		node.right = deSerializeHelper(node, serialList);
+
+		return node;
 	}
 
 	public void test(String testName, List<String> serialList) {
@@ -67,7 +69,7 @@ public class SerializeBinaryTree {
 
 	public static void main(String[] args) {
 		SerializeBinaryTree test = new SerializeBinaryTree();
-		String[] list = {"1", "2", "null", "null", "null", "3", "5", "null", "null", "6", "null", "null"};
+		String[] list = {"1", "2", "4", "null", "null", "null", "3", "5", "null", "null", "6", "null", "null"};
 		List<String> serialList1 = Arrays.asList(list);
 
 		test.test("test1", serialList1);

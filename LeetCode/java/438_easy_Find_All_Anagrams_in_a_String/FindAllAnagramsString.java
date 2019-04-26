@@ -36,6 +36,7 @@ The substring with start index = 2 is "ab", which is an anagram of "ab".
 
 import java.util.*;
 
+// 基于哈希值
 public class FindAllAnagramsString {
     public List<Integer> findAnagrams(String s, String p) {
     	List<Integer> ret = new ArrayList<>();
@@ -82,6 +83,7 @@ public class FindAllAnagramsString {
         return ret;
     }
 
+    // AC, 但也有可能出现相同哈希值不同字符串的情况
 	public List<Integer> findAnagrams2(String s, String p) {
     	List<Integer> ret = new ArrayList<>();
     	int pLength = p.length(), sLength = s.length();
@@ -91,6 +93,8 @@ public class FindAllAnagramsString {
     	}
 
 		// 用数组替代字典
+		// 记录待匹配字符的值
+		// 使用总值作为哈希
 		int[] index = new int[26];
 		Arrays.fill(index, 0);
 		int traget = 0;
@@ -103,7 +107,7 @@ public class FindAllAnagramsString {
 			}
 			
 		}
-		System.out.println(Arrays.toString(index));
+		// System.out.println(Arrays.toString(index));
 
 		List<Integer> tmp = new LinkedList<>();
 		int curSum = 0;
@@ -112,7 +116,7 @@ public class FindAllAnagramsString {
 			curSum += index[s.charAt(j) - 'a'];
 			System.out.println(tmp.toString() + ", curSum: " + curSum);
 			if (tmp.size() == pLength) {
-				if (curSum == traget) {
+				if (curSum == traget) {		// 哈希值相同
 					ret.add(tmp.get(0));
 				}
 				curSum -= index[s.charAt(tmp.get(0)) - 'a'];
@@ -123,17 +127,48 @@ public class FindAllAnagramsString {
 		return ret;
 	}
 
+	// 有错误
+	public List<Integer> findAnagrams3(String s, String p) {
+    	List<Integer> ret = new ArrayList<>();
+    	int pLength = p.length(), sLength = s.length();
 
+    	if (pLength > sLength) {
+    		return ret;
+    	}
+
+    	int target = 0;
+    	for (int i = 0; i < pLength; ++i) {
+    		target += p.charAt(i) - 'a';
+    	}
+
+		List<Integer> tmp = new LinkedList<>();
+		int curSum = 0;
+		for (int j = 0; j < sLength; ++j) {
+			tmp.add(j);
+			curSum += s.charAt(j) - 'a';
+			if (tmp.size() == pLength) {
+				if (curSum == target) {	// 哈希值相同字符串并不一定相同
+					ret.add(tmp.get(0));
+				}
+
+				curSum -= s.charAt(tmp.get(0)) - 'a';
+				tmp.remove(0);
+			}
+		}
+
+		return ret;
+
+    }
 
     public void test(String testName, String s, String p, List<Integer> expect) {
-    	List<Integer> ret = findAnagrams2(s, p);
+    	List<Integer> ret = findAnagrams3(s, p);
     	System.out.println(testName + ", ret: " + ret.toString() + ", expect: " + expect.toString());
     }
 
     public static void main(String[] args) {
     	FindAllAnagramsString test = new FindAllAnagramsString();
     	List<Integer> expect1 = new ArrayList<>(Arrays.asList(0,6));
-    	test.test("test-1", "cbaebabacd", "abc", expect1);
+    	test.test("test-1", "af", "be", expect1);
 
     	List<Integer> expect2 = new ArrayList<>(Arrays.asList(1));
     	test.test("test-2", "baa", "aa", expect2);

@@ -20,7 +20,7 @@ public class PathInTree {
 		if (root == null):
 			return ;
 
-		if (root.left == null && root.right == null) {
+		if ((root.left == null) && (root.right == null)) {
 			tmp.add(root.val);
 			if (equal(tmp, sum)) {
 				path.add(new LinkedList(tmp));

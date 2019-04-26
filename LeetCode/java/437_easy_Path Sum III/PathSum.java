@@ -75,47 +75,45 @@ class Tree {
 }
 
 class PathSum {
-	private List<List<TreeNode>> path = new ArrayList<List<TreeNode>>();
+	private List<List<Integer>> path = new ArrayList<List<Integer>>();
 	private int sum = 0;
 
     public int pathSum(TreeNode root, int sum) {
-    	
+    	path = new ArrayList<List<Integer>>();
     	this.sum = sum;
         pathSumHelper(root);
-
+        // System.out.println(path.toString());
         return path.size();
     }
 
     public void pathSumHelper(TreeNode node) {
     	if (node != null) {
-    		List<TreeNode> tmp = new ArrayList<>();
+    		List<Integer> tmp = new ArrayList<>();
     		dfs(node, tmp);
 			pathSumHelper(node.left);
 			pathSumHelper(node.right);
     	}
     }
 
-    public void dfs(TreeNode node, List<TreeNode> tmp) {
+    public void dfs(TreeNode node, List<Integer> tmp) {
     	if (node != null) {
-    		tmp.add(node);
-
+    		tmp.add(node.val);
     		if (nodeSum(tmp) == sum) {
     			path.add(new ArrayList(tmp));
-    		} else {
-    			dfs(node.left, tmp);
-    			dfs(node.right, tmp);
-	    		// System.out.println(tmp.toString());
-	    		
     		}
 
-    		tmp.remove(tmp.size() - 1);
+			dfs(node.left, tmp);
+			dfs(node.right, tmp);	
+
+    		if (tmp.size() > 1)
+    			tmp.remove(tmp.size() - 1);
     	}
     }
 
-    private int nodeSum(List<TreeNode> nodeList) {
+    private int nodeSum(List<Integer> nodeList) {
     	int curSum = 0;
-    	for (TreeNode node : nodeList) {
-    		curSum += node.val;
+    	for (Integer node : nodeList) {
+    		curSum += node;
     	}
 
     	return curSum;
@@ -129,6 +127,23 @@ class PathSum {
     	System.out.println(testName + ", ret: " + ret + ", expect: " + expect);
     }
 
+    public TreeNode tree2() {
+    	TreeNode a = new TreeNode(1);
+    	TreeNode b = new TreeNode(-2);
+    	TreeNode c = new TreeNode(-3);
+    	TreeNode d = new TreeNode(1);
+    	TreeNode e = new TreeNode(3);
+    	TreeNode f = new TreeNode(-2);
+    	TreeNode g = new TreeNode(-1);
+    	a.left = b;
+    	a.right = c;
+    	b.left = d;
+    	b.right = e;
+    	d.left = g;
+    	c.left = f;
+
+    	return a;
+    }
 
     public static void main(String[] args) {
     	Tree tree = new Tree();
@@ -139,5 +154,9 @@ class PathSum {
 
     	test.test("test-1", root, 8, 3);
 
+
+
+    	TreeNode root2 = test.tree2();
+    	test.test("test-2", root2, -1, 4);
     }
 }

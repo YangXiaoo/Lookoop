@@ -24,7 +24,7 @@ def getImageDict(originalFiles, binaryFiles):
 		originalPicName = os.path.basename(f)
 		for binaryImagePath in binaryFiles:
 			picName = os.path.basename(binaryImagePath)
-			preffix = os.path.split(originalPicName)[0] # 原图文件名前缀
+			preffix = os.path.splitext(originalPicName)[0] # 原图文件名前缀
 			"""将匹配的文件添加到字典"""
 			if preffix in picName:	
 				ret[originalPicName] = binaryImagePath

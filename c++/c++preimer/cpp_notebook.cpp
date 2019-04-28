@@ -248,3 +248,22 @@
 	deq.pop_front();
 	deq.pop_back();
 	
+
+/////////////////////////////////////////
+#include <map>
+
+	map<string, int> mp;
+	mp.insert(pair<string, int>("ss", 1));
+	mp["aaa"] = 2;
+
+	// 遍历
+	map<int, string>::iterator iter;  
+    for(iter = mp.begin(); iter != mp.end(); iter++)  
+       cout << iter->first << ' ' << iter->second << endl;  
+
+   // 查询
+	iter = map.find("r123");
+	if(iter != map.end())
+	       cout << "Find, the value is" << iter->second << endl;
+	else
+	   cout << "Do not Find" << endl;

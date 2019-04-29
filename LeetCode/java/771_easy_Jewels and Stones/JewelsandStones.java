@@ -25,9 +25,31 @@ import java.util.*;
 
 public class JewelsandStones {
     public int numJewelsInStones(String J, String S) {
-        int[] jewels = new int[52];
-        for (int i = 0; i < S.length(); ++i)  {
-        	jewels[s.charAt(i) - 'a']
+        int[] jewels = new int[58];
+        for (int i = 0; i < J.length(); ++i)  {
+        	jewels[J.charAt(i) - 'A']++;
         }
+
+        int ret = 0;
+        for (int s = 0; s < S.length(); ++s) {
+        	ret += jewels[S.charAt(s) - 'A'];
+        }
+
+        return ret;
     }	
 }
+/* c++:
+    int numJewelsInStones(string J, string S) {
+        int jewels[58] = {0};	// 不初始化为0会有问题
+        for (int i = 0; i < J.size(); ++i) {
+            jewels[J[i] - 'A']++;
+        }
+        
+        int ret = 0;
+        for (int j = 0; j < S.size(); ++j) {
+            ret += jewels[S[j] - 'A'];
+        }
+        
+        return ret;
+    }
+*/

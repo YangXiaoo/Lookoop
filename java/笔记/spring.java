@@ -11,5 +11,9 @@ Model model
 	return "../index";	// 带参数返回模板
 
 // ################################# 
-    @ResponseBody   
+@ResponseBody   
     // @responseBody注解的作用是将controller的方法返回的对象通过适当的转换器转换为指定的格式之后，写入到response对象的body区，通常用来返回JSON数据或者是XML
+
+// ################################# 
+@Autowired
+	// https://www.cnblogs.com/caoyc/p/5626365.html

@@ -17,3 +17,7 @@ Model model
 // ################################# 
 @Autowired
 	// https://www.cnblogs.com/caoyc/p/5626365.html
+
+// ################################
+mysql生成dao,entity实体
+// https://blog.csdn.net/qq_26755717/article/details/82254429

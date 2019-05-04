@@ -75,9 +75,10 @@
 	float 0.0f
 	double 0.0d
 
-	Long.parseLong(String)
-	Integer.valueOf(char)
-	String.valueOf(int)
+	Long.parseLong(String);
+	Integer.valueOf(char);
+	Integer.parseInt(String);
+	String.valueOf(int);
 	char c = '0';		// 'a'
 	int cInt = c - '0';	// 'a'
 

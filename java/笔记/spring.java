@@ -25,3 +25,19 @@ mysql生成dao,entity实体
 // ###############################\
 过滤器和拦截器
 // https://www.cnblogs.com/junzi2099/p/8022058.html 
+
+// ####################
+// 自己写SQL语句
+import org.apache.ibatis.annotations.*;
+public interface CategoryMapper extends Mapper<Category>{
+	String TABLE_NAME = "category";
+
+	// 删除
+	@Delete({"DELETE FROM",TABLE_NAME, "WHERE id=#{cid}"})
+	int deleteCateById(@Param("cid") Integer cid);
+}
+
+
+// ###########
+MyBaits配置
+// https://www.cnblogs.com/kaiwen/p/6440793.html

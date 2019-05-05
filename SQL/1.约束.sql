@@ -44,5 +44,7 @@ mysql提供多种索引：
 	4.普通索引: index 
 
 
-
-
+-- 忽略主键约束
+SET FOREIGN_KEY_CHECKS = 0
+-- 恢复主键约束
+SET FOREIGN_KEY_CHECKS = 1

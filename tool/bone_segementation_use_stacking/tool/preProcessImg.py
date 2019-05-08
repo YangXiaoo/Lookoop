@@ -90,6 +90,11 @@ def cropImage(img, margin):
 	"""根据边界裁剪图片"""
 	u, r, d, l = margin
 
+	img[0:u, :] = 0
+	img[d:, :] = 0
+	img[:, 0:l] = 0
+	img[:, r:] = 0
+
 	return img[u:d, l:r]
 
 

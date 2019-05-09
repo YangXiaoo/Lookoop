@@ -169,7 +169,7 @@
   	++my_map['key'];	// value默认为0，现在为1
   	// set
   	vector<int> vt = {1, 2, 3, 4};
-  	set<string> my_set(vt.cbegin(), vt.cend());
+  	set<string>  my_set(vt.cbegin(), vt.cend());
   	multiset<int> my_multiset(vt.cbegin(), vt.cend());
 
 2. pair类型
@@ -251,7 +251,6 @@
 
 /////////////////////////////////////////
 #include <map>
-
 	map<string, int> mp;
 	mp.insert(pair<string, int>("ss", 1));
 	mp["aaa"] = 2;

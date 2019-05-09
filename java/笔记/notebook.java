@@ -78,7 +78,7 @@
 	Long.parseLong(String);
 	Integer.valueOf(char);
 	Integer.parseInt(String);
-	String.valueOf(int);
+	String.valueOf(int); 
 	char c = '0';		// 'a'
 	int cInt = c - '0';	// 'a'
 

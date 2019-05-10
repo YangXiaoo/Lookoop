@@ -20,6 +20,7 @@ logger = util.get_logger(LOGGER_PATH)
 logger.setLevel(logging.DEBUG)   # 设置日志级别，设置INFO时时DEBUG不可见
 
 fail, success, skip, count, total = 0, 0, 0, 0, 0   # 全局变量
+predictRet = {}                                     # 记录预测值
 start_time = datetime.datetime.now()                # 运行时间
 lock = Lock()                                       # 锁
 
@@ -86,7 +87,7 @@ def _seg_test(dirs, out_dir, train_data_path, clip):
 
 def _sub_seg(out_dir, pic_path, stack_model, clip):
     """线程任务"""
-    global fail, success, skip, count, total
+    global fail, success, skip, count, total, predictRet
     info = "starting process : %s" % pic_path
     logger.info(info)
     img_dirs = os.path.join(out_dir, pic_path.split("\\")[-1])
@@ -104,6 +105,7 @@ def _sub_seg(out_dir, pic_path, stack_model, clip):
         hist = api.getHistogram(img)
         _data = util.pre_process(hist)
         thresh_value = stack_model.predict(_data)
+        predictRet[os.path.basename(pic_path)] = thresh_value
         logger.debug('predict threshold value: %s' % thresh_value)
         # 二值化
         threshold, thrshed_img = cv2.threshold(img, thresh_value, 255, cv2.THRESH_BINARY)
@@ -196,12 +198,15 @@ if __name__ == '__main__':
 
     # _seg_test(file_path, out_dir, train_data_path, clip, retrain=True)  # 单线程
     seg(file_path, out_dir, train_data_path, clip, retrain=True)          # 多线程
+    fp = open("predictValueRecord.dat", "wb")
+    pickle.dump(predictRet, fp)
+    fp.close()
 
-    file_path = r"C:\Study\test\bone\100-gt"            # 标准分割图像目录路径
-    est_out_dir = "C:\\Study\\test\\bone\\est_results_test" # 精确率结果保存目录
-    file_path_2 = r"C:\Study\test\bone\sklearn"         # 得到de分割图像路径
-    logger.info("*"*80)
-    # 写成类重构
-    res = api.batchProcess(file_path, file_path_2, logger)
-    api.printEst(res, "stack_model", logger)
-    api.saveEst(res, "stack_model", est_out_dir, logger)
+    # file_path = r"C:\Study\test\bone\100-gt"            # 标准分割图像目录路径
+    # est_out_dir = "C:\\Study\\test\\bone\\est_results_test" # 精确率结果保存目录
+    # file_path_2 = r"C:\Study\test\bone\sklearn"         # 得到de分割图像路径
+    # logger.info("*"*80)
+    # # 写成类重构
+    # res = api.batchProcess(file_path, file_path_2, logger)
+    # api.printEst(res, "stack_model", logger)
+    # api.saveEst(res, "stack_model", est_out_dir, logger)

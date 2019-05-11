@@ -11,13 +11,13 @@ import cropImgUsingCluster as crop
 
 
 def cropImgUsingMarginInfo(marginInfoPath, imageDir, outputDir):
-    """切边, 需保证带切边图片与marginInfo中的图片名称一致"""
+    """切边, 需保证待切边图片与marginInfo中的图片名称一致"""
     files = api.getFiles(imageDir)
     total = len(files)
     marginInfo = pickle.load(open(marginInfoPath,'rb'))
     util.mkdirs(outputDir)
 
-    for i, f in enumerate(files):
+    for i, f in enumerat  e(files):
         basename = os.path.basename(f)
         print("process {} / {}: {}".format(i+1, total, basename))
 

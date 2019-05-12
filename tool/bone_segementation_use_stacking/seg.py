@@ -176,6 +176,7 @@ def seg(dirs, out_dir, train_data_path, clip, retrain=False):
     for f in files:
         t = Thread(target=_sub_seg, args=(out_dir, f, stack_model, clip))
         threads.append(t)
+        break
 
     for t in threads:
         t.start()

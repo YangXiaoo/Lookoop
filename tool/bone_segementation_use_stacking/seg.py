@@ -106,7 +106,7 @@ def _sub_seg(out_dir, pic_path, stack_model, clip):
         _data = util.pre_process(hist)
         thresh_value = stack_model.predict(_data)
         predictRet[os.path.basename(pic_path)] = thresh_value
-        logger.debug('predict threshold value: %s' % thresh_value)
+        logger.info('predict threshold value - %s : %s' % (os.path.basename(pic_path), thresh_value))
         # 二值化
         threshold, thrshed_img = cv2.threshold(img, thresh_value, 255, cv2.THRESH_BINARY)
         api.saveImage(img_dirs, "_thrshed_img_raw", thrshed_img)

@@ -191,6 +191,7 @@ def seg(dirs, out_dir, train_data_path, clip, retrain=False):
 
 
 if __name__ == '__main__':
+    global predictRet
     file_path = r"C:\Study\test\bone\100"   # r"C:\Study\test\bone\thread_test"
     out_dir = r"C:\Study\test\bone\sklearn" # 分割图像保存路径
     train_data_path = r"./data\500.txt"     # 训练数据

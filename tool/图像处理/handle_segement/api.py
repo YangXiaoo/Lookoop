@@ -619,7 +619,7 @@ def watershed(img):
     使用分水岭进行图像分割
     """
     gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-    ret, thresh = cv2.threshold(gray,200,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
+    ret, thresh = cv2.threshold(gray,0,255,cv2.THRESH_BINARY_INV+cv2.THRESH_OTSU)
     # noise removal
     kernel = np.ones((3,3),np.uint8)
     opening = cv2.morphologyEx(thresh,cv2.MORPH_OPEN,kernel, iterations = 4)
@@ -645,6 +645,7 @@ def watershed(img):
     markers[unknown==255] = 0
     markers = cv2.watershed(img,markers)
     img[markers == -1] = [255,0,0]
+
     return img
 
 

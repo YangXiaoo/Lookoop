@@ -39,9 +39,8 @@ def test():
 
 
 if __name__ == '__main__':
-	# predictDataPath = 
-	# outputPath = 
-	# predictData = pickle.load(open(predictDataPath, "rb"))
-	# ret = getThresholdValue(predictData, outputPath)
-	# print(ret)
-	test()
+	predictDataPath = 
+	outputPath = 
+	predictData = pickle.load(open(predictDataPath, "rb"))
+	ret = getThresholdValue(predictData, outputPath)
+	

@@ -19,12 +19,13 @@ logger = util.get_logger(LOGGER_PATH)
 logger.setLevel(logging.DEBUG)   # 设置日志级别，设置INFO时时DEBUG不可见
 
 fail, success, skip, count, total = 0, 0, 0, 0, 0   # 全局变量
+predictRet = {} 
 start_time = datetime.datetime.now()                # 运行时间
 
 
 def _sub_seg(out_dir, pic_path, stack_model, clip):
     """线程任务"""
-    global fail, success, skip, count, total
+    global fail, success, skip, count, total, predictRet
     info = "starting process : %s" % pic_path
     logger.info(info)
     img_dirs = os.path.join(out_dir, pic_path.split("\\")[-1])
@@ -42,7 +43,8 @@ def _sub_seg(out_dir, pic_path, stack_model, clip):
         hist = api.getHistogram(img)
         _data = util.pre_process(hist)
         thresh_value = stack_model.predict(_data)
-        logger.debug('predict threshold value: %s' % thresh_value)
+        predictRet[os.path.basename(pic_path)] = thresh_value
+        logger.info('predict threshold value - %s : %s' % (os.path.basename(pic_path), thresh_value))
         # 二值化
         threshold, thrshed_img = cv2.threshold(img, thresh_value, 255, cv2.THRESH_BINARY)
         # 使用区域生长法分割
@@ -80,7 +82,8 @@ def seg_by_single_model(dirs,
     2. 获取图片
     3. 多线程分割
     """
-    global fail, success, skip, count, total
+    global fail, success, skip, count, total, predictRet
+    predictRet = {}
     logger.info("Getting data.")
     _train_raw, _labels = util.get_train_data(train_data_path, 2)
     model_save = "./data/pickle_model_%s.dat" % model_name
@@ -111,6 +114,7 @@ def seg_by_single_model(dirs,
     for f in files:
         t = Thread(target=_sub_seg, args=(out_dir, f, stack_model, clip))
         threads.append(t)
+        break
 
     for t in threads:
         t.start()
@@ -126,7 +130,7 @@ def seg_by_single_model(dirs,
 
 
 if __name__ == '__main__':
-    file_path = r"C:\Study\test\bone\singal_model" 
+    file_path = r"C:\Study\test\bone\1ssssssss" 
     truth_file_path = r"C:\Study\test\bone\100-gt"  # 标准分割图像目录路径
     train_data_path = r"./data\data.txt"
     clip = (45,-45,45,-45)
@@ -136,6 +140,10 @@ if __name__ == '__main__':
         logger.info("using %s to train data" % model_name)
         out_dir = r"C:\Study\test\bone\ret_" + model_name
         seg_by_single_model(file_path, out_dir, train_data_path, model_name, clip)  # 多线程
+
+        fp = open(os.path.join(out_dir, model_name + "_predictValueRecord.dat"), "wb")
+        pickle.dump(predictRet, fp)
+        fp.close()
 
         est_save_path = "C:\\Study\\test\\bone\\est_results_" + model_name  # 结果保存目录
         logger.info("*"*80)

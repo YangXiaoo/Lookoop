@@ -205,3 +205,9 @@ name：文件名。
 3、_findclose()函数：int _findclose(long);
 
 只有一个参数，文件句柄。若关闭成功返回0，失败返回-1。
+
+
+// leetcode使用函数
+- fill(a.begin(), a.end(), -1);
+    int charNum[127];
+    fill(charNum, charNum+127, -1);

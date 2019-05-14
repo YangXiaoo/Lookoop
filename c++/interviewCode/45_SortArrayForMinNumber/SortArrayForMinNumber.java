@@ -38,3 +38,6 @@ public class SortArrayForMinNumber {
 	}
 
 }
+
+// [3, 32, 321]
+// test1, expect: 321323, result: 321323

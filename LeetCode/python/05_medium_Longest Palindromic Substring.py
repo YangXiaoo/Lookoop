@@ -154,15 +154,15 @@ class Solution4(object):
         n = len(s)
         maxl = 0
         start = 0
-        print("--> i s m m2 m1 s1 s2")
         for i in range(0,n):
-            print("-->",i,start,maxl,maxl+2,maxl+1,s[i-maxl-1: i+1],s[i-maxl: i+1])
+            # 右边加一个字符
+            if i - maxl >= 0 and s[i-maxl: i+1] == s[i-maxl: i+1][::-1]:
+                start = i - maxl
+                maxl += 1   # 回文字符多了一个
+            # 右边加一个字符左边加一个字符
             if i - maxl >= 1 and s[i-maxl-1: i+1] == s[i-maxl-1: i+1][::-1]:
                 start = i - maxl - 1 
                 maxl += 2  # 这里回文字符多了两个
-            if i - maxl >= 0 and s[i-maxl: i+1] == s[i-maxl: i+1][::-1]:
-                start = i - maxl
-                maxl += 1 # 回文字符多了一个
         return s[start: start + maxl]
 
 # test

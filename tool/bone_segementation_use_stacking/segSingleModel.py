@@ -114,7 +114,6 @@ def seg_by_single_model(dirs,
     for f in files:
         t = Thread(target=_sub_seg, args=(out_dir, f, stack_model, clip))
         threads.append(t)
-        break
 
     for t in threads:
         t.start()
@@ -143,7 +142,7 @@ if __name__ == '__main__':
 
         fp = open(os.path.join(out_dir, model_name + "_predictValueRecord.dat"), "wb")
         pickle.dump(predictRet, fp)
-        fp.close()
+        fp.close() 
 
         est_save_path = "C:\\Study\\test\\bone\\est_results_" + model_name  # 结果保存目录
         logger.info("*"*80)

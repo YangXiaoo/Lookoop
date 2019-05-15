@@ -17,7 +17,7 @@ def cropImgUsingMarginInfo(marginInfoPath, imageDir, outputDir):
     marginInfo = pickle.load(open(marginInfoPath,'rb'))
     util.mkdirs(outputDir)
 
-    for i, f in enumerat  e(files):
+    for i, f in enumerate(files):
         basename = os.path.basename(f)
         print("process {} / {}: {}".format(i+1, total, basename))
 

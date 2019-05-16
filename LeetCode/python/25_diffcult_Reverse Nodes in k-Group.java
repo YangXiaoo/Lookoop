@@ -8,25 +8,11 @@
  */
 class Solution {
     public ListNode reverseKGroup(ListNode head, int k) {
-        ListNode _cur = head;
-        int lens = 0;
-        while (_cur !=null) {
-            _cur = _cur.next;
-            ++lens;
-        }
-        
-        if (lens == 0) {
-            return head;
-        }
-        
-        if (lens < k) {
-            return head;
-        }
-
         int count = 0;
         ListNode cur = head;
         ListNode pre = head;
         ListNode dummy = new ListNode(0);
+        dummy.next = head;
         ListNode dummyHead = dummy;
         while (cur != null) {
             ++count;

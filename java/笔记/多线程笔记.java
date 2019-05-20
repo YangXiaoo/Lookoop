@@ -87,6 +87,7 @@
 		}
 	}
 
+
 	// 3-synchronized, 内部锁
 	// 使用方法
 	private static int threadhold = 100;
@@ -186,7 +187,35 @@
 	// 见代码
 
 8. 执行器  
+	ExecutorService的生命周期包括了：运行关闭和终止三种状态。
+ 	1) newSingleThreadExecutor()
+		public class excuteThreadByOrder {
+			private static final int MAX_THREADS = 10;
+			public static void main(String[] args) {
 
+				ExecutorService executor = Executors.newSingleThreadExecutor();
+
+				for (int i = 0; i < MAX_THREADS; ++i) {
+					final int order = i;
+					Runnable task = () -> {
+						try {
+							System.out.println(order);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+					};
+					executor.execute(task);
+				}
+			}
+		}
+	2) ExecutorService executor = Executors.newCachedThreadPool();
+	3) ExecutorService executor = Executors.newFixedThreadPool(10);
+	
+	// executor.submit(Callable) // 参数为继承Callable并实现call的实例
+    ExecutorService pool = Executors.newCachedThreadPool();
+    Matcher matcher = new Matcher(new File(directory), keyword, pool);	// 继承Callable并实现call
+    Future<List<File>> result = pool.submit(matcher);
 
 9. 线程安全与不安全
 	// 线程不安全

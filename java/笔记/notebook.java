@@ -941,14 +941,13 @@
     map.put(1, "e");
     List<Entry<Integer,String>> list =new ArrayList<Entry<Integer,String>>(map.entrySet());
     Collections.sort(list, new Comparator<Entry<Integer, String>>() {
-
         @Override
         public int compare(Entry<Integer, String> o1, Entry<Integer, String> o2) {
             // TODO Auto-generated method stub
             return o1.getValue().compareTo(o2.getValue());
         }
     });
-    for(Entry<Integer, String> aEntry:list) {
+    for(Entry<Integer, String> aEntry : list) {
         System.out.println(aEntry.getKey()+":"+aEntry.getValue());
     }
 

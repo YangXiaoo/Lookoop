@@ -134,7 +134,7 @@ input_para = {
     'batch_size' : 2, # batch size
 
 
-    'max_number_of_steps' : 5000, # 最大迭代次数
+    'max_number_of_steps' : 100, # 最大迭代次数
 
 
     # Fine-Tuning
@@ -615,26 +615,22 @@ def model_collection_prediction(prediction_model,
 
 
 if __name__ == '__main__':
-    # # 抽取数据
-    # threshed = input_para['male_k_fold']
-    # train_size = 0.9
+    # 抽取数据
+    threshed = input_para['male_k_fold']
+    train_size = 0.9
     # male_ret, female_ret = get_data.main(input_para['pic_path'], 
-    #                                     input_para['csv_path'], 
-    #                                     input_para['train_male_output'],
-    #                                     input_para['train_female_output'], 
-    #                                     input_para['validation_male_output'],
-    #                                     input_para['validation_female_output'], 
-    #                                     input_para['lables_output'],
-    #                                     train_size=train_size,
-    #                                     threshed=threshed,
-    #                                     is_write=False)
+    #                                      input_para['csv_path'], 
+    #                                      input_para['train_male_output'],
+    #                                      input_para['train_female_output'], 
+    #                                      input_para['validation_male_output'],
+    #                                      input_para['validation_female_output'], 
+    #                                      input_para['lables_output'],
+    #                                      train_size=train_size,
+    #                                      threshed=threshed,
+    #                                      is_write=True)
 
-    # # 数据扩充
-    # # 若没有扩充则用此路径
-    # # label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
-    # # labels = pic_data_augumentation.getLablesDict(lable_path)
-    # # input_path = input_para['train_male_output']
 
+    # # 不进行数据扩充
     # # 由数据抽取返回的结果中获得需要扩展的图片路径和对应标签
     # input_file_list = []
     # output, files, labels = male_ret
@@ -663,16 +659,23 @@ if __name__ == '__main__':
     #                                     ignore=ignore)
 
 
-    # # 数据划分
+    # 数据划分
     # label_path = os.path.join(input_para['augumentation_male_output'], 'labels.txt')
     # input_dir = input_para['augumentation_male_output']
     # output_dir = input_para['male_split_output']
-    # k_fold = input_para['male_k_fold']
 
+
+    # # 若没有扩充则用此路径
+    # label_path = os.path.join(input_para['train_male_output'], 'labels.txt')
+    # output_dir = input_para['male_split_output']
+    # input_dir = input_para['train_male_output']
+
+
+    # k_fold = input_para['male_k_fold']
     # data_split(input_dir, 
-    #             output_dir, 
-    #             label_path, 
-    #             k_fold=k_fold)
+    #            output_dir, 
+    #            label_path, 
+    #            k_fold=k_fold)
 
 
     # # 数据格式转换
@@ -683,9 +686,13 @@ if __name__ == '__main__':
     #                          male_tfrecord_output,
     #                          input_para)
 
+    # assert False, "节点测试"
 
     # 训练
-    label_path = os.path.join(input_para['augumentation_male_output'], 'labels.txt')
+    # label_path = os.path.join(input_para['augumentation_male_output'], 'labels.txt')    # 若扩充数据
+    label_path = os.path.join(input_para['train_male_output'], 'labels.txt')    # 若没有扩充数据
+
+
     male_tfrecord_output = input_para['male_tfrecord_output']
     train_dir = input_para['train_dir']
     graph_dir = model_save_para['graph_dir']
@@ -693,25 +700,25 @@ if __name__ == '__main__':
     original_dir = input_para['male_split_output']
     for network_setting in net_factory:
         print("[INFO] use model %s" % network_setting['model_name'])
-        # 训练
+        # # 训练
         # run_model(male_tfrecord_output, 
         #           original_dir, 
         #           input_para, 
         #           network_setting)
 
-        # 转换模型
-        convert_model(train_dir,
-                      test_dir,
-                      male_tfrecord_output,
-                      network_setting, 
-                      model_save_para, 
-                      input_para)
+        # # 转换模型
+        # convert_model(train_dir,
+        #               test_dir,
+        #               male_tfrecord_output,
+        #               network_setting, 
+        #               model_save_para, 
+        #               input_para)
         # 使用当前模型对剩下的fold进行预测
         _ = prediction_train_data(graph_dir,
-                                test_dir,
-                                label_path,
-                                prediction_para, 
-                                network_setting)
+                                 test_dir,
+                                 label_path,
+                                 prediction_para, 
+                                 network_setting)
         break
 
 
@@ -738,6 +745,8 @@ if __name__ == '__main__':
 
     # # test
     # model_list = [model_list[0]]
+
+
     # 使用训练好的模型对测试集进行预测, 方法基于stacking
     model_collection_prediction(prediction_model, 
                                 test_data, 

@@ -142,7 +142,7 @@ def main(input_para):
             num_ps_tasks=input_para['num_ps_tasks'])
 
         # 初始化迭代计数器
-        with tf.device(deploy_config.train_on_gpu()):
+        with tf.device(deploy_config.variables_device()):
             global_step = slim.create_global_step() 
 
 
@@ -162,8 +162,9 @@ def main(input_para):
 
         # 选择预处理函数
         preprocessing_name = input_para['preprocessing_name'] or input_para['model_name']
+        # is_training 不能设置为True, 因为图片经过扩充不能再变形只能进行裁剪
         image_preprocessing_fn = preprocessing_factory.get_preprocessing(preprocessing_name,
-                                                                         is_training=True)
+                                                                         is_training=False)
 
         # 设置数据加载, 主机加载数据
         # DatasetDataProvider参数设置
@@ -210,7 +211,7 @@ def main(input_para):
             """
             在多个平台运行数据
             """
-            with tf.device(deploy_config.train_on_gpu()):
+            with tf.device(deploy_config.inputs_device()):
                 images, labels = batch_queue.dequeue()
             logits, end_points = network_fn(images) # 模型训练输出网络和输出节点
 
@@ -268,7 +269,7 @@ def main(input_para):
             moving_average_variables, variable_averages = None, None
 
         # 求解方法
-        with tf.device(deploy_config.train_on_gpu()): # '/job:/device:CPU:0'
+        with tf.device(deploy_config.optimizer_device()): # '/job:/device:CPU:0'
             learning_rate = tf_configure.configure_learning_rate(
                 dataset.num_samples, 
                 global_step,

@@ -150,13 +150,12 @@ def run_inference_on_image(input_par):
     #             image_list[base_name] = image_data
     #         if k == 100:
     #             break
-
+    create_graph(None, input_par['model_path'])
     label_dict = getlabelsDict(input_par['label_path'])
     with tf.Session() as sess:
-        init = tf.global_variables_initializer()
-        sess.run(init)
+        # init = tf.global_variables_initializer()
+        # sess.run(init)
         # 加载保存的模型
-        create_graph(sess, input_par['model_path'])
         prediction_output = {} # {'2_m-1-1.9.png': data}
         tensor = sess.graph.get_tensor_by_name(input_par['tensor_name'])
         print("[INFO] predicting image data...")
@@ -178,9 +177,9 @@ def run_inference_on_image(input_par):
                 prediction_output[label + '_' + base_name] = prediction
             except Exception as e:
                 print("[Error] %s" % str(e))
-            # # 测试
-            # if k == 5:
-            #     break
+            # 测试
+            if k == 5:
+                break
         if input_par['is_save']:
             print("[INFO] Saving predictions.")
             np.save(input_par['prediction_output'], prediction_output)

@@ -18,3 +18,7 @@ import numpy as np
 
 dst = np.zeros((2,2,3),np.uint8)
 print(dst[0])
+
+import os
+
+print(os.path.join("11", "ewe", "ede"))

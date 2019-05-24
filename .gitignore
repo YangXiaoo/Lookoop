@@ -27,3 +27,4 @@ tool/bone_segementation_use_stacking/data/pickle_model.dat
 *.class
 *.pyc
 *.pyc
+*.pyc

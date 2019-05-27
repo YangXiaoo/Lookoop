@@ -700,27 +700,31 @@ if __name__ == '__main__':
     original_dir = input_para['male_split_output']
     for network_setting in net_factory:
         print("[INFO] use model %s" % network_setting['model_name'])
-        # # 训练
-        # run_model(male_tfrecord_output, 
-        #           original_dir, 
-        #           input_para, 
-        #           network_setting)
+        # 训练
+        run_model(male_tfrecord_output, 
+                  original_dir, 
+                  input_para, 
+                  network_setting)
 
-        # # 转换模型
-        # convert_model(train_dir,
-        #               test_dir,
-        #               male_tfrecord_output,
-        #               network_setting, 
-        #               model_save_para, 
-        #               input_para)
+        # 转换模型
+        convert_model(train_dir,
+                      test_dir,
+                      male_tfrecord_output,
+                      network_setting, 
+                      model_save_para, 
+                      input_para)
         # 使用当前模型对剩下的fold进行预测
+
+        # break
+
+
+    for network_setting in net_factory:
+        print("[INFO] use model %s" % network_setting['model_name'])
         _ = prediction_train_data(graph_dir,
                                  test_dir,
                                  label_path,
                                  prediction_para, 
                                  network_setting)
-        break
-
 
     prediction_output = prediction_para['prediction_output']
     train_data, labels = get_prediction_data(prediction_output) # 获得预测数据

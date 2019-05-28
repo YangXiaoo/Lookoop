@@ -719,7 +719,7 @@ if __name__ == '__main__':
 
 
     for network_setting in net_factory:
-        print("[INFO] use model %s" % network_setting['model_name'])
+        print("[INFO] predict model %s" % network_setting['model_name'])
         _ = prediction_train_data(graph_dir,
                                  test_dir,
                                  label_path,

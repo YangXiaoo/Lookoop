@@ -1,26 +1,13 @@
-class P {  
-	 public static int abc = 123;  
-	 static {  
-	 	System.out.println("P is init");  
-	 }  
-}  
-
-class S extends P {  
- 	static{  
- 		System.out.println("S is init");  
- 	}  
-}  
-
-public class Test {
-    public int aMethod(){
-        static int i = 0;
-        i++;
-        return i;
-    }
+public class Test{
+static{
+   int x=5;
+}
+static int x,y;
 public static void main(String args[]){
-    Test test = new Test();
-    test.aMethod();
-    int j = test.aMethod();
-    System.out.println(j);
-    }
+    int i = 0;
+    i = i++;
+    System.out.println(i);
+    i = ++i;
+    System.out.println(i);
+}
 }

@@ -134,7 +134,7 @@ input_para = {
     'batch_size' : 2, # batch size
 
 
-    'max_number_of_steps' : 100, # 最大迭代次数
+    'max_number_of_steps' : 20, # 最大迭代次数
 
 
     # Fine-Tuning
@@ -168,17 +168,6 @@ net_factory = [
         'trainable_scopes' : None,
     },
 
-    # nasnet_large
-    {
-        'model_name' : 'nasnet_large',
-        'train_image_size' : 331,
-        'output_tensor_name' : 'final_layer/predictions',
-
-        # Fine-Tuning
-        'checkpoint_path' : None,
-        'checkpoint_exclude_scopes' : 'cell_17/',
-        'trainable_scopes' : None,
-    },
 
     # pnasnet_large
     {
@@ -202,6 +191,18 @@ net_factory = [
         # Fine-Tuning
         'checkpoint_path' : None,
         'checkpoint_exclude_scopes' : '',
+        'trainable_scopes' : None,
+    },
+
+    # nasnet_large
+    {
+        'model_name' : 'inception_resnet_v2',
+        'train_image_size' : 299,
+        'output_tensor_name' : 'InceptionResnetV2/Logits/Predictions',
+
+        # Fine-Tuning
+        'checkpoint_path' : None,
+        'checkpoint_exclude_scopes' : 'cell_17/',
         'trainable_scopes' : None,
     }
 ]
@@ -355,9 +356,9 @@ def run_model(tfrecord_output,
     api.mkdirs(tmp_train_dir)
     lower = 4
     for k, s in enumerate(tfrecord_files):
-        if k < lower:
-            print("[INFO] skip model %s, training on data %s" % (network_setting['model_name'], s))
-            continue
+        # if k < lower:
+        #     print("[INFO] skip model %s, training on data %s" % (network_setting['model_name'], s))
+        #     continue
         print("[INFO] Use model %s, training on data %s" % (network_setting['model_name'], s))
         tmp_data_original = os.path.join(original_dir, str(s), 'train')
         train_size = len(api.get_files(tmp_data_original))
@@ -698,14 +699,16 @@ if __name__ == '__main__':
     graph_dir = model_save_para['graph_dir']
     test_dir = input_para['male_split_output']
     original_dir = input_para['male_split_output']
-    for network_setting in net_factory:
+    for i,network_setting in enumerate(net_factory):
+        if i < 4:
+            continue
         print("[INFO] use model %s" % network_setting['model_name'])
         # 训练
         run_model(male_tfrecord_output, 
                   original_dir, 
                   input_para, 
                   network_setting)
-
+        assert False, "node stop"
         # 转换模型
         convert_model(train_dir,
                       test_dir,

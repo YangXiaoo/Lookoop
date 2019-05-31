@@ -274,6 +274,11 @@
 	String s = "Yauno";
 	String c = "Yauno123";
 	String n = "yAUNO";
+
+	String (byte[] bytes, String  charsetName);	// charsetName为字节编码
+	// 实例 
+	String newString = new String("str".getBytes("ISO8859-1"), "GB2312");
+
 	char res = s.charAt(1); // 'a'
 	int res = s.compareTo(c); // 返回差值；小于则返回小于0；等于返回0
 	int res = s.compareToIgnoreCase(n);

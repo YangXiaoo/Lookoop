@@ -863,8 +863,10 @@
 	LinkedBlockingDeque是Deque的并发实现,在队列为空的时候,它的takeFirst,takeLast会阻塞等待队列处于可用状态
 
 29. Map
+	Map与SortedMap都是借口
 	HashMap // 线程非安全, 允许使用null键和null值, 会使用equals比较key对象
-	TreeMap	// 线程不安全，不允许null
+	TreeMap	// 线程不安全，不允许null键允许null值
+	ConcurrentMap // 不允许null键和null值
 	HashTable // 线程安全，比较慢
 	LinkedHashMap // 
 	EnumMap // https://blog.csdn.net/ljh_learn_from_base/article/details/77991970 

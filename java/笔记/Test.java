@@ -1,13 +1,6 @@
-public class Test{
-static{
-   int x=5;
-}
-static int x,y;
-public static void main(String args[]){
-    int i = 0;
-    i = i++;
-    System.out.println(i);
-    i = ++i;
-    System.out.println(i);
-}
+public class Test {
+    public static void main(String[] args) {
+        int x = 20, y =5;
+        System.out.println(x + y + "" + (x + y) + y);
+    }
 }

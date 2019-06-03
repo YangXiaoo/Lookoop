@@ -32,6 +32,7 @@
 
 	static void yield();	// 导致当前线程处于让步状态。如果其他可运行线程具有至少
 							// 与此线程同样高的优先级，那么这些线程接下来会被调度。
+							// 释放资源
 	// 2-守护线程
 	t.setDaemon(true);	// 为其他线程提供服务，当只剩下守护线程时虚拟机退出。
 						// 必须在线程启动之前调用，永远不要访问固有资源，因
@@ -93,7 +94,7 @@
 	private static int threadhold = 100;
 	private int curValue;
 	public synchronized void foo() {
-		try {
+		try {			// 必须要加try-catch
 			while (curValue > threadhold ) 
 				wait();	// wait(long millis);
 						// wait(long millis, int nanos);

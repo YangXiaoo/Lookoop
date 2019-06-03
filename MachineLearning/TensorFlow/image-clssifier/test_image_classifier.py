@@ -166,7 +166,7 @@ def run_inference_on_image(input_par):
             image_data = tf.gfile.FastGFile(img, 'rb').read()
             image_data = tf.image.decode_jpeg(image_data, channels=3)
             # print(image_data.shape)
-            image_data = vgg_preprocessing.preprocess_for_eval(image_data, input_par['height'], input_par['width'], 256)
+            image_data = vgg_preprocessing.preprocess_for_eval(image_data, input_par['height'], input_par['width'])
             image_data = tf.expand_dims(image_data, 0)
             image_data = sess.run(image_data)
             try:

@@ -159,7 +159,7 @@ net_factory = [
     # inception_v3
     {
         'model_name' : 'inception_v3',
-        'train_image_size' : 229,
+        'train_image_size' : 299,
         'output_tensor_name' : 'InceptionV3/Predictions/Reshape_1',
 
         # Fine-Tuning

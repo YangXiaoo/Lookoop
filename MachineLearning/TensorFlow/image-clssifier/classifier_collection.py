@@ -356,9 +356,9 @@ def run_model(tfrecord_output,
     api.mkdirs(tmp_train_dir)
     lower = 4
     for k, s in enumerate(tfrecord_files):
-        # if k < lower:
-        #     print("[INFO] skip model %s, training on data %s" % (network_setting['model_name'], s))
-        #     continue
+        if k < lower:
+            print("[INFO] skip model %s, training on data %s" % (network_setting['model_name'], s))
+            continue
         print("[INFO] Use model %s, training on data %s" % (network_setting['model_name'], s))
         tmp_data_original = os.path.join(original_dir, str(s), 'train')
         train_size = len(api.get_files(tmp_data_original))
@@ -700,24 +700,25 @@ if __name__ == '__main__':
     test_dir = input_para['male_split_output']
     original_dir = input_para['male_split_output']
     for i,network_setting in enumerate(net_factory):
-        if i < 4:
+        if i < 1:
             continue
         print("[INFO] use model %s" % network_setting['model_name'])
-        # 训练
-        run_model(male_tfrecord_output, 
-                  original_dir, 
-                  input_para, 
-                  network_setting)
-        assert False, "node stop"
-        # 转换模型
-        convert_model(train_dir,
-                      test_dir,
-                      male_tfrecord_output,
-                      network_setting, 
-                      model_save_para, 
-                      input_para)
-        # 使用当前模型对剩下的fold进行预测
+        # # 训练
+        # run_model(male_tfrecord_output, 
+        #           original_dir, 
+        #           input_para, 
+        #           network_setting)
 
+        # # 转换模型
+        # convert_model(train_dir,
+        #               test_dir,
+        #               male_tfrecord_output,
+        #               network_setting, 
+        #               model_save_para, 
+        #               input_para)
+        
+        # 使用当前模型对剩下的fold进行预测
+        # assert False, "node stop"
         # break
 
 
@@ -728,6 +729,7 @@ if __name__ == '__main__':
                                  label_path,
                                  prediction_para, 
                                  network_setting)
+        assert False, "node stop"
 
     prediction_output = prediction_para['prediction_output']
     train_data, labels = get_prediction_data(prediction_output) # 获得预测数据

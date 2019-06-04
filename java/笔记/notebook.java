@@ -784,7 +784,8 @@
 27. Queue
 	// Queue: FIFO 数据结构，与 Set, List 同一级别，都是继承 Collection, 用 LinkedList 实现 Queue 接口
 	// https://www.cnblogs.com/lemon-flm/p/7877898.html
-	// 非阻塞
+	// 非阻塞 
+　　PriorityQueue 	// 优先列队，不允许null键，出队时间O(log(n))
 	  
 	ConcurrentLinkedQueue	// 基于链节点的无界线程安全队列，遵循FIFO
 	// 双端列队

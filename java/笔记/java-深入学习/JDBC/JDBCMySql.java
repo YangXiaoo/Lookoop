@@ -16,12 +16,12 @@ import java.sql.Statement;
 public class JDBCMySql {
     public static void main(String[] args) {
         //1.加载驱动
-        Connection conn = null;  //连接对象
-        Statement stmt = null;   //语句对象
-        ResultSet result = null;  //结果集（数据集）对象
-        String url = "jdbc:mysql://localhost:3306/test?useUnicode=true&characterEncoding=UTF-8";
-        String username = "root";   //数据库用户名
-        String password = "root";   //数据库密码
+        Connection conn = null;     //连接对象
+        Statement stmt = null;      //语句对象
+        ResultSet result = null;    //结果集（数据集）对象
+        String url = "jdbc:mysql://localhost:3306/bbs?useUnicode=true&characterEncoding=UTF-8";
+        String username = "root";       //数据库用户名
+        String password = "Ab127000";   //数据库密码
         String driver = "com.mysql.jdbc.Driver";
         try {
             Class.forName(driver);

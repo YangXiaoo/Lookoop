@@ -1,6 +1,7 @@
 #date(2018-3-27)
+# https://www.cnblogs.com/xiangzhong/p/5038338.html
 #存储过程
-定义：procedure,是一种处理数据的方式，存储过程是一种没有返回值得函数。
+定义：procedure,是一种处理数据的方式，有返回。
 
 ==========创建过程
 create procedure 过程名字([参数列表])

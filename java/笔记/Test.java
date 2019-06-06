@@ -5,7 +5,7 @@ public static void main(String[] args){
 		int j=1;
 		boolean g=false;
 		if((j++ == 2)&&(i++ == 1)){
-		i=42;
+			i=42;
 		}
 	System.out.println(i);
 	System.out.println(j);

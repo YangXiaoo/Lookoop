@@ -46,6 +46,11 @@
 												// 带有公平策略的锁 ，偏爱等待时间
 												// 最长的线程，但大大降低性能，所以
 												// 锁没有被强制为公平。
+	// 用来获得锁 
+	// lock()
+	// tryLock()	// 立即返回
+	// tryLock(long time, TimeUnit unit)	// 拿不到锁的时候会等待一段时间
+	// lockInterruptibly()	// 中断线程的等待状态
 	public void foo() {
 		mylock.lock();
 		try {
@@ -188,6 +193,7 @@
 	// 见代码
 
 8. 执行器  
+// 可以使用两个方法向线程池提交任务，分别为 execute() 和 submit() 方法
 	ExecutorService的生命周期包括了：运行关闭和终止三种状态。
  	1) newSingleThreadExecutor()
 		public class excuteThreadByOrder {

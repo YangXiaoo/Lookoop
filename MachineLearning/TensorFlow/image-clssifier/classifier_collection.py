@@ -488,9 +488,10 @@ def get_prediction_data(prediction_output):
             tmp_data = np.load(tmp_data_path) # {class_pic, data}
             for k,v in tmp_data[()].items():
                 if k not in tmp_test_data:
-                    tmp_test_data[k] = []
-
-                tmp_test_data[k].extend(v) # {pic:[prediction_1, prediction_2, ]}
+                    tmp_test_data[k] = v
+                # print(v)
+                else:
+                    tmp_test_data[k].extend(v) # {pic:[prediction_1, prediction_2, ]}
         for k,v in tmp_test_data.items():
             train_data.append(v)
             try:

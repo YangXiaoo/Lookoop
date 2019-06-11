@@ -483,17 +483,20 @@ def get_prediction_data(prediction_output):
     for s in split_name:
         tmp_test_data, tmp_test_labels = {}, []
         for m in model_name:
+            # 每个网络结构有5个分模型
             tmp_data_path = os.path.join(prediction_output, m, s, 'prediction.npy')
             print("[INFO] Loading %s" % tmp_data_path)
             tmp_data = np.load(tmp_data_path) # {class_pic, data}
             for k,v in tmp_data[()].items():
                 if k not in tmp_test_data:
-                    tmp_test_data[k] = v
-                # print(v)
+                    tmp_test_data[k] = []
+                    tmp_test_data[k].extend(v)
+                # print(v) # {pic:[prediction_1, prediction_2, ]}
                 else:
-                    tmp_test_data[k].extend(v) # {pic:[prediction_1, prediction_2, ]}
+                    tmp_test_data[k] += v   # 可能报错，报错原因为数组不一致或格式错误
         for k,v in tmp_test_data.items():
-            train_data.append(v)
+            _v = meanOfPredict(v, len(model_name)) # 获得一个模型预测的平均值
+            train_data.append(_v)
             try:
                 label = int(k.split('_')[0])
             except:
@@ -516,7 +519,7 @@ def train_model(train_data, labels):
     # num_classes = len(set(labels))
     feature = np.mat(train_data)
     num_classes = feature.shape[1]
-    labels = np.mat(labels).T
+    labels = np.mat(labels).T   # 这里应该设置为标签数 labels = input_para["num_classes"]
     print(feature.shape, labels.shape)
     # print(feature, labels)
     softmax = regression.softmax_classifier(feature, labels, num_classes, 10000, 0.2)
@@ -558,21 +561,36 @@ def model_single_prediction(test_data,
         prediction_para['width'] = image_size
         prediction_para['height'] = image_size
         prediction_para['is_save'] = False
-        tmp_model_prediction = run_inference_on_image(prediction_para)
+        tmp_model_prediction = run_inference_on_image(prediction_para)  
         for k,v in tmp_model_prediction.items():
+            # try:  # 不加try方便查错
             if k not in prediction:
                 prediction[k] = []
-            try:
-                prediction[k] = prediction[k].extend(v)
-            except Exception as e:
-                print("[Error] %s" % str(e))
-                print("[INFO] Currur value: ", prediction )
+                prediction[k].extend(v)
+            else:
+                prediction[k] += v
+            # except Exception as e:
+            #     print("[Error] %s" % str(e))
+            #     print("[INFO] Currur value: ", prediction )
 
     count = len(class_list)
     for k,v in prediction.items():
-        prediction[k] = v / count
+        _v = meanOfPredict(v, count)
+        prediction[k] = _v
 
     return prediction
+
+
+def meanOfPredict(pdRes, num):
+    """获得预测的均值"""
+    import copy
+    tmpData = copy.deepcopy(pdRes)
+    row, col = np.shape(tmpData)
+    for r in row:
+        for c in col:
+            tmpData[r][c] /= num 
+
+    return tmpData
 
 
 def model_collection_prediction(prediction_model, 
@@ -600,10 +618,12 @@ def model_collection_prediction(prediction_model,
                                                         model_name, 
                                                         tensor_name,
                                                         image_size)
-        for k,v in tmp_model_prediction.items():
-            if k not in prediction_collection:
-                prediction_collection[k] = np.array([])
-            prediction_collection[k] = np.append(prediction_collection[k], v)
+        # for k,v in tmp_model_prediction.items():
+        #     if k not in prediction_collection:
+        #         prediction_collection[k] = np.array([])
+        #     np.append(prediction_collection[k], v)
+
+        prediction_collection.update(tmp_model_prediction)
 
 
     test_feature, test_labels = [], []

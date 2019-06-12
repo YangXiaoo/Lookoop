@@ -13,9 +13,18 @@ class Integer {
 
 
 public class Test {
-	public static void main(String[] args){
-		Integer it = new Integer(10);
-		System.out.println(it.toString());
+	int i = getJ();
+	int j = 0;
+	public int getJ() {
+		System.out.println("j: " + j);
+		j = 10;
+		System.out.println("i: " + i);
+		return j;
+	}
+
+	public static void main(String[] args) {
+		Test test = new Test();
+		System.out.println("j: " + test.j);
 	}
 }
  

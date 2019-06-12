@@ -62,7 +62,6 @@ class DynamicProxyHello implements InvocationHandler {
 		// 获得 void satrt(Method method)
 		// https://www.cnblogs.com/xinhuaxuan/p/6019531.html
 		Method start = inst.getDeclaredMethod("start", new Class[]{Method.class});
-
 		// 反射执行start方法
 		// Method类的invoke(Object obj,Object args[])方法接收的参数必须为对象
 		start.invoke(this.proxy, new Object[]{method});

@@ -494,6 +494,7 @@ def get_prediction_data(prediction_output):
                 # print(v) # {pic:[prediction_1, prediction_2, ]}
                 else:
                     tmp_test_data[k] += v   # 可能报错，报错原因为数组不一致或格式错误
+                    
         for k,v in tmp_test_data.items():
             _v = meanOfPredict(v, len(model_name)) # 获得一个模型预测的平均值
             train_data.append(_v)

@@ -63,3 +63,16 @@ def get_files(dirpath, suffix=["png"]):
     return file
     
 
+def pre_process(data, alpha=0.99, is_total=False):
+    """离差标准化(0, 1)"""
+    m, n = np.shape(data)
+    ret = np.zeros((m, n))
+    for i in range(m):
+        total = np.sum(data[i, :])
+        max_value = np.max(data[i, :])
+        for j in range(n):
+            if is_total:
+                ret[i, j] = data[i, j] / total * alpha
+            else:
+                ret[i, j] = [data[i, j], 1][data[i, j] == 0] / max_value * alpha
+    return ret

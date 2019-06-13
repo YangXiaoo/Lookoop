@@ -523,6 +523,7 @@ def train_model(train_data, labels):
     labels = np.mat(labels).T   # 这里应该设置为标签数 labels = input_para["num_classes"]
     print(feature.shape, labels.shape)
     # print(feature, labels)
+    feature = api.pre_process(feature)
     softmax = regression.softmax_classifier(feature, labels, num_classes, 10000, 0.2)
     softmax.train()
     np.save("weights.npy", softmax.weights)
@@ -633,6 +634,7 @@ def model_collection_prediction(prediction_model,
         test_labels.append(int(k.split('_')[0]))
 
     test_feature, test_labels = np.mat(test_feature), np.mat(test_labels).T
+    test_feature = api.pre_process(test_feature)
     prediction_model.prediction(test_feature, test_labels) # 打印出结果
 
 

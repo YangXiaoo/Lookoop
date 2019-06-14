@@ -12,6 +12,8 @@ except:
     import pandas as pd 
 import random
 
+import cv2
+
 __suffix__ = ["png"]
 
 def get_files(dirpath):
@@ -50,7 +52,7 @@ def _split_data(age_pic, train_size, threshed=5):
         if int(math.floor(age_count * threshed)) < threshed:
             split = 0
         else:
-            split = int(math.floor(age_count * (1- train_size)))
+            split = int(math.floor(age_count * (1- train_size)))    # 每个年龄的图片向下取整，所以图片并没有按照给定比例严格划分
         ret_validation.extend(v[:split])
         ret_train.extend(v[split:])
 
@@ -72,7 +74,7 @@ def _get_pic_map(pic_files):
     return file_dict
 
 
-def _get_data_lables(train_output, 
+def _get_data_labels(train_output, 
                     validation_output, 
                     train_data, 
                     validation_data,
@@ -124,14 +126,28 @@ def _write_result(result):
         return : None
     """
     print("[INFO] saving data...")
+    _writeLabels(result)
+    _writePic(result)
+
+
+def _writePic(result):
+    """移动图片"""
+    print("[INFO] moving pictures")
+    for g in result:
+        output, files, labels = g 
+        for f,out_dir in files:
+            dummy_smg = os.popen("copy %s %s" % (f, out_dir))
+
+
+def _writeLabels(result):
+    """保存标签"""
+    print("[INFO] saving labels")
     for g in result:
         output, files, labels = g 
         with open(os.path.join(output, 'labels.txt'), 'w') as f:
             for line in labels:
                 f.write(line)
 
-        for f,out_dir in files:
-            dummy_smg = os.popen("copy %s %s" % (f, out_dir))
 
 def test_data(pic_path,
               csv_path,
@@ -231,8 +247,8 @@ def main(pic_path,
         train_female_output,
         validation_male_output,
         validation_female_output,
-        lables_output,
-        train_size=0.7,
+        labels_output,
+        train_size=0.8,
         threshed=5, 
         is_write=True):   
     """
@@ -240,9 +256,9 @@ def main(pic_path,
     """
 
     print('loading data...')
-    csv_file = pd.read_csv(csv_path,header = 0,encoding= 'utf8')  
+    csv_file = pd.read_csv(csv_path, header = 0, encoding= 'utf8')  
     csv_data = pd.DataFrame(csv_file)  
-    rows = len(csv_data) 
+    rows = len(csv_data)
 
     mkdir([train_male_output, 
             train_female_output,
@@ -281,14 +297,14 @@ def main(pic_path,
     # print(sort_female_bone_age, sort_male_bone_age) # {'4': '0', '6': '1', '9': '2', '10': '3',...}
 
     # 生成标签对应实际年龄
-    group = [[sort_male_bone_age, 'male_lables.txt'], 
-            [sort_female_bone_age, 'female_lables.txt']]
+    group = [[sort_male_bone_age, 'male_labels.txt'], 
+            [sort_female_bone_age, 'female_labels.txt']]
     for g in group:
-        data, lable = g 
-        lable_output = open(os.path.join(lables_output, lable), 'w')
+        data, label = g 
+        label_output = open(os.path.join(labels_output, label), 'w')
         for k, v in data.items():
-            lable_output.write(v + ' ' + k + '\n') # format: `class actual_age`
-        lable_output.close()
+            label_output.write(v + ' ' + k + '\n') # format: `class actual_age`
+        label_output.close()
 
 
     # 获取文件列表，打乱顺序划分训练集与验证集
@@ -302,7 +318,7 @@ def main(pic_path,
 
     # male
     print("male...")
-    ret_1 = _get_data_lables(train_male_output, 
+    ret_1 = _get_data_labels(train_male_output, 
                             validation_male_output, 
                             male_train, 
                             male_validation,
@@ -312,7 +328,7 @@ def main(pic_path,
 
     # female
     print("female...")
-    ret_2 = _get_data_lables(train_female_output, 
+    ret_2 = _get_data_labels(train_female_output, 
                             validation_female_output, 
                             female_train, 
                             female_validation,
@@ -320,14 +336,20 @@ def main(pic_path,
                             file_dict,
                             csv_dict)
 
-    # # 保存验证集
-    _write_result([ret_1[1]])
-    _write_result([ret_2[1]])
+    # male 和 female测试集标签图片保存
+    _write_result([ret_1[1]])   # male
+    _write_result([ret_2[1]])   # female
 
-    # 训练集待处理可以不保存
+
+    # 保存训练集和测试集标签
+    _writeLabels([ret_1[0]])
+    _writeLabels([ret_2[0]])
+
+    # male和female图片保存
     if is_write:
-        _write_result([ret_1[0]])
-        _write_result([ret_2[0]])
+        _writePic([ret_1[0]])
+        _writePic([ret_2[0]])
+        
     os.startfile(train_male_output)
 
     return ret_1[0], ret_2[0]
@@ -340,7 +362,7 @@ if __name__ == '__main__':
     train_female_output = r'C:\Study\test\kaggle-bonage\train-female'
     validation_male_output = r'C:\Study\test\kaggle-bonage\validation-male'
     validation_female_output = r'C:\Study\test\kaggle-bonage\validation-female'
-    lables_output = r'C:\Study\test\kaggle-bonage'
+    labels_output = r'C:\Study\test\kaggle-bonage'
 
     main(pic_path, 
         csv_path, 
@@ -348,4 +370,4 @@ if __name__ == '__main__':
         train_female_output, 
         validation_male_output,
         validation_female_output, 
-        lables_output)
+        labels_output)

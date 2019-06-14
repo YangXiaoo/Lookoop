@@ -1,12 +1,10 @@
 # coding:utf-8
 import os
 
+def test():
+	"""测试用"""
+	nums = [1,2,3,4]
+	print(nums[:0])
 
-
-low = 4
-for k, i in enumerate(range(5)):
-	
-	if k < low:
-		print("skip traindata: {}".format(k))
-		continue
-	print("trianing: {}".format(k))
+if __name__ == '__main__':
+	test()

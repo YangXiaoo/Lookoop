@@ -59,6 +59,30 @@ class Solution2:
         a.next=l1 or l2
         return head.next
 
+
+# 使用递归
+class Solution3:
+    def mergeTwoLists(self, l1, l2):
+        """
+        :type l1: ListNode
+        :type l2: ListNode
+        :rtype: ListNode
+        """
+        if l1 == None:
+            return l2
+        if l2 == None:
+            return l1
+
+        head = ListNode(0)
+        if l1.val < l2.val:
+            head = l1
+            head.next = self.mergeTwoLists(l1.next, l2)
+        else:
+            head = l2
+            head.next = self.mergeTwoLists(l1, l2.next)
+
+        return head
+            
 l1 = [1,2,4]
 l2 = [1,3,4]
 head = lists = ListNode(0)
@@ -75,7 +99,7 @@ for i in l2:
     lists = cur    
 l2 = head.next
 
-test = Solution2()
+test = Solution3()
 res = test.mergeTwoLists(l1,l2)
 # show lists
 while res:

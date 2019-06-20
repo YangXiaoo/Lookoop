@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:aop="http://www.springframework.org/schema/aop"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+
+    <bean id="daoImpl" class="org.xrq.spring.action.aop.DaoImpl" />
+    <bean id="timeHandler" class="org.xrq.spring.action.aop.TimeHandler" />
+
+    <aop:config>
+        <aop:pointcut id="addAllMethod" expression="execution(* org.xrq.spring.action.aop.Dao.*(..))" />
+        <aop:aspect id="time" ref="timeHandler">
+            <aop:before method="printTime" pointcut-ref="addAllMethod" />
+            <aop:after method="printTime" pointcut-ref="addAllMethod" />
+        </aop:aspect>
+    </aop:config>
+    
+</beans>

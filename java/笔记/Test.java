@@ -11,20 +11,22 @@ class Integer {
 	}
 }
 
-
-public class Test {
-	int i = getJ();
-	int j = 0;
-	public int getJ() {
-		System.out.println("j: " + j);
-		j = 10;
-		System.out.println("i: " + i);
-		return j;
+class A {
+	public static String c = "c";
+	static {
+		System.out.println("A");
 	}
+}
+
+class B extends A {
+	static {
+		System.out.println("B");
+	}
+}
+public class Test {
 
 	public static void main(String[] args) {
-		Test test = new Test();
-		System.out.println("j: " + test.j);
+		System.out.println(B.c);
 	}
 }
  

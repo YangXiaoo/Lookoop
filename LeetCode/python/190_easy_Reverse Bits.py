@@ -16,7 +16,7 @@ If this function is called many times, how would you optimize it?
 # https://leetcode.com/problems/reverse-bits/description/
 
 
-class Solution:
+class Solution1:
     # @param n, an integer
     # @return an integer
     def reverseBits(self, n):
@@ -28,9 +28,20 @@ class Solution:
 
         return int(inputs[::-1], 2)
 
+class Solution2:
+    # @param n, an integer
+    # @return an integer
+    def reverseBits(self, n):
+        ret = 0
+        flag = 1
+        for i in range(32):
+            tmpRet = n & flag
+            ret <<= 1
+            ret += tmpRet
+            n >>= 1
+        return ret
 
-
-n = 43261596
-test = Solution()
+n = 43261596    # 964176192
+test = Solution2()
 res = test.reverseBits(n)
 print(res)

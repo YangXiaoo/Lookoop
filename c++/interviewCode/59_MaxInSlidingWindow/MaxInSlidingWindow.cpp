@@ -10,6 +10,7 @@ vector<int> maxInWindow(const vector<int>& nums, unsigned int size) {
 	vector<int> ret;	// 定义返回列表
 	deque<int> deq;		// 定义每个窗口最大值
 	for (int i = 0; i < nums.size(); ++i) {
+		// 使得队列里左端是最大的
 		while (!deq.empty() && (nums[deq.back()] <= nums[i])) {
 			deq.pop_back();
 		}

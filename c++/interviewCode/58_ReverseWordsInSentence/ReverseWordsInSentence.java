@@ -20,23 +20,42 @@ public class ReverseWordsInSentence {
 		}
 		System.out.println("reverse sentence: " + Arrays.toString(charArray));
 		// 单个字符串翻转
-		boolean flag = false;
-		int left = 0;
+		// 有错
+		// boolean flag = false;
+		// int left = 0;
+		// for (int i = 0; i < charArray.length; ++i) {
+		// 	if (!flag) {
+		// 		if (charArray[i] != ' ') {
+		// 			left = i;
+		// 			flag = true;
+		// 			continue;
+		// 		}
+		// 	}
+
+		// 	if ((charArray[i] == ' ')) {
+		// 		swapRange(charArray, left, i - 1);
+		// 		flag = false;
+		// 	}
+
+		// 	if ((i == charArray.length - 1) && flag) {
+		// 		swapRange(charArray, left, i);
+		// 	}
+		// }
+
+		int left = 0;	// 记录左端索引
+		boolean canSwap = false;
 		for (int i = 0; i < charArray.length; ++i) {
-			if (!flag) {
-				if (charArray[i] != ' ') {
-					left = i;
-					flag = true;
-					continue;
+			if (charArray[i] == ' ') {
+				if (canSwap) {
+					swapRange(charArray, left, i - 1);
+					canSwap = false;
 				}
+				left = i + 1;
+			} else {
+				canSwap = true;
 			}
 
-			if ((charArray[i] == ' ')) {
-				swapRange(charArray, left, i - 1);
-				flag = false;
-			}
-
-			if ((i == charArray.length - 1) && flag) {
+			if (i == charArray.length - 1 && canSwap) {
 				swapRange(charArray, left, i);
 			}
 		}
@@ -57,11 +76,12 @@ public class ReverseWordsInSentence {
 
 	public void test(String testName, String str, String expect) {
 		String ret = reverse(str);
-		System.out.println(testName + ", expect: " + expect + ", result: " + ret);
+		System.out.println(testName + ", expect: " + expect + ", result: " + ret + ".");
 	}
 
 	public static void main(String[] args) {
 		ReverseWordsInSentence test = new ReverseWordsInSentence();
-		test.test("test-1", "i am a student.", "student. a am i");
+		test.test("test-1", "i  am a  student.", "student.  a am  i");
+		test.test("test-1", " i  am a  student. ", " student.  a am  i ");
 	}
 }

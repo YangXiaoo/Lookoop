@@ -45,6 +45,7 @@ public class FirstNotRepeatingChar {
 		// 获取第一个值为1的key
 		char ret = '0';
 		for (Map.Entry<Character, Integer> entry : map.entrySet()) {
+			System.out.println("key: " + entry.getKey() + ", value: " + entry.getValue());
 			if (entry.getValue() == 1) {
 				ret = entry.getKey();
 				break;
@@ -63,6 +64,6 @@ public class FirstNotRepeatingChar {
 	public static void main(String[] args) {
 		FirstNotRepeatingChar test = new FirstNotRepeatingChar();
 		test.test("test1", "abaccdeff", 'b');
-		test.test("test2", "abbsdsaccdeffpoiuy", 'e');
+		test.test("test2", "abbsdaccdeffpoiuy", 'e');
 	}
 }

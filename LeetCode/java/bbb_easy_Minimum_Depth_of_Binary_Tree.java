@@ -35,13 +35,26 @@ class bbb_easy_Minimum_Depth_of_Binary_Tree {
         int l = minDepth(root.left);
         int r = minDepth(root.right);
 
-        if (l == 0) {
+        if (l == 0) {   // 如果左为空则右最小深度+1
             return r+1;
         }
-        if (r == 0) {
+        if (r == 0) {   // 如果右为空则左最小深度+1
             return l+1;
         }
 
         return (l<r)? l+1:r+1;
+    }
+
+    // 另一种写法
+    public int minDepth(TreeNode root) {
+        if (root == null) {
+          return 0;
+        }
+        if (root.left == null) 
+            return 1 + minDepth(root.right);
+        if (root.right == null) 
+            return 1 + minDepth(root.left);
+
+        return 1 + Math.min(minDepth(root.left), minDepth(root.right));
     }
 }

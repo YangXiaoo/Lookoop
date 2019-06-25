@@ -55,10 +55,14 @@ class Solution:
                 return node 
             left = traverse(node.left, p, q)
             right = traverse(node.right, p, q)
+            # p, q一共有三种情况
+            # 1-p, q分别位于当前节点的两侧，当前节点为祖先
             if right and left:
                 return node 
-            else:
-                return [right, left][right == None]
+            # 2,3-p, q位于当前节点的一侧，所以返回非空节点一侧
+            return [right, left][right == None]
+
+
         return traverse(root, p, q)
 
 

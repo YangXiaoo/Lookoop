@@ -60,15 +60,40 @@ def insertSort(lists):
         i += 1
     return lists
 
+########################
+# 希尔排序
+def shellSort(nums):
+    gap = 3
+    lens = len(nums)
+    for i in range(gap):
+        curGap = gap - i
+        j = curGap
+        while j < lens:
+            curItem = nums[j]
+            k = j - curGap
+            while k >= 0:
+                if curItem < nums[k]:
+                    nums[k+curGap] = nums[k]
+                    k -= curGap
+                else:
+                    break
+            nums[k+curGap] = curItem
+            j += curGap
 
-# test
-lists = [3,5,6,8,29,345,2,44,9,333,890,1]
+    return nums
 
-s_s_re = selectSort(lists)
-print(s_s_re)
+if __name__ == '__main__':
+    # test
+    lists = [3,5,6,8,29,345,2,44,9,333,890,1]
 
-b_s_re = bubbleSort(lists)
-print (b_s_re)
+    s_s_re = selectSort(lists)
+    print(s_s_re)
 
-i_s_re = insertSort(lists)
-print (i_s_re)
+    b_s_re = bubbleSort(lists)
+    print(b_s_re)
+
+    i_s_re = insertSort(lists)
+    print(i_s_re)
+
+    ret = shellSort(lists)
+    print(ret)

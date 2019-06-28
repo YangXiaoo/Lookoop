@@ -23,7 +23,7 @@
 -- `from_date` date NOT NULL,
 -- `to_date` date NOT NULL,
 -- PRIMARY KEY (`emp_no`,`from_date`));
- 
+
 
 -- 语句
 SELECT sem.emp_no AS emp_no, sdm.emp_no AS manager_no, sem.salary AS emp_salary, sdm.salary AS manager_salary

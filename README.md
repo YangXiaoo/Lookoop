@@ -27,7 +27,7 @@
 
 ## image
 - **OpenCV** - 一些函数用法以及实例
-- **opencv c++ **笔记
+- **opencv c++ ** 笔记
 
 ## java
 - **CoreJava_I** - java核心技术卷I笔记

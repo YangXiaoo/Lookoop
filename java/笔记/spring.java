@@ -47,3 +47,5 @@ Session // https://blog.csdn.net/z_xuewen/article/details/77985897
 Cookie // https://blog.csdn.net/u011848397/article/details/52201339
 
 @ContextConfiguration: 加载配置文件 
+
+// 启动redis

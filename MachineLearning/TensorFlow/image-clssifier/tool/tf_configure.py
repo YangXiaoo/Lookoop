@@ -26,8 +26,10 @@ def configure_learning_rate(num_samples_per_epoch, global_step, input_par):
                                             input_par['learning_rate_decay_factor'],
                                             staircase=True,
                                             name='exponential_decay_learning_rate')
+
     elif input_par['learning_rate_decay_type'] == 'fixed':
         return tf.constant(input_par['learning_rate'], name='fixed_learning_rate')
+        
     elif input_par['learning_rate_decay_type'] == 'polynomial':
         return tf.train.polynomial_decay(input_par['learning_rate'],
                                          global_step,

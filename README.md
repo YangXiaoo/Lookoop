@@ -27,13 +27,14 @@
 
 ## image
 - **OpenCV** - 一些函数用法以及实例
-- **opencv c++ ** 笔记
+- **opencv c++** - 笔记
 
 ## java
 - **CoreJava_I** - java核心技术卷I笔记
 - **笔记**
 	- **notebook.java** - 基本数据类型及其用法
 	- **多线程笔记.java** - 多线程基础
+- **笔记/java-深入学习** - AOP, CAS, JDBC连接demo, 浅/深克隆, 多线程, 序列化
 
 ## Leetcode
 200多道

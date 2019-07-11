@@ -24,16 +24,16 @@ import numpy as np
 
 
 #########################
-# model_path = 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb'
-# with tf.gfile.FastGFile(model_path, 'rb') as f:
-#     graph_def = tf.GraphDef()
-#     graph_def.ParseFromString(f.read())
-#     _ = tf.import_graph_def(graph_def, name='')
+model_path = 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb'
+with tf.gfile.FastGFile(model_path, 'rb') as f:
+    graph_def = tf.GraphDef()
+    graph_def.ParseFromString(f.read())
+    _ = tf.import_graph_def(graph_def, name='')
 
-# with tf.Session() as sess:
-#     var_to_shape_map = sess.graph.get_variable_to_shape_map()
-#     for key in var_to_shape_map:
-#         print("tensor_name: ", key)
+with tf.Session() as sess:
+    var_to_shape_map = sess.graph.get_variable_to_shape_map()
+    for key in var_to_shape_map:
+        print("tensor_name: ", key)
 
 
 """

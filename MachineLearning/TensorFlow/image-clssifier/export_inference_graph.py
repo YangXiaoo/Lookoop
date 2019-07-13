@@ -39,7 +39,7 @@ input_para = {
     'data_split' : 'validation',
 
     
-    'dataset_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/data', # 处理后TF格式的数据集
+    'dataset_dir' : 'C:/Study/github/others/Deep-Learning-21-Examples-maste r/chapter_3/data_prepare/satellite/data', # 处理后TF格式的数据集
 }
 
 

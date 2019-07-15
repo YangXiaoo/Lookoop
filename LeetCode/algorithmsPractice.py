@@ -21,6 +21,29 @@ def getTree():
     root = TreeNode(10, rootLeft, rootRight)
 
     return root
+
+class ListNode(object):
+    def __init__(self, val, next=None):
+        self.val = val 
+        self.next = next
+
+def getLinkedList(nums):
+    """根据数组生成链表，返回链表头节点"""
+    dummy = head = ListNode(0)
+    for n in nums:
+        curNode = ListNode(n)
+        dummy.next = curNode
+        dummy = curNode
+
+    return head.next
+
+def printLinkedList(head):
+    """打印链表"""
+    node = head
+    while node:
+        print(node.val, end=" ")
+        node = node.next
+    print()
 #######################################
 # 15-二进制中1的个数
 def countBit01(n):
@@ -491,4 +514,150 @@ def test_add():
     num1, num2 = 98, 99
     ret = add(num1, num2)
     print("ret: {}".format(ret))
+########################################
+# 29-Divide Two Integers
+def divide(dividend, divisor):
+    # 判断符号 pass
+    ret = 0
+    it = 0
+    while dividend >= divisor:
+        tmp = divisor
+        k = 0
+        while dividend >= tmp:
+            dividend -= tmp
+            ret += 1 << k
+            tmp <<= 1
+            k += 1
+            
+    return ret 
 
+def test_divide():
+    dividend = 16
+    divisor = 2
+    ret = divide(dividend, divisor)
+    print(ret)
+
+# test_divide()
+########################################
+# 32-最长有效括号
+def longestValidParentheses(s):
+    stack = [0]
+    maxLens = 0
+    for c in s:
+        if c == '(':
+            stack.append(0)
+        else:
+            if len(stack) > 1:
+                last = stack.pop() + 2
+                stack[-1] += last
+                maxLens = max(maxLens, stack[-1])
+            else:
+                stack = [0]
+
+    return maxLens
+
+def test_longestValidParentheses():
+    s = "())))((())(())()(("
+    ret = longestValidParentheses(s)
+    print(ret)
+
+# test_longestValidParentheses()
+########################################
+# 37-sudoku solver
+def solveSudoku(board):
+    def _helper(board, unfilled, i, found):
+        if i == len(unfilled):
+            found[0] = True
+
+        r, c = unfilled[i]
+        for x in range(1, 10):
+            board[r][c] = str(x)
+            if isValid(board):
+                _helper(board, unfilled, i + 1, found)
+            if not found[0]:
+                board[r][c] = '.'
+            else:
+                break
+
+    unfilled = []
+    for i in range(len(board)):
+        for j in range(len(board[0])):
+            if board[i][j] == '.':
+                unfilled.append((i, j))
+
+    found = [False]
+    _helper(board, unfilled, 0, found)
+
+    return board
+
+########################################
+# 39-combination sum
+def combinationSum(candidates, target):
+    def _dfs(tmp, i):
+        nonlocal ret, candidates, target
+        if sum(tmp) == target:
+            ret.append(tmp[:])
+            return 
+
+        for j in range(i, len(candidates)):
+            if sum(tmp) + candidates[j] <= target:
+                tmp.append(candidates[j])
+                _dfs(tmp, j)
+                tmp.pop()
+    ret = []
+    _dfs([], 0)
+
+    return ret 
+
+def test_combinationSum():
+    candidates = [2,3,5]
+    target = 8
+    ret = combinationSum(candidates, target)
+    print(ret)  # [[2, 2, 2, 2], [2, 3, 3], [3, 5]]
+# test_combinationSum()
+########################################
+# 45-jump game
+# 贪心思想
+def jumpGame(nums):
+    ret = 0
+    pre = 0
+    last = 0
+    for i in range(len(nums)):
+        print("pre: {}".format(pre))
+        if i > pre:
+            pre = last
+            ret += 1
+        last = max(last, i + nums[i])
+        
+    return ret
+
+def test_jumpGame():
+    nums = [2,3,1,1,4]
+    ret = jumpGame(nums)
+    print(ret)
+
+# test_jumpGame()
+########################################
+# 50-Pow(x.n)
+def pow(x, n):
+    """使用递归
+    折半进行
+    """
+    if n < 0:
+        x  = 1 / x
+        n = -n
+    if n == 0: return 1
+    if n == 1: return x
+
+    ret = pow(x, n >> 1)
+    if n % 2 == 0:
+        return ret * ret 
+    else:
+        return ret * ret * x
+
+def test_pow():
+    x, n = 2.0, 10
+    ret = pow(x, n)
+    print(ret)
+
+test_pow()

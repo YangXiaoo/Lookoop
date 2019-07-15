@@ -21,6 +21,7 @@ Output: 0
 '''
 # 2018-6-19
 # Search Insert Position
+# 转换为第一个找到大于等于target的数的索引
 class Solution:
     def searchInsert(self, nums, target):
         """

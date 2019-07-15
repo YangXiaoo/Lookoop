@@ -67,6 +67,11 @@ class Solution2:
         except ValueError:
             return [-1, -1]
 
+            
+class Solution3:
+    def searchRange(self, nums, target):
+        """寻找左边第一个出现的索引，寻找右边最后出现的索引, 然后再计算范围"""
+        pass
 
 nums = [5,7,7,8,8,8,8,10,10,10]
 target = 8

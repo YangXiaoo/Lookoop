@@ -641,7 +641,7 @@ def model_collection_prediction(prediction_model,
 
 if __name__ == '__main__':
     # 抽取数据
-    threshed = input_para['male_k_fold']
+    threshed = 20
     train_size = 0.9
     # male_ret, female_ret = get_data.main(input_para['pic_path'], 
     #                                      input_para['csv_path'], 

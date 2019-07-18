@@ -616,7 +616,7 @@ def test_combinationSum():
     print(ret)  # [[2, 2, 2, 2], [2, 3, 3], [3, 5]]
 # test_combinationSum()
 ########################################
-# 45-jump game
+# 45-jump game II
 # 贪心思想
 def jumpGame(nums):
     ret = 0
@@ -660,4 +660,23 @@ def test_pow():
     ret = pow(x, n)
     print(ret)
 
-test_pow()
+# test_pow()
+########################################
+# 55-jump game
+def jump(nums):
+    """判断是否能跳到最后位置
+    [2,3,1,1,4]
+    """
+    counter = 1
+    for i in range(len(nums)):
+        if counter < 1:
+            return False
+        counter = max(counter - 1, nums[i])
+
+    return True
+########################################
+def inputPara(default=10):
+    print("default val: {}".format(default))
+
+inputPara(20)
+inputPara()

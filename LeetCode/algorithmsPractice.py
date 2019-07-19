@@ -678,5 +678,5 @@ def jump(nums):
 def inputPara(default=10):
     print("default val: {}".format(default))
 
-inputPara(20)
-inputPara()
+# inputPara(20)
+# inputPara()

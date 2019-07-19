@@ -49,7 +49,7 @@ def _split_data(age_pic, train_size, threshed=5):
     ret_train, ret_validation = [], []
     for k,v in age_pic.items():
         age_count = len(v)
-        if int(math.floor(age_count * threshed)) < threshed:
+        if int(math.floor(age_count * train_size)) < threshed:
             split = 0
         else:
             split = int(math.floor(age_count * (1- train_size)))    # 每个年龄的图片向下取整，所以图片并没有按照给定比例严格划分

@@ -680,4 +680,38 @@ def inputPara(default=10):
 
 # inputPara(20)
 # inputPara()
-springcloud-article
+def simpleConpute():
+    s = 3
+    ret = 0
+    while s <= 99:
+        ret += s * (s + 2)
+        s += 2
+
+    print(ret)
+
+########################################
+def permutation(ss):
+    # write code here
+    ret = [ss]
+    for i in range(len(ss)):
+        tmpRet = []
+        for j in range(i+1, len(ss)):
+            for s in ret:
+                tmp = getArray(s)
+                tmp[j], tmp[i] = tmp[i], tmp[j]
+                tmpRet.append("".join(tmp))
+        ret.extend(tmpRet)
+    return ret
+
+def getArray(s):
+    ret = []
+    for c in s:
+        ret.append(c)
+
+    return ret
+
+def test_premutation():
+    ss = "abc"
+    ret = permutation(ss)
+    print(ret)
+# test_premutation()

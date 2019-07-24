@@ -3,6 +3,7 @@
 转换文件中的中文格式
 """
 import os
+
 class Exg(object):
 	def __init__(self, oldFilePath, outputFilePath=None, 
 				 oldList=None, newList=None):

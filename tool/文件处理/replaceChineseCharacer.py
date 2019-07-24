@@ -71,10 +71,10 @@ def mkfile(filePath, midffix=""):
 	return outputFileName
 
 if __name__ == '__main__':
-	filePath = r"C:\Study\github\Lookoops\interview\java.md"
-	newFilePath = mkfile(filePath, "_new____")
+	filePath = r"C:\Study\github\Lookoops\interview\backup.md"
+	newFilePath = mkfile(filePath, "_new")
 	re = Exg(filePath)
-	re.addRegx(["，", "？", "："], [", ", "? ", ": "])
+	re.addRegx("###", "- ")
 	re.writeInto(newFilePath)
 
 	# replace(filePath)

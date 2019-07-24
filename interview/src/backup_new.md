@@ -1,6 +1,3 @@
-## 面试问题总览
----
-
 > ## Java基础知识问答
 
 -  java关键字与保留字? goto,const?false,true,null,inner?

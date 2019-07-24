@@ -1,6 +1,6 @@
 > ## Java基础知识问答
 
-#### java关键字与保留字? goto,const?false,true,null,inner?
+### java关键字与保留字? goto,const?false,true,null,inner?
 ### String能被继承吗? 
 ### string,StringBuffer,StringBuilder区别?
 ### 数组定义: String a[10]; 正不正确? 数组等号左边能不能出现数字?
@@ -56,7 +56,6 @@ s1 == s2;	// true or false
 ### 访问修饰符作用范围?
 ### Java编译过程?
 ### Number, ClassLoader可以被继承吗?
-
 
 ---
 > ## Java高级应用
@@ -161,10 +160,6 @@ s1 == s2;	// true or false
 ### 阻塞队列, ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, SynchronousQueue各自特点? 非阻塞队列? 
 ### 阻塞队列的插入、移除方法?
 
-
-
-
-
 ---
 > ## 线程
 
@@ -224,7 +219,6 @@ s1 == s2;	// true or false
 ### 如何控制线程在某个时间内完成, 不完成就撤销?
 ### 为什么使用读写锁而不使用synchronized这类锁?
 ### 实现多线程的方法?
-
 
 ---
 > ## JVM虚拟机与JMM内存模型
@@ -347,6 +341,7 @@ s1 == s2;	// true or false
 ### forward和redirect的区别?
 ### URL重写技术?
 ### URL格式?
+
 ---
 > ## 计算机基础
 
@@ -374,6 +369,7 @@ s1 == s2;	// true or false
 ### I/O复用
 ### 线程和进程的区别? 多线程和单线程的区别?
 ### 计算机判断是否有中断应该是什么时候? 降低进程优先级的时机?
+
 ---
 > ## 数据库
 
@@ -385,7 +381,6 @@ s1 == s2;	// true or false
 ### 什么是游标?
 ### 什么是触发器?
 ### 什么是视图?如何进行操作?
-
 
 ### 什么是ACID? 具体?
 ### 说一下一范式, 二范式, 三范式? 举例说明
@@ -505,8 +500,6 @@ s1 == s2;	// true or false
 ### 如何保证幂等性?
 ### 为什么使用RabbitMQ? 如何保证消息正确发送? 如何保证消息接收方消费了消息? 如何避免消费重复投递或重复消费? 基于什么传输? 消息如何分发? 如何保证消息可靠传输? 如何保证消息顺序性?
 
-
-
 ---
 > ## 算法
 
@@ -527,10 +520,6 @@ s1 == s2;	// true or false
 ### 从100亿条记录中找出重复数最多的前10条?
 ### 一个文本行, 大约有一万行, 每行一个单词, 要统计最频繁的前10个?
 ### 100万个数中找出最大的100个数?
-
-
-
-
 
 ---
 > ## 设计模式
@@ -573,18 +562,21 @@ s1 == s2;	// true or false
 ### 什么是webService?
 ### Tomcat结构以及类加载流程?
 ### thinkPHP处理流程?
+
 ---
 > ## JSP
 
 ### JSP有哪些动作?
 ### 会话跟踪技术?
 ### JSP内置九大类型?
+
 ---
 > ## MyBatis
 
 ### MyBatis中#{}和${}的区别？
 ### PreparedStatement与Statement区别?
 ### Mybatis缓存?
+
 ---
 > ## spring
 
@@ -602,6 +594,7 @@ s1 == s2;	// true or false
 ### 关于加@Transactional注解的方法之间调用，事物是否生效?
 ### Bean的生命周期?
 ### Spring用了哪些设计模式?
+
 ---
 > ## 其他
 
@@ -610,7 +603,6 @@ s1 == s2;	// true or false
 ### 单元测试怎么实现?
 ### 虚拟化技术？
 ### 赛马，有25匹马，每次只能5匹马比赛，比赛只能得到5匹马之间的快慢，而不是速度。请问，最少比赛多少次，才能获得最快的前3匹马?
-
 
 ---
 > ## 网络应用类
@@ -623,6 +615,7 @@ s1 == s2;	// true or false
 ### 什么是servlet链?
 ### servlet安全性？
 ### SSH协议?什么是跳板机?
+
 ---
 > ## Python
 
@@ -633,6 +626,7 @@ s1 == s2;	// true or false
 ### 什么是FBV, CBV?
 ### Django模板中自定义filter与simple_tag区别?
 ### Flask与Django区别?
+
 ---
 > ## Linux
 
@@ -644,6 +638,7 @@ s1 == s2;	// true or false
 ### 压缩数据
 ### 结束进程
 
+---
 > ## 生活
 
 ### 职业规划?

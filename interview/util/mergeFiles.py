@@ -69,7 +69,7 @@ class MergeFile(object):
 
 if __name__ == '__main__':
     inputFilePath = r"C:\Study\github\Lookoops\interview\src"
-    outputFilePath = r"C:\Study\github\Lookoops\interview\output.md"
+    outputFilePath = r"C:\Study\github\Lookoops\interview\README.md"
 
     mergeTool = MergeFile(inputFilePath, outputFilePath)
     mergeTool.merge()

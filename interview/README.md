@@ -240,7 +240,6 @@ s1 == s2;	// true or false
 - Django模板中自定义filter与simple_tag区别?
 - Flask与Django区别?
 ---
----
 
 > ## 分布式
 

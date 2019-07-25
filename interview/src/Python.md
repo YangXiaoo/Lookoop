@@ -7,4 +7,3 @@
 ### 什么是FBV, CBV?
 ### Django模板中自定义filter与simple_tag区别?
 ### Flask与Django区别?
----

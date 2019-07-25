@@ -1,6 +1,6 @@
 > ## Java基础知识问答
 
-#### java关键字与保留字? goto,const?false,true,null,inner?
+### java关键字与保留字? goto,const?false,true,null,inner?
 ### String能被继承吗? 
 ### string,StringBuffer,StringBuilder区别?
 ### 数组定义: String a[10]; 正不正确? 数组等号左边能不能出现数字?

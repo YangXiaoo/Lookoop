@@ -27,6 +27,7 @@ class MergeFile(object):
     def __init__(self, inputFilePath, outputFilePath=None):
         self.inputFileList = self.setInputFileList(inputFilePath)
         self.outputFilePath = outputFilePath
+        self.count = 0
 
     def setInputFileList(self, inputFilePath):
         """获得待合并文件路径"""
@@ -42,6 +43,16 @@ class MergeFile(object):
             else:
                 fileList.append(file)
 
+        # 排序
+        tmpDict = {}
+        for f in fileList:
+            tmpDict[int(os.path.basename(f).split('-')[0])] = f 
+
+        tmpList = sorted(tmpDict.items(), key=lambda x : x[0])
+        fileList = []
+        for f in tmpList:
+            fileList.append(f[1])
+
         return fileList
 
     def getData(self, filePath):
@@ -50,7 +61,10 @@ class MergeFile(object):
             data = f.readlines()
             flag = False
             for line in data:
+                if '#' in line.lstrip():
+                    self.count += 1
                 if len(line.lstrip()) == 0:
+                    retData.append(line)
                     continue
                 elif ("#" in line.lstrip() or "---" in line.lstrip()) and not flag:
                     retData.append(line)
@@ -71,7 +85,7 @@ class MergeFile(object):
         if outputFilePath :
             self.outputFilePath = outputFilePath
         outputData = []
-        print(self.inputFileList)
+        # print(self.inputFileList)
         for file in self.inputFileList:
             curData = self.getData(file)
             curData.append("\n---\n\n")
@@ -79,6 +93,9 @@ class MergeFile(object):
         # print(outputData)
         with open(self.outputFilePath, "w", encoding="utf-8") as outf:
             outf.write("".join(outputData))
+
+        print("[INFO] question count: {}".format(self.count))
+        print("[INFO] write successful!")
 
 if __name__ == '__main__':
     inputFilePath = r"C:\Study\github\Lookoops\interview\src"

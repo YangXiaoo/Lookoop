@@ -1,4 +1,5 @@
 > ## Java基础知识问答
+
 - java关键字与保留字? goto,const?false,true,null,inner?
 - String能被继承吗? 
 - string,StringBuffer,StringBuilder区别?
@@ -55,6 +56,7 @@ s1 == s2;	// true or false
 - 访问修饰符作用范围?
 - Java编译过程?
 - Number, ClassLoader可以被继承吗?
+
 ---
 - JDBC使用什么设计模式?
 - 类之间存在哪些关系? 
@@ -116,7 +118,7 @@ s1 == s2;	// true or false
 - Comparable和Comparator的区别?
 - Java正则表达式匹配"成都市(武侯区)(高新区)"中的成都市?
 - Java中socket连接过程?
-- Java中的引用有哪些类型? 目的是什么?
+- Java中的引用有哪些类型? 目的是什么? 使用软引用能够带来什么好处?
 - throw和throws的区别?
 - 处理完异常后, Exception会有什么变化?
 - Java中用什么数据类型来代表价格?
@@ -142,15 +144,115 @@ s1 == s2;	// true or false
 
 ---
 
+> ## 集合问题
+
+- 线程同步的集合有哪些?
+- 哪些类实现了Collection接口?
+- 为什么集合没有实现Cloneable和Serializable?
+- Iterator和ListIterator区别? 
+- 快速失败(fail-fast)和安全失败(fail-safe)区别? 
+- 数组和列表有什么区别? 如何选择
+- ArrayList与LinkedList区别? 底层原理?ArrayList扩容、删除如何实现?
+- LinkedList适合什么排序?
+- 用过哪些Map类, 都有神马区别? HashMap实现过程(JDK1.8)? put,扩充等实现过程? 
+- 为什么HashMap里数组使用transient修饰?
+- HashMap的长度为什么是2的幂次方?
+- HashMap链表插入是头插入还是尾插入? 头插入会造成什么问题? 
+- HashMap为什么用红黑树而不用AVL树?
+- concurrentHashMap实现原理? JDK1.7与JDK1.8区别?
+- HashTable和HashMap的区别?
+- HashTable和concurrentHashMap的区别?
+- Enumeration接口和Iterator接口的区别?
+- HashSet,TreeSet,LinkedHashSet之间的区别? HashSet内部原理? 
+- 阻塞队列, ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, SynchronousQueue各自特点? 非阻塞队列? 
+- 阻塞队列的插入、移除方法?
+---
+
+> ## 线程
+
+- 如果一个线程构造了一个不可变对象, 就可以保证这个对象被其它程序正确查看吗? 
+- 线程调用过程?
+- 守护线程和用户线程区别?
+- 如何让正在运行的线程暂停一段时间?
+- 你对线程优先级的理解?
+- 同步方法和同步块哪种方式好?
+- 线程有哪些状态? 画一下线程状态转移图
+- 数据库连接池与线程池?
+- 为什么使用线程池, 为什么使用数据库连接池?
+- 线程池ThreadPoolExecutor有哪些参数? 
+- 线程池中线程任务数超过核心数会发生什么? 阻塞队列大小? 
+- 线程池的组成?
+- Java线程池工作原理(过程)?
+- newSingleThreadExcutor, newFixedThreadPool, newCachedThreadPool, newScheduledThreadPool, newSingleThreadScheduledExcutor区别?
+- 线程池的关闭有几种方式? 有哪些状态? 状态转移?
+- 说一说ThreadLocal使用, 原理?
+- ThreadLocal内存泄露? 如何解决? 
+- synchronized锁的范围? 
+- synchronized与Lock比较(锁与同步锁的比较)? 
+- synchronized与cas比较?
+- 说说 synchronized 关键字和 volatile 关键字的区别
+- ReentrantLock如何实现可重入? 如何实现公平锁与非公平锁? 
+- 在监视器内部如何做到线程同步? 程序应该用哪种级别的同步? synchronized如何实现可重入(底层)? 
+- 说说 JDK1.6 之后的synchronized 关键字底层做了哪些优化，可以详细介绍一下这些优化吗
+- 什么是自旋锁, 阻塞锁, 可重入锁, 乐观锁和悲观锁(使用场景), 轮询锁, 显示锁和内置锁, 读写锁, 对象锁和类锁, 锁粗化, 互斥锁, 消除锁, 轻量锁和偏向锁? 有几种锁状态?
+- volatile实现原理? 保证了什么? 能否保证原子性?
+- CAS机制? 包含哪些操作? 会产生哪些问题? 如何避免ABA问题?
+- 有哪些原子类?
+- 什么是原子操作? 什么是内存屏障?
+- 线程池设置大小与CPU的关系? 
+- 介绍一下AQS? 
+- Thread中join()方法的原理? 
+- Thread.wait()可以设置超时吗?
+- Java主线程如何捕获子线程抛出的异常? 
+- 线程安全的实现方法?
+- 如何判断线程是否终止?如何正确终止处于运行状态的线程?
+- isInterrupted和interrupted的区别?
+- 并行和并发的区别?
+- 什么是协程?
+- 一个类可以同时继承Thread和实现Runnable接口吗?
+- sleep和yield的区别?
+- sleep和wait的区别?
+- 线程挂起怎么办?
+- 导致死锁的原因?怎么解除死锁?
+- 死锁, 饥饿, 活锁之间的定义区别?
+- 当一个线程进入一个对象的一个synchronized方法后, 其他线程是否可以进入该对象的其他方法?
+- 线程实现接口 VS 继承Thread
+- FutureTask是什么?	x
+- 说一下CylicBarrier与CountDownLatch的区别?
+- 什么是Semaphore? Exchanger?
+- NIO, BIO, AIO区别? 谈谈Reactor模型
+- 阻塞与非阻塞, 异步与同步区别?
+- 加入有一个第三方接口, 有很多线程去调用获取数据, 现在规定每秒钟最多有10个线程同时调用它, 如何做到?
+- 线程之间相互协调完成某个工作, 如何设计?
+- 如何实现一个并发安全的链表?
+- 如何保证N个线程可以访问N个资源, 同时又不会导致死锁?
+- 高并发下如何做到安全地修改一行数据?
+- 多个线程达到同一个状态再执行, 如何实现?
+- 如何指定多个线程顺序?
+- 如何控制线程在某个时间内完成, 不完成就撤销?
+- 为什么使用读写锁而不使用synchronized这类锁?
+- 实现多线程的方法?
+- 实现Runnable接口和Callable接口的区别?
+- 执行execute()方法和submit()方法的区别是什么呢?
+- 如何创建线程池?
+---
+
 > ## JVM虚拟机与JMM内存模型
-- 介绍下 Java 内存区域(运行时数据区)?
-- JVM内存模型? 程序计数器, 栈, 堆, 方法区?
+
+- JVM内存模型(介绍下 Java 内存区域/运行时数据区)? 程序计数器, 栈, 堆, 方法区?
 - JDK1.7之前常量池在哪里? 之后在哪里?
 - JDK1.8永久代变为了什么?
+- Java内存模式对final的实现? 什么是引用逃逸?
+- 什么是元空间?
+- Java基本类型、引用类型在内存中的存储原理?
+- JVM如何判断两个类是否相同?
+- 分析 Object obj = new Object(); 对象创建过程?
+- String.intern()?
+- String s = new String("abc");创建了几个对象?
+- 栈中对象引用有几种方法? 详细介绍一下区别? 
 - JVM年轻代与老年代? 年轻代垃圾回收过程? 
+- 永久代会发生垃圾回收吗?
 - JVM年轻代中Eden与survivor的比例?
-- 分析 Object obj = new Object(); 创建过程
-- 对象引用有几种方法? 详细介绍一下区别? 使用软引用能够带来什么好处?
 - 垃圾回收算法有哪些?
 - 垃圾回收策略?
 - 垃圾收集器有哪些? CMS特点?
@@ -160,7 +262,7 @@ s1 == s2;	// true or false
 - 年老代堆空间被占满如何解决? 持久代被占满如何解决? 堆栈溢出如何解决?
 - 如何解决异常Fatal: Stack size too small?
 - 如何解决异常java.lang.OutOfMemoryError: unable to create new native thread?
-- JMM内存模型中的规定了哪八种操作?什么是重排序?
+- JMM内存模型中的规定了哪八种操作? 什么是重排序?
 - 内存模型三大特性?原子性、可见性、有序性如何实现?
 - 堆上的内存如何释放, 栈上的内容如何释放?
 - Java内存泄露的最直接表现? 
@@ -170,121 +272,94 @@ s1 == s2;	// true or false
 - Java中对象什么时候可以被垃圾回收?
 - 你能保证GC吗?
 - JVM如何确定一个对象是不是有引用?
-- 永久代会发生垃圾回收吗?
 - GC Roots包含哪些?
-- GC 对不可用对象的判断过程?
-- 什么时候新生代会发生GC? 老年代发生GC条件? Full GC 触发条件?
+- GC Roots 对不可用对象的判断过程?
+- 什么时候新生代会发生GC? 老年代发生GC条件? Full GC 触发条件? +
 - 永久代回收条件?
 - 老年代溢出原因? 永久代溢出原因?
+- GC为什么要分代?
+- JVM中大对象被分配到哪里? 长期存活对象进入哪里? 什么是空间分配担保?
+- 进入老年代的几种情况?
 - JRE判断程序是否结束的标准?
-- String s = new String("abc");创建了几个对象?
-- CAS机制? 包含哪些操作? 会产生哪些问题? 如何避免ABA问题?
-- 什么是原子操作? 什么是内存屏障?
-- volatile实现原理? 保证了什么? 能否保证原子性?
-- JVM中大对象被分配到哪里?长期存活对象进入哪里?什么是空间分配担保?
 - 什么是安全点?
 - 什么是happens-before(先发行为原则)?
 - 对象创建的过程?
 - 对象内存布局?
-- String.intern()?
 - 被动引用有哪些情况?
-- 静态解析和静态解析?
+- 静态解析和动态解析?
 - 静态分配和动态分配?
-- GC为什么要分代?
-- Java内存模式对final的实现?什么是引用逃逸?
-- 什么是元空间?
-- 元空间
-- Java基本类型、引用类型在内存中的存储原理?
-- JVM如何判断两个类是否相同?
-- 说说 JDK1.6 之后的synchronized 关键字底层做了哪些优化，可以详细介绍一下这些优化吗
-- 说说 synchronized 关键字和 volatile 关键字的区别
+
 
 ---
 
-> ## 生活
-- 职业规划?
----
+> ## 计算机网络
 
-> ## Linux
-- Linux文件和目录操作
-- 创建文件, 查看文件
-- 创建目录
-- 监测程序
-- ps和top的区别
-- 压缩数据
-- 结束进程
----
-
-> ## 其他
-- 对软件测试的理解?
-- 一个完整的测试应有哪些阶段组成?
-- 单元测试怎么实现?
-- 虚拟化技术？
-- 赛马，有25匹马，每次只能5匹马比赛，比赛只能得到5匹马之间的快慢，而不是速度。请问，最少比赛多少次，才能获得最快的前3匹马?
-- SSH协议?什么是跳板机?
-- thinkPHP处理流程?
----
-
-> ## Python
-- Pyton垃圾回收策略？
-- MVC与MVT模式?
-- 什么是wsgi?uwsgi?
-- Django请求生命周期?
-- 什么是FBV, CBV?
-- Django模板中自定义filter与simple_tag区别?
-- Flask与Django区别?
----
-
-> ## 分布式
-- 集群、分布式、微服务区别?
-- 分布式锁的实现?
-- CAP理论?BASE理论?
-- 什么是RMI? 什么是RPC?
-- 什么是一致性哈希?
-- 反向代理与CDN加速的区别?
-- 大型网站核心架构要素?
-- 网站性能测试的主要指标?
-- 性能测试包括哪些?
-- Web前端性能优化?
-- 应用服务器性能优化?
-- 典型的网站分层架构?
-- 如何实现应用层高可用?
-- 应用服务的Session如何管理?
-- 如何实现高可用数据?
-- 如何实现网站的可伸缩性?
-- 什么是负载均衡? 有哪些实现方式? 
-- 四层负载均衡与七层负载均衡? 二层负载均衡? 三层负载均衡?
-- LVS?LVS-NAT? LVS-DR? LVS-Tun? Lvs-FULLNAT?
-- Nginx与LVS比较?
-- 正向代理和反向代理?
-- Nginx负载均衡策略?
-- 网站攻击方式?
-- 如何实现服务限流(有哪些限流策略)?
-- 分布式事务解决方案?
-- 如何实现单点登录?
----
-- 什么是zookeeper? 原理? session, ZNode, 版本, 顺序访问
-- 什么是Dubbo? 框架图? 有哪些节点角色? 
-- kafka?
-- RabbitMQ?
-- Hbase?
-- springCloud与Dubbo区别?
-- springCloud基本功能?
-- Eureka? 可以被什么替代? 与zookeeper比较? 还有哪些注册服务?
-- Ribbon负载策略?
-- Hystrix容错实现方式? 熔断、资源隔离、降级. 限流?
-- Alibaba Sentinel 熔断降级方式?
-- Feign?
-- 网关服务? 什么是网关?
-- 配置中心? SpringCloud Bus?
-- zipkin?
-- 微服务设计准则?
-- 如何保证幂等性?
-- 为什么使用RabbitMQ? 如何保证消息正确发送? 如何保证消息接收方消费了消息? 如何避免消费重复投递或重复消费? 基于什么传输? 消息如何分发? 如何保证消息可靠传输? 如何保证消息顺序性?
-- 使用消息队列的好处? 使用消息队列会带来什么问题?
+- 什么是URI
+- URL格式?
+- Http请求和响应结构?
+- HTTP请求头与请求行之间是什么? 
+- 什么是Cookie? Session和Cookie的区别? Cookie被禁用解决办法?
+- 浏览器和Servlet通信协议?
+- HTTP隧道?
+- URL解码与编码?
+- 常见HTTP状态码: 100, 200, 301, 302, 400, 401, 403, 404, 500, 502, 503, 504
+- 301和302区别?
+- HTTP状态码502与504区别?
+- HTTP请求有哪些? ----- 待完成
+- post与get的区别?
+- 为什么get效率高于post?
+- HTTP协议? 特点?
+- HTTP长连接与短连接? 非流水线与流水线?
+- HTTP1.1与HTTP1.0比较? HTTP2.0与HTTP1.x比较?
+- HTTP2.0 多路复用与HTTP1.X中的长连接比较?
+- HTTP2.0中服务端推送?
+- 一次完整的HTTP请求?
+- HTTP是有状态还是无状态? 如何记住上次请求的用户? 
+- HTTPS交互过程? 与HTTP比较?
+- SMTP, DNS, HTTPS端口号与通信协议?
+- 什么是RESTful?
+- 什么是token? 
+- HTTP是基于TCP还是UDP? 
+- TCP三次握手与四次挥手?
+- TCP三次握手的必要性?
+- 为什么连接的时候是三次握手, 关闭的时候是四次挥手?
+- 为什么不能进行两次握手连接?
+- 如果已经建立了连接, 但客户端忽然出故障了怎么办?
+- TIME_WAIT与CLOSE_WAIT区别?
+- 什么是SYN攻击, 如何检测, 如何防御?
+- TCP流量控制?
+- 什么是流量控制?流量控制和拥塞控制是一种东西吗?
+- 滑动窗口机制?
+- 拥塞避免机制?
+- TCP, UDP的区别? 
+- TCP, UDP的应用场景? 
+- TCP可靠传输的实现?
+- TCP粘包现象? 如何解决?
+- 如何用UDP实现可靠性传输?
+- TCP中keep alive与HTTP中的keep-alive区别?
+- 稳定且有上限的带宽条件下, 超大文件从server传输到client端, 选择一个TCP连接快还是构建多个TCP连接快?
+- TCP包结构?TCP, UDP, MAX, IP包头有多少字节?
+- OSI七层模型, TCP/IP四层模型
+- 如何查找域名对应IP? 
+- 有网络层的存在为什么还需要传输层?
+- ICMP协议?ping功能?
+- 路由功能? 分组和路由选择的区别? 什么是AS? 常用路由选择协议? 
+- ARP
+- 浏览器从一个请求发送到返回经历过程中的优化有哪些? 
+- CSRF和XSS区别?各自解决方法?
+- 什么是ajax?
+- SOAP和REST有什么区别?
+- 什么是XML?
+- PV和UV区别?
+- 什么是跨域, 如何解决? 
+- 客户端缓存过期机制, 缓存验证?
+- 数据包的流动?
+- forward和redirect的区别?
+- URL重写技术?
 ---
 
 > ## 数据库
+
 - ER图?
 - SQL与NoSQL区别?
 - 数据库分表? 分片规则? 分表带来的事物问题、join查询、全局主键重复问题如何解决?
@@ -359,122 +434,8 @@ s1 == s2;	// true or false
 - 如何保证缓存与数据库的双写一致性?
 ---
 
-> ## 框架
-- Maven特点？
-- Solr是什么?
-- Thymeleaf是什么?
-- 什么是webService?
----
-> ## JSP
-- JSP有哪些动作?
-- 会话跟踪技术?
-- JSP内置九大类型?
----
-> ## MyBatis
-- MyBatis中#{}和${}的区别？
-- PreparedStatement与Statement区别?
-- Mybatis缓存?
----
-> ## spring
-- Spring有哪些特点？
-- Spring核心?
-- Spring有几种注入方式?
-- 什么是IOC/DI,什么是AOP？
-- Spring IOC 容器初始化过程?
-- Spring事物的传播级别?
-- Spring中的事物隔离级别?
-- Spring中Scope作用域？
-- SpringMVC路由怎么写？
-- SpringMVC如何接受ajax?
-- SpringMVC用到了那个核心servlet？
-- SpringMVC核心控制器是什么? 请求流程?
-- SpringBoot优点?
-- 关于加@Transactional注解的方法之间调用，事物是否生效?
-- Bean的生命周期?
-- Spring用了哪些设计模式?
----
-
-> ## 算法
-- 算法定义?
-- 你了解大O吗? 你能给出不同数据结构的例子吗?
-- 如何权衡使用有序数组还是无序数组?
-- 五大基础算法? 
-- 红黑树? 
-- BitMap如何实现?有哪些应用?什么是布隆过滤?
-- RSA算法?
-- 动态规划的三个概念?
-- 什么是前缀树?应用?
-- 对称加密和非对称加密? 
-- 各种排序算法时间复杂度与空间复杂度比较? 冒泡、交换、选择、插入、基数、希尔、快排、归并、堆
-- 二叉树中两个节点的公共祖先?
-- 从100亿条记录中找出重复数最多的前10条?
-- 一个文本行, 大约有一万行, 每行一个单词, 要统计最频繁的前10个?
-- 100万个数中找出最大的100个数?
----
-
-> ## 线程
-- 如果一个线程构造了一个不可变对象, 就可以保证这个对象被其它程序正确查看吗? 
-- 线程调用过程?
-- 守护线程和用户线程区别?
-- 如何让正在运行的线程暂停一段时间?
-- 你对线程优先级的理解?
-- 同步方法和同步块哪种方式好?
-- 线程有哪些状态? 画一下线程状态转移图
-- 数据库连接池与线程池?
-- 为什么使用线程池, 为什么使用数据库连接池?
-- 线程池ThreadPoolRxecutor有哪些参数? 
-- 线程池中线程任务书数超过核心数会发生什么? 阻塞队列大小? 
-- 线程池的组成?
-- Java线程池工作原理(过程)?
-- newSingleThreadExcutor, newFixedThreadPool, newCachedThreadPool, newScheduledThreadPool, newSingleThreadScheduledExcutor区别?
-- 线程池的关闭有几种方式? 有哪些状态? 状态转移?
-- 加入有一个第三方接口, 有很多线程去调用获取数据, 现在规定每秒钟最多有10个线程同时调用它, 如何做到?
-- 线程之间相互协调完成某个工作, 如何设计?
-- 如何实现一个并发安全的链表?
-- 说一说ThreadLocal使用, 原理?
-- synchronized与Lock比较(锁与同步锁的比较)? 
-- synchronized与cas比较?
-- ReentrantLock如何实现可重入? 如何实现公平锁与非公平锁? 
-- 在监视器内部如何做到线程同步? 程序应该用哪种级别的同步? synchronized如何实现可重入(底层)? 
-- 线程池设置大小与CPU的关系? 
-- 介绍一下AQS? 
-- Thread中join()方法的原理? 
-- Thread.wait()可以设置超时吗?
-- synchronized锁的范围? 
-- ThreadLocal内存泄露? 如何解决? 
-- Java主线程如何捕获子线程抛出的异常? 
-- 线程安全的实现方法?
-- 如何判断线程是否终止?如何正确终止处于运行状态的线程?
-- isInterrupted和interrupted的区别?
-- 并行和并发的区别?
-- 什么是协程?
-- 一个类可以同时继承Thread和实现Runnable接口吗?
-- sleep和yield的区别?
-- sleep和wait的区别?
-- 线程挂起怎么办?
-- 导致死锁的原因?怎么解除死锁?
-- 死锁, 饥饿, 活锁之间的定义区别?
-- 当一个线程进入一个对象的一个synchronized方法后, 其他线程是否可以进入该对象的其他方法?
-- 线程实现接口 VS 继承Thread
-- FutureTask是什么?
-- 说一下CylicBarrier与CountDownLatch的区别?
-- 什么是Semaphore? Exchanger?
-- 如何保证N个线程可以访问N个资源, 同时又不会导致死锁?
-- NIO, BIO, AIO区别? 谈谈Reactor模型
-- 阻塞与非阻塞, 异步与同步区别?
-- 什么是自旋锁, 阻塞锁, 可重入锁, 乐观锁和悲观锁(使用场景), 轮询锁, 显示锁和内置锁, 读写锁, 对象锁和类锁, 锁粗化, 互斥锁, 消除锁, 轻量锁和偏向锁?
-- 高并发下如何做到安全地修改一行数据?
-- 多个线程达到同一个状态再执行, 如何实现?
-- 如何指定多个线程顺序?
-- 如何控制线程在某个时间内完成, 不完成就撤销?
-- 为什么使用读写锁而不使用synchronized这类锁?
-- 实现多线程的方法?
-- 实现Runnable接口和Callable接口的区别?
-- 执行execute()方法和submit()方法的区别是什么呢?
-- 如何创建线程池?
----
-
 > ## 计算机基础
+
 - 栈有哪些用途? 
 - 原码, 反码, 补码
 - 进程间的通信方式? 
@@ -501,72 +462,79 @@ s1 == s2;	// true or false
 - 计算机判断是否有中断应该是什么时候? 降低进程优先级的时机?
 ---
 
-> ## 计算机网络
-- 什么是URI
-- Http请求和响应结构?
-- HTTP请求头与请求行之间是什么? 
-- 什么是Cookie?Session和Cookie的区别?Cookie被禁用解决办法?
-- 浏览器和Servlet通信协议?
-- HTTP隧道?
-- URL解码与编码?
-- 什么是RESTful?
-- 什么是token? 
-- HTTP是基于TCP还是UDP? 
-- TCP三次握手与四次挥手?
-- TCP三次握手的必要性?
-- 为什么连接的时候是三次握手, 关闭的时候是四次握手?
-- 为什么不能进行两次握手连接?
-- 如果已经建立了连接, 但客户端忽然出故障了怎么办?
-- TIME_WAIT与CLOSE_WAIT区别?
-- 什么是SYN攻击, 如何检测, 如何防御?
-- TCP流量控制?
-- 什么是流量控制?流量控制和拥塞控制是一种东西吗?
-- 滑动窗口机制?
-- 拥塞避免机制?
-- TCP, UDP的区别? 
-- TCP, UDP的应用场景? 
-- TCP可靠传输的实现?
-- TCP粘包现象? 如何解决?
-- 如何用UDP实现可靠性传输?
-- TCP包结构?TCP, UDP, MAX, IP包头有多少字节?
-- OSI七层模型, TCP/IP四层模型
-- 如何查找域名对应IP? 
-- 路由功能? 分组和路由选择的区别? 什么是AS? 常用路由选择协议? 
-- 浏览器从一个请求发送到返回经历过程中的优化有哪些? 
-- 有网络层的存在为什么还需要传输层?
-- CSRF和XSS区别?各自解决方法?
-- ICMP协议?ping功能?
-- 什么是ajax?
-- SOAP和REST有什么区别?
-- 什么是XML?
-- PV和UV区别?
-- 什么是跨域, 如何解决? 
-- 常见HTTP状态码: 100, 200, 301, 302, 400, 401, 403, 404, 500, 502, 503, 504
-- 301和302区别?
-- HTTP状态码502与504区别?
-- HTTP请求有哪些? ----- 待完成
-- HTTP协议? 特点?
-- HTTP长连接与短连接? 非流水线与流水线?
-- HTTP1.1与HTTP1.0比较? HTTP2.0与HTTP1.x比较?
-- HTTP2.0 多路复用与HTTP1.X中的长连接比较?
-- HTTP2.0中服务端推送?
-- 一次完整的HTTP请求?
-- HTTP是有状态还是无状态? 如何记住上次请求的用户? 
-- HTTPS交互过程? 与HTTP比较?
-- SMTP, DNS, HTTPS端口号与通信协议?
-- 客户端缓存过期机制, 缓存验证?
-- TCP中keep alive与HTTP中的keep-alive区别?
-- post与get的区别?
-- 为什么get效率高于post?
-- 稳定且有上限的带宽条件下, 超大文件从server传输到client端, 选择一个TCP连接快还是构建多个TCP连接快?
-- 数据包的流动?
-- ARP
-- forward和redirect的区别?
-- URL重写技术?
-- URL格式?
+> ## 分布式
+
+- 集群、分布式、微服务区别?
+- 分布式锁的实现?
+- CAP理论?BASE理论?
+- 什么是RMI? 什么是RPC?
+- 什么是一致性哈希?
+- 反向代理与CDN加速的区别?
+- 大型网站核心架构要素?
+- 网站性能测试的主要指标?
+- 性能测试包括哪些?
+- Web前端性能优化?
+- 应用服务器性能优化?
+- 典型的网站分层架构?
+- 如何实现应用层高可用?
+- 应用服务的Session如何管理?
+- 如何实现高可用数据?
+- 如何实现网站的可伸缩性?
+- 什么是负载均衡? 有哪些实现方式? 
+- 四层负载均衡与七层负载均衡? 二层负载均衡? 三层负载均衡?
+- LVS?LVS-NAT? LVS-DR? LVS-Tun? Lvs-FULLNAT?
+- Nginx与LVS比较?
+- 正向代理和反向代理?
+- Nginx负载均衡策略?
+- 网站攻击方式?
+- 如何实现服务限流(有哪些限流策略)?
+- 分布式事务解决方案?
+- 如何实现单点登录?
+---
+- 什么是zookeeper? 原理? session, ZNode, 版本, 顺序访问
+- 什么是Dubbo? 框架图? 有哪些节点角色? 
+- kafka?
+- RabbitMQ?
+- Hbase?
+- springCloud与Dubbo区别?
+- springCloud基本功能?
+- Eureka? 可以被什么替代? 与zookeeper比较? 还有哪些注册服务?
+- Ribbon负载策略?
+- Hystrix容错实现方式? 熔断、资源隔离、降级. 限流?
+- Alibaba Sentinel 熔断降级方式?
+- Feign?
+- 网关服务? 什么是网关?
+- 配置中心? SpringCloud Bus?
+- zipkin?
+- 微服务设计准则?
+- 如何保证幂等性?
+- 为什么使用RabbitMQ? 如何保证消息正确发送? 如何保证消息接收方消费了消息? 如何避免消费重复投递或重复消费? 基于什么传输? 消息如何分发? 如何保证消息可靠传输? 如何保证消息顺序性?
+- 使用消息队列的好处? 使用消息队列会带来什么问题?
+---
+
+> ## 算法
+
+- 算法定义?
+- 你了解大O吗? 你能给出不同数据结构的例子吗?
+- 如何权衡使用有序数组还是无序数组?
+- 五大基础算法? 
+- 红黑树? 
+- BitMap如何实现?有哪些应用?什么是布隆过滤?
+- RSA算法?
+- 动态规划的三个概念?
+- 什么是前缀树?应用?
+- 对称加密和非对称加密? 
+- 各种排序算法时间复杂度与空间复杂度比较? 冒泡、交换、选择、插入、基数、希尔、快排、归并、堆
+
+- 二叉树中两个节点的公共祖先?
+
+- 从100亿条记录中找出重复数最多的前10条?
+- 一个文本行, 大约有一万行, 每行一个单词, 要统计最频繁的前10个?
+- 100万个数中找出最大的100个数?
 ---
 
 > ## 设计模式
+
 - 设计模式分为几大类?
 - 说一说有哪些设计原则?
 ---
@@ -597,26 +565,84 @@ s1 == s2;	// true or false
 - 代理模式
 ---
 
-> ## 集合问题
-- 线程同步的集合有哪些?
-- 哪些类实现了Collection接口?
-- 为什么集合没有实现Cloneable和Serializable?
-- Iterator和ListIterator区别? 
-- 快速失败(fail-fast)和安全失败(fail-safe)区别? 
-- 数组和列表有什么区别? 如何选择
-- ArrayList与LinkedList区别? 底层原理?ArrayList扩容、删除如何实现?
-- LinkedList适合什么排序?
-- 用过哪些Map类, 都有神马区别? HashMap实现过程(JDK1.8)? put,扩充等实现过程? 
-- 为什么HashMap里数组使用transient修饰?
-- HashMap的长度为什么是2的幂次方?
-- HashMap链表插入是头插入还是尾插入? 头插入会造成什么问题? 
-- HashMap为什么用红黑树而不用AVL树?
-- concurrentHashMap实现原理? JDK1.7与JDK1.8区别?
-- HashTable和HashMap的区别?
-- HashTable和concurrentHashMap的区别?
-- Enumeration接口和Iterator接口的区别?
-- HashSet,TreeSet,LinkedHashSet之间的区别? HashSet内部原理? 
-- 阻塞队列, ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, SynchronousQueue各自特点? 非阻塞队列? 
-- 阻塞队列的插入、移除方法?
+> ## 框架
+
+- Maven特点？
+- Solr是什么?
+- Thymeleaf是什么?
+- 什么是webService?
+
+
+---
+> ## JSP
+
+- JSP有哪些动作?
+- 会话跟踪技术?
+- JSP内置九大类型?
+
+---
+> ## MyBatis
+
+- MyBatis中#{}和${}的区别？
+- PreparedStatement与Statement区别?
+- Mybatis缓存?
+
+---
+> ## spring
+
+- Spring有哪些特点？
+- Spring核心?
+- Spring有几种注入方式?
+- 什么是IOC/DI,什么是AOP？
+- Spring IOC 容器初始化过程?
+- Spring事物的传播级别?
+- Spring中的事物隔离级别?
+- Spring中Scope作用域？
+- SpringMVC路由怎么写？
+- SpringMVC如何接受ajax?
+- SpringMVC用到了那个核心servlet？
+- SpringMVC核心控制器是什么? 请求流程?
+- SpringBoot优点?
+- 关于加@Transactional注解的方法之间调用，事物是否生效?
+- Bean的生命周期?
+- Spring用了哪些设计模式?
+---
+
+> ## Linux
+
+- Linux文件和目录操作
+- 创建文件, 查看文件
+- 创建目录
+- 监测程序
+- ps和top的区别
+- 压缩数据
+- 结束进程
+---
+
+> ## Python
+
+- Pyton垃圾回收策略？
+- MVC与MVT模式?
+- 什么是wsgi?uwsgi?
+- Django请求生命周期?
+- 什么是FBV, CBV?
+- Django模板中自定义filter与simple_tag区别?
+- Flask与Django区别?
+---
+
+> ## 其他
+
+- 对软件测试的理解?
+- 一个完整的测试应有哪些阶段组成?
+- 单元测试怎么实现?
+- 虚拟化技术？
+- 赛马，有25匹马，每次只能5匹马比赛，比赛只能得到5匹马之间的快慢，而不是速度。请问，最少比赛多少次，才能获得最快的前3匹马?
+- SSH协议?什么是跳板机?
+- thinkPHP处理流程?
+---
+
+> ## 生活
+
+- 职业规划?
 ---
 

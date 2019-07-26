@@ -118,7 +118,7 @@ s1 == s2;	// true or false
 ### Comparable和Comparator的区别?
 ### Java正则表达式匹配"成都市(武侯区)(高新区)"中的成都市?
 ### Java中socket连接过程?
-### Java中的引用有哪些类型? 目的是什么?
+### Java中的引用有哪些类型? 目的是什么? 使用软引用能够带来什么好处?
 ### throw和throws的区别?
 ### 处理完异常后, Exception会有什么变化?
 ### Java中用什么数据类型来代表价格?

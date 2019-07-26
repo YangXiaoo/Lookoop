@@ -45,10 +45,23 @@ class MergeFile(object):
         return fileList
 
     def getData(self, filePath):
-        retData = None
+        retData = []
         with open(filePath, encoding="utf-8") as f:
-            data = f.readlines();
-            retData = data
+            data = f.readlines()
+            flag = False
+            for line in data:
+                if len(line.lstrip()) == 0:
+                    continue
+                elif ("#" in line.lstrip() or "---" in line.lstrip()) and not flag:
+                    retData.append(line)
+                else:
+                    if "```" in line or flag == True:
+                        retData.append(line)
+                        flag = True
+                        continue
+
+                    if "```" in line and flag == True:
+                        flag = False
 
         return retData
 
@@ -76,7 +89,7 @@ if __name__ == '__main__':
 
     re = rep.Exg(outputFilePath)
     re.addRegx("###", "-")
-    re.writeInto(outputFilePath)
+    re.write(outputFilePath)
 
 
 

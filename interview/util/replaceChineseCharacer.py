@@ -34,7 +34,7 @@ class Exg(object):
 			self.oldList = oldList
 			self.newList = newList
 
-	def writeInto(self, outputFilePath=None):
+	def write(self, outputFilePath=None):
 		if self.outputFilePath == None and outputFilePath == None:
 			assert False, "确定输出路径"
 			return 
@@ -61,7 +61,6 @@ def mkfile(filePath, midffix=""):
 	
 	@return 新文件路径
 	"""
-
 	fileDirName = os.path.dirname(filePath)
 	fileBaseName = os.path.basename(filePath)
 	filePreffix = fileBaseName.split(".")[0]
@@ -75,6 +74,6 @@ if __name__ == '__main__':
 	newFilePath = mkfile(filePath, "")
 	re = Exg(filePath)
 	re.addRegx(["，", "？", "：", "；"], [", ", "? ", ": ", "; "])
-	re.writeInto(newFilePath)
+	re.write(newFilePath)
 
 	# replace(filePath)

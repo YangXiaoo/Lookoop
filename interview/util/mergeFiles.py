@@ -108,7 +108,8 @@ if __name__ == '__main__':
     re.addRegx("###", "-")
     re.write(outputFilePath)
 
-
+# [INFO] question count: 563
+# [INFO] write successful!
 
 
 

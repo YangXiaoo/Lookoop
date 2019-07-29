@@ -1,8 +1,8 @@
 > ## Java基础知识问答
 
-- java关键字与保留字? goto,const?false,true,null,inner?
+- java关键字与保留字? goto, const? false, true, null, inner?
 - String能被继承吗? 
-- string,StringBuffer,StringBuilder区别?
+- string, StringBuffer, StringBuilder区别?
 - 数组定义: String a[10]; 正不正确? 数组等号左边能不能出现数字?
 - System.out.println(25 + "" + 10 + 5);输出什么? 
 - String.replaceAll(old, new); 其中old是什么形式?
@@ -139,9 +139,8 @@ s1 == s2;	// true or false
 - servlet处理流程?
 - 服务端包含?
 - 什么是servlet链?
-- servlet安全性？
+- servlet安全性? 
 - Tomcat结构以及类加载流程?
-
 ---
 
 > ## 集合问题
@@ -193,7 +192,7 @@ s1 == s2;	// true or false
 - 说说 synchronized 关键字和 volatile 关键字的区别
 - ReentrantLock如何实现可重入? 如何实现公平锁与非公平锁? 
 - 在监视器内部如何做到线程同步? 程序应该用哪种级别的同步? synchronized如何实现可重入(底层)? 
-- 说说 JDK1.6 之后的synchronized 关键字底层做了哪些优化，可以详细介绍一下这些优化吗
+- 说说 JDK1.6 之后的synchronized 关键字底层做了哪些优化, 可以详细介绍一下这些优化吗
 - 什么是自旋锁, 阻塞锁, 可重入锁, 乐观锁和悲观锁(使用场景), 轮询锁, 显示锁和内置锁, 读写锁, 对象锁和类锁, 锁粗化, 互斥锁, 消除锁, 轻量锁和偏向锁? 有几种锁状态?
 - volatile实现原理? 保证了什么? 能否保证原子性?
 - CAS机制? 包含哪些操作? 会产生哪些问题? 如何避免ABA问题?
@@ -377,7 +376,8 @@ s1 == s2;	// true or false
 - MySQL有哪些语言? 
 - MySQL有哪些数据类型? ip用什么类型存储? 电话号码用什么类型存储?
 - MySQL连接有哪些方式? 内连接与外连接有什么区别? 默认使用什么连接?
-- MySQL中exist和in的区别? 
+- MySQL中exist和in的区别?
+
 - union和union all区别?
 - group by, having, where区别?
 - count(\*), count(column), count(1)的区别?
@@ -539,7 +539,7 @@ s1 == s2;	// true or false
 ---
 - 懒汉与饿汉区别? 实现单例模式的方法?
 - 单例模式有什么特点? 应用场景?
-- 工厂模式有哪些?之间的区别(三种工厂模式的比较)?
+- 工厂模式有哪些? 之间的区别(三种工厂模式的比较)?
 - 生成器/建造者(Builder)
 - 原型模式
 ---
@@ -566,11 +566,10 @@ s1 == s2;	// true or false
 
 > ## 框架
 
-- Maven特点？
+- Maven特点? 
 - Solr是什么?
 - Thymeleaf是什么?
-- 什么是webService?
-
+- 什么是webService? +
 
 ---
 > ## JSP
@@ -582,27 +581,29 @@ s1 == s2;	// true or false
 ---
 > ## MyBatis
 
-- MyBatis中#{}和${}的区别？
+- MyBatis中#{}和${}的区别? 
 - PreparedStatement与Statement区别?
 - Mybatis缓存?
 
 ---
 > ## spring
 
-- Spring有哪些特点？
+- Spring有哪些特点? 
 - Spring核心?
 - Spring有几种注入方式?
-- 什么是IOC/DI,什么是AOP？
+- 什么是IOC/DI,什么是AOP? AOP的实现方式? 
 - Spring IOC 容器初始化过程?
 - Spring事物的传播级别?
+
 - Spring中的事物隔离级别?
-- Spring中Scope作用域？
-- SpringMVC路由怎么写？
+- Spring中Scope作用域? 
+
+- SpringMVC路由怎么写? 
 - SpringMVC如何接受ajax?
-- SpringMVC用到了那个核心servlet？
+- SpringMVC用到了那个核心servlet? 
 - SpringMVC核心控制器是什么? 请求流程?
 - SpringBoot优点?
-- 关于加@Transactional注解的方法之间调用，事物是否生效?
+- 关于加@Transactional注解的方法之间调用, 事物是否生效?
 - Bean的生命周期?
 - Spring用了哪些设计模式?
 ---
@@ -620,8 +621,8 @@ s1 == s2;	// true or false
 
 > ## Python
 
-- Pyton垃圾回收策略？
-- MVC与MVT模式?
+- Pyton垃圾回收策略? 
+- MVC与MVT模式? 
 - 什么是wsgi?uwsgi?
 - Django请求生命周期?
 - 什么是FBV, CBV?
@@ -634,9 +635,9 @@ s1 == s2;	// true or false
 - 对软件测试的理解?
 - 一个完整的测试应有哪些阶段组成?
 - 单元测试怎么实现?
-- 虚拟化技术？
-- 赛马，有25匹马，每次只能5匹马比赛，比赛只能得到5匹马之间的快慢，而不是速度。请问，最少比赛多少次，才能获得最快的前3匹马?
-- SSH协议?什么是跳板机?
+- 虚拟化技术? 
+- 赛马, 有25匹马, 每次只能5匹马比赛, 比赛只能得到5匹马之间的快慢, 而不是速度。请问, 最少比赛多少次, 才能获得最快的前3匹马?
+- SSH协议? 什么是跳板机?
 - thinkPHP处理流程?
 ---
 

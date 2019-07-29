@@ -5,23 +5,7 @@
 """
 import os
 import replaceChineseCharacer as rep
-
-
-def getFiles(dirpath, suffix=["md"]):
-    """获取指定目录下所有文件完整路径
-    @param dirpath 目录
-    @param suffix 文件格式
-
-    @return list
-    """
-    fileList = []
-    for root, dirs, files in os.walk(dirpath, topdown=False):
-        for name in files:
-            path = os.path.join(root, name)
-            if name.split(".")[-1] in suffix:
-                fileList.append(path)
-    return fileList
-
+from util import getFiles
 
 class MergeFile(object):
     def __init__(self, inputFilePath, outputFilePath=None):
@@ -43,17 +27,23 @@ class MergeFile(object):
             else:
                 fileList.append(file)
 
+        fileList = self.sortValue(fileList)
+
+        return fileList
+
+    def sortValue(self, data):
+        """对`1-xx.md`格式文件对序号进行排序"""
         # 排序
         tmpDict = {}
-        for f in fileList:
+        for f in data:
             tmpDict[int(os.path.basename(f).split('-')[0])] = f 
 
         tmpList = sorted(tmpDict.items(), key=lambda x : x[0])
-        fileList = []
+        retData = []
         for f in tmpList:
-            fileList.append(f[1])
+            retData.append(f[1])
 
-        return fileList
+        return retData
 
     def getData(self, filePath):
         retData = []
@@ -85,12 +75,10 @@ class MergeFile(object):
         if outputFilePath :
             self.outputFilePath = outputFilePath
         outputData = []
-        # print(self.inputFileList)
         for file in self.inputFileList:
             curData = self.getData(file)
             curData.append("\n---\n\n")
             outputData.extend(curData)
-        # print(outputData)
         with open(self.outputFilePath, "w", encoding="utf-8") as outf:
             outf.write("".join(outputData))
 

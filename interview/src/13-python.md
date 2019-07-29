@@ -1,7 +1,7 @@
 > ## Python
 
-### Pyton垃圾回收策略？
-### MVC与MVT模式?
+### Pyton垃圾回收策略? 
+### MVC与MVT模式? 
 ### 什么是wsgi?uwsgi?
 ### Django请求生命周期?
 ### 什么是FBV, CBV?

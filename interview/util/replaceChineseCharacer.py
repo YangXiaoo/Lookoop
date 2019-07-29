@@ -3,6 +3,7 @@
 转换文件中的中文格式
 """
 import os
+from util import getFiles
 
 class Exg(object):
 	def __init__(self, oldFilePath, outputFilePath=None, 
@@ -70,10 +71,9 @@ def mkfile(filePath, midffix=""):
 	return outputFileName
 
 if __name__ == '__main__':
-	filePath = r"C:\Study\github\Lookoops\interview\src\自我介绍.txt"
-	newFilePath = mkfile(filePath, "")
-	re = Exg(filePath)
-	re.addRegx(["，", "？", "：", "；"], [", ", "? ", ": ", "; "])
-	re.write(newFilePath)
-
-	# replace(filePath)
+	fileDir = r"C:\Study\github\Lookoops\interview\src"
+	fileList = getFiles(fileDir)
+	for filePath in fileList:
+		re = Exg(filePath)
+		re.addRegx(["，", "？", "：", "；"], [", ", "? ", ": ", "; "])
+		re.write(filePath)

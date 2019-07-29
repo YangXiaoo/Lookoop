@@ -1,8 +1,8 @@
 > ## Java基础知识问答
 
-### java关键字与保留字? goto,const?false,true,null,inner?
+### java关键字与保留字? goto, const? false, true, null, inner?
 ### String能被继承吗? 
-### string,StringBuffer,StringBuilder区别?
+### string, StringBuffer, StringBuilder区别?
 ### 数组定义: String a[10]; 正不正确? 数组等号左边能不能出现数字?
 ### System.out.println(25 + "" + 10 + 5);输出什么? 
 ### String.replaceAll(old, new); 其中old是什么形式?
@@ -139,5 +139,5 @@ s1 == s2;	// true or false
 ### servlet处理流程?
 ### 服务端包含?
 ### 什么是servlet链?
-### servlet安全性？
+### servlet安全性? 
 ### Tomcat结构以及类加载流程?

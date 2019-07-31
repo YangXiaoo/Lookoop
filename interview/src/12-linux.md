@@ -7,3 +7,5 @@
 ### ps和top的区别
 ### 压缩数据
 ### 结束进程
+### 压力测试衡量CPU的三个指标? 
+CPU Utilization、Load Average和ContextSwitch Rate

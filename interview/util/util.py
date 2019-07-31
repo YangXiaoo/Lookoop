@@ -12,6 +12,8 @@ def getFiles(dirpath, suffix=["md"]):
     for root, dirs, files in os.walk(dirpath, topdown=False):
         for name in files:
             path = os.path.join(root, name)
-            if name.split(".")[-1] in suffix:
+            if suffix == None:
+                fileList.append(path)
+            elif name.split(".")[-1] in suffix:
                 fileList.append(path)
     return fileList

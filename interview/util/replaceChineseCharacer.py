@@ -72,7 +72,7 @@ def mkfile(filePath, midffix=""):
 
 if __name__ == '__main__':
 	fileDir = r"C:\Study\github\Lookoops\interview\src"
-	fileList = getFiles(fileDir)
+	fileList = getFiles(fileDir, None)
 	for filePath in fileList:
 		re = Exg(filePath)
 		re.addRegx(["，", "？", "：", "；"], [", ", "? ", ": ", "; "])

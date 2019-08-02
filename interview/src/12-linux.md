@@ -9,3 +9,6 @@
 ### 结束进程
 ### 压力测试衡量CPU的三个指标? 
 CPU Utilization、Load Average和ContextSwitch Rate
+### Linux下查看80端口是否被占用
+`ps -ef | grep 80`
+`netstat -an |grep :80`

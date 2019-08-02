@@ -715,3 +715,378 @@ def test_premutation():
     ret = permutation(ss)
     print(ret)
 # test_premutation()
+########################################
+# 206. Reverse Linked List
+def reverseLinkedList(head):
+    pre = None
+    cur = head
+    while cur:
+        nextNode = cur.next
+        cur.next = pre 
+        pre = cur
+        cur = nextNode
+
+    return pre 
+
+def test_reverseLinkedList():
+    head = getLinkedList([1,2,3,4,5,6])
+    ret = reverseLinkedList(head)
+    printLinkedList(ret)
+
+# test_reverseLinkedList()
+########################################
+# 207. Course Schedule
+def courseSchedule(numCourses, preRequests):
+    """拓扑排序"""
+    vetex = [[] for _ in range(numCourses)] # 定义每个课程的子节点
+    indegree = [0 for _ in range(numCourses)]   # 定义每个节点的入度
+
+    # 入度、节点初始化
+    for node in preRequests:
+        vetex[node[1]].append(node[0])
+        indegree[node[0]] += 1
+
+    # print("[DEBUG] vetex: {}, indegree: {}".format(vetex, indegree))
+
+    queue = []
+    # 寻找入度为0的节点添加到队列中
+    for i in range(len(indegree)):
+        if indegree[i] == 0:
+            queue.append(i)
+
+    # 排序
+    finshCourse = 0
+    while queue:
+        finshCourse += 1
+        curCourse = queue.pop()
+        for childNode in vetex[curCourse]:
+            indegree[childNode] -= 1
+            if indegree[childNode] == 0:
+                queue.append(childNode)
+
+    if finshCourse == numCourses:
+        return True
+
+    return False
+
+def test_courseSchedule():
+    numCourses = 2
+    preRequests = [[1,0]]
+    ret = courseSchedule(numCourses, preRequests)
+    print(ret)
+
+# test_courseSchedule()
+########################################
+# 214. Shortest Palindrome
+def shortestPalindrome(s):
+    reverseString = s[::-1]
+    for i in range(len(reverseString)):
+        if s.startswith(reverseString[i:]):
+            return reverseString[:i] + s 
+
+def test_shortestPalindrome():
+    s = "aacecaaa"
+    ret = shortestPalindrome(s)
+    print(ret)
+
+# test_shortestPalindrome()
+########################################
+# 215. Kth Largest Element in an Array
+def KthElement(nums, k):
+    """使用快排方法"""
+    left, right = 0, len(nums) - 1
+    k = right - k + 1 # 转换为第k小
+    curBoundary = quickSort(nums, left, right)
+    print(curBoundary)
+    it = 0
+    while k != curBoundary:
+        mid = (right + left) >> 1
+        if curBoundary < k:
+            left = mid + 1
+        else:
+            right = mid - 1
+        print(curBoundary)
+        
+        curBoundary = quickSort(nums, left, right)
+
+        # 防止死循环
+        it += 1
+        if it > 50:
+            print("break")
+            break
+
+    return nums[k]
+
+def quickSort(nums, left, right):
+    mid = (right + left) >> 1
+    flag = nums[mid]
+    nums[mid], nums[right] = nums[right], nums[mid]
+    boundary = left 
+    start = left 
+    while start < right:
+        if nums[start] < flag:
+            nums[start], nums[boundary] = nums[boundary], nums[start]
+            boundary += 1
+        start += 1
+    nums[boundary], nums[right] = nums[right], nums[boundary]
+
+    return boundary
+
+def test_KthElement():
+    nums = [3,2,3,1,2,4,5,5,6]
+    k = 4
+    ret = KthElement(nums, k)
+    print(ret)
+
+# test_KthElement()
+########################################
+# 216. Combination Sum III
+def combinationSum(k, n):
+    def _dfs(tmp, curNum):
+        nonlocal k, n, ret 
+        if len(tmp) == k:
+            if sum(tmp) == n:
+                ret.append(tmp[:])
+                # tmp.pop()
+        else:
+            for i in range(curNum, 10):
+                tmp.append(i)
+                _dfs(tmp, i + 1)
+                tmp.pop()
+
+    ret = []
+    _dfs([], 1)
+
+    return ret 
+
+def test_combinationSum():
+    k, n = 3, 7
+    ret = combinationSum(k, n)
+    print(ret)
+
+# test_combinationSum()
+########################################
+# 222. Count Complete Tree Nodes
+def countNodes(root):
+    if root:
+        leftH = leftHeight(root)
+        rightH = rightHeight(root)
+
+        if leftH == rightH:
+            return 2**leftH - 1
+
+        return countNodes(root.left) + countNodes(root.right) + 1
+
+def leftHeight(root):
+    if not root:
+        return 0
+    return 1 + leftHeight(root.left)
+
+def rightHeight(root):
+    if not root:
+        return 0
+
+    return 1 + rightHeight(root.right)
+
+def test_countNodes():
+    root = getTree()
+    ret = countNodes(root)
+    print(ret)
+
+# test_countNodes()
+########################################
+# 229. Majority Element II
+def majorityElement(nums):
+    """超过三分之一的数,最多不超过两个数"""
+    num1, num2 = -1, -1
+    count1, count2 = 0, 0
+    for i in range(len(nums)):
+        curNum = nums[i]
+        if curNum == num1:
+            count1 += 1
+        elif curNum == num2:
+            count2 += 1
+        elif count1 == 0:
+            num1 = curNum
+            count1 = 1
+        elif count2 == 0:
+            num2 = curNum
+            count2 = 1
+        else:
+            count1 -= 1
+            count2 -= 2
+
+    count1, count2 = 0, 0
+    for n in nums:
+        if n == num1:
+            count1 += 1
+        elif n == num2:
+            count2 += 1
+    print("num1: {}, count1: {}; num2: {}, count2: {}".format(num1, count1, num2, count2))
+    numLens = len(nums)
+    ret = []
+    if count1 > numLens//3:
+        ret.append(num1)
+    if count2 > numLens//3:
+        ret.append(num2)
+    
+    return ret
+
+def test_majorityElement():
+    nums = [1]
+    ret = majorityElement(nums)
+    print(ret)
+
+# test_majorityElement()
+########################################
+# 238. Product of Array Except Self
+########################################
+# 300. Longest Increasing Subsequence
+def lengthOfLIS(nums):
+    dp = [0 for _ in nums]
+    for i in range(len(nums)):
+        dp[i] = 1   # 自身就能构成一个序列
+        for j in range(i):
+            if nums[i] > nums[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+
+def test_lengthOfLIS():
+    nums = [10,9,2,5,3,7,101,18]
+    ret = lengthOfLIS(nums)
+    print(ret)
+
+# test_lengthOfLIS()
+########################################
+# 322. Coin Change
+# Write a function to compute the fewest number of coins that you need to make up that amount. If that amount of money cannot be made up by any combination of the coins, return -1.
+def coinChange(coins, amount):
+    queue = [amount]
+    count = 0
+    visited = [False for _ in range(amount + 1)]
+    visited[0] = True
+    while queue:
+        count += 1
+        tmp = []
+        for v in queue:
+            for coin in coins:
+                if v == coin:
+                    return count 
+                curAmount = v - coin 
+                if curAmount < 0:
+                    continue
+                if not visited[curAmount]:
+                    visited[curAmount] = True
+                    tmp.append(curAmount)
+        queue = tmp
+
+    return -1
+
+def test_coinChange():
+    coins = [186,419,83,408]
+    amount = 6249   
+    ret = coinChange(coins, amount)
+    print(ret)
+
+# test_coinChange()
+########################################
+# 416. Partition Equal Subset Sum
+def partitionEqualSubsetSum(nums):
+    sums = sum(nums)
+    if sums & 1 == 1:
+        return False
+    half = sums >> 1
+    dp = [False for _ in range(half + 1)]
+    dp[0] = True
+    for num in nums:
+        for i in range(half, num-1, -1):
+            dp[i] = dp[i] or dp[i - num]
+
+    return dp[half]
+
+def test_partition():
+    nums = [1, 2, 3, 5]
+    ret = partitionEqualSubsetSum(nums)
+    print(ret)
+
+# test_partition()
+########################################
+# 560. Subarray Sum Equals K [medium]
+def subarraySum(nums, k):
+    record = {0:1}  # 初始化字典，当总值变为0时肯定存在子数组
+    retCount = 0
+    sumRecord = 0
+    for i, n in enumerate(nums):
+        sumRecord += n
+        sub = sumRecord - k     # sums[j] - sums[i] = sum(nums[i:j])
+                                # sums[j] 表示索引从0到j的数的和
+        if sub in record:
+            retCount += record[sub]
+
+        if sumRecord not in record:
+            record[sumRecord] = 1
+        else:
+            record[sumRecord] += 1
+
+    return retCount
+def test_subarraySum():
+    nums, k = [1, 2, 3, 4, 2, 4, 1, 5], 6
+    ret = subarraySum(nums, k)
+    print(ret)
+
+# test_subarraySum()
+########################################
+# 739. Daily Temperatures
+from collections import deque
+def dailyTemperatures(nums):
+    stack = []
+    ret = []
+    for i in range(len(nums)-1, -1, -1):
+        n = nums[i]
+        while stack and nums[stack[-1]] <= n:
+            stack.pop()
+
+        if not stack:
+            ret.append(0)
+        else:
+            ret.append(stack[-1] - i)
+
+        stack.append(i)
+
+    return ret[::-1]
+
+def test_dailyTemperatures():
+    nums = [73, 74, 75, 71, 69, 72, 76, 73]
+    ret = dailyTemperatures(nums)
+    print(ret)
+
+# test_dailyTemperatures()
+########################################
+# 647. Palindromic Substrings [medium]
+def countSubstrings(s):
+    ret = 0
+    for i in range(len(s)):
+        start, end = i, i 
+        # 奇数往两边扩展
+        while start >= 0 and end < len(s) and s[start] == s[end]:
+            ret += 1
+            start -= 1
+            end += 1
+
+        # 偶数往两边扩展
+        start, end = i, i + 1
+        while start >= 0 and end < len(s) and s[start] == s[end]:
+            ret += 1
+            start -= 1
+            end += 1
+
+    return ret  
+
+def test_countSubstrings():
+    s = "aaa"
+    ret = countSubstrings(s)
+    print(ret)
+
+# test_countSubstrings()
+########################################

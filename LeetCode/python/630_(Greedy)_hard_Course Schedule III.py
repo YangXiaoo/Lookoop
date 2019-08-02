@@ -47,10 +47,6 @@ class Solution:
 
         return len(maxQueue)
 
-
-
-
-
 test = Solution()
 courses = [[100, 200], [200, 1300], [1000, 1250], [2000, 3200]]
 res = test.scheduleCourse(courses)

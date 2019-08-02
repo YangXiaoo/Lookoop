@@ -44,8 +44,9 @@ class Solution2(object):
         while head:
             if head.val != val:
                 dummy.next = head
+                dummy = dummy.next
             else:
-                dummy.next = head.next
+                dummy.next = None
             head = head.next
         return lists.next
 
@@ -56,7 +57,7 @@ class ListNode(object):
         self.next = None
 
 dummy = List = ListNode(0)
-nums = [1,2,3,6,4,5,6]
+nums = [1,6, 2,3,6,4,5,6]
 val = 6
 for i in nums:
     dummy.next = ListNode(i)

@@ -14,7 +14,7 @@ Output: 0
 # 2018-9-29
 # 201. Bitwise AND of Numbers Range
 # https://leetcode.com/problems/bitwise-and-of-numbers-range/description/
-
+# 指定范围内数字与操作后的结果
 
 # m != n 有最后一位AND后为0
 class Solution(object):

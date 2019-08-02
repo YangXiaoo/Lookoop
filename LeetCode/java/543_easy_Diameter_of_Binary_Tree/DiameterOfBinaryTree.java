@@ -42,9 +42,7 @@ public class DiameterOfBinaryTree {
     	if (node != null) {
     		int maxleft = maxLength(node.left);
     		int maxRight = maxLength(node.right);
-    		if ((maxleft + maxRight) > ret) {
-    			ret = maxleft + maxRight;
-    		}
+            ret = Math.max(ret, maxleft + maxRight)
     		helper(node.left);
     		helper(node.right);
     	}

@@ -85,6 +85,25 @@ class Solution:
             if tmp_len > max_len:
                 max_len = tmp_len
         return max_len
+
+
+########################################
+def lengthOfLIS(nums):
+    dp = [0 for _ in nums]
+    for i in range(len(nums)):
+        dp[i] = 1   # 自身就能构成一个序列
+        for j in range(i):
+            if nums[i] > nums[j]:
+                dp[i] = max(dp[i], dp[j] + 1)
+
+    return max(dp)
+
+def test_lengthOfLIS():
+    nums = [10,9,2,5,3,7,101,18]
+    ret = lengthOfLIS(nums)
+    print(ret)
+
+    
 nums = [10,9,2,5,3,4]
 test = Solution()
 res = test.lengthOfLIS(nums)

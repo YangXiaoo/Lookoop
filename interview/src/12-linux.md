@@ -20,6 +20,6 @@ CPU Utilization、Load Average和ContextSwitch Rate
 `useradd username`
 ### 文件权限
 `chmod 777 file` 对file文件的所有用户都有写、读和执行权
-r：4   w：2   x：1
+r: 4   w: 2   x: 1
 ### 备份
 `dump`

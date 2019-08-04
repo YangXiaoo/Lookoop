@@ -1,7 +1,9 @@
 > ## Java基础知识问答
 
 - java关键字与保留字? goto, const? false, true, null, inner?
-- String能被继承吗? 
+- String能被继承吗?
+- String底层如何实现? 不可变的好处? 采用什么设计模式? 什么是String Pool?
+- 基本类型中的缓冲池? 什么时候使用缓冲池的数据?
 - string, StringBuffer, StringBuilder区别?
 - 数组定义: String a[10]; 正不正确? 数组等号左边能不能出现数字?
 - System.out.println(25 + "" + 10 + 5);输出什么? 
@@ -11,11 +13,11 @@
 - Object有哪些方法?
 - 构造方法可以有哪些访问修饰符?
 - 分析count = count++;
-- Math.ceil(),Math.floor(), Math.round()
+- Math.ceil(), Math.floor(), Math.round()
 - Java平台无关性与哪些有关?
 - 运算符优先级?
-- lambda表达式的作用?形参列表、代码块? 优点与缺点?
-- 多态定义?抽象定义? 
+- lambda表达式的作用? 形参列表、代码块? 优点与缺点?
+- 多态定义? 抽象定义? 
 - 多态实现的机制是什么?
 - Java中null值是什么?
 - 管理文件和目录的类是什么?
@@ -24,7 +26,7 @@
 - 能不能在不进行强制转换下将double赋给long?
 - 基础数据类型自动转换规则
 - 32位JVM和64位JVM最大堆内存分别是多少?
-- | 和 ||, & 和 &&的区别?
+- | 和 ||, & 和 && 的区别?
 - 怎样将byte转换为string?
 - B继承A, C继承B, 可以将B转换为C吗? 如 C = (C)B?
 - 分析以下代码?
@@ -52,30 +54,32 @@ s1 == s2;	// true or false
 - Java中基本类型有哪些? 大小?
 - Java中数组是基本类型吗?
 - 类中方法可以与类同名吗?
-- Stream与Reader, Writer
+- Stream与Reader, Writer区别? 用代码实现一个txt文件的读写
+- 用代码实现文件递归查询
 - 访问修饰符作用范围?
 - Java编译过程?
 - Number, ClassLoader可以被继承吗?
 
 ---
 - JDBC使用什么设计模式?
+- 解释一下驱动在JDBC中的角色?
 - 类之间存在哪些关系? 
 - 一般关系型和对象数据模型之间的对应关系?
 - 一个类可以同时继承和实现其它类吗? 有没有先后顺序?
 - JRE判断程序是否执行结束的标准是什么?
 - JDK, JRE, JVM的区别和联系?
-- 解释一下驱动在JDBC中的角色?
+
 - equals与hashCode联系? equals默认比较什么?
 - 为什么实现equals必须重新hashCode?
 - Java中Arrays.sort()如何实现排序?
 - JDK消费者生产者模型应用?
-- final修饰符有什么好处?可以修饰哪些东西?
-- 为什么需要克隆,直接new一个对象不行吗?浅克隆与深克隆如何实现?
+- final修饰符有什么好处? 可以修饰哪些东西?
+- 为什么需要克隆, 直接new一个对象不行吗? 浅克隆与深克隆如何实现?
 - Java中的char可以存汉字吗?能存所有汉字吗?
 - RTTI? 
-- 注解有什么用?如何自定义注解?
+- 注解有什么用? 如何自定义注解?
 - Java与C++比较?
-- public static void main(String[] args); 需要注意哪些? 一个类里面可以有多个main方法吗? main方法可以用final修饰吗? 可以用synchronized修饰吗?
+- public static void main(String[] args); 需要注意哪些? 一个类里面可以有多个main方法吗? main方法可以用final修饰吗? 可以用abstract修饰吗? 可以用synchronized修饰吗?
 - 为什么Java中有些接口没有任何方法?
 - 如何实现类似于C中的函数指针功能?
 - 面向对象和面向过程的区别?
@@ -84,15 +88,12 @@ s1 == s2;	// true or false
 - 什么是反射, 反射优缺点?
 - 反射破坏了面向对象的什么?
 - 反射创建实例的三种方法?
-- Class.forName()有什么作用?
 - 反射中Class.forName()与ClassLoader()区别?
 - 动态代理的几种实现方式? 优缺点? 可以通过类实现吗?
 - 如何获取父类的类名?
 - 什么是泛型? 限定通配符与非限定通配符? List< String > 能否传递给 List< Object >? Array可以使用泛型吗?
 - 泛型会不会导致程序执行速度下降?
 - 什么是泛型擦除?
-- String底层如何实现? 不可变的好处? 采用什么设计模式?什么是String Pool?
-- 基本类型中的缓冲池? 什么时候使用缓冲池的数据?
 - try-catch-finally执行过程? finally是不是一定会执行?
 - 拆箱与装箱?
 - finalize什么时候使用? 为什么避免使用? 
@@ -117,6 +118,13 @@ s1 == s2;	// true or false
 - 开发中用字节流好还是字符流好?
 - Comparable和Comparator的区别?
 - Java正则表达式匹配"成都市(武侯区)(高新区)"中的成都市?
+```java
+Pattern pattern = Pattern.compile(".*?(?=\\()");
+Matcher matcher = pattern.matcher(str);
+if (matcher.find()) {
+	System.out.println(matcher.group(0));
+}
+```
 - Java中socket连接过程?
 - Java中的引用有哪些类型? 目的是什么? 使用软引用能够带来什么好处?
 - throw和throws的区别?
@@ -129,8 +137,8 @@ s1 == s2;	// true or false
 - this()写第一行的原因? super()写第一行的原因? 可以写在一起吗?
 - 类初始化过程?
 - Collection与Collections的区别?
-- '0', 'A', 'a', ' ' 的ASCII码是多少?
-- 在Java中unicode占多少字节?UTF-8下中文占多少字节, 英文占多少字节? GBK呢?
+- '0', 'A', 'a', ' ' 的ASCII码是多少? 
+- 在Java中unicode占多少字节? UTF-8下中文占多少字节, 英文占多少字节? GBK呢?
 - instacneof有什么作用?
 - System.arraycopy(), clone(), Arrays.copyOf(), for对数组的复制效率?
 ---
@@ -622,6 +630,9 @@ s1 == s2;	// true or false
 - Linux下查看80端口是否被占用
 - 查看内存
 - 查看磁盘
+- 创建一个新用户
+- 文件权限
+- 备份
 
 ---
 

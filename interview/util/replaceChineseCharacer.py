@@ -71,7 +71,7 @@ def mkfile(filePath, midffix=""):
 	return outputFileName
 
 if __name__ == '__main__':
-	fileDir = r"C:\Study\github\Lookoops\interview\src"
+	fileDir = r"E:\Yauno\program\Lookoop\interview\src"
 	fileList = getFiles(fileDir, None)
 	for filePath in fileList:
 		re = Exg(filePath)

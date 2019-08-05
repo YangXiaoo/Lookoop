@@ -99,15 +99,3 @@ if __name__ == '__main__':
 
 # [INFO] question count: 563
 # [INFO] write successful!
-
-
-
-
-
-
-
-
-
-
-
-

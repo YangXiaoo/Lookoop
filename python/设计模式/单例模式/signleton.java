@@ -39,7 +39,7 @@ public class Singleton {
     private Singleton (){}
     public static Singleton getSingleton() {
 		if (singleton == null) {
-		    synchronized (Singleton.class) {
+		    synchronized (Singleton.class) {	// 在使用线程同步时, 处理特殊情况外基本应该使用class
 				if (singleton == null) {
 				    singleton = new Singleton();
 				}

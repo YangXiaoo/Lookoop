@@ -113,7 +113,6 @@ cglib: 通过集成, 速度较快
 ### try-catch-finally执行过程? finally是不是一定会执行?
 ### 拆箱与装箱?
 装箱: Integer.valueOf(), 拆箱: Integer.intValue()
-### finalize什么时候使用? 为什么避免使用? 
 ### UML有哪些表示?
 依赖, 关联, 聚合, 泛化-继承、实现
 ### 有哪些处理错误的方式?
@@ -153,7 +152,7 @@ if (matcher.find()) {
 ### throw和throws的区别?
 ### 处理完异常后, Exception会有什么变化?
 ### Java中用什么数据类型来代表价格?
-使用字符串初始化，用double初始化仍然不能精确表示
+使用字符串初始化, 用double初始化仍然不能精确表示
 ### 64位JVM中int的长度是多少?
 ### final, finally, finalize的区别?
 ### 编译器常量有什么风险?

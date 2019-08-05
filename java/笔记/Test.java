@@ -96,6 +96,16 @@ public class Test {
 		fileRead(file);
 	}
 
+	public void testShare() {
+		// Integer a = 2;	// 错误: 不兼容的类型: int无法转换为Integer
+		// int b = 2;
+		// Integer c = 2;
+		System.out.println();
+	}
+
+	public static void main(String[] args) {
+		new Test().testShare();
+	}
 
 }
  

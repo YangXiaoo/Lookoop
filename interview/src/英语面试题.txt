@@ -1,0 +1,31 @@
+self-introduction
+-----------------
+Good afternoon, interviewers.
+
+My name is yangxiao, i am a postgraduate student of University of Electronic Science and Technology of China. I am 24 years old, born in chengdu. My major is Mechanical  /mɪ'kænɪk(ə)l/ Engineering, and i love programming very much.
+
+I've learned a lot of programming knowledge such as data structure, algorithm, computer network, computer system. And i also did some projects, such as Article publishing system using Microservice technology, BBS using java, Blog management system using python.
+
+I have strong desire for knowledge and learning ability, quick absorption of new knowledge. And i am also responsible and methodical /mɪ'θɒdɪk(ə)l/ in work.
+
+It is my great honor to have this opportunity to introduce myself, and I hope I could make a good performance today, eventually become a member of your company. 
+
+--------------------------------------------------------------------------
+What are your strengths?
+------------------------
+I have strong desire for knowledge and learning ability, quick absorption of new knowledge. And i am also responsible and methodical /mɪ'θɒdɪk(ə)l/ in work.
+
+--------------------------------------------------------------------------
+What are your weaknesses?
+------------------------
+I like programming, but I'm not a computer major.I have learned a lot of programming knowledge such as data structure, algorithm, computer network, computer system, but there may be some places where I still have some shortcomings because no one pointed them out to me. But I am willing to accept other people's evaluation and accept new knowledge.
+
+--------------------------------------------------------------------------
+What are your goals in five years horizon? / What is yout plan?
+------------------------------------------
+In the first year i want to do every aspect of my job perfectly. In the second to third year, i want to accumulate experience of large-scale projects, and improve my professional knowledge and application of practical ability. Then i will continue to improve my professional skills, and try to be a manager of some project.
+
+--------------------------------------------------------------------------
+What are your biggest achievements so far?
+------------------------------------------
+I chose to continue to study at UESTC after my college, in the UESTC i have the opportunity to meet more excellent people, and i also have more time to learn new knowledge, and it makes me have the opportunity to interview here. I'm very grateful for the decision I made.

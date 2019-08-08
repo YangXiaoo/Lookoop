@@ -59,13 +59,14 @@ class MergeFile(object):
                 elif ("#" in line.lstrip() or "---" in line.lstrip()) and not flag:
                     retData.append(line)
                 else:
-                    if "```" in line or flag == True:
+                    if "```" in line:
                         retData.append(line)
-                        flag = True
-                        continue
-
-                    if "```" in line and flag == True:
-                        flag = False
+                        if flag == False:
+                            flag = True
+                        else:
+                            flag = False
+                    elif flag:
+                        retData.append(line)
 
         return retData
 
@@ -98,15 +99,3 @@ if __name__ == '__main__':
 
 # [INFO] question count: 563
 # [INFO] write successful!
-
-
-
-
-
-
-
-
-
-
-
-

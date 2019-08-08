@@ -1,7 +1,9 @@
 > ## Java基础知识问答
 
 - java关键字与保留字? goto, const? false, true, null, inner?
-- String能被继承吗? 
+- String能被继承吗?
+- String底层如何实现? 不可变的好处? 采用什么设计模式? 什么是String Pool?
+- 基本类型中的缓冲池? 什么时候使用缓冲池的数据?
 - string, StringBuffer, StringBuilder区别?
 - 数组定义: String a[10]; 正不正确? 数组等号左边能不能出现数字?
 - System.out.println(25 + "" + 10 + 5);输出什么? 
@@ -11,11 +13,11 @@
 - Object有哪些方法?
 - 构造方法可以有哪些访问修饰符?
 - 分析count = count++;
-- Math.ceil(),Math.floor(), Math.round()
+- Math.ceil(), Math.floor(), Math.round()
 - Java平台无关性与哪些有关?
 - 运算符优先级?
-- lambda表达式的作用?形参列表、代码块? 优点与缺点?
-- 多态定义?抽象定义? 
+- lambda表达式的作用? 形参列表、代码块? 优点与缺点?
+- 多态定义? 抽象定义? 
 - 多态实现的机制是什么?
 - Java中null值是什么?
 - 管理文件和目录的类是什么?
@@ -24,7 +26,7 @@
 - 能不能在不进行强制转换下将double赋给long?
 - 基础数据类型自动转换规则
 - 32位JVM和64位JVM最大堆内存分别是多少?
-- | 和 ||, & 和 &&的区别?
+- | 和 ||, & 和 && 的区别?
 - 怎样将byte转换为string?
 - B继承A, C继承B, 可以将B转换为C吗? 如 C = (C)B?
 - 分析以下代码?
@@ -52,30 +54,32 @@ s1 == s2;	// true or false
 - Java中基本类型有哪些? 大小?
 - Java中数组是基本类型吗?
 - 类中方法可以与类同名吗?
-- Stream与Reader, Writer
+- Stream与Reader, Writer区别? 用代码实现一个txt文件的读写
+- 用代码实现文件递归查询
 - 访问修饰符作用范围?
 - Java编译过程?
 - Number, ClassLoader可以被继承吗?
 
 ---
 - JDBC使用什么设计模式?
+- 解释一下驱动在JDBC中的角色?
 - 类之间存在哪些关系? 
 - 一般关系型和对象数据模型之间的对应关系?
 - 一个类可以同时继承和实现其它类吗? 有没有先后顺序?
 - JRE判断程序是否执行结束的标准是什么?
 - JDK, JRE, JVM的区别和联系?
-- 解释一下驱动在JDBC中的角色?
+
 - equals与hashCode联系? equals默认比较什么?
 - 为什么实现equals必须重新hashCode?
 - Java中Arrays.sort()如何实现排序?
 - JDK消费者生产者模型应用?
-- final修饰符有什么好处?可以修饰哪些东西?
-- 为什么需要克隆,直接new一个对象不行吗?浅克隆与深克隆如何实现?
+- final修饰符有什么好处? 可以修饰哪些东西?
+- 为什么需要克隆, 直接new一个对象不行吗? 浅克隆与深克隆如何实现?
 - Java中的char可以存汉字吗?能存所有汉字吗?
 - RTTI? 
-- 注解有什么用?如何自定义注解?
+- 注解有什么用? 如何自定义注解?
 - Java与C++比较?
-- public static void main(String[] args); 需要注意哪些? 一个类里面可以有多个main方法吗? main方法可以用final修饰吗? 可以用synchronized修饰吗?
+- public static void main(String[] args); 需要注意哪些? 一个类里面可以有多个main方法吗? main方法可以用final修饰吗? 可以用abstract修饰吗? 可以用synchronized修饰吗?
 - 为什么Java中有些接口没有任何方法?
 - 如何实现类似于C中的函数指针功能?
 - 面向对象和面向过程的区别?
@@ -84,18 +88,14 @@ s1 == s2;	// true or false
 - 什么是反射, 反射优缺点?
 - 反射破坏了面向对象的什么?
 - 反射创建实例的三种方法?
-- Class.forName()有什么作用?
 - 反射中Class.forName()与ClassLoader()区别?
 - 动态代理的几种实现方式? 优缺点? 可以通过类实现吗?
 - 如何获取父类的类名?
 - 什么是泛型? 限定通配符与非限定通配符? List< String > 能否传递给 List< Object >? Array可以使用泛型吗?
 - 泛型会不会导致程序执行速度下降?
 - 什么是泛型擦除?
-- String底层如何实现? 不可变的好处? 采用什么设计模式?什么是String Pool?
-- 基本类型中的缓冲池? 什么时候使用缓冲池的数据?
 - try-catch-finally执行过程? finally是不是一定会执行?
 - 拆箱与装箱?
-- finalize什么时候使用? 为什么避免使用? 
 - UML有哪些表示?
 - 有哪些处理错误的方式?
 - PHP与Java的区别?
@@ -117,6 +117,13 @@ s1 == s2;	// true or false
 - 开发中用字节流好还是字符流好?
 - Comparable和Comparator的区别?
 - Java正则表达式匹配"成都市(武侯区)(高新区)"中的成都市?
+```java
+Pattern pattern = Pattern.compile(".*?(?=\\()");
+Matcher matcher = pattern.matcher(str);
+if (matcher.find()) {
+	System.out.println(matcher.group(0));
+}
+```
 - Java中socket连接过程?
 - Java中的引用有哪些类型? 目的是什么? 使用软引用能够带来什么好处?
 - throw和throws的区别?
@@ -129,8 +136,8 @@ s1 == s2;	// true or false
 - this()写第一行的原因? super()写第一行的原因? 可以写在一起吗?
 - 类初始化过程?
 - Collection与Collections的区别?
-- '0', 'A', 'a', ' ' 的ASCII码是多少?
-- 在Java中unicode占多少字节?UTF-8下中文占多少字节, 英文占多少字节? GBK呢?
+- '0', 'A', 'a', ' ' 的ASCII码是多少? 
+- 在Java中unicode占多少字节? UTF-8下中文占多少字节, 英文占多少字节? GBK呢?
 - instacneof有什么作用?
 - System.arraycopy(), clone(), Arrays.copyOf(), for对数组的复制效率?
 ---
@@ -149,11 +156,12 @@ s1 == s2;	// true or false
 - 哪些类实现了Collection接口?
 - 为什么集合没有实现Cloneable和Serializable?
 - Iterator和ListIterator区别? 
+- Enumeration接口和Iterator接口的区别?
 - 快速失败(fail-fast)和安全失败(fail-safe)区别? 
 - 数组和列表有什么区别? 如何选择
-- ArrayList与LinkedList区别? 底层原理?ArrayList扩容、删除如何实现?
+- ArrayList与LinkedList区别? 底层原理? ArrayList扩容、删除如何实现?
 - LinkedList适合什么排序?
-- 用过哪些Map类, 都有神马区别? HashMap实现过程(JDK1.8)? put,扩充等实现过程? 
+- 用过哪些Map类, 都有神马区别? HashMap实现过程(JDK1.8)? put、扩充等实现过程? 
 - 为什么HashMap里数组使用transient修饰?
 - HashMap的长度为什么是2的幂次方?
 - HashMap链表插入是头插入还是尾插入? 头插入会造成什么问题? 
@@ -161,8 +169,7 @@ s1 == s2;	// true or false
 - concurrentHashMap实现原理? JDK1.7与JDK1.8区别?
 - HashTable和HashMap的区别?
 - HashTable和concurrentHashMap的区别?
-- Enumeration接口和Iterator接口的区别?
-- HashSet,TreeSet,LinkedHashSet之间的区别? HashSet内部原理? 
+- HashSet, TreeSet, LinkedHashSet之间的区别? HashSet内部原理? 
 - 阻塞队列, ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, SynchronousQueue各自特点? 非阻塞队列? 
 - 阻塞队列的插入、移除方法?
 ---
@@ -172,7 +179,6 @@ s1 == s2;	// true or false
 - 如果一个线程构造了一个不可变对象, 就可以保证这个对象被其它程序正确查看吗? 
 - 线程调用过程?
 - 守护线程和用户线程区别?
-- 如何让正在运行的线程暂停一段时间?
 - 你对线程优先级的理解?
 - 同步方法和同步块哪种方式好?
 - 线程有哪些状态? 画一下线程状态转移图
@@ -185,38 +191,42 @@ s1 == s2;	// true or false
 - newSingleThreadExcutor, newFixedThreadPool, newCachedThreadPool, newScheduledThreadPool, newSingleThreadScheduledExcutor区别?
 - 线程池的关闭有几种方式? 有哪些状态? 状态转移?
 - 说一说ThreadLocal使用, 原理?
-- ThreadLocal内存泄露? 如何解决? 
+- ThreadLocal内存泄露? 如何解决?
+- 为什么ThreadLocal要使用弱引用?
 - synchronized锁的范围? 
-- synchronized与Lock比较(锁与同步锁的比较)? 
+- synchronized与Lock比较(锁与同步锁的比较)?
 - synchronized与cas比较?
 - 说说 synchronized 关键字和 volatile 关键字的区别
-- ReentrantLock如何实现可重入? 如何实现公平锁与非公平锁? 
+
+- 介绍一下AQS? 
+- ReentrantLock如何实现可重入? 如何实现公平锁与非公平锁?
 - 在监视器内部如何做到线程同步? 程序应该用哪种级别的同步? synchronized如何实现可重入(底层)? 
 - 说说 JDK1.6 之后的synchronized 关键字底层做了哪些优化, 可以详细介绍一下这些优化吗
-- 什么是自旋锁, 阻塞锁, 可重入锁, 乐观锁和悲观锁(使用场景), 轮询锁, 显示锁和内置锁, 读写锁, 对象锁和类锁, 锁粗化, 互斥锁, 消除锁, 轻量锁和偏向锁? 有几种锁状态?
+- 什么是自旋锁, 阻塞锁, 可重入锁, 乐观锁和悲观锁(使用场景, 各自实例), 轮询锁, 显示锁和内置锁, 读写锁, 对象锁和类锁, 锁粗化, 互斥锁, 消除锁, 轻量锁和偏向锁(这两个属于什么类型的锁)? 有几种锁状态?
 - volatile实现原理? 保证了什么? 能否保证原子性?
 - CAS机制? 包含哪些操作? 会产生哪些问题? 如何避免ABA问题?
 - 有哪些原子类?
 - 什么是原子操作? 什么是内存屏障?
 - 线程池设置大小与CPU的关系? 
-- 介绍一下AQS? 
 - Thread中join()方法的原理? 
 - Thread.wait()可以设置超时吗?
 - Java主线程如何捕获子线程抛出的异常? 
 - 线程安全的实现方法?
-- 如何判断线程是否终止?如何正确终止处于运行状态的线程?
+- 如何判断线程是否终止? 如何正确终止处于运行状态的线程?
+
 - isInterrupted和interrupted的区别?
 - 并行和并发的区别?
 - 什么是协程?
 - 一个类可以同时继承Thread和实现Runnable接口吗?
+- 如何让正在运行的线程暂停一段时间?
 - sleep和yield的区别?
 - sleep和wait的区别?
 - 线程挂起怎么办?
-- 导致死锁的原因?怎么解除死锁?
+- 导致死锁的原因? 怎么解除死锁?
 - 死锁, 饥饿, 活锁之间的定义区别?
 - 当一个线程进入一个对象的一个synchronized方法后, 其他线程是否可以进入该对象的其他方法?
 - 线程实现接口 VS 继承Thread
-- FutureTask是什么?	x
+- FutureTask是什么?
 - 说一下CylicBarrier与CountDownLatch的区别?
 - 什么是Semaphore? Exchanger?
 - NIO, BIO, AIO区别? 谈谈Reactor模型
@@ -234,6 +244,7 @@ s1 == s2;	// true or false
 - 实现Runnable接口和Callable接口的区别?
 - 执行execute()方法和submit()方法的区别是什么呢?
 - 如何创建线程池?
+
 ---
 
 > ## JVM虚拟机与JMM内存模型
@@ -245,9 +256,9 @@ s1 == s2;	// true or false
 - 什么是元空间?
 - Java基本类型、引用类型在内存中的存储原理?
 - JVM如何判断两个类是否相同?
-- 分析 Object obj = new Object(); 对象创建过程?
-- String.intern()?
-- String s = new String("abc");创建了几个对象?
+- 分析 `Object obj = new Object();` 对象创建过程?
+- `String.intern()`?
+- `String s = new String("abc");`创建了几个对象?
 - 栈中对象引用有几种方法? 详细介绍一下区别? 
 - JVM年轻代与老年代? 年轻代垃圾回收过程? 
 - 永久代会发生垃圾回收吗?
@@ -262,20 +273,21 @@ s1 == s2;	// true or false
 - 如何解决异常Fatal: Stack size too small?
 - 如何解决异常java.lang.OutOfMemoryError: unable to create new native thread?
 - JMM内存模型中的规定了哪八种操作? 什么是重排序?
-- 内存模型三大特性?原子性、可见性、有序性如何实现?
+- 内存模型三大特性? 原子性、可见性、有序性如何实现?
 - 堆上的内存如何释放, 栈上的内容如何释放?
 - Java内存泄露的最直接表现? 
 - 什么是内存溢出, 什么是内存泄露? Java会不会发生内存泄露?
 - 什么情况下会发生内存溢出?
+- 老年代溢出原因? 永久代溢出原因?
 - 如果对象的引用被置为null, 垃圾回收器是否会立即释放该对象占用的内存?
 - Java中对象什么时候可以被垃圾回收?
 - 你能保证GC吗?
+- finalize什么时候使用? 为什么避免使用? 
 - JVM如何确定一个对象是不是有引用?
 - GC Roots包含哪些?
 - GC Roots 对不可用对象的判断过程?
 - 什么时候新生代会发生GC? 老年代发生GC条件? Full GC 触发条件? +
 - 永久代回收条件?
-- 老年代溢出原因? 永久代溢出原因?
 - GC为什么要分代?
 - JVM中大对象被分配到哪里? 长期存活对象进入哪里? 什么是空间分配担保?
 - 进入老年代的几种情况?
@@ -304,7 +316,7 @@ s1 == s2;	// true or false
 - 常见HTTP状态码: 100, 200, 301, 302, 400, 401, 403, 404, 500, 502, 503, 504
 - 301和302区别?
 - HTTP状态码502与504区别?
-- HTTP请求有哪些? ----- 待完成
+- HTTP请求有哪些?
 - post与get的区别?
 - 为什么get效率高于post?
 - HTTP协议? 特点?
@@ -327,13 +339,13 @@ s1 == s2;	// true or false
 - TIME_WAIT与CLOSE_WAIT区别?
 - 什么是SYN攻击, 如何检测, 如何防御?
 - TCP流量控制?
-- 什么是流量控制?流量控制和拥塞控制是一种东西吗?
+- 什么是流量控制? 流量控制和拥塞控制是一种东西吗?
 - 滑动窗口机制?
 - 拥塞避免机制?
 - TCP, UDP的区别? 
 - TCP, UDP的应用场景? 
-- TCP可靠传输的实现?
-- TCP粘包现象? 如何解决?
+- TCP可靠传输的实现? 
+- TCP粘包现象? 如何解决? 
 - 如何用UDP实现可靠性传输?
 - TCP中keep alive与HTTP中的keep-alive区别?
 - 稳定且有上限的带宽条件下, 超大文件从server传输到client端, 选择一个TCP连接快还是构建多个TCP连接快?
@@ -341,11 +353,12 @@ s1 == s2;	// true or false
 - OSI七层模型, TCP/IP四层模型
 - 如何查找域名对应IP? 
 - 有网络层的存在为什么还需要传输层?
-- ICMP协议? ping功能?
+- ICMP协议? ping功能? 
 - 路由功能? 分组和路由选择的区别? 什么是AS? 常用路由选择协议? 
+- IP地址分类
 - ARP
 - 浏览器从一个请求发送到返回经历过程中的优化有哪些? 
-- CSRF和XSS区别?各自解决方法?
+- CSRF和XSS区别? 各自解决方法?
 - 什么是ajax?
 - SOAP和REST有什么区别?
 - 什么是XML?
@@ -392,7 +405,7 @@ s1 == s2;	// true or false
 - 为什么要使用索引? 索引那么多有点为什么不对表中的每一列都创建索引?
 - 什么是覆盖索引?
 - 索引是如何提高查询速度的?
-- MySQL在哪些情况下索引会失效? +
+- MySQL在哪些情况下索引会失效?
 - MySQL索引使用条件? 性别适合使用索引嘛? 
 - MySQL如何优化数据访问?
 - 什么是最左匹配原则? 什么是联合索引?
@@ -403,7 +416,7 @@ s1 == s2;	// true or false
 - MySQL事物隔离级别? 各自会带来什么问题? 
 - MySQL如何解决RC, RP带来的问题? 什么是MVCC?
 - MySQL如何解决幻读? 
-- MySQL主从复制过程? 读写分离好处?
+- MySQL主从复制过程? 读写分离好处? 
 - InnoDB与MySIM的区别?
 - 如果数据库日志满了, 会出现什么情况?
 - 如何查看慢查询?
@@ -420,7 +433,7 @@ s1 == s2;	// true or false
 - Redis如何保证原子性?
 - Redis主从复制模式下, 主挂了怎么办? 
 - Redis缓存更新策略?
-- Redis底层数据结构(有哪些数据类型)? 跳跃表如何实现? 压缩列表是什么? 
+- Redis底层数据结构(有哪些数据类型)? 跳跃表如何实现? 压缩列表是什么?
 - Redis使用场景?
 - 与Memcached比较?
 - Redis数据淘汰策略?
@@ -455,7 +468,7 @@ s1 == s2;	// true or false
 - 进程调度算法?
 - 死锁处理方法?
 - 分页与分段的比较?
-- 虚拟内存?  
+- 虚拟内存? 
 - 页面置换算法?
 - I/O复用
 - 线程和进程的区别? 多线程和单线程的区别?
@@ -466,7 +479,7 @@ s1 == s2;	// true or false
 
 - 集群、分布式、微服务区别?
 - 分布式锁的实现?
-- CAP理论?BASE理论?
+- CAP理论? BASE理论?
 - 什么是RMI? 什么是RPC?
 - 什么是一致性哈希?
 - 反向代理与CDN加速的区别?
@@ -620,6 +633,11 @@ s1 == s2;	// true or false
 - 结束进程
 - 压力测试衡量CPU的三个指标? 
 - Linux下查看80端口是否被占用
+- 查看内存
+- 查看磁盘
+- 创建一个新用户
+- 文件权限
+- 备份
 
 ---
 
@@ -642,6 +660,7 @@ s1 == s2;	// true or false
 - 测试用例元素
 - 好的测试用例应该从哪些方面考虑
 - 软件测试有什么策略和阶段
+- 回归测试和冒烟测试
 - 软件测试类型
 - 用例策略
 

@@ -45,6 +45,59 @@ def printLinkedList(head):
         node = node.next
     print()
 #######################################
+# 3-数组中的重复数字
+# 2019/8/3
+def findDuplicate(nums):
+    """使用二分法查找"""
+    start, end  = 0, len(nums) - 1
+    it = 0
+    while start <= end:
+        mid = (end + start) >> 1
+        count = rangeCount(nums, start, mid)
+        # print(count, mid, start, end)
+        if start == end:
+            if count > 1:
+                return start 
+            else:
+                break
+
+        if count <= (mid - start + 1):
+            start = mid
+        else:
+            end = mid 
+        it += 1
+        if it > 100:
+            print("break")
+            break
+    return -1
+
+def rangeCount(nums, start, end):
+    retCount = 0
+    for n in nums:
+        if n >= start and n <= end:
+            retCount += 1
+    return retCount
+
+def findDuplicate02(nums):
+    """置换位置"""
+    for i,n in enumerate(nums):
+        while i != nums[i]:
+            if nums[nums[i]] == nums[i]:
+                return nums[i]
+            else:
+                nums[nums[i]], nums[i] = nums[i], nums[nums[i]]
+    return -1
+            
+
+def test_findDuplicate():
+    nums = [1,3,4,2,2]
+    ret = findDuplicate02(nums)
+    print(ret)
+
+# test_findDuplicate()
+#######################################
+# 
+#######################################
 # 15-二进制中1的个数
 def countBit01(n):
     """左移，防止负数右移时出错"""

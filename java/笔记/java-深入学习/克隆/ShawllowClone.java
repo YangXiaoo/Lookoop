@@ -18,7 +18,7 @@ class Profile{
 }
 
 
-class Person implements Cloneable {
+class Person implements Cloneable { // 如果没有实现Cloneable重写clone会抛出错误
     private int age;
     private String name;
     private Profile profile;

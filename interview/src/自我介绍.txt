@@ -32,3 +32,36 @@
 
 我对软件开发有很强的兴趣，乐于接受新的知识，对新技术有求知欲。 而且每当我完成一个功能后，
 都会有十分强的成就感，很享受编写代码的过程。
+
+
+-------------------------------------------
+Hi, my name is yangxiao.I love programming very much. Now, I'm familiar with
+Website Developement, Java programming, Python programming, Mysql and so on. 
+I have also done a lot of projects, such as using the thinkPHP framework to 
+implement blog management system, the system is divided into the foreground part
+and the background part, background part including articles, users, website 
+configuration management and other functions;The function of foreground is similar 
+with CSDN. The whole system use pjax to reduce resource loading.
+
+I also did a project about BBS based on Java SSM framework, implemented the 
+basic functions and used solr technology to speed up search velocity. As i 
+also do a project based on micro-service, i recontruct BBS project into three 
+parts, namely application layer, service layer, data layer. The application 
+layer implements business logic to handle user requests. The service layer is 
+divided into article service, comment service,and user services. Article service
+provides article query and add operation interface; Comment service provides 
+comment query and add operation interface. User services provide user registration,
+login, token authentication /ɔː,θentɪ'keɪʃən/ and other interfaces. The data
+layer use MySQL and redis. The entire service use zuul to implement the 
+gateway, which is responsible for receiving user requests and forwarding 
+them to the appropriate /əˈprəʊprɪeɪt/ server; I also use Eureka as the center 
+of discovery and registry services; Use Feign to implement method call. Using 
+Hystrix to implement fault-tolerant mechanism and flow limitation of service; 
+It also provides dynamic configuration service by using message bus and distributed 
+configuration center.
+
+I am also familiar with image processing and machine learning, and I helped my 
+classmates with three image processing machine learning related projects, and 
+I am familiar with Python Scripting and c++ image programming. While i do the 
+project, i consider more about code architecture, logging, result persistance, 
+code reusability, multithreading so on.

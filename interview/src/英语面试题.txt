@@ -7,8 +7,8 @@ Science and Technology of China. I am 24 years old, born in chengdu. My major
 is Mechanical  /mɪ'kænɪk(ə)l/ Engineering, and i love programming very much.
 
 I've learned a lot of programming knowledge such as data structure, algorithm,
-computer network, computer system. And i also did some projects, such as Article
-publishing system using Microservice technology, BBS using java, Blog management
+computer network, computer system. And i also done a lot of projects, such as Article
+publishing system using Microservice technology, BBS on java SSM framework, Blog management
 system using python.
 
 I have strong desire for knowledge and learning ability, quick absorption of 

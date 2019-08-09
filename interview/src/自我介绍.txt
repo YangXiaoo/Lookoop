@@ -43,8 +43,8 @@ and the background part, background part including articles, users, website
 configuration management and other functions;The function of foreground is similar 
 with CSDN. The whole system use pjax to reduce resource loading.
 
-I also did a project about BBS based on Java SSM framework, implemented the 
-basic functions and used solr technology to speed up search velocity. As i 
+I also did a project about BBS based on Java SSM framework, i implemented the 
+basic functions and used solr technology to speed up search velocity. And i 
 also do a project based on micro-service, i recontruct BBS project into three 
 parts, namely application layer, service layer, data layer. The application 
 layer implements business logic to handle user requests. The service layer is 
@@ -62,6 +62,6 @@ configuration center.
 
 I am also familiar with image processing and machine learning, and I helped my 
 classmates with three image processing machine learning related projects, and 
-I am familiar with Python Scripting and c++ image programming. While i do the 
-project, i consider more about code architecture, logging, result persistance, 
+I am familiar with Python Scripting and c++ image programming. While i implement
+the project, i consider more about code architecture, logging, result persistance, 
 code reusability, multithreading so on.

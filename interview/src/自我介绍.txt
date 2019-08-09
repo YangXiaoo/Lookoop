@@ -61,7 +61,7 @@ It also provides dynamic configuration service by using message bus and distribu
 configuration center.
 
 I am also familiar with image processing and machine learning, and I helped my 
-classmates with three image processing machine learning related projects, and 
+classmates complete three image processing machine learning related projects, and 
 I am familiar with Python Scripting and c++ image programming. While i implement
 the project, i consider more about code architecture, logging, result persistance, 
 code reusability, multithreading so on.

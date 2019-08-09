@@ -37,8 +37,8 @@
 -------------------------------------------
 Hi, my name is yangxiao.I love programming very much. Now, I'm familiar with
 Website Developement, Java programming, Python programming, Mysql and so on. 
-I have also done a lot of projects, such as using the thinkPHP framework to 
-implement blog management system, the system is divided into the foreground part
+I have also done a lot of projects, such as blog management system using the
+thinkPHP framework, the system is divided into the foreground part
 and the background part, background part including articles, users, website 
 configuration management and other functions;The function of foreground is similar 
 to CSDN. The whole system use pjax to reduce resource loading.
@@ -63,5 +63,5 @@ configuration center.
 I am also familiar with image processing and machine learning, and I helped my 
 classmates complete three image processing machine learning related projects, and 
 I am familiar with Python Scripting and c++ image programming. While i implement
-the project, i consider more about code architecture, logging, result persistance, 
+the project, i consider more about software architecture, logging, result persistance, 
 code reusability, multithreading and so on.

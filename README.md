@@ -29,6 +29,9 @@
 - **OpenCV** - 一些函数用法以及实例
 - **opencv c++** - 笔记
 
+## interview
+- **README.md** - 面经
+
 ## java
 - **CoreJava_I** - java核心技术卷I笔记
 - **笔记**
@@ -43,6 +46,7 @@
 - **python** 
 - **java** - 100-150题
 - **sql**
+- **otherQuestion** - 面试题
 
 ## linux
 - **shell** - Linux命令行与Shell标本编程大全笔记

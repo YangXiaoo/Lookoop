@@ -1,6 +1,13 @@
 import java.io.*;
 import java.util.*;
 
+// 入口文件无法使用
+// class String {
+// 	private char[] charList = new char[20];
+// 	String() {
+// 		System.out.println("init");
+// 	}
+// } 
 class Integer {
 	public static int IID = 0;
 	private int num = 0;
@@ -104,7 +111,7 @@ public class Test {
 	}
 
 	public static void main(String[] args) {
-		new Test().testShare();
+		String s = new String("1");
 	}
 
 }

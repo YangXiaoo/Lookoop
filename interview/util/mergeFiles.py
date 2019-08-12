@@ -53,9 +53,12 @@ class MergeFile(object):
             for line in data:
                 if '#' in line.lstrip():
                     self.count += 1
+                if len(line.strip()) > 0 and line.strip()[0] == ">":
+                    retData.append("\n")
                 if len(line.lstrip()) == 0:
-                    retData.append(line)
-                    continue
+                    preLine = retData[-1].strip()
+                    if preLine[0] == ">":
+                        retData.append(line)
                 elif ("#" in line.lstrip() or "---" in line.lstrip()) and not flag:
                     retData.append(line)
                 else:
@@ -67,6 +70,8 @@ class MergeFile(object):
                             flag = False
                     elif flag:
                         retData.append(line)
+
+
 
         return retData
 

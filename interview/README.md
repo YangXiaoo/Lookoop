@@ -1,13 +1,14 @@
+
 > ## Java基础知识问答
 
 - java关键字与保留字? goto, const? false, true, null, inner?
 - String能被继承吗?
 - String底层如何实现? 不可变的好处? 采用什么设计模式? 什么是String Pool?
 - 基本类型中的缓冲池? 什么时候使用缓冲池的数据?
-- string, StringBuffer, StringBuilder区别?
+- String, StringBuffer, StringBuilder区别?
 - 数组定义: String a[10]; 正不正确? 数组等号左边能不能出现数字?
-- System.out.println(25 + "" + 10 + 5);输出什么? 
-- String.replaceAll(old, new); 其中old是什么形式?
+- `System.out.println(25 + "" + 10 + 5);` 输出什么? 
+- `String.replaceAll(old, new);` 其中old是什么形式?
 - 引用类型为null, 能否找到其所属的静态类型?
 - switch参数可以有哪些类型?
 - Object有哪些方法?
@@ -59,23 +60,21 @@ s1 == s2;	// true or false
 - 访问修饰符作用范围?
 - Java编译过程?
 - Number, ClassLoader可以被继承吗?
-
 ---
 - JDBC使用什么设计模式?
-- 解释一下驱动在JDBC中的角色?
+- 解释一下驱动在JDBC中的角色? JDBC执行大致流程?
 - 类之间存在哪些关系? 
 - 一般关系型和对象数据模型之间的对应关系?
 - 一个类可以同时继承和实现其它类吗? 有没有先后顺序?
 - JRE判断程序是否执行结束的标准是什么?
 - JDK, JRE, JVM的区别和联系?
-
 - equals与hashCode联系? equals默认比较什么?
 - 为什么实现equals必须重新hashCode?
 - Java中Arrays.sort()如何实现排序?
 - JDK消费者生产者模型应用?
 - final修饰符有什么好处? 可以修饰哪些东西?
 - 为什么需要克隆, 直接new一个对象不行吗? 浅克隆与深克隆如何实现?
-- Java中的char可以存汉字吗?能存所有汉字吗?
+- Java中的char可以存汉字吗? 能存所有汉字吗?
 - RTTI? 
 - 注解有什么用? 如何自定义注解?
 - Java与C++比较?
@@ -150,6 +149,7 @@ if (matcher.find()) {
 - Tomcat结构以及类加载流程?
 ---
 
+
 > ## 集合问题
 
 - 线程同步的集合有哪些?
@@ -169,10 +169,12 @@ if (matcher.find()) {
 - concurrentHashMap实现原理? JDK1.7与JDK1.8区别?
 - HashTable和HashMap的区别?
 - HashTable和concurrentHashMap的区别?
-- HashSet, TreeSet, LinkedHashSet之间的区别? HashSet内部原理? 
+- HashSet, TreeSet, LinkedHashSet之间的区别? HashSet内部原理?
 - 阻塞队列, ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, SynchronousQueue各自特点? 非阻塞队列? 
 - 阻塞队列的插入、移除方法?
+
 ---
+
 
 > ## 线程
 
@@ -197,7 +199,6 @@ if (matcher.find()) {
 - synchronized与Lock比较(锁与同步锁的比较)?
 - synchronized与cas比较?
 - 说说 synchronized 关键字和 volatile 关键字的区别
-
 - 介绍一下AQS? 
 - ReentrantLock如何实现可重入? 如何实现公平锁与非公平锁?
 - 在监视器内部如何做到线程同步? 程序应该用哪种级别的同步? synchronized如何实现可重入(底层)? 
@@ -213,7 +214,6 @@ if (matcher.find()) {
 - Java主线程如何捕获子线程抛出的异常? 
 - 线程安全的实现方法?
 - 如何判断线程是否终止? 如何正确终止处于运行状态的线程?
-
 - isInterrupted和interrupted的区别?
 - 并行和并发的区别?
 - 什么是协程?
@@ -246,6 +246,7 @@ if (matcher.find()) {
 - 如何创建线程池?
 
 ---
+
 
 > ## JVM虚拟机与JMM内存模型
 
@@ -300,8 +301,8 @@ if (matcher.find()) {
 - 静态解析和动态解析?
 - 静态分配和动态分配?
 
-
 ---
+
 
 > ## 计算机网络
 
@@ -370,6 +371,7 @@ if (matcher.find()) {
 - URL重写技术?
 ---
 
+
 > ## 数据库
 
 - ER图?
@@ -390,7 +392,6 @@ if (matcher.find()) {
 - MySQL有哪些数据类型? ip用什么类型存储? 电话号码用什么类型存储?
 - MySQL连接有哪些方式? 内连接与外连接有什么区别? 默认使用什么连接?
 - MySQL中exist和in的区别?
-
 - union和union all区别?
 - group by, having, where区别?
 - count(\*), count(column), count(1)的区别?
@@ -448,6 +449,7 @@ if (matcher.find()) {
 - 如何保证缓存与数据库的双写一致性?
 ---
 
+
 > ## 计算机基础
 
 - 栈有哪些用途? 
@@ -474,6 +476,7 @@ if (matcher.find()) {
 - 线程和进程的区别? 多线程和单线程的区别?
 - 计算机判断是否有中断应该是什么时候? 降低进程优先级的时机?
 ---
+
 
 > ## 分布式
 
@@ -525,6 +528,7 @@ if (matcher.find()) {
 - 使用消息队列的好处? 使用消息队列会带来什么问题?
 ---
 
+
 > ## 算法
 
 - 算法定义?
@@ -538,13 +542,12 @@ if (matcher.find()) {
 - 什么是前缀树?应用?
 - 对称加密和非对称加密? 
 - 各种排序算法时间复杂度与空间复杂度比较? 冒泡、交换、选择、插入、基数、希尔、快排、归并、堆
-
 - 二叉树中两个节点的公共祖先?
-
 - 从100亿条记录中找出重复数最多的前10条?
 - 一个文本行, 大约有一万行, 每行一个单词, 要统计最频繁的前10个?
 - 100万个数中找出最大的100个数?
 ---
+
 
 > ## 设计模式
 
@@ -578,28 +581,29 @@ if (matcher.find()) {
 - 代理模式
 ---
 
+
 > ## 框架
 
 - Maven特点? 
 - Solr是什么?
 - Thymeleaf是什么?
 - 什么是webService? +
-
 ---
+
 > ## JSP
 
 - JSP有哪些动作?
 - 会话跟踪技术?
 - JSP内置九大类型?
-
 ---
+
 > ## MyBatis
 
 - MyBatis中#{}和${}的区别? 
 - PreparedStatement与Statement区别?
 - Mybatis缓存?
-
 ---
+
 > ## spring
 
 - Spring有哪些特点? 
@@ -608,10 +612,8 @@ if (matcher.find()) {
 - 什么是IOC/DI,什么是AOP? AOP的实现方式? 
 - Spring IOC 容器初始化过程?
 - Spring事物的传播级别?
-
 - Spring中的事物隔离级别?
 - Spring中Scope作用域? 
-
 - SpringMVC路由怎么写? 
 - SpringMVC如何接受ajax?
 - SpringMVC用到了那个核心servlet? 
@@ -621,6 +623,7 @@ if (matcher.find()) {
 - Bean的生命周期?
 - Spring用了哪些设计模式?
 ---
+
 
 > ## Linux
 
@@ -641,6 +644,7 @@ if (matcher.find()) {
 
 ---
 
+
 > ## Python
 
 - Pyton垃圾回收策略? 
@@ -651,6 +655,7 @@ if (matcher.find()) {
 - Django模板中自定义filter与simple_tag区别?
 - Flask与Django区别?
 ---
+
 
 > ## 测试
 
@@ -663,7 +668,6 @@ if (matcher.find()) {
 - 回归测试和冒烟测试
 - 软件测试类型
 - 用例策略
-
 - 测试用例是什么? 有什么作用?
 - 软件缺陷定义
 - 缺陷中应该包含什么? 严重等级一般有哪些?
@@ -680,8 +684,8 @@ if (matcher.find()) {
 - SSH协议? 什么是跳板机?
 - thinkPHP处理流程?
 
-
 ---
+
 
 > ## 项目
 
@@ -709,3 +713,4 @@ if (matcher.find()) {
 - 公司的业务方向是什么? 
 - 如果我入职之后, 我的工作职责是什么? 
 ---
+

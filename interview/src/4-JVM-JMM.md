@@ -7,7 +7,8 @@
 ### 什么是元空间?
 ### Java基本类型、引用类型在内存中的存储原理?
 ### JVM如何判断两个类是否相同?
-类全名和类加载器
+类全限定名和类加载器
+
 ### 分析 `Object obj = new Object();` 对象创建过程?
 ### `String.intern()`?
 ### `String s = new String("abc");`创建了几个对象?

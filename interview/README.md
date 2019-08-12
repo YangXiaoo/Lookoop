@@ -338,6 +338,7 @@ if (matcher.find()) {
 - 为什么连接的时候是三次握手, 关闭的时候是四次挥手?
 - 如果已经建立了连接, 但客户端忽然出故障了怎么办?
 - TIME_WAIT与CLOSE_WAIT区别?
+- TIME_WAIT为什么要等待2MSL, 可以等待1MSL吗?
 - 什么是SYN攻击, 如何检测, 如何防御?
 - TCP流量控制?
 - 什么是流量控制? 流量控制和拥塞控制是一种东西吗?
@@ -348,6 +349,9 @@ if (matcher.find()) {
 - TCP可靠传输的实现? 
 - TCP粘包现象? 如何解决? 
 - 如何用UDP实现可靠性传输?
+- UDP为什么不会发送粘包现象?
+- UDP有发送缓冲区吗?
+- TCP, UDP, IP在传输过程中数据的最大值?
 - TCP中keep alive与HTTP中的keep-alive区别?
 - 稳定且有上限的带宽条件下, 超大文件从server传输到client端, 选择一个TCP连接快还是构建多个TCP连接快?
 - TCP包结构? TCP, UDP, MAC, IP包头有多少字节?
@@ -359,6 +363,7 @@ if (matcher.find()) {
 - IP地址分类
 - ARP
 - 浏览器从一个请求发送到返回经历过程中的优化有哪些? 
+- 浏览器访问一个网站的过程? 会用到哪些协议?
 - CSRF和XSS区别? 各自解决方法?
 - 什么是ajax?
 - SOAP和REST有什么区别?
@@ -456,6 +461,11 @@ if (matcher.find()) {
 - 原码, 反码, 补码
 - 进程间的通信方式? 
 - CPU占用率100%怎么查?
+1. `top`	# 或ps -ef | grep java
+2. `ps -mp pid -o THREAD,tid,time` 	# 命令查看该进程的线程情况，发现该进程有一个线程占用率很高
+3. `jstack pid | grep tid -A 30` 	# 2步中的id要转为16进制
+4. `df -h` 		# 查看磁盘
+5. `du -sh *`	# 查看文件目录占用情况
 - 操作系统有哪些部分组成?
 - 什么是大端, 小端?
 - 上下文?

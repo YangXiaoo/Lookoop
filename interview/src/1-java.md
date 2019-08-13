@@ -47,6 +47,7 @@ Math.round(): 将原来的数字加0.5然后向下取整
 ### 多态定义? 抽象定义? 
 ### 多态实现的机制是什么?
 重载与重写
+
 ### Java中null值是什么?
 ### 管理文件和目录的类是什么?
 File, 方法有: createFile(), delete(), isFile(), exists(), listFiles(), isDirectory(), mkdir(), getName(), getPath();
@@ -153,7 +154,7 @@ TIM sort
 ### 反射中Class.forName()与ClassLoader()区别?
 ### 动态代理的几种实现方式? 优缺点? 可以通过类实现吗?
 JDK: 通过接口, invocationHandler
-cglib: 通过集成, 速度较快
+cglib: 通过继承(子类可以继承父类私有方法与属性，只是子类无法直接访问私有方法；不能继承final修饰的方法), 速度较快。
 
 ### 如何获取父类的类名?
 `this.getClass().getSuperClass().getName();`

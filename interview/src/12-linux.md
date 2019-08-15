@@ -23,3 +23,11 @@ CPU Utilization、Load Average和ContextSwitch Rate
 r: 4   w: 2   x: 1
 ### 备份
 `dump`
+
+### MySQL数据备份与恢复
+备份： `mysqldump -u root -p dbname > dbname.sql`
+恢复：`source dbname.sql`
+
+### 那你知道库函数和内核调用吗？ 
+系统调用运行在内核态
+库函数调用运行的用户态，一般会通过缓冲等机制减少系统调用次数

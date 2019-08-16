@@ -98,9 +98,9 @@ if __name__ == '__main__':
     mergeTool = MergeFile(inputFilePath, outputFilePath)
     mergeTool.merge()
 
-    # re = rep.Exg(outputFilePath)
-    # re.addRegx("##", "-")
-    # re.write(outputFilePath)
+    re = rep.Exg(outputFilePath)
+    re.addRegx("##", "-")
+    re.write(outputFilePath)
 
 # [INFO] question count: 563
 # [INFO] write successful!

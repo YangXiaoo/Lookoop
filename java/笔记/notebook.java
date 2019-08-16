@@ -958,7 +958,8 @@
     for(Entry<Integer, String> aEntry : list) {
         System.out.println(aEntry.getKey()+":"+aEntry.getValue());
     }
-
+    // map.keySet()
+    // map.valueSet()
 
 30. Set
 	30.1 HashSet // HashSet不允许重复（HashMap的key不允许重复，如果出现重复就覆盖）,

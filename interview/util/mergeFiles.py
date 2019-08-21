@@ -99,7 +99,7 @@ if __name__ == '__main__':
     mergeTool.merge()
 
     re = rep.Exg(outputFilePath)
-    re.addRegx("##", "-")
+    re.addRegx(["##", "> -"], ["-", "> ##"])
     re.write(outputFilePath)
 
 # [INFO] question count: 563

@@ -13,6 +13,8 @@ class Exg(object):
 		"""
 		self.filePath = oldFilePath
 		self.outputFilePath = outputFilePath
+		self.oldList = None
+		self.newList = None
 		self.addRegx(oldList, newList)
 
 
@@ -27,13 +29,16 @@ class Exg(object):
 		"""
 		if oldList == None or newList == None:
 			return
+		if not isinstance(oldList, list):	# 判断一个即可
+			oldList = [oldList]
+			newList = [newList]
 
-		if not isinstance(newList, list):
-			self.oldList = [oldList]
-			self.newList = [newList]
-		else:
+		if not self.oldList:	# 只用判断一个就行
 			self.oldList = oldList
 			self.newList = newList
+		else:
+			self.oldList.extend(oldList)
+			self.newList.extend(newList)
 
 	def write(self, outputFilePath=None):
 		if self.outputFilePath == None and outputFilePath == None:

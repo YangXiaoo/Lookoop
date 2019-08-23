@@ -14,16 +14,13 @@ def solver(low, high):
     if len(prime) == 0:
         return 0
 
-    ret1 = 0    # 各位
+    ret1 = 0    # 个位
     ret2 = 0    # 十位和
-    # print(prime)
     for n in prime:
         if n >= 10:
             tmp = n // 10
             ret2 += tmp % 10
-            # print(ret2)
         ret1 += n % 10
-    # print(ret1, ret2)
     return min(ret1, ret2)
 
 

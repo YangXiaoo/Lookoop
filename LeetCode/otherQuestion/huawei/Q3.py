@@ -7,7 +7,6 @@ def solver(start, nums):
         for n in team:
             if n in dicts:
                 dicts.update(set(team))
-                # print(dicts)
                 break
 
     ret = len(dicts)

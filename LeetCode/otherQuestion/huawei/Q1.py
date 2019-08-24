@@ -12,7 +12,7 @@ def solver(nums):
         else:
             ret.append(n)
             
-    lens = [str(len(ret) + 1)]
+    lens = [str(len(ret) + 1)]  # 转换为十六进制
     lens.extend(ret)
     return lens
 
@@ -20,7 +20,6 @@ def test():
     line = "1"
     lines = line.split(" ")
     nums = lines[1:int(lines[0])]
-    # print(nums)
         
     ret = solver(nums)
     print(ret)

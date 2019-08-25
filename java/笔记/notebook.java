@@ -21,18 +21,18 @@
 		完全独立于程序之外，程序不允许时也存在，并在程序的控制范围之外。流式对象：对象会变成字节流，通常会发给另一台机器。固定对象：对象存在磁盘中，程序终止时可以保持对象类型不变。
 
 3. 主要类型 Primitive
-	程序设计时频繁使用，由于new对象存在堆中，并不是非常有效，所以用 Primitive 将其置于堆栈中，能够高效地存储。
+	程序设计时频繁使用，由于 new 对象存在堆中，并不是非常有效，所以用 Primitive 将其置于堆栈中，能够高效地存储。
 
 	
 4. 数据类型
 
-	基本类型：boolean 二进制位数：1位
-	包装类型：Boolean
+	基本类型： boolean 二进制位数：1位
+	包装类型： Boolean
 
-	基本类型：byte 二进制位数：8
-	包装类：java.lang.Byte
-	最小值：Byte.MIN_VALUE=-128
-	最大值：Byte.MAX_VALUE=127
+	基本类型： byte 二进制位数：8
+	包装类： java.lang.Byte
+	最小值： Byte.MIN_VALUE = -128
+	最大值： Byte.MAX_VALUE = 127
 
 	基本类型：short 二进制位数：16
 	包装类：java.lang.Short
@@ -44,25 +44,25 @@
 	最小值：Integer.MIN_VALUE=-2147483648
 	最大值：Integer.MAX_VALUE=2147483647
 
-	基本类型：long 二进制位数：64
-	包装类：java.lang.Long
-	最小值：Long.MIN_VALUE=-9223372036854775808
-	最大值：Long.MAX_VALUE=9223372036854775807
+	基本类型： long 二进制位数：64
+	包装类： java.lang.Long
+	最小值： Long.MIN_VALUE=-9223372036854775808
+	最大值： Long.MAX_VALUE=9223372036854775807
 
-	基本类型：float 二进制位数：32
-	包装类：java.lang.Float
-	最小值：Float.MIN_VALUE=1.4E-45
-	最大值：Float.MAX_VALUE=3.4028235E38
+	基本类型： float 二进制位数：32
+	包装类： java.lang.Float
+	最小值： Float.MIN_VALUE=1.4E-45
+	最大值： Float.MAX_VALUE=3.4028235E38
 
 	基本类型：double 二进制位数：64
-	包装类：java.lang.Double
-	最小值：Double.MIN_VALUE=4.9E-324
-	最大值：Double.MAX_VALUE=1.7976931348623157E308
+	包装类： java.lang.Double
+	最小值： Double.MIN_VALUE=4.9E-324
+	最大值： Double.MAX_VALUE=1.7976931348623157E308
 
-	基本类型：char 二进制位数：16
-	包装类：java.lang.Character
-	最小值：Character.MIN_VALUE=0
-	最大值：Character.MAX_VALUE=65535
+	基本类型： char 二进制位数：16
+	包装类： java.lang.Character
+	最小值： Character.MIN_VALUE=0
+	最大值： Character.MAX_VALUE=65535
 
 
 	默认值：

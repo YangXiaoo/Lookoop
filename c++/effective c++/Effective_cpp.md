@@ -1,4 +1,3 @@
-
 ## 2. 尽量以const， enumeration， inline替换#define
 \#define看到的是指向宏命令的值而不是变量，难以查找错误信息所在位置
 - 对于单纯量，最好以const对象或enum替换#define

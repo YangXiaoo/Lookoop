@@ -1,3 +1,5 @@
+# coding:utf-8
+# 股票最大利润，只能买卖一次
 def solver(nums):
     minNum = nums[0]
     maxProfit = 0

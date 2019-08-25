@@ -1,6 +1,6 @@
 # coding:utf-8
 # 2019-8-19
-
+# 字符串s能否由字典中的字符串组成
 def solver(s, maps):
     """字符串s, 字典maps"""
     queue = [0]

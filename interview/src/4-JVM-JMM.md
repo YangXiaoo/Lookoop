@@ -205,3 +205,17 @@ full gc出触发条件:
 ## 静态分配和动态分配?
 静态分配: 重载
 动态分配: 重写
+
+## 频繁FullGC如何排查?
+先明确fullgc触发条件，根据那些条件来排查
+触发条件：
+- CMS垃圾回收失败
+- 空间分配失败
+- 老年代满
+- 永久代满
+- 调用system.gc
+
+排查：
+- jstat -gc [pid] 		# 查看gc情况
+- jmap -heap pid		# 显示java堆详细信息
+- jmap -histo [pid] 	# 查看堆中对象统计

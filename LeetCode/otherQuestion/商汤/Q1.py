@@ -1,4 +1,5 @@
 # coding=utf-8
+# 两个矩形交集
 def solver(nums):
     x1, y1, w1, h1, x2, y2, w2, h2 = nums
     w = min(x1 + w1, x2 + w2)

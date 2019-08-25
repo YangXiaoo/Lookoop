@@ -51,7 +51,7 @@ class MergeFile(object):
             data = f.readlines()
             flag = False
             for line in data:
-                if '#' in line.lstrip():
+                if '##' in line.lstrip():
                     self.count += 1
                 if len(line.strip()) > 0 and line.strip()[0] == ">":
                     retData.append("\n")
@@ -59,7 +59,7 @@ class MergeFile(object):
                     preLine = retData[-1].strip()
                     if preLine[0] == ">":
                         retData.append(line)
-                elif ("#" in line.lstrip() or "---" in line.lstrip()) and not flag:
+                elif ("##" in line.lstrip() or "---" in line.lstrip()) and not flag:
                     retData.append(line)
                 else:
                     if "```" in line:
@@ -102,5 +102,5 @@ if __name__ == '__main__':
     re.addRegx(["##", "> -"], ["-", "> ##"])
     re.write(outputFilePath)
 
-# [INFO] question count: 563
+# [INFO] question count: 630
 # [INFO] write successful!

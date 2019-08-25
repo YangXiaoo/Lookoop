@@ -465,11 +465,6 @@ if (matcher.find()) {
 - 原码, 反码, 补码
 - 进程间的通信方式? 
 - CPU占用率100%怎么查?
-1. `top`	# 或ps -ef | grep java
-2. `ps -mp pid -o THREAD,tid,time` 	# 命令查看该进程的线程情况, 发现该进程有一个线程占用率很高
-3. `jstack pid | grep tid -A 30` 	# 2步中的id要转为16进制
-4. `df -h` 		# 查看磁盘
-5. `du -sh *`	# 查看文件目录占用情况
 - 操作系统有哪些部分组成?
 - 什么是大端, 小端?
 - 上下文?
@@ -552,16 +547,17 @@ if (matcher.find()) {
 - 如何权衡使用有序数组还是无序数组?
 - 五大基础算法? 
 - 红黑树? 
-- BitMap如何实现?有哪些应用?什么是布隆过滤?
+- BitMap如何实现? 有哪些应用? 什么是布隆过滤?
 - RSA算法?
 - 动态规划的三个概念?
-- 什么是前缀树?应用?
+- 什么是前缀树? 应用?
 - 对称加密和非对称加密? 
 - 各种排序算法时间复杂度与空间复杂度比较? 冒泡、交换、选择、插入、基数、希尔、快排、归并、堆
 - 二叉树中两个节点的公共祖先?
 - 从100亿条记录中找出重复数最多的前10条?
 - 一个文本行, 大约有一万行, 每行一个单词, 要统计最频繁的前10个?
 - 100万个数中找出最大的100个数?
+
 ---
 
 
@@ -618,19 +614,26 @@ if (matcher.find()) {
 - MyBatis中#{}和${}的区别? 
 - PreparedStatement与Statement区别?
 - Mybatis缓存?
+- 什么是MyBatis？
+- 当实体类的属性名和表中的字段名不一样，怎么办？
+- 通常一个Xml映射文件，都会写一个Dao接口与之对应，请问，这个Dao接口的工作原理是什么？Dao接口里的方法，参数不同时，方法能重载吗？
+- MyBatis如何实现分页? 分页插件的原理?
+- 如何获取插入数据id？
 ---
 
 > ## spring
 
 - Spring有哪些特点? 
 - Spring核心?
-- Spring有几种注入方式?
+- Spring中的IOC有几种注入方式?
+- Spring提供哪些配置方式?
 - 什么是IOC/DI,什么是AOP? AOP的实现方式? 
 - Spring IOC 容器初始化过程?
 - 为什么用Spring IOC 而不用工厂模式?
 - Spring事物的传播级别?
 - Spring中的事物隔离级别?
-- Spring中Scope作用域? 
+- Spring中Bean的Scope作用域? 
+-  什么是Spring Bean？
 - SpringMVC路由怎么写? 
 - SpringMVC如何接受ajax?
 - SpringMVC用到了那个核心servlet? 
@@ -640,6 +643,8 @@ if (matcher.find()) {
 - Bean的生命周期?
 - Spring用了哪些设计模式?
 - Spring三大核心组件?
+- Spring框架中的单例Beans是线程安全的么？
+- Spring如何处理线程并发问题？
 
 ---
 

@@ -80,5 +80,5 @@ if __name__ == '__main__':
 	fileList = getFiles(fileDir, None)
 	for filePath in fileList:
 		re = Exg(filePath)
-		re.addRegx(["，", "？", "：", "；", '（', '）', "###"], [", ", "? ", ": ", "; ", '(', ')', "##"])
+		re.addRegx(["，", "？", "：", "；", '（', '）', "###", '”'], [", ", "? ", ": ", "; ", '(', ')', "##", '"'])
 		re.write(filePath)

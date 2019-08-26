@@ -228,6 +228,9 @@ if (matcher.find()) {
 - 线程实现接口 VS 继承Thread
 - FutureTask是什么?
 - 说一下CylicBarrier与CountDownLatch的区别?
+- CylicBarrier与CountDownLatch内部实现原理?
+- Random与ThreadLocalRandom？
+- ReentrantReadWriteLock原理
 - 什么是Semaphore? Exchanger?
 - NIO, BIO, AIO区别? 谈谈Reactor模型
 - 阻塞与非阻塞, 异步与同步区别?
@@ -300,6 +303,7 @@ if (matcher.find()) {
 - 被动引用有哪些情况?
 - 静态解析和动态解析?
 - 静态分配和动态分配?
+- 频繁FullGC如何排查?
 
 ---
 

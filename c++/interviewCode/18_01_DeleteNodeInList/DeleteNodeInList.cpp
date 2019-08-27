@@ -7,7 +7,7 @@ void deleteNode(ListNode** pHead, ListNode* toDeleteNode) {
 	if (*pHead == nullptr || toDeleteNode == nullptr) return;
 
 	// 如果待删除节点是尾节点
-	if (toDeleteNode->next == nullptr) {
+	if (toDeleteNode->next == nullptr && toDeleteNode != *pHead) {
 		ListNode* cur = *pHead;
 		while (cur->next != toDeleteNode) {
 			cur = cur->next;

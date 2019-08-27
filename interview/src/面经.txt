@@ -186,3 +186,15 @@ MySQL索引有哪些
 在线笔试: 
 - 删除链表倒数第k个节点(双指针)
 - 判断树是否为完全二叉树
+
+--------------------------------
+微策略-后端开发 60min
+没有自我介绍，没有项目提问
+你在之前的工作中有哪些地方你觉得可以提升的
+你认为计算机中什么技术最重要
+如果有多个任务需要去做，你怎么安排任务
+两道编程题
+- 链表翻转
+- 位操作：
+1. We have an integer array where all the elements appear twice while only 1 elements appears once. Please find that element. [先说步骤，然后问我以前做过吗，我说做过，然后改为下面这道题]
+2. We have an integer array where all the elements appear twice while only 2 elements appears once. Please find the 2 elements.[还是先说思路，说完后又问我是不是做过，叫我只能用异或不能对位进行操作划分数据, 我说用排序可以做，不断地交流问各种排序的时间复杂度空间复杂度，最后选择快排完成，可是代码写出来没有通过自己的测试，修改代码时面试官说可以了，过程是正确的]

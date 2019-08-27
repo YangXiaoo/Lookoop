@@ -96,7 +96,32 @@ def test_findDuplicate():
 
 # test_findDuplicate()
 #######################################
-# 
+# 8-二叉树中序遍历的下一个节点
+def nextKey(root, node):
+    nextNode = None 
+
+    # 如果有右孩子
+    if node.right:
+        nextNode = node.right
+        while nextNode.left != None:
+            nextNode = nextNode.lfet 
+    else:
+        p = node.parent 
+        cur = node 
+        while p and p.right == cur:
+            cur = p 
+            p = p.parent
+
+        nextNode = p 
+
+    return nextNode
+
+#######################################
+# 9-用两个栈实现队列
+
+#######################################
+# 11-旋转数组中的最小数字
+
 #######################################
 # 15-二进制中1的个数
 def countBit01(n):
@@ -135,6 +160,84 @@ def power(base, exponent):
     """考虑0情况，并考虑exponent正负号"""
     pass
 
+#######################################
+# 17-打印1到最大的n位数
+def print1toN(n):
+    """使用字符串存储数字"""
+    pass
+#######################################
+# 19-正则表达式匹配
+#######################################
+# 20-表示数字的字符串
+def isNumeric(s):
+    index = scanInteger(s)
+    # 如果有小数点
+    index = scanUnsignedInteger(s, index)
+    # 如果遇到E或e
+    index = scanInteger(s, index)
+
+    # 判断index是否等于s长度
+    pass
+
+#######################################
+# 22-链表中倒数第k个节点
+def findKthToTail(head, k):
+    # 使用双指针方法，快指针先走k-1个节点，然后与慢指针(头结点)同时走，知道快指针到达链表末尾
+    pass
+
+#######################################
+# 23-链表中环的入口[142]
+def circleNode(head):
+    # 1. 先获得环中的节点
+    # 2. 获得环的长度k，然后相当于寻找链表倒数第k-1个节点
+    # 3. 快慢指针，快指针先走k-1个节点，然后与慢指针一起行走直到两个指针相遇
+    pass
+#######################################
+# 24-翻转链表[206, 25]
+def reverseLinkedList(head):
+    pre = None
+    cur = head 
+    while cur:
+        nextNode = cur.next 
+        cur.next = pre 
+        pre = cur 
+        cur = nextNode
+    return pre 
+
+#######################################
+# 25-合并两个排序链表
+def mergeLinkedList(head1, head2):
+    # 使用递归
+    if head1 == None:
+        return head2
+    if head2 == None:
+        return head1
+
+    head = None 
+    if head1.val > head2.val:
+        head = head1
+        head.next = mergeLinkedList(head1.next, head2)
+    else:
+        head = head2
+        head.next = mergeLinkedList(head1, head2.next)
+
+    return head 
+
+#######################################
+# 26-树的子结构
+def subTree(root, node):
+    pass
+#######################################
+# 27-二叉树的镜像
+def isSymetry(root):
+    pass 
+#######################################
+# 28-对称的二叉树
+def isMirror(root):
+    return check(root, root)
+    
+def check(root1, root2):
+    pass 
 #######################################
 # 31-栈的压入弹出顺序
 def isPopOrder(push, pop):
@@ -450,14 +553,23 @@ def test_inversePair():
 #######################################
 # 55-03-二叉树的最小深度[leetcode-111]
 def minDepthOfBT(root):
-    pass 
+    if root == None:
+        return 0
+
+    if root.left == None:
+        return 1 + minDepthOfBT(root.right)
+
+    if root.right == None:
+        return 1 + minDepthOfBT(root.left)
+
+    return 1 + min(minDepthOfBT(root.left), minDepthOfBT(root.right))
 
 # 55-02-平衡二叉树
 def balanceBT(root):
     if not root:
         return True
 
-    if abs(depth(root.left)-depth(root.right)) > 1:
+    if abs(depth(root.left) - depth(root.right)) > 1:
         return False
 
     return balanceBT(root.left) and balanceBT(root.right)

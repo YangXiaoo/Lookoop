@@ -34,6 +34,7 @@ class baf_medium_Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal {
         int inLength = inorder.length;
         return buildTree(preorder, 0, preLength-1, inorder, 0, inLength-1);
      }
+
      public TreeNode buildTree(int[] pre, int preStart, int preEnd, int[] in, int inStart, int inEnd) {
         if (preStart > preEnd || inStart > inEnd) {
             return null;
@@ -51,7 +52,7 @@ class baf_medium_Construct_Binary_Tree_from_Preorder_and_Inorder_Traversal {
         int lens = rootIndex - inStart;
         TreeNode root = new TreeNode(rootVal);
         root.left = build(pre, preStart+1, preStart+lens, in, inStart, rootIndex-1);
-        root.right = build(pre, preStart+1+lens, preEnd, in, rootIndex+1,inEnd);
+        root.right = build(pre, preStart+1+lens, preEnd, in, rootIndex+1, inEnd);
 
         return root;
      }

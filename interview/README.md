@@ -96,6 +96,8 @@ s1 == s2;	// true or false
 - try-catch-finally执行过程? finally是不是一定会执行?
 - 拆箱与装箱?
 - UML有哪些表示?
+- 依赖: ------>
+- 泛化-继承：◁────；实现◁------
 - 有哪些处理错误的方式?
 - PHP与Java的区别?
 - Java类什么时候加载?
@@ -229,7 +231,7 @@ if (matcher.find()) {
 - FutureTask是什么?
 - 说一下CylicBarrier与CountDownLatch的区别?
 - CylicBarrier与CountDownLatch内部实现原理?
-- Random与ThreadLocalRandom？
+- Random与ThreadLocalRandom? 
 - ReentrantReadWriteLock原理
 - 什么是Semaphore? Exchanger?
 - NIO, BIO, AIO区别? 谈谈Reactor模型
@@ -253,6 +255,7 @@ if (matcher.find()) {
 
 > ## JVM虚拟机与JMM内存模型
 
+- JVM, JMM
 - JVM内存模型(介绍下 Java 内存区域/运行时数据区)? 程序计数器, 栈, 堆, 方法区?
 - JDK1.7之前常量池在哪里? 之后在哪里?
 - JDK1.8永久代变为了什么?
@@ -488,6 +491,9 @@ if (matcher.find()) {
 - I/O复用
 - 线程和进程的区别? 多线程和单线程的区别?
 - 计算机判断是否有中断应该是什么时候? 降低进程优先级的时机?
+- 中断与异常?
+- 实时操作系统与分时操作系统的区别?
+
 ---
 
 
@@ -618,11 +624,11 @@ if (matcher.find()) {
 - MyBatis中#{}和${}的区别? 
 - PreparedStatement与Statement区别?
 - Mybatis缓存?
-- 什么是MyBatis？
-- 当实体类的属性名和表中的字段名不一样，怎么办？
-- 通常一个Xml映射文件，都会写一个Dao接口与之对应，请问，这个Dao接口的工作原理是什么？Dao接口里的方法，参数不同时，方法能重载吗？
+- 什么是MyBatis? 
+- 当实体类的属性名和表中的字段名不一样, 怎么办? 
+- 通常一个Xml映射文件, 都会写一个Dao接口与之对应, 请问, 这个Dao接口的工作原理是什么? Dao接口里的方法, 参数不同时, 方法能重载吗? 
 - MyBatis如何实现分页? 分页插件的原理?
-- 如何获取插入数据id？
+- 如何获取插入数据id? 
 ---
 
 > ## spring
@@ -637,7 +643,7 @@ if (matcher.find()) {
 - Spring事物的传播级别?
 - Spring中的事物隔离级别?
 - Spring中Bean的Scope作用域? 
--  什么是Spring Bean？
+-  什么是Spring Bean? 
 - SpringMVC路由怎么写? 
 - SpringMVC如何接受ajax?
 - SpringMVC用到了那个核心servlet? 
@@ -647,8 +653,8 @@ if (matcher.find()) {
 - Bean的生命周期?
 - Spring用了哪些设计模式?
 - Spring三大核心组件?
-- Spring框架中的单例Beans是线程安全的么？
-- Spring如何处理线程并发问题？
+- Spring框架中的单例Beans是线程安全的么? 
+- Spring如何处理线程并发问题? 
 
 ---
 

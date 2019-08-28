@@ -36,7 +36,11 @@ class MergeFile(object):
         # 排序
         tmpDict = {}
         for f in data:
-            tmpDict[int(os.path.basename(f).split('-')[0])] = f 
+            try:
+                tmpDict[int(os.path.basename(f).split('-')[0])] = f 
+            except Exception as e:
+                print("[error] info:{}".format(e))
+
 
         tmpList = sorted(tmpDict.items(), key=lambda x : x[0])
         retData = []

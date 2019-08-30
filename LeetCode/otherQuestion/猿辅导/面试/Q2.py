@@ -51,7 +51,7 @@ class Queue(object):
     def remove(self):
         """删除一个节点，删除头结点"""
         if self.head == self.tail:
-            print("[ERROR] queue is empty")
+            print("[WARNING] queue is empty")
         else:
             print("[INFO] delete node val:{}".format(self.head.val))
             self.head.val = None

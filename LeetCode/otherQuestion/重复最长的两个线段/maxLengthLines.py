@@ -17,7 +17,7 @@ class Node:
 		self.end = end
 
 def maxLengthLines(lists):
-	sorted(lists, key=lambda node:node.start)	# 排序
+	lists = sorted(lists, key=lambda node:node.start)	# 排序
 	dp = [0 for _ in lists]
 	
 	maxEndIndex = 0	# 定义前一个最大尾结点线段所在索引

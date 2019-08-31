@@ -11,6 +11,7 @@ class Queue(object):
         self.size = size    # 队列大小
         self.head = None    
         self.tail = None
+        self.curSize = 0
         self.init()
     
     def init(self):
@@ -30,6 +31,7 @@ class Queue(object):
         if self.tail.next != self.head:
             self.tail.val = val
             self.tail = self.tail.next
+            self.curSize += 1
         else:
             self.resize()    # 扩容
             self.add(val)
@@ -50,12 +52,13 @@ class Queue(object):
         
     def remove(self):
         """删除一个节点，删除头结点"""
-        if self.head == self.tail:
+        if self.curSize == 0:
             print("[WARNING] queue is empty")
         else:
             print("[INFO] delete node val:{}".format(self.head.val))
             self.head.val = None
             self.head = self.head.next    # 下一个节点
+            self.curSize -= 1
             
             # self.shrink()    # 删除多余节点
 def test():

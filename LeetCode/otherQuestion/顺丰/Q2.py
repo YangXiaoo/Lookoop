@@ -25,6 +25,7 @@
 样例输出
 4
 """
+# AC 55%
 def solver1(n, nums):
     dp = [0 for _ in range(n)]  # 定义长度
     for i in range(n):

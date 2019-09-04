@@ -3,6 +3,7 @@ import java.util.concurrent.*;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+
 // 2019/9/4
 // 成员类实现
 public class ProductConsumerDemo2 {

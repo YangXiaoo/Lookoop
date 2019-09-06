@@ -29,7 +29,7 @@ class B {
 	protected int b = 2;
 }
 
-class C {
+class C extends A{
 	private int c = 3;
 }
 
@@ -59,8 +59,9 @@ public class Test {
 		A a = new A();
 		B b = new B();
 		C c = new C();
-		System.out.println(a.a);
+		System.out.println(a.a);	// default在同包下可以被访问
 		System.out.println(b.b);
+		System.out.println(c.a);	// 要使得default修饰的变量在子类方法中被继承必须在一个包下
 		// System.out.println(c.c);	// 错误: c 在 C 中是 private 访问控制
 	}
 

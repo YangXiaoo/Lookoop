@@ -1,7 +1,7 @@
 import java.util.*;
 import java.io.*;
 
-
+// 实现LRU
 class SelfMap {
 	int capacity;
 	HashMap<String, Node> cache;

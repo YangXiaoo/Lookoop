@@ -1,5 +1,6 @@
 # coding:utf-8
 import os
+import api
 
 def test():
 	"""测试用"""

@@ -2,7 +2,6 @@ public interface Shape {
    void draw();
 }
 
-
 public class Rectangle implements Shape {
  
    @Override

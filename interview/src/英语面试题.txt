@@ -1,8 +1,8 @@
-self-introduction
+self-introduction [有语法问题！别看]
 -----------------
 Good afternoon, interviewers.
 
-My name is yangxiao, i am a postgraduate student of University of Electronic 
+My name is xx, i am a postgraduate student of University of Electronic 
 Science and Technology of China. I am 24 years old, born in chengdu. My major 
 is Mechanical  /mɪ'kænɪk(ə)l/ Engineering, and i love programming very much.
 

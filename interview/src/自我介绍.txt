@@ -1,4 +1,4 @@
-面试官您好, 我是yanuo。我十分热爱编程, 在高中时期就已经接触到了编程。在现在, 我比较熟悉
+面试官您好, 我是xx。我十分热爱编程, 在高中时期就已经接触到了编程。在现在, 我比较熟悉
 网站制作, Java编程, Python编程, Mysql等。也做了不少的项目, 比如使用thinkPHP框架实现一
 个博客管理系统, 该系统分为前台和后台, 后台包括文章、用户、网站配置管理等功能; 前台与CSDN
 类似。并且整个系统使用pjax减少资源加载。
@@ -23,6 +23,7 @@
 脚本编写与c++图像编程。随着项目深入也在编写代码过程中也考虑的更多, 包括代码架构, 日志记录,
 计算结果持久化, 代码可重用性, 多线程的使用等。
 
+【没用】
 -------------------------------------------
 我叫yauno, 现在就读于电子科技大学, 十分热爱计算机编程, 在高中就已经开始接触编程。 现在
 熟悉网站制作, 计算机网络知识, 熟悉Java编程, Python编程, MySQL等。 在研究生期间也做
@@ -33,9 +34,9 @@
 我对软件开发有很强的兴趣, 乐于接受新的知识, 对新技术有求知欲。 而且每当我完成一个功能后, 
 都会有十分强的成就感, 很享受编写代码的过程。
 
-
+【没用】
 -------------------------------------------
-Hi, my name is yangxiao.I love programming very much. Now, I'm familiar with
+Hi, my name is xx.I love programming very much. Now, I'm familiar with
 Website Developement, Java programming, Python programming, Mysql and so on. 
 I have also done a lot of projects, such as blog management system using the
 thinkPHP framework, the system is divided into the foreground part
@@ -65,3 +66,4 @@ classmates complete three image processing machine learning related projects, an
 I am familiar with Python Scripting and c++ image programming. While i implement
 the project, i consider more about software architecture, logging, result persistance, 
 code reusability, multithreading and so on.
+【没用】

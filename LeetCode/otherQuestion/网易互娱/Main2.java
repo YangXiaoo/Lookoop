@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 // 2019/9/7
-// 递增数
+// 递增树
 class TreeNode {
 	int val;
 	TreeNode left;

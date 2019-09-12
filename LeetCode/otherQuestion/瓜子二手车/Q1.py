@@ -12,6 +12,7 @@ def solver(nums):
                 
             start += 1 
             
+    return start
 
 def inputs():
     n = int(sys.stdin.readline().strip())

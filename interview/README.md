@@ -172,7 +172,7 @@ if (matcher.find()) {
 - HashSet, TreeSet, LinkedHashSet之间的区别? HashSet内部原理?
 - 阻塞队列, ArrayBlockingQueue, LinkedBlockingQueue, PriorityBlockingQueue, DelayQueue, SynchronousQueue各自特点? 非阻塞队列? 
 - 阻塞队列的插入、移除方法?
-
+- Set了解过吗? 知道add()会出现什么问题吗? 
 ---
 
 
@@ -381,6 +381,8 @@ if (matcher.find()) {
 - 数据包的流动?
 - forward和redirect的区别?
 - URL重写技术?
+- IP寻址过程? 
+- 客户端与服务端建立TCP连接三次握手前做了什么? 
 
 ---
 
@@ -490,8 +492,8 @@ if (matcher.find()) {
 - I/O复用
 - 线程和进程的区别? 多线程和单线程的区别?
 - 计算机判断是否有中断应该是什么时候? 降低进程优先级的时机?
-- 中断与异常?
 - 实时操作系统与分时操作系统的区别?
+- 中断, 异常
 
 ---
 

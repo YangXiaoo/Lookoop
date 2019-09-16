@@ -39,6 +39,9 @@ StringBuilder[底层原理](https://blog.csdn.net/AlbenXie/article/details/89739
 ## `String.replaceAll(old, new);` 其中old是什么形式?
 为正则匹配形式
 
+## String使用"+"拼接快还是使用StringBuilder.append()快? 
+
+
 ## 引用类型为null, 能否找到其所属的静态类型?
 可以通过声明类型来找到静态方法
 

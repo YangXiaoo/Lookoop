@@ -9,9 +9,7 @@ import time
 import configparser # 读写配置
 
 def mkdirs(file_list):
-    """
-    创建文件目录
-    """
+    """创建文件目录"""
     if isinstance(file_list, list):
         for f in file_list:
             if not os.path.isdir(f):
@@ -24,10 +22,6 @@ def mkdirs(file_list):
 
 def getLogger(logger_path):
     """设置日志"""
-    # LOG_FORMAT = "%(asctime)s - %(levelname)s - %(user)s[%(ip)s] - %(message)s"
-    # DATE_FORMAT = "%m/%d/%Y %H:%M:%S %p"
-
-    # logging.basicConfig(format=LOG_FORMAT, datefmt=DATE_FORMAT)
     if logger_path:
         mkdirs(logger_path)
         

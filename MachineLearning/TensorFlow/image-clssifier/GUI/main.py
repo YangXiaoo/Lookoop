@@ -1,4 +1,5 @@
 # coding:utf-8
+# 2019/9/21
 import sys
 import logging
 
@@ -18,63 +19,9 @@ pyuic5 -o C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GU
 # 日志设置
 LOGGER_PATH = r"C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\log"
 CONFIG_PATH = r"C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\data\conf.txt"
+CONF_ModelListName = "modelList"
 logger = util.getLogger(LOGGER_PATH)
 logger.setLevel(logging.DEBUG)   # 设置日志级别，设置INFO时时DEBUG不可见
-
-# class Main(QMainWindow):
-#   def __init__(self):
-#       super().__init__()
-#       self.setWindowTitle("骨龄预测")
-#       self.resize(700, 500)
-#       bar = self.menuBar()
-#       file = bar.addMenu("File")
-#       file.addAction("New")
-#       save = QAction("Save",self)
-#       save.setShortcut("Ctrl+S")
-#       file.addAction(save)
-#       edit = file.addMenu("Edit")
-#       edit.addAction("copy")
-#       edit.addAction("paste")
-#       quit = QAction("Quit",self)
-#       file.addAction(quit)
-#       file.triggered[QAction].connect(self.processtrigger) 
-        
-#       self.initMainWindow()
-
-#   def initMainWindow(self):
-#       widget = QWidget()
-
-#       hlayout =  QHBoxLayout(self)
-#       vlayout =  QVBoxLayout(self)
-#       glayout = QGridLayout(self)
-
-#       self.compute = QPushButton("计算")
-#       self.reset = QPushButton("重置")
-#       hlayout.addWidget(self.compute)
-#       hlayout.addWidget(self.reset)
-
-#       self.loadPic = QPushButton("加载图片")
-#       self.loadPic.clicked.connect(self.getfile)
-#       hlayout.addWidget(self.loadPic)
-#       self.showPic = QLabel("")
-
-#       glayout.addWidget(self.loadPic, 0, 0)
-#       glayout.addWidget(self.compute, 1, 0)
-#       glayout.addWidget(self.reset, 1, 1)
-
-#       glayout.addWidget(self.showPic, 0, 2)
-
-#       widget.setLayout(glayout)
-#       self.setCentralWidget(widget)
-
-
-        
-#   def processtrigger(self,q):
-#       print( q.text()+" is triggered" )
-
-#   def getfile(self):
-#       fname, _  = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Image files (*.jpg *.gif)")
-#       self.showPic.setPixmap(QPixmap(fname))
 
 class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
     def __init__(self, parent=None):
@@ -96,11 +43,10 @@ class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
 
     def initComboBox(self):
         """训练模型下拉框初始化, 从设置中读取配置"""
-        curDataName = "modelList"
         conf = util.getConfig(CONFIG_PATH)
-        modelList = conf.options(curDataName)
+        modelList = conf.options(CONF_ModelListName)
         for m in modelList:
-            curModelPath = conf.get(curDataName, m)
+            curModelPath = conf.get(CONF_ModelListName, m)
             self.comboBox.addItem(m)
 
     def resetFunc(self):
@@ -126,6 +72,7 @@ class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
         if q.text() == "添加模型":
             self.modelAddFunc()
 
+
 class ModelAddDialog(QMainWindow, ui_ModelAddDialog.Ui_ModelListView):
     """模型添加弹框"""
     def __init__(self):
@@ -147,22 +94,34 @@ class ModelAddDialog(QMainWindow, ui_ModelAddDialog.Ui_ModelListView):
 
     def initData(self):
         """初始化列表中的数据"""
-        curDataName = "modelList"
-        conf = util.getConfig(CONFIG_PATH)
-        modelList = conf.options(curDataName)
+        self.modelListView.clear()
+        self.conf = util.getConfig(CONFIG_PATH)
+        modelList = self.conf.options(CONF_ModelListName)
         for m in modelList:
-            curModelPath = conf.get(curDataName, m)
+            curModelPath = self.conf.get(CONF_ModelListName, m)
             self.modelListView.addItem("{}: '{}'".format(m, curModelPath))
 
     def delete(self):
-        for item in self.modelListView.ContentList.selectedItems():
-            self.modelListView.ContentList.takeItem(self.modelListView.ContentList.row(item))
+        for item in self.modelListView.selectedItems():
+            removeItem = self.modelListView.takeItem(self.modelListView.row(item))
+            try:
+                boolean = self.conf.remove_option(CONF_ModelListName, removeItem.text().split(":")[0])
+                if boolean:
+                    logger.info("[INFO] remove item: {} successful".format(removeItem.text().split(":")[0]))
+                    self.modelListView.removeItemWidget(removeItem)
+                    with open(CONFIG_PATH, 'w') as f:
+                        self.conf.write(f)
+                else:
+                    logger.info("[WARNING] remove item:{} fail".format(removeItem.text().split(":")[0]))
+            except Exception as e:
+                logger.error("[ERROR] remove item:{} fail, trace: {}".format(removeItem.text().split(":")[0], str(e)))
+        self.initData()
 
     def add(self):
         self.child.open()
+        self.initData()
         qe = QEventLoop()
         qe.exec_()
-        self.initData()
 
 
 class ModelChildDialog(QMainWindow, ui_ModelAddDialogChild.Ui_modelChildDIalog):
@@ -180,16 +139,16 @@ class ModelChildDialog(QMainWindow, ui_ModelAddDialogChild.Ui_modelChildDIalog):
     def accept(self):
         """确认"""
         modelName = self.modelNameInput.text()
-        curDataName = "modelList"
         conf = util.getConfig(CONFIG_PATH)
         print(modelName, self.modelPath)
         if modelName != None and self.modelPath != None:
-            conf.set(curDataName, modelName, self.modelPath)
+            conf.set(CONF_ModelListName, modelName, self.modelPath)
         with open(CONFIG_PATH, 'w') as f:
             conf.write(f)
+        self.close()
 
     def cancel(self):
-        pass
+        self.close()
 
     def getFile(self):
         """加载图片"""

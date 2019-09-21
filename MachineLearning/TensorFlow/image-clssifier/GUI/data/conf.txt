@@ -1,6 +1,5 @@
 [modelList]
-vgg = c://dd
-ee = C:/Study/github/Lookoops/MachineLearning/TensorFlow/image-clssifier/GUI/test/test.pb
-ww = C:/Users/Yauno/Desktop/tmp/test.pb
-a = C:/Users/Yauno/Desktop/tmp/test.pb
+stacking = C:/Users/Yauno/Desktop/tmp/test.pb
+vgg = C:/Users/Yauno/Desktop/tmp/test.pb
+inception = C:/Users/Yauno/Desktop/tmp/test.pb
 

@@ -23,8 +23,6 @@ class Ui_MainWindow(object):
         self.comboBox = QtWidgets.QComboBox(self.centralwidget)
         self.comboBox.setGeometry(QtCore.QRect(200, 140, 121, 22))
         self.comboBox.setObjectName("comboBox")
-        self.comboBox.addItem("")
-        self.comboBox.addItem("")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
         self.label_2.setGeometry(QtCore.QRect(110, 140, 72, 21))
         self.label_2.setAlignment(QtCore.Qt.AlignCenter)
@@ -81,8 +79,6 @@ class Ui_MainWindow(object):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "骨龄预测"))
         self.loadPic.setText(_translate("MainWindow", "加载图片"))
-        self.comboBox.setItemText(0, _translate("MainWindow", "Stacking方法"))
-        self.comboBox.setItemText(1, _translate("MainWindow", "VGG"))
         self.label_2.setText(_translate("MainWindow", "选择方法："))
         self.showPic.setText(_translate("MainWindow", "图像显示"))
         self.predict.setText(_translate("MainWindow", "预测"))
@@ -91,7 +87,7 @@ class Ui_MainWindow(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'SimSun\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">输出控制台</p></body></html>"))
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">控制台</p></body></html>"))
         self.menu.setTitle(_translate("MainWindow", "文件"))
         self.menu_2.setTitle(_translate("MainWindow", "设置"))
         self.menu_3.setTitle(_translate("MainWindow", "帮助"))

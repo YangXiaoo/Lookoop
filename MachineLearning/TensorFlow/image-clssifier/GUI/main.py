@@ -19,11 +19,14 @@ pyuic5 -o C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GU
 # 日志设置
 LOGGER_PATH = r"C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\log"
 CONFIG_PATH = r"C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\data\conf.txt"
-CONF_ModelListName = "modelList"
+CONF_MODEL_LIST_NAME = "modelList"
+
+
 logger = util.getLogger(LOGGER_PATH)
 logger.setLevel(logging.DEBUG)   # 设置日志级别，设置INFO时时DEBUG不可见
 
 class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
+    """主窗口"""
     def __init__(self, parent=None):
         super(MyWindow, self).__init__(parent)
         self.setupUi(self)
@@ -39,14 +42,14 @@ class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
 
     def initDialog(self):
         """模态框初始化"""
-        self.modelDialog = ModelAddDialog()
+        self.modelDialog = ModelAddDialog() # 模型添加框
 
     def initComboBox(self):
         """训练模型下拉框初始化, 从设置中读取配置"""
         conf = util.getConfig(CONFIG_PATH)
-        modelList = conf.options(CONF_ModelListName)
+        modelList = conf.options(CONF_MODEL_LIST_NAME)
         for m in modelList:
-            curModelPath = conf.get(CONF_ModelListName, m)
+            curModelPath = conf.get(CONF_MODEL_LIST_NAME, m)
             self.comboBox.addItem(m)
 
     def resetFunc(self):
@@ -62,8 +65,8 @@ class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
     def getFile(self):
         """加载图片"""
         fname, _  = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Image files (*.jpg *.png)")
-        util.recordAndPrint(logger, self.console, "[INFO] load picture filename: {}".format(fname))
-        self.showPic.setScaledContents (True)
+        util.recordAndPrint(logger, self.console, "[INFO] load picture, source : {}".format(fname))
+        self.showPic.setScaledContents (True)   # 自适应
         self.showPic.setPixmap(QPixmap(fname))
 
     def processtrigger(self, q):
@@ -90,22 +93,24 @@ class ModelAddDialog(QMainWindow, ui_ModelAddDialog.Ui_ModelListView):
         self.modelDeleteButton.clicked.connect(self.delete)
 
     def initChild(self):
+        """初始化弹窗"""
         self.child = ModelChildDialog()
 
     def initData(self):
         """初始化列表中的数据"""
         self.modelListView.clear()
         self.conf = util.getConfig(CONFIG_PATH)
-        modelList = self.conf.options(CONF_ModelListName)
+        modelList = self.conf.options(CONF_MODEL_LIST_NAME)
         for m in modelList:
-            curModelPath = self.conf.get(CONF_ModelListName, m)
+            curModelPath = self.conf.get(CONF_MODEL_LIST_NAME, m)
             self.modelListView.addItem("{}: '{}'".format(m, curModelPath))
 
     def delete(self):
+        """删除列表中的数据"""
         for item in self.modelListView.selectedItems():
             removeItem = self.modelListView.takeItem(self.modelListView.row(item))
             try:
-                boolean = self.conf.remove_option(CONF_ModelListName, removeItem.text().split(":")[0])
+                boolean = self.conf.remove_option(CONF_MODEL_LIST_NAME, removeItem.text().split(":")[0])
                 if boolean:
                     logger.info("[INFO] remove item: {} successful".format(removeItem.text().split(":")[0]))
                     self.modelListView.removeItemWidget(removeItem)
@@ -118,6 +123,7 @@ class ModelAddDialog(QMainWindow, ui_ModelAddDialog.Ui_ModelListView):
         self.initData()
 
     def add(self):
+        """添加模型"""
         self.child.open()
         self.initData()
         qe = QEventLoop()
@@ -125,6 +131,7 @@ class ModelAddDialog(QMainWindow, ui_ModelAddDialog.Ui_ModelListView):
 
 
 class ModelChildDialog(QMainWindow, ui_ModelAddDialogChild.Ui_modelChildDIalog):
+    """模型添加的模态框"""
     def __init__(self):
         super(ModelChildDialog, self).__init__()
         self.setupUi(self)
@@ -132,6 +139,7 @@ class ModelChildDialog(QMainWindow, ui_ModelAddDialogChild.Ui_modelChildDIalog):
         self.initOps()
 
     def initOps(self):
+        """初始化信号槽"""
         self.modelAddOk.clicked.connect(self.accept)
         self.modelAddCancle.clicked.connect(self.cancel)
         self.filePathButton.clicked.connect(self.getFile)
@@ -140,20 +148,21 @@ class ModelChildDialog(QMainWindow, ui_ModelAddDialogChild.Ui_modelChildDIalog):
         """确认"""
         modelName = self.modelNameInput.text()
         conf = util.getConfig(CONFIG_PATH)
-        print(modelName, self.modelPath)
+        # print(modelName, self.modelPath)
         if modelName != None and self.modelPath != None:
-            conf.set(CONF_ModelListName, modelName, self.modelPath)
+            conf.set(CONF_MODEL_LIST_NAME, modelName, self.modelPath)
         with open(CONFIG_PATH, 'w') as f:
             conf.write(f)
         self.close()
 
     def cancel(self):
+        """取消"""
         self.close()
 
     def getFile(self):
-        """加载图片"""
+        """选择节点路径"""
         self.modelPath, _  = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"model file (*.pb)")
-        print(self.modelPath)
+        # print(self.modelPath)
 
     def open(self):
         self.show()

@@ -1,0 +1,27 @@
+2019-09-21 17:44:58,841 - util.py[line: 59] - DEBUG - [INFO] loadPic filename: C:/download/pic/1093f2d3572c11dfbc1a1ef86d2762d0f503c2e8.jpg
+2019-09-21 17:45:30,118 - util.py[line: 59] - DEBUG - [INFO] loadPic filename: C:/download/pic/2018-10-10 234830.jpg
+2019-09-21 17:47:45,686 - util.py[line: 59] - DEBUG - [INFO] loadPic filename: C:/download/pic/2018-10-10 234830.jpg
+2019-09-21 17:47:52,239 - util.py[line: 59] - DEBUG - [INFO] loadPic filename: C:/download/pic/2018-10-10 235247.jpg
+2019-09-21 17:50:34,385 - util.py[line: 59] - DEBUG - [INFO] loadPic filename: C:/download/pic/2018-10-01 153743.jpg
+2019-09-21 18:00:58,565 - util.py[line: 59] - DEBUG - [INFO] load picture filename: C:/download/pic/2018-10-01 153743.jpg
+2019-09-21 18:58:57,043 - util.py[line: 59] - DEBUG - [INFO] load picture filename: C:/download/pic/2018-10-10 234830.jpg
+2019-09-21 18:59:05,178 - util.py[line: 59] - DEBUG - [INFO] load picture filename: 
+2019-09-21 18:59:15,954 - util.py[line: 59] - DEBUG - [INFO] load picture filename: C:/Study/test/bone/1ssssssss/fm-2-1.7.png
+2019-09-21 21:18:06,081 - util.py[line: 60] - DEBUG - [INFO] load picture filename: C:/Study/test/bone/1ssssssss/fm-3-3.1.png
+2019-09-21 21:21:56,275 - util.py[line: 60] - DEBUG - [INFO] load picture filename: C:/Study/test/bone/100-gt/fm-2-1.7_new.png
+2019-09-21 21:39:30,746 - util.py[line: 60] - DEBUG - [INFO] load picture filename: C:/download/pic/2018-10-01 153743.jpg
+2019-09-21 21:53:13,225 - util.py[line: 60] - DEBUG - [INFO] load picture filename: 
+2019-09-21 21:53:21,077 - util.py[line: 60] - DEBUG - [INFO] load picture filename: C:/download/pic/TIMͼƬ20190403223812.jpg
+2019-09-21 21:53:29,817 - util.py[line: 60] - DEBUG - [INFO] load picture filename: C:/download/pic/c0e033c79f3df8dcb2512387c211728b47102863.jpg
+2019-09-21 21:53:52,635 - util.py[line: 60] - DEBUG - [INFO] load picture filename: C:/download/pic/c0e033c79f3df8dcb2512387c211728b47102863.jpg
+2019-09-21 21:54:32,134 - util.py[line: 60] - DEBUG - [INFO] load picture filename: C:/download/pic/c0e033c79f3df8dcb2512387c211728b47102863.jpg
+2019-09-21 22:29:11,853 - main.py[line: 106] - INFO - [INFO] remove item:<PyQt5.QtWidgets.QListWidgetItem object at 0x000001A6E4945168>
+2019-09-21 22:29:38,794 - main.py[line: 106] - INFO - [INFO] remove item:<PyQt5.QtWidgets.QListWidgetItem object at 0x0000022698CD51F8>
+2019-09-21 22:36:53,470 - main.py[line: 112] - INFO - [WARNING] remove item:<PyQt5.QtWidgets.QListWidgetItem object at 0x000001BAB5033288> fail
+2019-09-21 22:38:06,131 - main.py[line: 112] - INFO - [WARNING] remove item:a: 'C:/Users/Yauno/Desktop/tmp/test.pb' fail
+2019-09-21 22:38:38,267 - main.py[line: 108] - INFO - [INFO] remove item:a: 'C:/Users/Yauno/Desktop/tmp/test.pb'
+2019-09-21 22:39:12,753 - main.py[line: 108] - INFO - [INFO] remove item:a: 'C:/Users/Yauno/Desktop/tmp/test.pb' successful
+2019-09-21 22:42:48,365 - main.py[line: 108] - INFO - [INFO] remove item a successful
+2019-09-21 22:45:00,328 - main.py[line: 108] - INFO - [INFO] remove item: ww successful
+2019-09-21 22:45:02,931 - main.py[line: 108] - INFO - [INFO] remove item: vgg successful
+2019-09-21 22:48:12,783 - main.py[line: 110] - INFO - [INFO] remove item: ee successful

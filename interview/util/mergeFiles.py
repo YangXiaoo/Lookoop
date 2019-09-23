@@ -17,7 +17,7 @@ class MergeFileHander(object):
     def setInputFileList(self, inputFilePath):
         """获得待合并文件路径"""
         if inputFilePath == None:
-            assert False, "没有指定文件路径"
+            assert False, "指定路径不存在"
         fileList = []
         if not isinstance(inputFilePath, list):
             inputFilePath = [inputFilePath]
@@ -33,7 +33,7 @@ class MergeFileHander(object):
         return fileList
 
     def sortValue(self, data):
-        """对`1-xx.md`格式文件对序号进行排序"""
+        """对`1-xx.md`格式文件根据序号进行升序"""
         # 排序
         tmpDict = {}
         for f in data:
@@ -79,7 +79,7 @@ class MergeFileHander(object):
 
     def merge(self, outputFilePath=None):
         if outputFilePath == None and self.outputFilePath == None:
-            assert False, "没有指定输出路径"
+            assert False, "保存路径不存在"
         if outputFilePath :
             self.outputFilePath = outputFilePath
         for file in self.inputFileList:

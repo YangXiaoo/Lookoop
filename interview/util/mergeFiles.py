@@ -94,7 +94,6 @@ class MergeFileHander(object):
 
 
 class MergeFile(MergeFileHander):
-    """扩展MergeFileHander"""
     def __init__(self, inputFilePath, outputFilePath=None):
         super(MergeFile, self).__init__(inputFilePath, outputFilePath)
 
@@ -111,7 +110,8 @@ if __name__ == '__main__':
     mergeTool.addHeader(headerText)
     mergeTool.merge()
 
-    # 将中文符号转换为英文符号
     re = rep.Exg(outputFilePath)
-    re.addRegx(["，", "？", "：", "；", '（', '）', "###", '”', '。'], [", ", "? ", ": ", "; ", '(', ')', "##", '"', '.'])
+    re.addRegx(["，", "？", "：", "；", '（', '）',  '”', '。', "##", "> -"], [", ", "? ", ": ", "; ", '(', ')', '"', '.', "-", "> ##"])
     re.write(outputFilePath)
+# [INFO] question count: 630
+# [INFO] write successful!

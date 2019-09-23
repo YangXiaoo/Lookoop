@@ -1,4 +1,4 @@
-> ## Java基础知识问答
+> ## Java基础
 
 ## java关键字与保留字? goto, const? false, true, null, inner?
 goto没有定义, 但自己也不能使用这样的变量名, 使用编译后会报错

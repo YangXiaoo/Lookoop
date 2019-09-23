@@ -7,11 +7,12 @@ import os
 import replaceChineseCharacer as rep
 from util import getFiles
 
-class MergeFile(object):
+class MergeFileHander(object):
     def __init__(self, inputFilePath, outputFilePath=None):
         self.inputFileList = self.setInputFileList(inputFilePath)
         self.outputFilePath = outputFilePath
         self.count = 0
+        self.outputData = []    # 数据缓存
 
     def setInputFileList(self, inputFilePath):
         """获得待合并文件路径"""
@@ -74,9 +75,6 @@ class MergeFile(object):
                             flag = False
                     elif flag:
                         retData.append(line)
-
-
-
         return retData
 
     def merge(self, outputFilePath=None):
@@ -84,27 +82,36 @@ class MergeFile(object):
             assert False, "没有指定输出路径"
         if outputFilePath :
             self.outputFilePath = outputFilePath
-        outputData = []
         for file in self.inputFileList:
             curData = self.getData(file)
             curData.append("\n---\n\n")
-            outputData.extend(curData)
+            self.outputData.extend(curData)
         with open(self.outputFilePath, "w", encoding="utf-8") as outf:
-            outf.write("".join(outputData))
+            outf.write("".join(self.outputData))
 
         print("[INFO] question count: {}".format(self.count))
         print("[INFO] write successful!")
 
+
+class MergeFile(MergeFileHander):
+    """扩展MergeFileHander"""
+    def __init__(self, inputFilePath, outputFilePath=None):
+        super(MergeFile, self).__init__(inputFilePath, outputFilePath)
+
+    def addHeader(self, text):
+        """在头部添加字段"""
+        self.outputData.append(text)
+
 if __name__ == '__main__':
     inputFilePath = r"C:\Study\github\Lookoops\interview\src"
     outputFilePath = r"C:\Study\github\Lookoops\interview\README.md"
+    headerText = """> 关于Java基础知识，JVM，多线程，计算机网络，数据库，分布式，算法，Java框架，测试，Linux等知识，详细答案见`/src/`目录下的细分内容，里面附有面经\n"""
 
     mergeTool = MergeFile(inputFilePath, outputFilePath)
+    mergeTool.addHeader(headerText)
     mergeTool.merge()
 
+    # 将中文符号转换为英文符号
     re = rep.Exg(outputFilePath)
-    re.addRegx(["##", "> -"], ["-", "> ##"])
+    re.addRegx(["，", "？", "：", "；", '（', '）', "###", '”', '。'], [", ", "? ", ": ", "; ", '(', ')', "##", '"', '.'])
     re.write(outputFilePath)
-
-# [INFO] question count: 630
-# [INFO] write successful!

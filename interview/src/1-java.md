@@ -478,7 +478,9 @@ BigDecimal, 需要使用字符串初始化, 用double初始化仍然不能精确
 
 ## System.arraycopy(), clone(), Arrays.copyOf(), for对数组的复制效率?
 性能递减
+
 ---
+
 ## 什么是servlet?
 接受用户请求, 生成动态内容
 

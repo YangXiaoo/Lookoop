@@ -23,17 +23,17 @@ import numpy as np
 #         #     pass
 
 
-#########################
-model_path = 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb'
-with tf.gfile.FastGFile(model_path, 'rb') as f:
-    graph_def = tf.GraphDef()
-    graph_def.ParseFromString(f.read())
-    _ = tf.import_graph_def(graph_def, name='')
+# #########################
+# model_path = 'C:/Study/github/others/Deep-Learning-21-Examples-master/chapter_3/data_prepare/satellite/vgg_16_inf_graph.pb'
+# with tf.gfile.FastGFile(model_path, 'rb') as f:
+#     graph_def = tf.GraphDef()
+#     graph_def.ParseFromString(f.read())
+#     _ = tf.import_graph_def(graph_def, name='')
 
-with tf.Session() as sess:
-    var_to_shape_map = sess.graph.get_variable_to_shape_map()
-    for key in var_to_shape_map:
-        print("tensor_name: ", key)
+# with tf.Session() as sess:
+#     var_to_shape_map = sess.graph.get_variable_to_shape_map()
+#     for key in var_to_shape_map:
+#         print("tensor_name: ", key)
 
 
 """
@@ -176,10 +176,10 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 # img = cv2.imread(r'C:\Study\test\kaggle-bonage\train-male_disposal_out\0\test\6\2133.png')
 # print(img.shape)
 
-ret = np.load(r'C:\Study\test\kaggle-bonage\prediction_output\vgg_16\0\prediction.npy')
-ret_1 = ret[()]
-for k in ret_1.values():
-	print(k.shape)
+# ret = np.load(r'C:\Study\test\kaggle-bonage\prediction_output\vgg_16\0\prediction.npy')
+# ret_1 = ret[()]
+# for k in ret_1.values():
+# 	print(k.shape)
 
 # d = {'1':3}
 # np.save('loacal_test.npy', d)
@@ -196,3 +196,7 @@ for k in ret_1.values():
 # # np.save("test_class.npy", test)
 # test = np.load("test_class.npy")
 # print(test[()].value)
+
+import classifier_collection as cc 
+
+print(cc.net_factory)

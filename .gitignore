@@ -30,3 +30,4 @@ tool/bone_segementation_use_stacking/data/pickle_model.dat
 *.pyc
 interview/util/replaceChineseCharacer.py
 interview/util/mergeFiles.py
+*.pyc

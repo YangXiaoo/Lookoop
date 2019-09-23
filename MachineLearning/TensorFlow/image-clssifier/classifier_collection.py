@@ -637,7 +637,17 @@ def model_collection_prediction(prediction_model,
     test_feature = api.pre_process(test_feature)
     prediction_model.prediction(test_feature, test_labels) # 打印出结果
 
+def getModelList(net_factory=net_factory):
+    """获取模型列表"""
+    model_list = []
+    for model in net_factory:
+        tmp_model_para = []
+        tmp_model_para.append(model['model_name'])
+        tmp_model_para.append(model['output_tensor_name'] + ":0")
+        tmp_model_para.append(model['train_image_size'])
+        model_list.append(tmp_model_para)
 
+    return model_list
 
 if __name__ == '__main__':
     # 抽取数据
@@ -768,13 +778,13 @@ if __name__ == '__main__':
     
     test_data = input_para['validation_male_output']
     label_path = os.path.join(test_data, 'labels.txt')
-    model_list = []
-    for model in net_factory:
-        tmp_model_para = []
-        tmp_model_para.append(model['model_name'])
-        tmp_model_para.append(model['output_tensor_name'] + ":0")
-        tmp_model_para.append(model['train_image_size'])
-        model_list.append(tmp_model_para)
+    model_list = getModelList(net_factory)
+    # for model in net_factory:
+    #     tmp_model_para = []
+    #     tmp_model_para.append(model['model_name'])
+    #     tmp_model_para.append(model['output_tensor_name'] + ":0")
+    #     tmp_model_para.append(model['train_image_size'])
+    #     model_list.append(tmp_model_para)
 
     # # test
     # model_list = [model_list[0]]

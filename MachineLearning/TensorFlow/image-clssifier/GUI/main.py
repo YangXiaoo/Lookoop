@@ -8,6 +8,9 @@ from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
 from tool import util, ui_MainWindow, ui_ModelAddDialog, ui_ModelAddDialogChild
+
+import classifier_collection as cc
+import test_image_classifier as tic 
 r"""ui标签转换
 pyuic5 -o C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\tool\ui_MainWindow.py C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\tool\ui_MainWindow.ui
 
@@ -21,9 +24,15 @@ LOGGER_PATH = r"C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssif
 CONFIG_PATH = r"C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\data\conf.txt"
 CONF_MODEL_LIST_NAME = "modelList"
 
-
 logger = util.getLogger(LOGGER_PATH)
 logger.setLevel(logging.DEBUG)   # 设置日志级别，设置INFO时时DEBUG不可见
+
+
+PREDICT_MODEL_PATH = "" # 融合模型的路径
+MODEL_LIST = cc.getModelList()  # 模型列表
+LABEL_PATH =            # 标签
+LABEL_MAPPING_PATH =    # 标签映射
+GEAPH_DIR =             # 图模型路径
 
 class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
     """主窗口"""
@@ -33,12 +42,14 @@ class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
         self.initMainWindow()
         self.initComboBox()
         self.initDialog()
+        self.predictPic = None
 
     def initMainWindow(self):
         """主窗口初始化"""
         self.menubar.triggered[QAction].connect(self.processtrigger)
         self.loadPic.clicked.connect(self.getFile)  # 图片加载
         self.reset.clicked.connect(self.resetFunc)  # 重置按钮
+        self.predict.clicked.connect(self.predictFunc)  # 预测按钮
 
     def initDialog(self):
         """模态框初始化"""
@@ -52,6 +63,11 @@ class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
             curModelPath = conf.get(CONF_MODEL_LIST_NAME, m)
             self.comboBox.addItem(m)
 
+    def initData(self):
+        """初始化数据"""
+        self.labels = getLabel(LABEL_PATH)
+
+
     def resetFunc(self):
         """重置操作"""
         self.showPic.setPixmap(QPixmap("")) # 图片重置
@@ -62,10 +78,16 @@ class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
         qe = QEventLoop()
         qe.exec_()
 
+    def predictFunc(self):
+        """预测，使用Stacking继承学习方法直接预测.
+        后面考虑通过选择其他方法进行预测"""
+        pass
+
     def getFile(self):
         """加载图片"""
         fname, _  = QFileDialog.getOpenFileName(self, 'Open file', 'c:\\',"Image files (*.jpg *.png)")
         util.recordAndPrint(logger, self.console, "[INFO] load picture, source : {}".format(fname))
+        self.predictPic = fname
         self.showPic.setScaledContents (True)   # 自适应
         self.showPic.setPixmap(QPixmap(fname))
 
@@ -166,6 +188,17 @@ class ModelChildDialog(QMainWindow, ui_ModelAddDialogChild.Ui_modelChildDIalog):
 
     def open(self):
         self.show()
+
+class PredictionHandler(object):
+    def __init__(self):
+        self.picPath = None
+
+    def predictBySingleModel(self):
+        pass
+
+    def predict(self, pic):
+        self.pic = pic 
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

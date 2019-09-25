@@ -3,3 +3,6 @@ stacking = C:/Users/Yauno/Desktop/tmp/test.pb
 vgg = C:/Users/Yauno/Desktop/tmp/test.pb
 inception = C:/Users/Yauno/Desktop/tmp/test.pb
 
+[defaultLoadDir]
+pic-default-load-dir = C:/Study/test/bone/100-gt
+

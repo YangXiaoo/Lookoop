@@ -136,6 +136,7 @@ p, li { white-space: pre-wrap; }
      <string>文件</string>
     </property>
     <addaction name="exit"/>
+    <addaction name="mainWindowButton"/>
    </widget>
    <widget class="QMenu" name="menu_2">
     <property name="title">
@@ -172,7 +173,12 @@ p, li { white-space: pre-wrap; }
   </action>
   <action name="defaultLoadPath">
    <property name="text">
-    <string>默认加载路径</string>
+    <string>图片默认加载目录</string>
+   </property>
+  </action>
+  <action name="mainWindowButton">
+   <property name="text">
+    <string>主界面</string>
    </property>
   </action>
  </widget>

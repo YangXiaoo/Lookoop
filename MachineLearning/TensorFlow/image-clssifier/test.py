@@ -197,6 +197,13 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 # test = np.load("test_class.npy")
 # print(test[()].value)
 
-import classifier_collection as cc 
+# import classifier_collection as cc 
 
-print(cc.net_factory)
+# print(cc.getModelList())
+# [['vgg_16', 'vgg_16/fc8/squeezed:0', 224], ['inception_v3', 'InceptionV3/Predictions/Reshape_1:0', 299], ['pnasnet_large', 'final_layer/predictions:0', 331], ['resnet_v2_200', 'resnet_v2_200/predictions/Reshape_1:0', 224], ['inception_resnet_v2', 'InceptionResnetV2/Logits/Predictions:0', 299]]
+
+# # dict test
+# d = {'a':[1]}
+# d.update({'a':[2]})
+# print(d)
+from tool.testFolder import testFile

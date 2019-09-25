@@ -19,7 +19,7 @@ from tool import util, ui_MainWindow, ui_ModelAddDialog, ui_ModelAddDialogChild,
 
 # import classifier_collection as cc
 # import test_image_classifier as tic 
-
+from preprocessing import preprocessing_factory
 
 r"""ui标签转换
 pyuic5 -o C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\tool\ui_MainWindow.py C:\Study\github\Lookoops\MachineLearning\TensorFlow\image-clssifier\GUI\tool\ui_MainWindow.ui
@@ -265,7 +265,9 @@ class ModelChildDialog(QMainWindow, ui_ModelAddDialogChild.Ui_modelChildDIalog):
     def open(self):
         self.show()
 
+
 class helpWindow(QMainWindow, helpDialog.Ui_Dialog):
+    """帮助界面"""
     def __init__(self):
         super(helpWindow, self).__init__()
         self.setupUi(self)
@@ -276,6 +278,7 @@ class helpWindow(QMainWindow, helpDialog.Ui_Dialog):
 
     def acceptFunc(self):
         self.close()
+
 
 class PredictionHandler(object):
     """预测基类"""
@@ -295,7 +298,7 @@ class PredictionHandler(object):
         """加载模型"""
         return pickle.load(open(stackingModelPath,'rb'))
 
-    def check(self):
+    def checkEnv(self):
         """预测前检查资源加载"""
         if self.picList == None:
             assert False, "picture path is empty"
@@ -410,7 +413,7 @@ class PredictionHandler(object):
         """预测单张图片
         @param picPath 路径,字符串
         """
-        return self.predict([picPath])
+        return self.predicts([picPath])
         
 class Prediction(PredictionHandler):
     """预测实现类"""
@@ -427,9 +430,9 @@ class Prediction(PredictionHandler):
             lines = f.readlines()
             for line in lines:
                 k,v = line.split(" ")
-                self.labelMap[v] = k  # 可能是 self.labelMap[k] = v
+                self.labelMap[v] = k  # self.labelMap[k] = v
 
-    def predictiSingePic(self, picPath):
+    def predictSinglePic(self, picPath):
         """重写父类预测方法"""
         picNameList, pdtValue = self.predicts([picPath]) 
         try:

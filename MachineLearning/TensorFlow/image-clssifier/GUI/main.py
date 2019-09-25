@@ -430,13 +430,13 @@ class Prediction(PredictionHandler):
             lines = f.readlines()
             for line in lines:
                 k,v = line.split(" ")
-                self.labelMap[v] = k  # self.labelMap[k] = v
+                self.labelMap[k] = v
 
     def predictSinglePic(self, picPath):
         """重写父类预测方法"""
         picNameList, pdtValue = self.predicts([picPath]) 
         try:
-            return picNameList[0], self.labelMap[pdtValue[0]]   # 若抛出异常
+            return picNameList[0], self.labelMap[int(pdtValue[0])]   # 若抛出异常
         except:
             assert False, "check label map"
 

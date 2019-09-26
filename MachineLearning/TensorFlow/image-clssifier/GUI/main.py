@@ -370,16 +370,12 @@ class PredictionHandler(object):
                 tmpPdt = self.pdtBySingleModel(modelPath, modelName, tensorName, self.picList, picSize)   # 单个模型预测单张图片
                 for k,v in tmpPdt.items():
                     v = v.argmax()  # 获得数组中预测概率最高的索引
-                    if k not in curModelPdt:
-                        curModelPdt[k] = []
-                        curModelPdt.extend(v)
-                    else:
-                        curModelPdt[k] += v
+                    curModelPdt.get(k, []).append(v)
 
             # 获得当前模型对图片预测的均值
             count = len(classList)
             for k,v in curModelPdt:
-                curModelPdt[k] = mean(v)    # 可能会报错
+                curModelPdt[k] = mean(v)    # 可能会报错 
 
             # 添加单个模型预测结果到pdt中
             for k,v in curModelPdt.items():

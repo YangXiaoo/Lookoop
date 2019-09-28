@@ -320,7 +320,7 @@ class PredictionHandler(object):
                 if isTotal:
                     ret[i, j] = data[i, j] / tatal * alpha
                 else:
-                    ret[i, j] = [data[i, j], 1][data[i, j] ==0] / maxValue * alpha
+                    ret[i, j] = [data[i, j], 1][data[i, j] == 0] / maxValue * alpha
         return ret
 
     def createGraph(self, sess, modelPath):

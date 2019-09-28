@@ -206,4 +206,9 @@ tensor_name:  vgg_16/conv1/conv1_1/biases/RMSProp_1
 # d = {'a':[1]}
 # d.update({'a':[2]})
 # print(d)
-from tool.testFolder import testFile
+# from tool.testFolder import testFile
+
+num1 = np.array([1,2])
+num2 = np.array([3,4])
+num3 = np.append(num1, num2)
+print(num3)

@@ -1,0 +1,46 @@
+2019-09-26 15:05:38,914 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-3-3.1_new.png
+2019-09-26 15:05:40,108 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 15:05:40,109 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2019-09-26 15:05:40,109 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-3-3.1_new.png, estimate age: 34 ¡À 6 month
+2019-09-26 15:05:43,918 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-4-4.35_new.png
+2019-09-26 15:05:44,816 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 15:05:44,817 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2019-09-26 15:05:44,817 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-4-4.35_new.png, estimate age: 34 ¡À 6 month
+2019-09-26 15:05:46,385 - util.py[line: 54] - DEBUG - [INFO] reset inputs
+2019-09-26 15:05:47,821 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 15:05:47,825 - util.py[line: 54] - DEBUG - [ERROR] picture path is not exist, please check the path you input
+2019-09-26 15:05:51,217 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-3-3.5_new.png
+2019-09-26 15:43:22,743 - util.py[line: 54] - DEBUG - [INFO] reset inputs
+2019-09-26 15:43:24,429 - util.py[line: 54] - DEBUG - [INFO] reset inputs
+2019-09-26 15:43:27,840 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 15:43:27,841 - util.py[line: 54] - DEBUG - [ERROR] picture path is not exist, please check the path you input
+2019-09-26 15:43:35,610 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-5-4.91_new.png
+2019-09-26 15:43:43,952 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 15:43:43,953 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2019-09-26 15:43:43,954 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-5-4.91_new.png, estimate age: 34 ¡À 6 month
+2019-09-26 15:43:49,826 - util.py[line: 54] - DEBUG - [INFO] help
+2019-09-26 20:55:12,408 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-3-4.03_new.png
+2019-09-26 20:55:17,113 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 20:55:17,114 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2019-09-26 20:55:17,114 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-3-4.03_new.png, estimate age: 34 ¡À 6 month
+2019-09-26 20:55:21,473 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-2-2.91_new.png
+2019-09-26 20:55:23,097 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 20:55:23,097 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2019-09-26 20:55:23,098 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-2-2.91_new.png, estimate age: 34 ¡À 6 month
+2019-09-26 20:59:07,481 - util.py[line: 54] - DEBUG - [INFO] reset inputs
+2019-09-26 20:59:13,093 - util.py[line: 54] - DEBUG - [INFO] reset inputs
+2019-09-26 20:59:17,825 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-5-4.91_new.png
+2019-09-26 20:59:20,432 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 20:59:20,433 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2019-09-26 20:59:20,434 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-5-4.91_new.png, estimate age: 34 ¡À 6 month
+2019-09-26 21:12:47,089 - util.py[line: 54] - DEBUG - [INFO] help
+2019-09-26 21:13:53,275 - util.py[line: 54] - DEBUG - [INFO] set picture default load directory.
+2019-09-26 21:14:03,671 - util.py[line: 54] - DEBUG - [INFO] set picture default load directory successful, new directory is : C:/Study/test/bone/100-gt
+2019-09-26 21:14:07,384 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-5-4.91_new.png
+2019-09-26 21:14:10,042 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 21:14:10,043 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2019-09-26 21:14:10,043 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-5-4.91_new.png, estimate age: 34 ¡À 6 month
+2019-09-26 21:14:16,403 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-8-10.81_new.png
+2019-09-26 21:14:17,400 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2019-09-26 21:14:17,401 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2019-09-26 21:14:17,402 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-8-10.81_new.png, estimate age: 34 ¡À 6 month

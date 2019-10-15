@@ -13,14 +13,3 @@ def func(x,a,b):
     return a*np.exp(b/x)
 popt, pcov = curve_fit(func, x, y)
 print(popt)
-a = popt[0] # popt里面是拟合系数，读者可以自己help其用法
-b = popt[1]
-yvals = func(x,a,b)
-plot1 = plt.plot(x, y, '*',label='original values')
-plot2 = plt.plot(x, yvals, 'r',label='curve_fit values')
-plt.xlabel('x axis')
-plt.ylabel('y axis')
-plt.legend(loc=4) 	# 指定legend的位置,读者可以自己help它的用法
-plt.title('curve_fit')
-plt.show()
-# plt.savefig('p2.png')

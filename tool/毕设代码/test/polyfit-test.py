@@ -17,6 +17,5 @@ plt.ylabel('y axis')
 plt.legend(loc=4) # 指定legend的位置,读者可以自己help它的用法
 plt.title('polyfitting')
 plt.show()
-plt.savefig('p1.png')
 
 

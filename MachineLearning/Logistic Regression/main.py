@@ -122,11 +122,8 @@ if __name__ == '__main__':
 
 	print("\npredicting...")
 	w = loadModel("weight")
-	# print(w)
+	print(w)
 	feature, label = loadData("test_data", skip=False)
 	# 预测
 	h = prefict(feature, w, 0.5)
 	# print(h)
-
-
-

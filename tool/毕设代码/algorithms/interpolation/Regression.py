@@ -23,9 +23,9 @@ def getModel(modelName):
 		"ElasticNet" : linear_model.ElasticNet(alpha=0.001,max_iter=10000),
 		"GradientBoosting" : linear_model.GradientBoostingRegressor(),
 		"SVR" : linear_model.SVR(),
-		"" : linear_model.XGBRegressor(), 
-		"" : linear_model.AdaBoostRegressor(n_estimators=50),
-		"" : linear_model.BaggingRegressor(),
+		"XGB" : linear_model.XGBRegressor(), 
+		"AdaBoost" : linear_model.AdaBoostRegressor(n_estimators=50),
+		"Bagging" : linear_model.BaggingRegressor(),
 	}
 
 	return modelDict[modelName]

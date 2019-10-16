@@ -18,9 +18,9 @@ class GA(object):
         self.pm = pm    # 变异概率
         self.population = []
 
-    def initPopulation(self):
+    def initPopulation(self, featureSize):
         """初始化种群"""
-        self.population = [[random.randint(0, 1) for i in range(self.chromosomeLength)] for j in range(self.populationSize)]
+        self.population = [[[random.randint(0, 1) for i in range(self.chromosomeLength)] for _ in range(featureSize)] for j in range(self.populationSize)]
 
         # return population
     def calcObjValue(self):
@@ -51,9 +51,10 @@ class GA(object):
         """变异"""
         pass
 
-    def fit(self):
+    def fit(self, feature, labels):
         """训练"""
-        self.initPopulation()
+        w, h = np.shape(feature)
+        self.initPopulation(w)
         ret = []
         for it in range(self.maxIter):
             objValue = self.calcObjValue()

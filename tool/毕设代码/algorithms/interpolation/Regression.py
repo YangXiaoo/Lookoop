@@ -14,17 +14,25 @@ from util import io
 def getModel(modelName):
 	"""选择模型"""
 	modelDict = {
+		"Linear" : linear_model.LinearRegression(),
 		"Ridge": linear_model.Ridge(alpha=0.5, copy_X=True, fit_intercept=True, max_iter=None,
 	      	normalize=False, random_state=None, solver='auto', tol=0.001),
 		"Lasso" : linear_model.Lasso(alpha=0.1, copy_X=True, fit_intercept=True, max_iter=1000,
    			normalize=False, positive=False, precompute=False, random_state=None,
-   			selection='cyclic', tol=0.0001, warm_start=False)
+   			selection='cyclic', tol=0.0001, warm_start=False),
+		"ElasticNet" : linear_model.ElasticNet(alpha=0.001,max_iter=10000),
+		"GradientBoosting" : linear_model.GradientBoostingRegressor(),
+		"SVR" : linear_model.SVR(),
+		"" : linear_model.XGBRegressor(), 
+		"" : linear_model.AdaBoostRegressor(n_estimators=50),
+		"" : linear_model.BaggingRegressor(),
 	}
 
 	return modelDict[modelName]
 
 def train(reg, X, Y):
-	"""ridge模型
+	"""
+	@param reg 训练模型
 	@param X 训练数据
 	@param Y 标签
 	"""
@@ -40,11 +48,13 @@ def main():
 	labelsFilePath = "../../data/samples-data-labels.data"
 	X = io.getData(dataFilePath)
 	Y = io.getData(labelsFilePath)
-	modelName = "Lasso"
-	reg = getModel(modelName)
+	modelNames = ["Linear", "Ridge", "Lasso", "ElasticNet"]
+	for modelName in modelNames:
+		modelName = "ElasticNet"
+		reg = getModel(modelName)
 
-	model = train(reg, X, Y)
-	io.saveData(model, "../../data/{}.model".format(modelName))
+		model = train(reg, X, Y)
+		io.saveData(model, "../../data/{}.model".format(modelName))
 
 if __name__ == '__main__':
 	main()

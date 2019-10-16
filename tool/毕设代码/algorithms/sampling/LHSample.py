@@ -21,35 +21,39 @@ def LHSample(D, bounds, N):
     @return 样本数据
     '''
     result = np.empty([N, D])
-    temp = np.empty([N])
+    tmp = np.empty([N])
     d = 1.0 / N
 
     for i in range(D):
         for j in range(N):
-            temp[j] = np.random.uniform(low=j * d, high=(j + 1) * d, size=1)[0]
-        np.random.shuffle(temp)
+            tmp[j] = np.random.uniform(low=j * d, high=(j + 1) * d, size=1)[0]
+        np.random.shuffle(tmp)
         for j in range(N):
-            result[j, i] = temp[j]
+            result[j, i] = tmp[j]
     # 对样本数据进行拉伸
     b = np.array(bounds)
-    lower_bounds = b[:,0]
-    upper_bounds = b[:,1]
-    if np.any(lower_bounds > upper_bounds):
+    lowerBounds = b[:,0]
+    upperBounds = b[:,1]
+    if np.any(lowerBounds > upperBounds):
         print('范围出错')
         return None
 
-    np.add(np.multiply(result,
-                       (upper_bounds - lower_bounds),
-                       out=result),
-           lower_bounds,
+    np.add(np.multiply(result, (upperBounds - lowerBounds), out=result),
+           lowerBounds,
            out=result)
 
     return result
 
 if __name__ =='__main__':
-    D = 6
+    D = 18
     N = 30
-    bounds = [[-100, 100], [-100, 100], [-100, 100], [-100, 100], [-100, 100], [-100, 100]]
+    bounds = [[-100, 100], [-100, 100], [-100, 100], 
+              [-100, 100], [-100, 100], [-100, 100],
+              [-100, 100], [-100, 100], [-100, 100],
+              [-100, 100], [-100, 100], [-100, 100],
+              [-100, 100], [-100, 100], [-100, 100],
+              [-100, 100], [-100, 100], [-100, 100],
+              ]
     dataSavePath = "../../data/samples-data.data"
     samples = LHSample(D,bounds,N)
     XY = np.array(samples)

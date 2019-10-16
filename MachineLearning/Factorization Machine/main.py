@@ -107,6 +107,7 @@ if __name__ == '__main__':
     data_file = "data.txt"
     feature, label = loadData(data_file)
     w0, w, v = train(np.mat(feature), label, 3, 5000, 0.001)
-    predict_result = getPredict(np.mat(feature), w0, w, v)
-    accurancy = getAccurancy(predict_result, label)
-    print("Accurancy: %.5f" % accurancy)
+    print("w0：{}, w:{}, v:{}".format(w0, w, v))
+    # predict_result = getPredict(np.mat(feature), w0, w, v)
+    # accurancy = getAccurancy(predict_result, label)
+    # print("Accurancy: %.5f" % accurancy)

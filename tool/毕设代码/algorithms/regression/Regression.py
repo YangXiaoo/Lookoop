@@ -6,6 +6,13 @@ import sys
 sys.path.append('../../')
 
 from sklearn import linear_model
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, ExtraTreesRegressor, AdaBoostRegressor, BaggingRegressor
+from sklearn.svm import SVR, LinearSVR
+from sklearn.kernel_ridge import KernelRidge
+from sklearn.tree import DecisionTreeRegressor
+from sklearn.neighbors import KNeighborsRegressor
+from xgboost import XGBRegressor
+
 import numpy as np
 import pickle 
 
@@ -21,11 +28,11 @@ def getModel(modelName):
    			normalize=False, positive=False, precompute=False, random_state=None,
    			selection='cyclic', tol=0.0001, warm_start=False),
 		"ElasticNet" : linear_model.ElasticNet(alpha=0.001,max_iter=10000),
-		"GradientBoosting" : linear_model.GradientBoostingRegressor(),
-		"SVR" : linear_model.SVR(),
-		"XGB" : linear_model.XGBRegressor(), 
-		"AdaBoost" : linear_model.AdaBoostRegressor(n_estimators=50),
-		"Bagging" : linear_model.BaggingRegressor(),
+		"GradientBoosting" : GradientBoostingRegressor(),
+		"SVR" : SVR(),
+		"XGB" : XGBRegressor(), 
+		"AdaBoost" : AdaBoostRegressor(n_estimators=50),
+		"Bagging" : BaggingRegressor(),
 	}
 
 	return modelDict[modelName]
@@ -50,7 +57,6 @@ def main():
 	Y = io.getData(labelsFilePath)
 	modelNames = ["Linear", "Ridge", "Lasso", "ElasticNet"]
 	for modelName in modelNames:
-		modelName = "ElasticNet"
 		reg = getModel(modelName)
 
 		model = train(reg, X, Y)

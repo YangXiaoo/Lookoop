@@ -35,3 +35,4 @@ interview/util/mergeFiles.py
 *.pyc
 MachineLearning/TensorFlow/image-clssifier/GUI.rar
 *.2019-09-25
+*.model

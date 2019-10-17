@@ -8,7 +8,6 @@ import random
 y = 10 * math.sin(5 * x) + 7 * math.cos(4 * x)
 """
 
-
 def main():
     print('y = 10 * math.sin(5 * x) + 7 * math.cos(4 * x)')
     plot_obj_func()
@@ -23,7 +22,7 @@ def main():
     pop = init_population(pop_size, chromosome_length)
     best_X = []
     best_Y = []
-    for i in range(iter):
+    for it in range(iter):
         obj_value = calc_obj_value(pop, chromosome_length, upper_limit)  # 个体评价，有负值
         fit_value = calc_fit_value(obj_value)  # 个体适应度，不好的归0，可以理解为去掉上面的负值
         best_individual, best_fit = find_best(pop, fit_value)  # 第一个是最优基因序列, 第二个是对应的最佳个体适度
@@ -37,10 +36,11 @@ def main():
         crossover(pop, pc)  # 染色体交叉（最优个体之间进行0、1互换）
         mutation(pop, pm)  # 染色体变异（其实就是随机进行0、1取反）
         # 最优解的变化
-        if iter % 20 == 0:
-            best_X.append(results[-1][0])
-            best_Y.append(results[-1][1])
-    print("x = %f, y = %f" % (results[-1][0], results[-1][1]))
+        # if it % 20 == 0:
+        print("iter:{}".format(it))
+        best_X.append(results[-1][0])
+        best_Y.append(results[-1][1])
+        print("x = %f, y = %f" % (results[-1][0], results[-1][1]))
     # 看种群点的选择
     plt.scatter(best_X, best_Y, s=3, c='r')
     X1 = [i / float(10) for i in range(0, 100, 1)]

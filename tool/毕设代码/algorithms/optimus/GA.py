@@ -13,19 +13,20 @@ class FormulationHandler(object):
         pass
 
 class GAHandler(object):
-    def __init__(self, func, featureSize, populationSize, upperLimit, lowerLimit, chromosomeLength, maxIter, pc, pm, threshedValue):
+    def __init__(self, func, featureSize, populationSize, upperLimit, lowerLimit, chromosomeLength, maxIter, pc, pm, isMax, threshedValue):
         self.func = func
         self.featureSize = featureSize  # 特征长度
-        self.populationSize = populationSize
+        self.populationSize = populationSize    # 种群大小
         self.upperLimit = upperLimit    # 自变量的上界
         self.lowerLimit = lowerLimit    # 自变量的下界
-        self.threshedValue = 10
+        self.threshedValue = 10         # 加速求解的阈值
         self.chromosomeLength = chromosomeLength
-        self.maxIter = maxIter 
-        self.printBase = 10
+        self.maxIter = maxIter          # 最大迭代数
+        self.printBase = 1              # 打印间隔
         self.pc = pc    # 杂交概率
         self.pm = pm    # 变异概率
         self.population = []
+        self.isMax = isMax   # 是否求极大值
 
     def initPopulation(self):
         """初始化种群"""
@@ -38,13 +39,13 @@ class GAHandler(object):
         """解编码并计算"""
         # print("[INFO] decode chromosome")
         ret = []
-        for r in self.population:
+        for _, r in enumerate(self.population):
             tmpRet = []
-            for c in r:
+            for k, c in enumerate(r):
                 tmpValue = 0
                 for i, coff in enumerate(c):
                     tmpValue += coff * (2**i)
-                tmpValue = self.lowerLimit + tmpValue * (self.upperLimit - self.lowerLimit) / (2**self.chromosomeLength - 1)   # https://blog.csdn.net/robert_chen1988/article/details/79159244
+                tmpValue = self.lowerLimit[k] + tmpValue * (self.upperLimit[k] - self.lowerLimit[k]) / (2**self.chromosomeLength - 1)   # https://blog.csdn.net/robert_chen1988/article/details/79159244
                 tmpRet.append(tmpValue)
             ret.append(tmpRet)
         return ret
@@ -78,14 +79,19 @@ class GAHandler(object):
         return fitValue
 
     def findBest(self, fitValue):
-        """找到评分最高的值"""
+        """找到最优解"""
         # print("[INFO] find best score value")
         bestIndividual = self.population[0]
         bestFit = fitValue[0]
         for i in range(1, len(self.population)):
-            if fitValue[i] > bestFit:
-                bestFit = fitValue[i]
-                bestIndividual = self.population[i]
+            if self.isMax:
+                if fitValue[i] > bestFit:
+                    bestFit = fitValue[i]
+                    bestIndividual = self.population[i]
+            else:
+                if fitValue[i] < bestFit:
+                    bestFit = fitValue[i]
+                    bestIndividual = self.population[i]
 
         return bestIndividual, bestFit
 
@@ -97,7 +103,7 @@ class GAHandler(object):
             curValue = 0
             for j in range(len(r)):
                 curValue += r[j] * 2 ** j
-            curValue = self.lowerLimit + curValue * (self.upperLimit - self.lowerLimit) / (2**self.chromosomeLength - 1)
+            curValue = self.lowerLimit[i] + curValue * (self.upperLimit[i] - self.lowerLimit[i]) / (2**self.chromosomeLength - 1)
             decimal[i] = curValue
 
         return decimal
@@ -156,6 +162,7 @@ class GAHandler(object):
         print("[INFO] starting fit")
         self.initPopulation()
         ret = []
+        bestIter = 0
         for it in range(self.maxIter):
             objValue = self.calcObjValue()
             fitValue = self.calcFitValue(objValue)
@@ -164,7 +171,18 @@ class GAHandler(object):
             if len(bestIndividual) == 0:
                 assert False, "best individual is empty"
 
-            ret = [self.bin2Decimal(bestIndividual), bestFit]
+            curValue = [self.bin2Decimal(bestIndividual), bestFit]
+            if len(ret) == 0:
+                ret = curValue
+            else:
+                if self.isMax:
+                    if ret[-1] < curValue[-1]:
+                        ret = curValue
+                        bestIter = it
+                else:
+                    if ret[-1] > curValue[-1]:
+                        ret = curValue
+                        bestIter = it
             # print("[DEBUG] iter: {}, bestIndividual: {}, bestFit: {}".format(it, bestIndividual, bestFit))
             # ret.append([self.bin2Decimal(bestIndividual), bestFit])
             # print("[DEBUG] iter: {}, ret: {}".format(it, ret))
@@ -173,11 +191,12 @@ class GAHandler(object):
             self.intersect()            # 交叉
             self.mutation()             # 变异
 
-            # if (it % self.printBase == 0) or (it == (self.maxIter - 1)):
-            print("iter: {}, best fit : {}".format(it, ret))
-            # print("iter: {}, optimus value: {}".format(it, bestFit))
+            if (it % self.printBase == 0) or (it == (self.maxIter - 1)):
+                print("iter: {}, best iter: {}, cur best fit : {}".format(it, bestIter, ret))
+                # print("iter: {}, optimus value: {}".format(it, bestFit))
 
 class GA(GAHandler):
-    def __init__(self, func, featureSize, populationSize, upperLimit, lowerLimit, chromosomeLength, maxIter=1000, pc=0.6, pm=0.01, threshedValue=10):
-        super(GA, self).__init__(func, featureSize, populationSize, upperLimit, lowerLimit, chromosomeLength, maxIter, pc, pm, threshedValue)
+    """极大值"""
+    def __init__(self, func, featureSize, populationSize, upperLimit, lowerLimit, chromosomeLength, maxIter=1000, pc=0.6, pm=0.01, isMax=True, threshedValue=10):
+        super(GA, self).__init__(func, featureSize, populationSize, upperLimit, lowerLimit, chromosomeLength, maxIter, pc, pm, isMax, threshedValue)
 

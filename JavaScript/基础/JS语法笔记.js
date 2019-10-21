@@ -48,6 +48,8 @@ var2 = 2;		// 没有使用var声明，可以配置全局属性，可以删除
 constructor	返回创建字符串属性的函数
 length	返回字符串的长度
 prototype	允许您向对象添加属性和方法
+
+
 // 字符串函数
 charAt()	返回指定索引位置的字符
 charCodeAt()	返回指定索引位置字符的 Unicode 值
@@ -70,6 +72,57 @@ toString()	返回字符串对象值
 toUpperCase()	把字符串转换为大写
 trim()	移除字符串首尾空白
 valueOf()	返回某个字符串对象的原始值
+
+// 数组函数
+// https://blog.csdn.net/qq_39132756/article/details/85007082
+concat()    连接两个或更多的数组，并返回结果。
+join()  把数组的所有元素放入一个字符串。元素通过指定的分隔符进行分隔。
+pop()   删除并返回数组的最后一个元素
+push()  向数组的末尾添加一个或更多元素，并返回新的长度。
+reverse()   颠倒数组中元素的顺序。
+shift() 删除并返回数组的第一个元素
+unshift()：方法可向数组的开头添加一个或更多元素，并返回新的长度
+slice(start , end) 从某个已有的数组返回选定的元素, end可选
+sort()  对数组的元素进行排序
+splice()    删除元素，并向数组添加新元素。
+toSource()  返回该对象的源代码。
+toString()  把数组转换为字符串，并返回结果。
+toLocaleString()    把数组转换为本地数组，并返回结果。
+valueOf()   返回数组对象的原始值
+indexOf(item,start) （从数组的开头（位置 0）开始向后查找）tem： 必须。查找的元素。start：可选的整数参数。规定在数组中开始检索的位置。如省略该参数，则将从array[0]开始检索。
+lastIndexOf(item,start) （从数组的末尾开始向前查找）item： 必须。查找的元素。start：可选的整数参数。规定在数组中开始检索的位置。如省略该参数，则将从 array[array.length-1]开始检索。
+
+array.forEach(function(currentValue , index , arr){//do something}, thisValue)
+currentValue : 必需。当前元素
+index： 可选。当前元素的索引值。
+arr :  可选。当前元素所属的数组对象。
+thisValue： 可选。传递给函数的值一般用 "this" 值。如果这个参数为空， "undefined" 会传递给 "this" 值
+
+array.map(function(currentValue , index , arr){//do something}, thisValue)  ， 指映射，方法返回一个新的数组
+array.filter(function(currentValue , index , arr){//do something}, thisValue) 过滤”功能，方法创建一个新数组, 其包含通过所提供函数实现的测试的所有元素
+array.every(function(currentValue , index , arr){//do something}, thisValue) 判断数组中每一项都是否满足条件，只有所有项都满足条件，才会返回true。
+array.some(function(currentValue , index , arr){//do something}, thisValue) 判断数组中是否存在满足条件的项，只要有一项满足条件，就会返回true。
+归并方法：reduce()、reduceRight()
+Array.from() 方法是用于类似数组的对象（即有length属性的对象）和可遍历对象转为真正的数组。
+    let json ={
+        '0':'卢',
+        '1':'本',
+        '2':'伟',
+        length:3
+    }
+    let arr = Array.from(json);
+    console.log(arr); // ["卢", "本", "伟"]
+
+Array.of() 方法是将一组值转变为数组，参数不分类型，只分数量，数量为0返回空数组
+fill()方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引。 语法：array.fill(value,  start,  end)
+
+includes(searchElement ,  fromIndex) 方法用来判断一个数组是否包含一个指定的值，如果是返回 true，否则false。
+searchElement ： 必须。需要查找的元素值。
+fromIndex：可选。从该索引处开始查找 searchElement。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。默认为 0。
+
+遍历数组方法 keys()、values()、entries()
+这三个方法都是返回一个遍历器对象，可用for...of循环遍历，唯一区别：keys()是对键名的遍历、values()对键值的遍历、entries()是对键值对的遍历。
+
 
 // 运算符
 x = 5+5;	// 10

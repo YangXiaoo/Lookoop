@@ -2,4 +2,4 @@ function test(str) {
 	console.log(str);
 }
 
-test(3 / 2);
+test([0, 1][false]);

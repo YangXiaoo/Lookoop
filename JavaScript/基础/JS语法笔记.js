@@ -208,3 +208,8 @@ typeof null                   // 返回 object
 
 // 调试
 console.log(c);	//  调试窗口打印值
+
+
+// let与var的区别
+let : 局部变量
+var : 全局变量

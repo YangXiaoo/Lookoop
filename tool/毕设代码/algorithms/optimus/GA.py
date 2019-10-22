@@ -176,11 +176,11 @@ class GAHandler(object):
                 ret = curValue
             else:
                 if self.isMax:
-                    if ret[-1] < curValue[-1]:
+                    if ret[-1] <= curValue[-1]:
                         ret = curValue
                         bestIter = it
                 else:
-                    if ret[-1] > curValue[-1]:
+                    if ret[-1] >= curValue[-1]:
                         ret = curValue
                         bestIter = it
             # print("[DEBUG] iter: {}, bestIndividual: {}, bestFit: {}".format(it, bestIndividual, bestFit))

@@ -20,7 +20,7 @@ def file(dirpath):
 
 def handle(files):
     res = []
-    suffix = [".py", ".c", ".cpp", ".java", ".sql"]
+    suffix = [".py", ".c", ".cpp", ".java", ".sql", ".js"]
     for f in files:
         file_suffix = os.path.splitext(f)[1]
         if file_suffix in suffix:

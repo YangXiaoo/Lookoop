@@ -84,15 +84,23 @@ class GAHandler(object):
         bestIndividual = self.population[0]
         bestFit = fitValue[0]
         for i in range(1, len(self.population)):
+            if fitValue[i] <= 0:    # 保证 bestFit > 0
+                continue
+            if bestFit <= 0:
+                bestIndividual = self.population[i]
+                bestFit = fitValue[i]
+                continue
             if self.isMax:
-                if fitValue[i] > bestFit:
+                if fitValue[i] >= bestFit:
                     bestFit = fitValue[i]
                     bestIndividual = self.population[i]
             else:
-                if fitValue[i] < bestFit:
+                if fitValue[i] <= bestFit:
                     bestFit = fitValue[i]
                     bestIndividual = self.population[i]
-
+        if bestFit <= 0:
+            print("[WARNING] cur iter cant find best results.")
+            bestFit = float("inf")
         return bestIndividual, bestFit
 
     def bin2Decimal(self, bestIndividual):

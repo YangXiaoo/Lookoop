@@ -33,7 +33,7 @@ class MyProblem(ea.Problem): # 继承Problem父类
         pop.ObjV = x
     
     def loadModel(self):
-        modelName = "Linear"
+        modelName = "ElasticNet"
         modelPath = "../../data/{}.model".format(modelName)
         model = pickle.load(open(modelPath, 'rb'))
 

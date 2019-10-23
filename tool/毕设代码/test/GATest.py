@@ -12,7 +12,7 @@ from algorithms.optimus import GA
 from util import io 
 
 def testMultiVar():
-	modelName = "Linear"
+	modelName = "ElasticNet"
 	modelPath = "../data/{}.model".format(modelName)
 	func = io.getData(modelPath)
 	featureSize = 18
@@ -57,4 +57,4 @@ def testSingleVar():
 	ga.fit()
 
 if __name__ == '__main__':
-	testSingleVar()
+	testMultiVar()

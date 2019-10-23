@@ -7,6 +7,7 @@ import numpy as np
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 import pickle
 from util import io
+import random
 
 def LHSample(D, bounds, N):
     '''超拉丁立方抽样
@@ -60,7 +61,7 @@ if __name__ =='__main__':
     io.saveData(XY, dataSavePath)
 
     labelsFilePath = "../../data/samples-data-labels.data"
-    Y = np.array([x for x in range(N)])
+    Y = np.array([random.random() for x in range(N)])
     io.saveData(Y, labelsFilePath)
 
     print("X: {}, Y:{}".format(XY, Y))

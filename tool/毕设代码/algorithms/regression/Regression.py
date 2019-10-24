@@ -55,7 +55,7 @@ def main():
 	labelsFilePath = "../../data/samples-data-labels.data"
 	X = io.getData(dataFilePath)
 	Y = io.getData(labelsFilePath)
-	modelNames = ["Linear", "Ridge", "Lasso", "ElasticNet"]
+	modelNames = ["Linear", "Ridge", "Lasso", "ElasticNet", "GradientBoosting"]
 	for modelName in modelNames:
 		reg = getModel(modelName)
 

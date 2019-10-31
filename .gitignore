@@ -56,3 +56,4 @@ tool/毕设代码/test/geatpyDemo/Result/Phen.csv
 tool/毕设代码/test/geatpyDemo/Result/ObjV.csv
 tool/毕设代码/test/geatpyDemo/Result/FitnV.csv
 tool/毕设代码/test/geatpyDemo/Result/Chroms0.csv
+*.data

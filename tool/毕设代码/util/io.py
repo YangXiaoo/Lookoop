@@ -9,7 +9,7 @@ def saveData(data, path):
     fp.close()
 
 def getData(dataFilePath):
-	"""读取数据"""
-	data = pickle.load(open(dataFilePath, 'rb'))
+    """读取数据"""
+    data = pickle.load(open(dataFilePath, 'rb'))
 
-	return data 
+    return data 

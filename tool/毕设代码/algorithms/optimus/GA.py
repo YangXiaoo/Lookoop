@@ -56,7 +56,6 @@ class GAHandler(object):
         objValue = []
         X = self.decodeChromosome()
         for r in X:
-            # print("[DEBUG] value in population is : {}".format(r))
             curValue = self.func.predict(np.array([r]))
             # print("[DEBUG] cur predict Value : {}".format(curValue))
             objValue.append(curValue[0])
@@ -70,8 +69,8 @@ class GAHandler(object):
         for v in objValue:
             curValue = v
             # 加速收敛
-            # if v < self.threshedValue:
-            #     curValue = self.lowerLimit
+            if v < 0:
+                curValue = 0
             # if v > self.upperLimit:
             #     curValue = self.upperLimit
             fitValue.append(curValue)
@@ -123,9 +122,11 @@ class GAHandler(object):
 
     def selection(self, fitValue):
         """轮赌法选择"""
-        # print("[INFO] selection")
         pFitValue = []  # 概率
         totalFitValue = sum(fitValue)
+        if totalFitValue == 0:
+            assert False, "ZeroDivisionError: division by zero"
+            
         for i in range(len(fitValue)):
             pFitValue.append(fitValue[i] / totalFitValue)
         self.computeSum(pFitValue)  # 计算累计概率

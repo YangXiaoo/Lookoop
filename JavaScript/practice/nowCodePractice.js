@@ -130,6 +130,8 @@ function functions(flag) {
 
     return getValue();
 }
+
+
 // ---------------------------------------------------------------------------
 function count(start, end) {
     console.log(start);
@@ -148,6 +150,8 @@ function count(start, end) {
 function testCount() {
     var counter = count(0, 10);
 }
+
+
 // ---------------------------------------------------------------------------
 // 实现 fizzBuzz 函数，参数 num 与返回值的关系如下：
 // 1、如果 num 能同时被 3 和 5 整除，返回字符串 fizzbuzz
@@ -176,6 +180,8 @@ function testFizzBuzz() {
     console.log(fizzBuzz(2));
     console.log(fizzBuzz('45'));
 }
+
+
 // ---------------------------------------------------------------------------
 // 将数组 arr 中的元素作为调用函数 fn 的参数
 
@@ -186,6 +192,8 @@ function testFizzBuzz() {
 function argsAsArray(fn, arr) {
     return fn.apply(this, arr);
 }
+
+
 // ---------------------------------------------------------------------------
 // 将函数 fn 的执行上下文改为 obj 对象
 // fn: function () {return this.greeting + ', ' + this.name + '!!!';} 
@@ -235,6 +243,8 @@ function functionFunction(str) {
 function testFunctionFunction() {
     console.log(functionFunction('Hello')('world').toString());
 }
+
+
 // ---------------------------------------------------------------------------
 // 实现函数 makeClosures，调用之后满足如下条件：
 // 1、返回一个函数数组 result，长度与 arr 相同
@@ -261,6 +271,8 @@ function testMakeClosures() {
 
     console.log(makeClosures(arr, fn)[1]());
 }
+
+
 // ---------------------------------------------------------------------------
 // 函数 useArguments 可以接收 1 个及以上的参数。请实现函数 useArguments，
 // 返回所有调用参数相加后的结果。本题的测试参数全部为 Number 类型，不需考虑参数转换。
@@ -275,10 +287,26 @@ function useArguments() {
 function useArguments() {
     return [...arguments].reduce((a, b) => { return a + b; });  // reduce递归
 }
+
+
 // ---------------------------------------------------------------------------
+// 实现函数 callIt，调用之后满足如下条件
+// 1、返回的结果为调用 fn 之后的结果
+// 2、fn 的调用参数为 callIt 的第一个参数之后的全部参数
+function callIt(fn) {
+    return fn.apply(null, Array.prototype.slice.call(arguments, 1));
+}
+
+
 // ---------------------------------------------------------------------------
+
+
 // ---------------------------------------------------------------------------
+
+
 // ---------------------------------------------------------------------------
+
+
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------

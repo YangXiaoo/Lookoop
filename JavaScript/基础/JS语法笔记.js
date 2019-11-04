@@ -40,6 +40,11 @@ var person = new Object;
 - 变量在函数内部没有声明属于全局变量，声明后属于局部变量
 - 函数外部属于全局变量
 - 函数参数只在函数内起作用，是局部变量
+// let与var的区别
+let : 局部变量
+var : 如果不使用var则为全局变量如下
+var2 = 1;   // 全局变量
+
 
 var var1 = 1;	// 不可以配置全局属性，不可以删除
 var2 = 2;		// 没有使用var声明，可以配置全局属性，可以删除
@@ -205,11 +210,6 @@ Array.isArray(arr);
 console.log(c);	//  调试窗口打印值
 console.log(`index: ${index}`)  // 模板打印
 
-
-// let与var的区别
-let : 局部变量
-var : 如果不使用var则为全局变量如下
-var2 = 1;   // 全局变量
 
 // 字符串与数字转换
 parseInt(string)

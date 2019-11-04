@@ -208,7 +208,7 @@ function speak(fn, obj) {
 // 1、返回值为一个函数 f
 // 2、调用返回的函数 f，返回值为按照调用顺序的参数拼接，拼接字符为英文逗号加一个空格，即 ', '
 // 3、所有函数的参数数量为 1，且均为 String 类型
-function functionFunction(str) {
+function functionFunction1(str) {
     var func = function(arg) {
         return str + ', ' + arg;
     }
@@ -216,14 +216,54 @@ function functionFunction(str) {
     return func;
 }
 
+function functionFunction(str) {
+    var args = Array.prototype.slice.call(arguments);   // 将参数变为数组
+    var func = function(str) {
+        var tmpArgs =  Array.prototype.slice.call(arguments);
+
+        return functionFunction.apply(null, args.concat(tmpArgs));
+    }
+    
+    func.toString = () => {
+        return args.join(', ');
+    }
+
+    return func;
+}
+
+
 function testFunctionFunction() {
-    console.log(functionFunction('Hello')('world'));
+    console.log(functionFunction('Hello')('world').toString());
 }
 // ---------------------------------------------------------------------------
+// 实现函数 makeClosures，调用之后满足如下条件：
+// 1、返回一个函数数组 result，长度与 arr 相同
+// 2、运行 result 中第 i 个函数，即 result[i]()，结果与 fn(arr[i]) 相同
+// https://www.nowcoder.com/questionTerminal/578026cd24e3446bbf27fe565473dc26?f=discussion
+function makeClosures(arr, fn) {
+    // 闭包函数
+    var ret = [];
+    arr.forEach((val) => {
+        var f = () => {
+            return fn(val);
+        };
+
+        ret.push(f);
+    });
+    
+    return ret;
+}
+
+function testMakeClosures() {
+    var arr = [1, 2, 3];
+    var fn = function(x) { return x * x; };
+
+    console.log(makeClosures(arr, fn)[1]());
+}
 // ---------------------------------------------------------------------------
 var arr = [1, 2, 2, 3, 4, 2, 2];
 var item = 2;
 
 
 // console.log(testCount());
-testFunctionFunction()
+testMakeClosures()

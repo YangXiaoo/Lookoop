@@ -49,6 +49,9 @@ constructor	返回创建字符串属性的函数
 length	返回字符串的长度
 prototype	允许您向对象添加属性和方法
 
+// function属性
+arguments // 属于数组类，函数不用写形参即可直接访问arguments属性读取参数
+
 
 // 字符串函数
 charAt()	返回指定索引位置的字符
@@ -73,11 +76,14 @@ toUpperCase()	把字符串转换为大写
 trim()	移除字符串首尾空白
 valueOf()	返回某个字符串对象的原始值
 
+
 // 数组函数
 // https://blog.csdn.net/qq_39132756/article/details/85007082
-concat()    连接两个或更多的数组，并返回结果。
+length 数组长度
+concat()    连接两个或更多的数组，并返回结果。 可以用于复制新的数组 newArr = arr1.concat();
 join()  把数组的所有元素放入一个字符串。元素通过指定的分隔符进行分隔。
 pop()   删除并返回数组的最后一个元素
+splice(index,howmany) 删除指定位置元素
 push()  向数组的末尾添加一个或更多元素，并返回新的长度。
 reverse()   颠倒数组中元素的顺序。
 shift() 删除并返回数组的第一个元素
@@ -93,10 +99,10 @@ indexOf(item,start) （从数组的开头（位置 0）开始向后查找）tem�
 lastIndexOf(item,start) （从数组的末尾开始向前查找）item： 必须。查找的元素。start：可选的整数参数。规定在数组中开始检索的位置。如省略该参数，则将从 array[array.length-1]开始检索。
 
 array.forEach(function(currentValue , index , arr){//do something}, thisValue)
-currentValue : 必需。当前元素
-index： 可选。当前元素的索引值。
-arr :  可选。当前元素所属的数组对象。
-thisValue： 可选。传递给函数的值一般用 "this" 值。如果这个参数为空， "undefined" 会传递给 "this" 值
+    currentValue : 必需。当前元素
+    index： 可选。当前元素的索引值。
+    arr :  可选。当前元素所属的数组对象。
+    thisValue： 可选。传递给函数的值一般用 "this" 值。如果这个参数为空， "undefined" 会传递给 "this" 值
 
 array.map(function(currentValue , index , arr){//do something}, thisValue)  ， 指映射，方法返回一个新的数组
 array.filter(function(currentValue , index , arr){//do something}, thisValue) 过滤”功能，方法创建一个新数组, 其包含通过所提供函数实现的测试的所有元素
@@ -117,8 +123,8 @@ Array.of() 方法是将一组值转变为数组，参数不分类型，只分数
 fill()方法用一个固定值填充一个数组中从起始索引到终止索引内的全部元素。不包括终止索引。 语法：array.fill(value,  start,  end)
 
 includes(searchElement ,  fromIndex) 方法用来判断一个数组是否包含一个指定的值，如果是返回 true，否则false。
-searchElement ： 必须。需要查找的元素值。
-fromIndex：可选。从该索引处开始查找 searchElement。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。默认为 0。
+    searchElement ： 必须。需要查找的元素值。
+    fromIndex：可选。从该索引处开始查找 searchElement。如果为负值，则按升序从 array.length + fromIndex 的索引开始搜索。默认为 0。
 
 遍历数组方法 keys()、values()、entries()
 这三个方法都是返回一个遍历器对象，可用for...of循环遍历，唯一区别：keys()是对键名的遍历、values()对键值的遍历、entries()是对键值对的遍历。
@@ -135,39 +141,23 @@ z = "Hello" + 5;	// Hello5
 // 条件运算符
 variablename = (condition)?value1:value2 
 
-// 条件语句
-if (condition1)
-{
-    当条件 1 为 true 时执行的代码
-}
-else if (condition2)
-{
-    当条件 2 为 true 时执行的代码
-}
-else
-{
-  当条件 1 和 条件 2 都不为 true 时执行的代码
-}
 
-// switch
-switch(n)
-{
-    case 1:
-        执行代码块 1
-        break;
-    case 2:
-        执行代码块 2
-        break;
-    default:
-        与 case 1 和 case 2 不同时执行的代码
-}
 
 // for 语句
 var person={fname:"John",lname:"Doe",age:25}; 
-for (x in person)  // for/in 语句循环遍历对象的属性
+for (x in person)  // for/in 语句循环遍历对象的属性,通常不用于遍历数组
 {
     txt = txt + person[x];
 }
+
+// 不可以用于对象
+for( let i of arr){
+    console.log(i);
+}
+
+for(let index in array) {  
+    console.log(index,array[index]);  
+};
 
 // typeof
 typeof "John"                // 返回 string 
@@ -206,10 +196,28 @@ typeof function () {}         // 返回 function
 typeof myCar                  // 返回 undefined (如果 myCar 没有声明)
 typeof null                   // 返回 object
 
+// 判断遍历是否为数组
+alert(arr instanceof Array); // true 
+alert(arr.constructor === Array); // true 
+Array.isArray(arr);
+
 // 调试
 console.log(c);	//  调试窗口打印值
+console.log(`index: ${index}`)  // 模板打印
 
 
 // let与var的区别
 let : 局部变量
-var : 全局变量
+var : 如果不使用var则为全局变量如下
+var2 = 1;   // 全局变量
+
+// 字符串与数字转换
+parseInt(string)
+Number(string)
+
+// 调用函数有3种方式：
+obj.func();
+func.call(obj, args);       // obj为对象，在函数中可以调用对象中的属性
+                            // args: 参数列出, 必须有多少参数列出多少参数
+func.apply(obj, [m,n......]);    // 参数为数组
+func.bind(obj)();    // bind返回为目标函数并不调用所以需要()

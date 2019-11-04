@@ -239,12 +239,13 @@ function testFunctionFunction() {
 // 实现函数 makeClosures，调用之后满足如下条件：
 // 1、返回一个函数数组 result，长度与 arr 相同
 // 2、运行 result 中第 i 个函数，即 result[i]()，结果与 fn(arr[i]) 相同
+
 // https://www.nowcoder.com/questionTerminal/578026cd24e3446bbf27fe565473dc26?f=discussion
 function makeClosures(arr, fn) {
     // 闭包函数
     var ret = [];
     arr.forEach((val) => {
-        var f = () => {
+        var f = () => {     // 还可以使用bind(obj, args); 返回函数指针
             return fn(val);
         };
 
@@ -261,6 +262,28 @@ function testMakeClosures() {
     console.log(makeClosures(arr, fn)[1]());
 }
 // ---------------------------------------------------------------------------
+// 函数 useArguments 可以接收 1 个及以上的参数。请实现函数 useArguments，
+// 返回所有调用参数相加后的结果。本题的测试参数全部为 Number 类型，不需考虑参数转换。
+function useArguments() {
+    var args = Array.prototype.slice.call(arguments);
+    
+    return args.reduce((a, b) => {
+        return a + b;
+    });
+}
+
+function useArguments() {
+    return [...arguments].reduce((a, b) => { return a + b; });  // reduce递归
+}
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
+
+
 var arr = [1, 2, 2, 3, 4, 2, 2];
 var item = 2;
 

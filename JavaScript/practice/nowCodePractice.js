@@ -299,14 +299,125 @@ function callIt(fn) {
 
 
 // ---------------------------------------------------------------------------
+// 实现函数 partialUsingArguments，调用之后满足如下条件：
+// 1、返回一个函数 result
+// 2、调用 result 之后，返回的结果与调用函数 fn 的结果一致
+// 3、fn 的调用参数为 partialUsingArguments 的第一个参数之后的全部参数以及 result 的调用参数
+function partialUsingArguments(fn) {
+    var args = Array.prototype.slice.call(arguments, 1)
+    var ret = function() {  // () => 不能使用匿名函数
+        var curArgsArr = Array.prototype.slice.call(arguments);
+        
+        return fn.apply(null, args.concat(curArgsArr));
+    };
+    
+    return ret;
+}
+function testPartialUsingArguments() {
+    var fn = (a) => { console.log(a); };
+    fn('fn');
+    pn = partialUsingArguments(fn, 'partialUsingArguments');
+    pn('-test');
+}
 
 
 // ---------------------------------------------------------------------------
+// 已知 fn 为一个预定义函数，实现函数 curryIt，调用之后满足如下条件：
+// 1、返回一个函数 a，a 的 length 属性值为 1（即显式声明 a 接收一个参数）
+// 2、调用 a 之后，返回一个函数 b, b 的 length 属性值为 1
+// 3、调用 b 之后，返回一个函数 c, c 的 length 属性值为 1
+// 4、调用 c 之后，返回的结果与调用 fn 的返回值一致
+// 5、fn 的参数依次为函数 a, b, c 的调用参数
+function curryIt(fn) {
+    var len = fn.length;
+    var args = Array.prototype.slice.call(arguments, 1);
+
+    var ret = function() {
+        var curArgs = Array.prototype.slice.call(arguments);
+        Array.prototype.push.apply(args, curArgs);
+
+        if (args.length < len) {
+            return ret;    // call调用多个显示参数, curryIt.call(this, fn, args)
+        }
+
+        return fn.apply(null, args);
+    }
+
+    return ret;
+}
+
+function testCurryIt() {
+    var fn = function (a, b, c) {return a + b + c}; 
+    console.log(curryIt(fn)(1)(2)(3));
+}
 
 
 // ---------------------------------------------------------------------------
+// 完成函数 createModule，调用之后满足如下要求：
+// 1、返回一个对象
+// 2、对象的 greeting 属性值等于 str1， name 属性值等于 str2
+// 3、对象存在一个 sayIt 方法，该方法返回的字符串为 greeting属性值 + ', ' + name属性值
+function createModule(str1, str2) {
+    return {
+        greeting: str1,
+        name: str2,
+        sayIt: function() { return this.greeting + ', ' + this.name; }
+    };
+}
+
+function testCreateModule() {
+    console.log(createModule(12, 33).sayit());
+}
 
 
+// ---------------------------------------------------------------------------
+function valueAtBit(num, bit) {
+    return (num >> (bit - 1)) & 1;
+}
+
+function testValueAtBit() {
+    console.log(valueAtBit(128, 8));
+}
+
+
+// ---------------------------------------------------------------------------
+// 将给定数字转换成二进制字符串。如果字符串长度不足 8 位，则在前面补 0 到满8位
+function convertToBinary(num) {
+    var ret = '';
+    while (num !== 0) {
+        ret = (num & 1) + ret;
+        num >>= 1;
+    }
+    for (let i = (8 - ret.length); i > 0; --i) {
+        ret = '0' + ret;
+    }
+    
+    return ret;
+}
+
+// ---------------------------------------------------------------------------
+// 求 a 和 b 相乘的值，a 和 b 可能是小数，需要注意结果的精度问题
+function multiply(a, b) {
+    var aDec = a.toString().split('.')[1] || '';
+    var bDec = b.toString().split('.')[1] || '';
+
+    var len = aDec.length + bDec.length;
+
+    return (a * b).toFixed(len);
+}
+
+
+// ---------------------------------------------------------------------------
+// 找出对象 obj 不在原型链上的属性(注意这题测试例子的冒号后面也有一个空格~)
+// 1、返回数组，格式为 key: value
+// 2、结果数组不要求顺序
+function iterate(obj) {
+    return Object.getOwnPropertyNames(obj).map((key) => { return `${key}: ${obj[key]}`; });
+}
+
+
+// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
 // ---------------------------------------------------------------------------
@@ -316,5 +427,4 @@ var arr = [1, 2, 2, 3, 4, 2, 2];
 var item = 2;
 
 
-// console.log(testCount());
-testMakeClosures()
+console.log(multiply(3, 0.001));

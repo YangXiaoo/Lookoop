@@ -56,7 +56,15 @@ prototype	允许您向对象添加属性和方法
 
 // function属性
 arguments // 属于数组类，函数不用写形参即可直接访问arguments属性读取参数
+fn.length // 函数参数个数
 
+// 原型属性和实例属性
+    方法                  适用范围            描述
+for..in 数组，               对象        获取可枚举的实例和原型属性名
+Object.keys()               数组，对象   返回可枚举的实例属性名组成的数组
+Object.getPropertyNames()   数组，对象   返回除原型属性以外的所有属性（包括不可枚举的属性）名组成的数组
+Object.getOwnPropertyNames()方法返回一个由指定对象的所有自身属性的属性名（包括不可枚举属性但不包括Symbol值作为名称的属性）组成的数组
+for..of 可迭代对象(Array, Map, Set, arguments等)  返回属性值
 
 // 字符串函数
 charAt()	返回指定索引位置的字符
@@ -212,8 +220,10 @@ console.log(`index: ${index}`)  // 模板打印
 
 
 // 字符串与数字转换
-parseInt(string)
+parseInt(string, type)  // type指定格式转换
 Number(string)
+num.toString(2) // 将数字转换为二进制形式
+toFixed()       // 方法可把 Number 四舍五入为指定小数位数的数字。
 
 // 调用函数有3种方式：
 obj.func();

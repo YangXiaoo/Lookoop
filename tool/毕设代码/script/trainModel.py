@@ -25,7 +25,6 @@ def train():
     """训练stacking模型并保存"""
     X, Y = getTrainData()
     stackModel = model.train_model(X, Y)
-
     io.saveData(stackModel, stackModelSavingPath)
 
 def trainBySingleModel():
@@ -33,6 +32,7 @@ def trainBySingleModel():
     X, Y = getTrainData()
     modelSaving = "../data/singleModel/{}.model"
     names, models = model.getModel()
+
     for n, m in zip(names, models):
         singleModle = model.train_by_model(n, X, Y)
         io.saveData(singleModle, modelSaving.format(n))

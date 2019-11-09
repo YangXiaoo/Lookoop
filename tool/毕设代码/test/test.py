@@ -7,3 +7,4 @@ nums1 = [1,2,3,4]
 nums2 = [5,6,7,8]
 nums1[2:], nums2[2:] = nums2[2:], nums1[2:]
 print(nums1, nums2)
+

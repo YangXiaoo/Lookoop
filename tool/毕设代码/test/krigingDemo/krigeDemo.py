@@ -8,6 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.datasets import fetch_california_housing
 
+# https://pykrige.readthedocs.io/en/latest/overview.html
 from pykrige.rk import RegressionKriging
 from pykrige.compat import train_test_split
 

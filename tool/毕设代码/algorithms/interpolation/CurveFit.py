@@ -23,6 +23,7 @@ def getTrainData():
 
 X, Y = getTrainData()
 
+
 class CurveFitHandler():
     """模板"""
     def __init__(self):
@@ -70,7 +71,10 @@ class CurveFit(CurveFitHandler):
             x3 = data[2]
             x4 = data[3]
             x5 = data[4]
-            tmp = [1, x1, x2, x3, x4, x5, x1*x2, x1*x3, x1*x4, x1*x5, x2*x3, x2*x4, x2*x5, x3*x4, x3*x5, x4*x5, x1**2, x2**2, x3**2, x4**2, x5**2]
+            tmp = [ 1, x1, x2, x3, x4, x5, 
+                    x1*x2, x1*x3, x1*x4, x1*x5, x2*x3, 
+                    x2*x4, x2*x5, x3*x4, x3*x5, x4*x5, 
+                    x1**2, x2**2, x3**2, x4**2, x5**2 ]
             newData.append(tmp)
         newData = np.array(newData)
 

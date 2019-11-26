@@ -23,13 +23,12 @@ try:
 except PermissionError:
     # this dataset can occasionally fail to download on Windows
     sys.exit(0)
-
 # take the first 5000 as Kriging is memory intensive
 p = housing['data'][:5000, :-2] # 房屋的一些信息不包括经度和纬度
 x = housing['data'][:5000, -2:] # 经度和维度
 target = housing['target'][:5000]
 print("[DEBUG] target[:10] : {}".format(target[:10]))
-
+assert False
 p_train, p_test, x_train, x_test, target_train, target_test \
     = train_test_split(p, x, target, test_size=0.3, random_state=42)
 # print("[DEBUG] p_train[:10] : {}".format(p_train[:10]))
@@ -47,6 +46,8 @@ for m in models:
     m_rk.fit(p_train, x_train, target_train)
     print('Regression Score: ', m_rk.regression_model.score(p_test, target_test))
     print('RK score: ', m_rk.score(p_test, x_test, target_test))
+    print("predict: {}".format(m_rk.predict(p_test, x_test)))
+    print("truth value : {}".format(target_test))
 
 # fit(self, p, x, y)
 #  |      fit the regression method and also Krige the residual

@@ -6,7 +6,6 @@ sys.path.append("../../")
 from util import io 
 
 # 使用非线性最小二乘法拟合
-import matplotlib.pyplot as plt
 from scipy.optimize import curve_fit
 import numpy as np
 

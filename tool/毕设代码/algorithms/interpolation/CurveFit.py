@@ -30,7 +30,7 @@ class CurveFitHandler():
         pass
 
     def adaptData():
-        """转换矩阵"""
+        """处理数据"""
         pass 
 
     def fit(self, X, y):
@@ -92,7 +92,6 @@ class CurveFit(CurveFitHandler):
 
         return ret
 
-    
     def predict(self, X):
         """预测
         @param X mxn维数组

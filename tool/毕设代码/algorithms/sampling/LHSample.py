@@ -69,9 +69,10 @@ if __name__ =='__main__':
     print("{} \n\n {}".format(X, Y))
 
 """
-   side-y  side-z bottom-z bottom-x front-x
 # [[  54.04   40.68 -290.76 -111.42   80.6 ]
 
+
+   side-y  side-z bottom-z bottom-x front-x
 [[  42.18 -142.08 -130.84  233.82  124.2 ]  # FFD1
  [ -60.    168.3  -121.16  -56.34  -77.  ]
  [ 285.96 -285.3   -98.88 -228.72   69.96]

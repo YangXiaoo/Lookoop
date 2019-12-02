@@ -1,7 +1,7 @@
 # coding:utf-8
+# 2019/11/5
 """
 将模型训练好并保存
-2019/11/5
 """
 import sys
 sys.path.append("../")

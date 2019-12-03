@@ -45,7 +45,7 @@ def LHSample(D, bounds, N):
 
     return result
 
-if __name__ =='__main__':
+def main():
     D = 5   # 控制点数量
     N = 30
     bounds = [
@@ -67,6 +67,9 @@ if __name__ =='__main__':
 
     print("   side-y  side-z bottom-z bottom-x front-x")
     print("{} \n\n {}".format(X, Y))
+    
+if __name__ =='__main__':
+    # main()
 
 """
 # [[  54.04   40.68 -290.76 -111.42   80.6 ]

@@ -7,6 +7,7 @@ import sys
 sys.path.append("../")
 
 from util import io 
+from util import tool
 import model
 
 dataFilePath = "../data/samples-data.data"
@@ -42,8 +43,21 @@ def testModelPdt():
     stackModel = io.getData(stackModelSavingPath)
     X, Y = getTrainData()
     pdtValue = stackModel.predict(X)
-    print("X-pdt: {}".format(pdtValue))
-    print("Y-val: {}".format(Y))
+    retMSE = tool.computeMSE(pdtValue, Y)
+    print("MSE : {}".format(retMSE))
+    # print("X-pdt: {}".format(pdtValue))
+    # print("Y-val: {}".format(Y))
+
+def testSingleModel():
+    X, Y = getTrainData()
+    modelSaving = "../data/singleModel/{}.model"
+    names, models = model.getModel()
+
+    for n in names:
+        m = io.getData(modelSaving.format(n))
+        pdtValue = m.predict(X)
+        retMSE = tool.computeMSE(pdtValue, Y)
+        print("model: {}, MSE : {}".format(n, retMSE))
 
 if __name__ == '__main__':
-    train()
+    testSingleModel()

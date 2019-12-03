@@ -26,7 +26,7 @@ def getLables():
 			[39193.068],	# FFD4
 			[37650.16],		# FFD5
 			[39066.458],	# FFD6
-			[],	# FFD7
+			[39035.507],	# FFD7
 			[38455.18],		# FFD8
 			[38374.768],	# FFD9
 			[37974.92],		# FFD10
@@ -51,9 +51,9 @@ def getLables():
 			[39062.525],	# FFD29
 			[38227.168],	# FFD30
 			[38967.278],	# FFD31
-		 ]
+		]
 
-	return y 
+	return np.array(y) 
 
 def dataConcate():
 	"""拼接数据"""
@@ -63,9 +63,12 @@ def dataConcate():
 	return ret 
 
 def main():
+	# 处理变形控制点
 	# newData = dataConcate()
 	# print(newData)
 	# io.saveData(newData, dataFilePath)
+
+	# 仿真结果保存
 	y = getLables()
 	io.saveData(y, labelsFilePath)
 

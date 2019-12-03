@@ -1,4 +1,5 @@
 # coding: utf-8
+# 打开notebook的CMD指令： jupyter notebook C:\Study\github\Lookoops\tool\毕设代码 
 import sys
 sys.path.append("../")
 

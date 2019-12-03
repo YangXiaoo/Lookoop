@@ -5,10 +5,13 @@ import sys
 sys.path.append("../../")
 
 from util import io 
+from util import tool
 
 # 使用非线性最小二乘法拟合
 from scipy.optimize import curve_fit
 import numpy as np
+
+from sklearn.model_selection import cross_val_score
 
 dataFilePath = "../../data/samples-data.data"
 labelsFilePath = "../../data/samples-data-labels.data"
@@ -27,11 +30,35 @@ X, Y = getTrainData()
 class CurveFitHandler():
     """模板"""
     def __init__(self):
-        pass
+        self.y = None
+        self.pdtResult = None
 
-    def adaptData():
-        """处理数据"""
-        pass 
+    def adaptData(self, X):
+        """将数据变形为系数矩阵"""
+        newData = []
+        for data in X:
+            # x1 = data[0]
+            # x2 = data[1]
+            # x3 = data[2]
+            # x4 = data[3]
+            # x5 = data[4]
+            # tmp = [ 1, x1, x2, x3, x4, x5, 
+            #         x1*x2, x1*x3, x1*x4, x1*x5, x2*x3, 
+            #         x2*x4, x2*x5, x3*x4, x3*x5, x4*x5, 
+            #         x1**2, x2**2, x3**2, x4**2, x5**2 ]
+            var = [1]   # 常数系数
+            for v in data:
+                var.append(v)
+
+            tmp = []
+            for i in range(len(var)):
+                for j in range(i, len(var)):
+                    tmp.append(var[i]*var[j])
+                    
+            newData.append(tmp)
+        newData = np.array(newData)
+
+        return newData
 
     def fit(self, X, y):
         """训练"""
@@ -45,6 +72,14 @@ class CurveFitHandler():
         """预测"""
         pass
 
+    def getMSE(self):
+        """计算均方误差"""
+        m = np.shape(self.y)[0]
+        tmpSum = 0
+        for i in range(m):
+            tmpSum += abs(self.y[i] - self.pdtResult[i])
+
+        return tmpSum / m
 
 class CurveFit(CurveFitHandler):
     """针对五个变量的例子"""
@@ -59,26 +94,9 @@ class CurveFit(CurveFitHandler):
         """
         if np.shape(y)[0] != 1:
             y = y.reshape(1, len(y))[0]
+        self.y = y
 
         self.coef, pcov = curve_fit(self.amiFunc, X, y)
-
-    def adaptData(self, X):
-        """将数据变形为系数矩阵"""
-        newData = []
-        for data in X:
-            x1 = data[0]
-            x2 = data[1]
-            x3 = data[2]
-            x4 = data[3]
-            x5 = data[4]
-            tmp = [ 1, x1, x2, x3, x4, x5, 
-                    x1*x2, x1*x3, x1*x4, x1*x5, x2*x3, 
-                    x2*x4, x2*x5, x3*x4, x3*x5, x4*x5, 
-                    x1**2, x2**2, x3**2, x4**2, x5**2 ]
-            newData.append(tmp)
-        newData = np.array(newData)
-
-        return newData
 
     def amiFunc(self, x, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10,
                 c11, c12, c13, c14, c15, c16, c17, c18, c19, c20):
@@ -99,16 +117,19 @@ class CurveFit(CurveFitHandler):
         @returns pdt mx1维预测值
         """
         c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20 = self.coef
-        return self.amiFunc(X, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10,
+        self.pdtResult = self.amiFunc(X, c0, c1, c2, c3, c4, c5, c6, c7, c8, c9, c10,
              c11, c12, c13, c14, c15, c16, c17, c18, c19, c20)
 
+        return self.pdtResult
 
 if __name__ == '__main__':
     y = Y.reshape(1, len(Y))[0]
     curveFit = CurveFit()
-    curveFit.fit(X, y)
-    io.saveData(curveFit, curveFitModelSavingPath)  # 保存当前模型
+    # curveFit.fit(X, y)
+    # io.saveData(curveFit, curveFitModelSavingPath)  # 保存当前模型
     # curveFit = io.getData(curveFitModelSavingPath)
-    pdtVDiff = curveFit.predict(X) - y
-    print("[INFO] predict diff : {}".format(pdtVDiff))
+    # pdtVDiff = curveFit.predict(X) - y
+    # print("[INFO] predict mse : {}".format(curveFit.getMSE()))
+    mse = tool.crossValueScore(curveFit, X, y)
+    print("MSE: {}".format(mse))
 

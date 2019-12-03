@@ -28,44 +28,17 @@ def cv_rmse(model, X, y):
 
 def getModel():
     """选择出来的最佳模型"""
-    names = [
-            "LinearRegression",
-            "Ridge",
-            "Lasso",
-            "RandomForestRegressor",
-            "GradientBoostingRegressor",
-            "SVR",
-            "LinearSVR",
-            "ElasticNet",
-            "SGDRegressor",
-            "BayesianRidge",
-            "KernelRidge",
-            "ExtraTreesRegressor",
-            "XGBRegressor",
-            "AdaBoostRegressor",
-            "BaggingRegressor",
-            "DecisionTreeRegressor",
-            "KNeighborsRegressor",
-        ]
-
+    names = []  # 模型名
     models = [
-            LinearRegression(),
-            Ridge(), # http://www.cnblogs.com/pinard/p/6023000.html
-            Lasso(alpha=0.01,max_iter=10000), # https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.Lasso.html
-            RandomForestRegressor(), # https://scikit-learn.org/dev/modules/generated/sklearn.ensemble.RandomForestRegressor.html
-            GradientBoostingRegressor(), # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingRegressor.html
-            SVR(), # https://scikit-learn.org/stable/modules/generated/sklearn.svm.SVR.html#sklearn.svm.SVR
-            LinearSVR(), # https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVR.html
-            ElasticNet(alpha=0.001,max_iter=10000), # https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.ElasticNet.html
-            SGDRegressor(max_iter=10000,tol=1e-3), # https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDRegressor.html
-            BayesianRidge(), # 
-            KernelRidge(alpha=0.6, kernel='polynomial', degree=2, coef0=2.5), # https://scikit-learn.org/stable/modules/generated/sklearn.kernel_ridge.KernelRidge.html
-            ExtraTreesRegressor(), # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesRegressor.html
-            XGBRegressor(), 
-            AdaBoostRegressor(n_estimators=50), # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostRegressor.html
-            BaggingRegressor(), # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingRegressor.html
-            DecisionTreeRegressor(), #https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html
-            KNeighborsRegressor()] # https://scikit-learn.org/0.18/modules/generated/sklearn.neighbors.KNeighborsRegressor.html
+                SVR(epsilon=1000, gamma=0.0001, kernel='rbf'),
+                ElasticNet(alpha=0.001,max_iter=10000), 
+                BayesianRidge(),  
+                ExtraTreesRegressor(min_samples_leaf=0.4, min_samples_split=0.1), 
+                BaggingRegressor(n_estimators=7),
+                KNeighborsRegressor(n_neighbors=19)
+            ]
+    for m in models:
+        names.append(m.__class__.__name__)
 
     return names, models
 

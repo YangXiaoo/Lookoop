@@ -1,13 +1,7 @@
 # coding:utf-8
 import math
 
-class A():
-	def f(self, a, b):
-		print(a,b)
 
-class B(A):
-	def f(self, a):
-		print(a)
-
-t = B()
-t.f('a', 'b')
+nums = [[i] for i in range(10)]
+index = [0, 2, 4]
+print(nums[index])

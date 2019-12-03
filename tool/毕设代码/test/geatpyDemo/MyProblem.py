@@ -8,12 +8,12 @@ class MyProblem(ea.Problem): # 继承Problem父类
         name = 'MyProblem' # 初始化name（函数名称，可以随意设置）
         M = 1 # 初始化M（目标维数）
         maxormins = [1] # 初始化maxormins（目标最小最大化标记列表，1：最小化该目标；-1：最大化该目标）
-        self.Dim = 18 # 初始化self.Dim（决策变量维数）
+        self.Dim = 5 # 初始化self.Dim（决策变量维数）
         varTypes = [0 for _ in range(self.Dim)] # 初始化varTypes（决策变量的类型，元素为0表示对应的变量是连续的；1表示是离散的）
-        lb = [-100 for _ in range(self.Dim)] # 决策变量下界
-        ub = [100 for _ in range(self.Dim)] # 决策变量上界
-        lbin = [1] * self.Dim # 决策变量下边界
-        ubin = [1] * self.Dim # 决策变量上边界
+        lb = [-300 for _ in range(self.Dim)] # 决策变量下界
+        ub = [300 for _ in range(self.Dim)] # 决策变量上界
+        lbin = [1, 1, 1, 1, 0.7]
+        ubin = [1, 1, 0.3, 1, 0.7]
         # 调用父类构造方法完成实例化
         ea.Problem.__init__(self, name, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
     
@@ -33,7 +33,7 @@ class MyProblem(ea.Problem): # 继承Problem父类
         pop.ObjV = x
     
     def loadModel(self):
-        modelName = "ElasticNet"
+        modelName = "singleModel/ElasticNet"
         modelPath = "../../data/{}.model".format(modelName)
         model = pickle.load(open(modelPath, 'rb'))
 

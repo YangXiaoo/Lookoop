@@ -2,12 +2,24 @@
 import os
 import logging
 import logging.handlers
+import configparser # 读写配置
 import datetime
 import time
 
 import numpy as np
 from sklearn.model_selection import KFold
 
+def mkdirs(file_list):
+    """创建文件目录"""
+    if isinstance(file_list, list):
+        for f in file_list:
+            if not os.path.isdir(f):
+                os.makedirs(f)
+    else:
+        if not os.path.isdir(file_list):
+            os.makedirs(file_list)
+    return 
+    
 def getLogger(logger_path):
     """设置日志"""
     if logger_path:
@@ -35,6 +47,14 @@ def getLogger(logger_path):
     logger.addHandler(console)
 
     return logger
+
+def getConfig(configPath):
+    """获取配置方法"""
+    conf = configparser.ConfigParser() # import ConfigParser
+    conf.read(configPath)
+
+    return conf
+
 
 def computeMSE(data1, data2):
     """计算平均绝对误差MSE"""

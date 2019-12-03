@@ -2,7 +2,7 @@
 # 2019/11/25
 """多元二次响应面拟合"""
 import sys
-sys.path.append("../../")
+sys.path.append("../")
 
 from util import io 
 from util import tool
@@ -11,9 +11,9 @@ from util import tool
 from scipy.optimize import curve_fit
 import numpy as np
 
-dataFilePath = "../../data/samples-data.data"
-labelsFilePath = "../../data/samples-data-labels.data"
-curveFitModelSavingPath = "../../data/quadraticRegression.model"
+dataFilePath = "../data/samples-data.data"
+labelsFilePath = "../data/samples-data-labels.data"
+curveFitModelSavingPath = "../data/quadraticRegression.model"
 
 def getTrainData():
     """获取训练数据"""

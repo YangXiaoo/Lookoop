@@ -49,7 +49,7 @@ def main():
     D = 5   # 控制点数量
     N = 30
     bounds = [
-                [-300, 300],       # side y
+                [-300, 300],    # side y
                 [-300, 300],    # side z
                 [-300, 100],    # bottom z
                 [-300, 300],    # bottom x

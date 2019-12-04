@@ -45,9 +45,10 @@ class MyProblem(ea.Problem): # 继承Problem父类
         # 调用父类构造方法完成实例化
         ea.Problem.__init__(self, name, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
     
-    def aimFunc(self, pop): # 目标函数
+    def aimFunc(self, pop):
+    	"""自定义目标函数"""
         model = self.loadModel()
-        X = pop.Phen # 得到决策变量矩阵
+        X = pop.Phen
         # logger.info(X)
         feature = []
         for i in range(self.Dim):
@@ -61,23 +62,25 @@ class MyProblem(ea.Problem): # 继承Problem父类
         pop.ObjV = x
     
     def loadModel(self):
+    	"""加载模型"""
         modelPath = modelPathFormat.format(self.modelName)
         model = io.getData(modelPath)
 
         return model
 
 def train(modelName, dim, maxIter):
+	"""训练"""
 	problem = MyProblem(modelName)
-	NIND = dim             # 种群规模
+	NIND = dim 	# 种群规模
 
 	Encoding = 'RI'	# 实整数编码
 	Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)
 	
-	population = ea.Population(Encoding, Field, NIND) # 实例化种群对象（此时种群还没被初始化，仅仅是完成种群对象的实例化）
-	myAlgorithm = ea.soea_SEGA_templet(problem, population) # 实例化一个算法模板对象
+	population = ea.Population(Encoding, Field, NIND)
+	myAlgorithm = ea.soea_SEGA_templet(problem, population)
 	myAlgorithm.MAXGEN = maxIter # 最大进化代数
-	[population, obj_trace, var_trace] = myAlgorithm.run() # 执行算法模板
-	population.save() # 把最后一代种群的信息保存到文件中
+	[population, obj_trace, var_trace] = myAlgorithm.run()
+	population.save()
 
 	# 输出结果
 	best_gen = np.argmin(problem.maxormins * obj_trace[:, 1]) # 记录最优种群个体是在哪一代

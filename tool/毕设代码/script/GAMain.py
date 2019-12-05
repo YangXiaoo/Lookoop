@@ -1,6 +1,7 @@
 # coding:utf-8
 # 2019-12-3
 # 遗传算法寻优
+# 源码路径: C:\Users\Yauno\AppData\Roaming\Python\python36\site-packages
 import sys
 sys.path.append("../")
 
@@ -46,7 +47,7 @@ class MyProblem(ea.Problem): # 继承Problem父类
         # ub = [300 for _ in range(self.Dim)] # 决策变量上界
         lb = [-300, -300, -300, -300, -200]
         ub = [300, 300, 100, 300, 200]
-        lbin = [1, 1, 1, 1, 1]
+        lbin = [1, 1, 1, 1, 1]  # 1表示能取到边界，0表示取不到边界
         ubin = [1, 1, 1, 1, 1]
         # 调用父类构造方法完成实例化
         ea.Problem.__init__(self, name, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
@@ -106,6 +107,7 @@ def mainModelOptimus():
     maxIter = 10000
     names = getModelName()
     for n in names:
+        logger.info("cur params, dim: {}, maxIter: {}".format(dim, maxIter))
         logger.info("optimus model: {}".format(n))
         train(n, dim, maxIter)
 
@@ -117,6 +119,7 @@ def singleModelOptimus():
     maxIter = 10000
     names = getSingleModel()
     for n in names:
+        logger.info("cur params, dim: {}, maxIter: {}".format(dim, maxIter))
         logger.info("optimus model: {}".format(n))
         train(n, dim, maxIter)
 

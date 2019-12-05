@@ -17,13 +17,13 @@ from quadRegresstion import *
 # 日志设置
 LOGGER_PATH = "../log"
 logger = tool.getLogger(LOGGER_PATH)
-logger.setLevel(logging.DEBUG)   # 设置日志级别，设置INFO时时DEBUG不可见
+logger.setLevel(logging.DEBUG)
 
 modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model" # 模型路径format
 singleModelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/singleModel/{}.model"
 
 def getModelName():
-    """选择出来的最佳模型"""
+    """获得选择出来的最佳模型名称"""
     names = []
     names.append("quadraticRegression")
     names.append("stackingModel")
@@ -31,6 +31,7 @@ def getModelName():
     return names
 
 def getSingleModel():
+    """获得单个模型的名称"""
     names, models = model.getModel()
 
     return names
@@ -49,7 +50,6 @@ class MyProblem(ea.Problem): # 继承Problem父类
         ub = [300, 300, 100, 300, 200]
         lbin = [1, 1, 1, 1, 1]  # 1表示能取到边界，0表示取不到边界
         ubin = [1, 1, 1, 1, 1]
-        # 调用父类构造方法完成实例化
         ea.Problem.__init__(self, name, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
     
     def aimFunc(self, pop):

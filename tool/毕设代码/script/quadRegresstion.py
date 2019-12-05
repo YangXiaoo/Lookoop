@@ -32,16 +32,6 @@ class CurveFitHandler():
         """将数据变形为系数矩阵"""
         newData = []
         for data in X:
-            # x1 = data[0]
-            # x2 = data[1]
-            # x3 = data[2]
-            # x4 = data[3]
-            # x5 = data[4]
-            # tmp = [ 1, x1, x2, x3, x4, x5, 
-            #         x1*x2, x1*x3, x1*x4, x1*x5, x2*x3, 
-            #         x2*x4, x2*x5, x3*x4, x3*x5, x4*x5, 
-            #         x1**2, x2**2, x3**2, x4**2, x5**2 ]
-            var = [1]   # 常数系数
             for v in data:
                 var.append(v)
 

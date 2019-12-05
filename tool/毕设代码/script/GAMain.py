@@ -18,13 +18,19 @@ LOGGER_PATH = "../log"
 logger = tool.getLogger(LOGGER_PATH)
 logger.setLevel(logging.DEBUG)   # 设置日志级别，设置INFO时时DEBUG不可见
 
-modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model"	# 模型路径format
+modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model" # 模型路径format
+singleModelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/singleModel/{}.model"
 
 def getModelName():
     """选择出来的最佳模型"""
     names = []
     names.append("quadraticRegression")
     names.append("stackingModel")
+
+    return names
+
+def getSingleModel():
+    names, models = model.getModel()
 
     return names
 
@@ -46,7 +52,7 @@ class MyProblem(ea.Problem): # 继承Problem父类
         ea.Problem.__init__(self, name, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
     
     def aimFunc(self, pop):
-    	"""自定义目标函数"""
+        """自定义目标函数"""
         model = self.loadModel()
         X = pop.Phen
         # logger.info(X)
@@ -62,45 +68,57 @@ class MyProblem(ea.Problem): # 继承Problem父类
         pop.ObjV = x
     
     def loadModel(self):
-    	"""加载模型"""
+        """加载模型"""
         modelPath = modelPathFormat.format(self.modelName)
         model = io.getData(modelPath)
 
         return model
 
 def train(modelName, dim, maxIter):
-	"""训练"""
-	problem = MyProblem(modelName)
-	NIND = dim 	# 种群规模
+    """训练"""
+    problem = MyProblem(modelName)
+    NIND = dim  # 种群规模
 
-	Encoding = 'RI'	# 实整数编码
-	Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)
-	
-	population = ea.Population(Encoding, Field, NIND)
-	myAlgorithm = ea.soea_SEGA_templet(problem, population)
-	myAlgorithm.MAXGEN = maxIter # 最大进化代数
-	[population, obj_trace, var_trace] = myAlgorithm.run()
-	population.save()
+    Encoding = 'RI' # 实整数编码
+    Field = ea.crtfld(Encoding, problem.varTypes, problem.ranges, problem.borders)
+    
+    population = ea.Population(Encoding, Field, NIND)
+    myAlgorithm = ea.soea_SEGA_templet(problem, population)
+    myAlgorithm.MAXGEN = maxIter # 最大进化代数
+    [population, obj_trace, var_trace] = myAlgorithm.run()
+    population.save()
 
-	# 输出结果
-	best_gen = np.argmin(problem.maxormins * obj_trace[:, 1]) # 记录最优种群个体是在哪一代
-	best_ObjV = obj_trace[best_gen, 1]
-	logger.info('最优的目标函数值为：%s'%(best_ObjV))
-	logger.info('最优的控制变量值为：')
-	for i in range(var_trace.shape[1]):
-	    logger.info(var_trace[best_gen, i])
-	logger.info('有效进化代数：%s'%(obj_trace.shape[0]))
-	logger.info('最优的一代是第 %s 代'%(best_gen + 1))
-	logger.info('评价次数：%s'%(myAlgorithm.evalsNum))
-	logger.info('时间已过 %s 秒'%(myAlgorithm.passTime))
+    # 输出结果
+    best_gen = np.argmin(problem.maxormins * obj_trace[:, 1]) # 记录最优种群个体是在哪一代
+    best_ObjV = obj_trace[best_gen, 1]
+    logger.info('最优的目标函数值为：%s'%(best_ObjV))
+    logger.info('最优的控制变量值为：')
+    for i in range(var_trace.shape[1]):
+        logger.info(var_trace[best_gen, i])
+    logger.info('有效进化代数：%s'%(obj_trace.shape[0]))
+    logger.info('最优的一代是第 %s 代'%(best_gen + 1))
+    logger.info('评价次数：%s'%(myAlgorithm.evalsNum))
+    logger.info('时间已过 %s 秒'%(myAlgorithm.passTime))
 
-def main():
-	dim = 10000
-	maxIter = 10000
-	names = getModelName()
-	for n in names:
-		logger.info("[INFO] optimus model: {}".format(n))
-		train(n, dim, maxIter)
+def mainModelOptimus():
+    """对二次响应面，Stacking模型进行优化"""
+    dim = 1000
+    maxIter = 10000
+    names = getModelName()
+    for n in names:
+        logger.info("optimus model: {}".format(n))
+        train(n, dim, maxIter)
+
+def singleModelOptimus():
+    """对单个模型进行优化"""
+    global modelPathFormat
+    modelPathFormat = singleModelPathFormat
+    dim = 1000
+    maxIter = 10000
+    names = getSingleModel()
+    for n in names:
+        logger.info("optimus model: {}".format(n))
+        train(n, dim, maxIter)
 
 if __name__ == '__main__':
-	main()
+    singleModelOptimus()

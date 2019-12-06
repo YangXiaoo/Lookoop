@@ -19,7 +19,8 @@ LOGGER_PATH = "../log"
 logger = tool.getLogger(LOGGER_PATH)
 logger.setLevel(logging.DEBUG)
 
-modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model" # 模型路径format
+# 模型路径format
+modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model"
 singleModelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/singleModel/{}.model"
 
 def getModelName():

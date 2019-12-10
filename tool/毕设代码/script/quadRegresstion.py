@@ -10,6 +10,13 @@ from util import tool
 # 使用非线性最小二乘法拟合
 from scipy.optimize import curve_fit
 import numpy as np
+import logging
+
+# # 日志设置
+# LOGGER_PATH = "../log"
+# logger = tool.getLogger(LOGGER_PATH)
+# logger.setLevel(logging.DEBUG)
+
 
 dataFilePath = "../data/samples-data.data"
 labelsFilePath = "../data/samples-data-labels.data"
@@ -32,6 +39,7 @@ class CurveFitHandler():
         """将数据变形为系数矩阵"""
         newData = []
         for data in X:
+            var = [1]
             for v in data:
                 var.append(v)
 

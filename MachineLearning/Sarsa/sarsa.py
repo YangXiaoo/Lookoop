@@ -5,7 +5,6 @@ import numpy as np
 import time
 from env import Env
 
-
 EPSILON = 0.1
 ALPHA = 0.1
 GAMMA = 0.9
@@ -24,18 +23,18 @@ def epsilon_greedy(Q, state):
 e = Env()
 Q = np.zeros((e.state_num, 4))
 
-for i in range(200):
+for i in range(50):
     e = Env()
     action = epsilon_greedy(Q, e.present_state)
     while (e.is_end is False) and (e.step < MAX_STEP):
         state = e.present_state
-        reward = e.interact(action)
-        new_state = e.present_state
-        new_action = epsilon_greedy(Q, e.present_state)
+        reward = e.interact(action) # 前动作获得的奖赏
+        new_state = e.present_state # 当前动作
+        new_action = epsilon_greedy(Q, e.present_state) # 下一次动作
         Q[state, action] = (1 - ALPHA) * Q[state, action] + \
             ALPHA * (reward + GAMMA * Q[new_state, new_action])
         action = new_action
-        # e.print_map()
-        # time.sleep(0.05)
+        e.print_map()
+        time.sleep(0.1)
     print('Episode:', i, 'Total Step:', e.step, 'Total Reward:', e.total_reward)
     # time.sleep(2)

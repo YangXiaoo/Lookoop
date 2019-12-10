@@ -25,9 +25,7 @@ singleModelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/single
 
 def getModelName():
     """获得选择出来的最佳模型名称"""
-    names = []
-    names.append("quadraticRegression")
-    names.append("stackingModel")
+    names = ["quadraticRegression", "stackingModel"]
 
     return names
 
@@ -49,8 +47,8 @@ class MyProblem(ea.Problem): # 继承Problem父类
         # ub = [300 for _ in range(self.Dim)] # 决策变量上界
         lb = [-300, -300, -300, -300, -200]
         ub = [300, 300, 100, 300, 200]
-        lbin = [1, 1, 1, 1, 1]  # 1表示能取到边界，0表示取不到边界
-        ubin = [1, 1, 1, 1, 1]
+        lbin = [0, 0, 0, 0, 0]  # 1表示能取到边界，0表示取不到边界
+        ubin = [0, 0, 0, 0, 0]
         ea.Problem.__init__(self, name, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
     
     def aimFunc(self, pop):
@@ -125,4 +123,4 @@ def singleModelOptimus():
         train(n, dim, maxIter)
 
 if __name__ == '__main__':
-    singleModelOptimus()
+    mainModelOptimus()

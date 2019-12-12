@@ -1,7 +1,7 @@
 # coding:utf-8
 import math
+import numpy as np 
 
-
-nums = [[i] for i in range(10)]
-index = [0, 2, 4]
-print(nums[index])
+nums = [[1,3], [5,1], [3,2]]
+nums.sort()
+print(nums[-1])

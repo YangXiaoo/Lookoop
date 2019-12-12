@@ -16,7 +16,7 @@ from quadRegresstion import *
 # 日志设置
 LOGGER_PATH = "../log"
 logger = tool.getLogger(LOGGER_PATH)
-logger.setLevel(logging.INFO)
+logger.setLevel(logging.DEBUG)
 
 # 模型路径format
 modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model"
@@ -36,11 +36,11 @@ def getSingleModel():
 
 
 EPSILON = 0.1
-MAX_STEP = 5000
+MAX_STEP = 50000
 
 class Env(object):
     """最小值寻优环境"""
-    def __init__(self, agent, dim, lowBoundary, upBoundary, initPost=None, checkLens=500):
+    def __init__(self, agent, dim, lowBoundary, upBoundary, initPost=None, checkLens=500, lmb=0.01):
         """初始化
         @param agent 代理模型，提供predict(X)接口
         @param int dim 变量维数
@@ -48,6 +48,7 @@ class Env(object):
         @param [] upBoundary 变量上界
         @param [,None] initPost  初始位置，默认位置中间点
         @param int checkLens 终止寻找取决长度
+        @param float lmb 奖赏值权重
         """
         self.agent = agent
         self.step = 0   # 步数记录
@@ -60,6 +61,7 @@ class Env(object):
         self.computeStore = [None]      # 计算结果记录
         self.optimalStore = [None]      # 最优值记录
         self.isEnd = False  # 计算终止
+        self.lmb = lmb     # 奖赏值权值
         self.candidate = self.initCan(dim, lowBoundary, upBoundary)
 
     def initPosition(self, initPost):
@@ -133,8 +135,7 @@ class Env(object):
 
     def rewardJudge(self, computeValue):
         """奖赏判断"""
-        lmb = 0.01     # lambda
-        reward = (self.optimalValue - computeValue) * lmb  # 奖赏返回差值，越小奖赏越多
+        reward = (self.optimalValue - computeValue) * self.lmb  # 奖赏返回差值，越小奖赏越多
 
         return reward
 
@@ -241,25 +242,34 @@ def main():
     dim = 5     # 变量维数
     lowBoundary = [-300, -300, -300, -300, -200]    # 变量下界值
     upBoundary = [300, 300, 100, 300, 200]          # 变量上界值
+
+    # 获得代理模型
     modelName = getModelName()[1]
     modelPath = modelPathFormat.format(modelName)   # quadraticRegression
-    agent = io.getData(modelPath)   # 代理模型
+    agent = io.getData(modelPath)   
+
     maxIter = 10    # 最大迭代数
     splitPointCount = 3
-    initPos = generatePos(lowBoundary, upBoundary, splitPointCount) # [None]
+    checkLens = 5000
+
+    # 初始位置
+    # initPos = generatePos(lowBoundary, upBoundary, splitPointCount) 
+    initPos = [None]
 
     logger.info("using model: {}".format(modelName))
     logger.info("dim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, splitPointCount: {}, posSize:{}, MAX_STEP: {}".format(dim, lowBoundary, upBoundary, maxIter, splitPointCount, len(initPos), MAX_STEP))
+
+    # 训练
     for pos in initPos:
         Q = QClass(dim, lowBoundary, upBoundary)
         logger.info("using initial position: {}".format(pos))
         bestValue = []
         for it in range(maxIter):
-            logger.debug("iter: {}".format(it))
-            e = Env(agent, dim, lowBoundary, upBoundary, initPost=pos)
+            # logger.info("iter: {}".format(it))
+            e = Env(agent, dim, lowBoundary, upBoundary, initPost=pos, checkLens=checkLens)
             action = epsilonGreedy(Q, e.presentState)
             while (e.isEnd is False) and (e.step < MAX_STEP):
-                logger.debug("e.step: {}".format(e.step))
+                # logger.inf("e.step: {}".format(e.step))
                 state = e.presentState
                 reward = e.interact(action) # 计算当前动作的奖赏
                 newState = e.presentState
@@ -268,6 +278,7 @@ def main():
                 action = newAction
                 # e.printOptimalValue()
                 bestValue.append([e.getOptimalValue()[1], e.getOptimalValue()[0]])
+            e.printOptimalValue()
         bestValue.sort()
         logger.info("bestValue store: {}".format(bestValue[0]))
 

@@ -1,7 +1,9 @@
 # coding:utf-8
 import math
 import numpy as np 
+def foo():
+	print(GLOBAL_VAR)
 
-nums = [[1,3], [5,1], [3,2]]
-nums.sort()
-print(nums[-1])
+GLOBAL_VAR = "GLOBAL_VAR"
+
+foo()

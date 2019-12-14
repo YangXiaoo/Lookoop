@@ -4,6 +4,7 @@
 import sys
 sys.path.append("../")
 
+import datetime
 import logging
 import numpy as np
 import geatpy as ea
@@ -22,6 +23,8 @@ logger.setLevel(logging.DEBUG)
 modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model"
 singleModelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/singleModel/{}.model"
 
+startTime = datetime.datetime.now()   
+
 def getModelName():
     """获得选择出来的最佳模型名称"""
     names = ["quadraticRegression", "stackingModel"]
@@ -33,10 +36,6 @@ def getSingleModel():
     names, models = model.getModel()
 
     return names
-
-
-EPSILON = 0.1
-MAX_STEP = 50000
 
 class Env(object):
     """最小值寻优环境"""
@@ -51,17 +50,17 @@ class Env(object):
         @param float lmb 奖赏值权重
         """
         self.agent = agent
-        self.step = 0   # 步数记录
         self.optimalValue = None
         self.dim = dim
         self.lowBoundary = lowBoundary
         self.upBoundary = upBoundary
         self.curPos = self.initPosition(initPost)   # 当前位置记录
         self.checkLens = checkLens      # 判断最优值终止结果步长
+        self.lmb = lmb     # 奖赏值权值
         self.computeStore = [None]      # 计算结果记录
         self.optimalStore = [None]      # 最优值记录
         self.isEnd = False  # 计算终止
-        self.lmb = lmb     # 奖赏值权值
+        self.step = 0   # 步数记录
         self.candidate = self.initCan(dim, lowBoundary, upBoundary)
 
     def initPosition(self, initPost):
@@ -91,13 +90,14 @@ class Env(object):
 
         reward = 0
 
-        # 跟新当前位置，获取当前位置的候选值
+        # 更新当前位置，获取当前位置的候选值
         if not self.checkBoundary(action):  # 检测边界
             return reward
         for i in range(len(action)):
             self.curPos[i] += action[i]
         value = self.getCurCandidateValue()
 
+        # 预测候选值
         computeValue = self.agent.predict([value])
         self.computeStore.append(computeValue)
 
@@ -135,7 +135,7 @@ class Env(object):
 
     def rewardJudge(self, computeValue):
         """奖赏判断"""
-        reward = (self.optimalValue - computeValue) * self.lmb  # 奖赏返回差值，越小奖赏越多
+        reward = (self.optimalValue - computeValue) * self.lmb  # 奖赏返回差值，差值越大奖赏越多
 
         return reward
 
@@ -148,17 +148,13 @@ class Env(object):
             logger.debug("find cur iteration optimal value, stop cur iteration")
 
     @property
-    def state(self):
-        pass
-
-    @property
     def presentState(self):
         """当前位置"""
         return self.curPos
 
     def printOptimalValue(self):
         """打印最佳值"""
-        logger.info("cur optimal var: {}, optimal value: {}".format(self.getCurCandidateValue(), self.optimalValue))
+        logger.info("step: {}, cur optimal var: {}, optimal value: {}".format(self.step, self.getCurCandidateValue(), self.optimalValue))
 
     def getOptimalValue(self):
         """最佳值"""
@@ -167,14 +163,15 @@ class Env(object):
 
 class QClass(object):
     """奖赏结构"""
-    def __init__(self, dim, lowBoundary, upBoundary):
+    def __init__(self, dim, actionDim, lowBoundary, upBoundary):
         self.alpha = 0.1
         self.gamma = 0.9
 
-        self.dim = dim
+        self.dim = dim  # 变量维度
+        self.actionDim = actionDim
         self.q = [[] for i in range(dim)]
         for i in range(dim):
-            self.q[i] = np.zeros((abs(upBoundary[i]- lowBoundary[i]), 3))
+            self.q[i] = np.zeros((abs(upBoundary[i]- lowBoundary[i]), actionDim))
 
 
     def updateStateAndAction(self, state, action, newState, newAction, reward):
@@ -194,7 +191,7 @@ class QClass(object):
 
 
 def epsilonGreedy(Q, state):
-    """e-贪心算法"""
+    """e-贪心算法，根据当前状态获得下一个动作"""
     if (np.random.uniform() > 1 - EPSILON) or ((Q.getCurOptAction(state) == 0).all()):
         action = [np.random.randint(-1, 2) for i in range(Q.dim)]
     else:
@@ -202,8 +199,10 @@ def epsilonGreedy(Q, state):
 
     return action
 
-def generatePos(lowBoundary, upBoundary, splitPointCount):
+def generatePoints(lowBoundary, upBoundary, splitPointCount):
     """生成不同区域初始起点"""
+    if splitPointCount == 0:
+        return [None]
     dim = len(lowBoundary)
     pos = None
     gap = []
@@ -217,7 +216,6 @@ def generatePos(lowBoundary, upBoundary, splitPointCount):
             tmpSplitPoint.append(increate * (j + 1))
         splitPoint.append(tmpSplitPoint)
     # print("[DEBUG] splitPoint : {}".format(splitPoint))
-    # [[120, 240, 360, 480], [120, 240, 360, 480], [80, 160, 240, 320], [120, 240, 360, 480], [80, 160, 240, 320]]
     pos = crossPoint(splitPoint)
 
     return pos 
@@ -238,8 +236,14 @@ def crossPoint(points):
 
     return helper(points[1:], res)
 
+
+# 全局变量
+EPSILON = 0.1
+MAX_STEP = 50000    # 最大迭代步长
+
 def main():
     dim = 5     # 变量维数
+    actionDim = 3   # 动作维度
     lowBoundary = [-300, -300, -300, -300, -200]    # 变量下界值
     upBoundary = [300, 300, 100, 300, 200]          # 变量上界值
 
@@ -248,25 +252,25 @@ def main():
     modelPath = modelPathFormat.format(modelName)   # quadraticRegression
     agent = io.getData(modelPath)   
 
-    maxIter = 10    # 最大迭代数
-    splitPointCount = 3
-    checkLens = 5000
+    maxIter = 50        # 最大迭代数
+    checkLens = 10000    # 检测最优最大步长
+    lmb = 0.1
 
-    # 初始位置
-    # initPos = generatePos(lowBoundary, upBoundary, splitPointCount) 
-    initPos = [None]
+    # 初始化起点位置
+    splitPointCount = 0
+    initPos = generatePoints(lowBoundary, upBoundary, splitPointCount) 
 
     logger.info("using model: {}".format(modelName))
-    logger.info("dim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, splitPointCount: {}, posSize:{}, MAX_STEP: {}".format(dim, lowBoundary, upBoundary, maxIter, splitPointCount, len(initPos), MAX_STEP))
+    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, checkLens: {}, lmb: {},  splitPointCount: {}, pointsSize:{}, EPSILON: {}, MAX_STEP: {}".format(dim, actionDim, lowBoundary, upBoundary, maxIter, checkLens, lmb, splitPointCount, len(initPos), EPSILON, MAX_STEP))
 
     # 训练
     for pos in initPos:
-        Q = QClass(dim, lowBoundary, upBoundary)
+        Q = QClass(dim, actionDim, lowBoundary, upBoundary)
         logger.info("using initial position: {}".format(pos))
         bestValue = []
         for it in range(maxIter):
             # logger.info("iter: {}".format(it))
-            e = Env(agent, dim, lowBoundary, upBoundary, initPost=pos, checkLens=checkLens)
+            e = Env(agent, dim, lowBoundary, upBoundary, initPost=pos, checkLens=checkLens, lmb=lmb)
             action = epsilonGreedy(Q, e.presentState)
             while (e.isEnd is False) and (e.step < MAX_STEP):
                 # logger.inf("e.step: {}".format(e.step))
@@ -276,17 +280,20 @@ def main():
                 newAction = epsilonGreedy(Q, newState)
                 Q.updateStateAndAction(state, action, newState, newAction, reward)
                 action = newAction
-                # e.printOptimalValue()
                 bestValue.append([e.getOptimalValue()[1], e.getOptimalValue()[0]])
             e.printOptimalValue()
         bestValue.sort()
         logger.info("bestValue store: {}".format(bestValue[0]))
 
+        endTime = datetime.datetime.now() 
+        logger.info("run time: {}".format(str(endTime)))
+
+
 def testGeneratePoints():
     """测试-网格划分生成"""
     lowBoundary = [-300, -300, -300, -300, -200]
     upBoundary = [300, 300, 100, 300, 200]
-    ret = generatePos(lowBoundary, upBoundary)
+    ret = generatePoints(lowBoundary, upBoundary)
 
 if __name__ == '__main__':
     main()

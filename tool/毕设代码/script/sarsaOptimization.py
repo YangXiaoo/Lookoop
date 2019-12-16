@@ -38,8 +38,9 @@ def getSingleModel():
     return names
 
 class Env(object):
-    """最小值寻优环境"""
-    def __init__(self, agent, dim, lowBoundary, upBoundary, initPost=None, checkLens=500, lmb=0.01):
+    """最小值寻优框架"""
+    def __init__(self, agent, dim, lowBoundary, upBoundary, 
+                initPost=None, checkLens=500, lmb=0.01):
         """初始化
         @param agent 代理模型，提供predict(X)接口
         @param int dim 变量维数
@@ -116,7 +117,7 @@ class Env(object):
         return reward
 
     def checkBoundary(self, action):
-        """检测是否越过边界"""
+        """边界条件"""
         ret = True
         for i in range(self.dim):
             if self.curPos[i]+action[i] >= len(self.candidate[i]) or self.curPos[i]+action[i] < 0:
@@ -145,7 +146,7 @@ class Env(object):
 
         if lastValue == lastValue[::-1]:
             self.isEnd = True
-            logger.debug("find cur iteration optimal value, stop cur iteration")
+            logger.debug("iteration: {}, find cur iteration optimal value, stop cur iteration".format(self.step))
 
     @property
     def presentState(self):
@@ -154,7 +155,8 @@ class Env(object):
 
     def printOptimalValue(self):
         """打印最佳值"""
-        logger.info("step: {}, cur optimal var: {}, optimal value: {}".format(self.step, self.getCurCandidateValue(), self.optimalValue))
+        logger.info("step: {}, cur optimal var: {}, optimal value: {}"\
+            .format(self.step, self.getCurCandidateValue(), self.optimalValue))
 
     def getOptimalValue(self):
         """最佳值"""
@@ -239,10 +241,11 @@ def crossPoint(points):
 
 # 全局变量
 EPSILON = 0.1
-MAX_STEP = 50000    # 最大迭代步长
+MAX_STEP = 100000    # 最大迭代步长
 
 def main():
-    dim = 5     # 变量维数
+    """单目标，多约束寻优问题"""
+    dim = 5         # 变量维数
     actionDim = 3   # 动作维度
     lowBoundary = [-300, -300, -300, -300, -200]    # 变量下界值
     upBoundary = [300, 300, 100, 300, 200]          # 变量上界值
@@ -253,15 +256,17 @@ def main():
     agent = io.getData(modelPath)   
 
     maxIter = 50        # 最大迭代数
-    checkLens = 10000    # 检测最优最大步长
+    checkLens = 10000   # 检测最优最大步长
     lmb = 0.1
 
     # 初始化起点位置
-    splitPointCount = 0
+    splitPointCount = 3
     initPos = generatePoints(lowBoundary, upBoundary, splitPointCount) 
 
     logger.info("using model: {}".format(modelName))
-    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, checkLens: {}, lmb: {},  splitPointCount: {}, pointsSize:{}, EPSILON: {}, MAX_STEP: {}".format(dim, actionDim, lowBoundary, upBoundary, maxIter, checkLens, lmb, splitPointCount, len(initPos), EPSILON, MAX_STEP))
+    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, checkLens: {}, lmb: {},splitPointCount: {}, pointsSize:{}, EPSILON: {}, MAX_STEP: {}"\
+        .format(dim, actionDim, lowBoundary, upBoundary, maxIter, checkLens,
+            lmb, splitPointCount, len(initPos), EPSILON, MAX_STEP))
 
     # 训练
     for pos in initPos:
@@ -276,9 +281,9 @@ def main():
                 # logger.inf("e.step: {}".format(e.step))
                 state = e.presentState
                 reward = e.interact(action) # 计算当前动作的奖赏
-                newState = e.presentState
-                newAction = epsilonGreedy(Q, newState)
-                Q.updateStateAndAction(state, action, newState, newAction, reward)
+                newState = e.presentState   # 获得当前状态
+                newAction = epsilonGreedy(Q, newState)  # 根据累积奖赏获得当前状态的下一个动作
+                Q.updateStateAndAction(state, action, newState, newAction, reward)  # 更新状态和动作
                 action = newAction
                 bestValue.append([e.getOptimalValue()[1], e.getOptimalValue()[0]])
             e.printOptimalValue()
@@ -286,14 +291,14 @@ def main():
         logger.info("bestValue store: {}".format(bestValue[0]))
 
         endTime = datetime.datetime.now() 
-        logger.info("run time: {}".format(str(endTime)))
-
+        logger.info("run time: {}".format(str(endTime-startTime)))
 
 def testGeneratePoints():
     """测试-网格划分生成"""
     lowBoundary = [-300, -300, -300, -300, -200]
     upBoundary = [300, 300, 100, 300, 200]
     ret = generatePoints(lowBoundary, upBoundary)
+
 
 if __name__ == '__main__':
     main()

@@ -7,7 +7,6 @@ sys.path.append("../")
 import datetime
 import logging
 import numpy as np
-import geatpy as ea
 import pickle
 
 import model

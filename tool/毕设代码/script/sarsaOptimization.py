@@ -22,6 +22,7 @@ logger.setLevel(logging.DEBUG)
 # 模型路径format
 modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model"
 singleModelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/singleModel/{}.model"
+QSavingPath = r"C:\Study\github\Lookoops\tool\毕设代码\data\Q.model"
 
 startTime = datetime.datetime.now()   
 
@@ -55,7 +56,7 @@ class Env(object):
         self.dim = dim
         self.lowBoundary = lowBoundary
         self.upBoundary = upBoundary
-        self.curPos = self.initPosition(initPost)   # 当前位置记录
+        self.curPosition = self.initPosition(initPost)   # 当前位置记录
         self.checkLens = checkLens      # 判断最优值终止结果步长
         self.lmb = lmb     # 奖赏值权值
         self.computeStore = [None]      # 计算结果记录
@@ -95,7 +96,7 @@ class Env(object):
         if not self.checkBoundary(action):  # 检测边界
             return reward
         for i in range(len(action)):
-            self.curPos[i] += action[i]
+            self.curPosition[i] += action[i]
         value = self.getCurCandidateValue()
 
         # 预测候选值
@@ -120,7 +121,7 @@ class Env(object):
         """边界条件"""
         ret = True
         for i in range(self.dim):
-            if self.curPos[i]+action[i] >= len(self.candidate[i]) or self.curPos[i]+action[i] < 0:
+            if self.curPosition[i]+action[i] >= len(self.candidate[i]) or self.curPosition[i]+action[i] < 0:
                 ret = False
                 break
 
@@ -130,7 +131,7 @@ class Env(object):
         """获得当前位置的候选值"""
         value = []
         for i in range(self.dim):
-            value.append(self.candidate[i][self.curPos[i]])
+            value.append(self.candidate[i][self.curPosition[i]])
 
         return value
 
@@ -151,7 +152,7 @@ class Env(object):
     @property
     def presentState(self):
         """当前位置"""
-        return self.curPos
+        return self.curPosition
 
     def printOptimalValue(self):
         """打印最佳值"""
@@ -269,8 +270,9 @@ def main():
             lmb, splitPointCount, len(initPos), EPSILON, MAX_STEP))
 
     # 训练
+    Q = QClass(dim, actionDim, lowBoundary, upBoundary)
+    globalBestValue = []
     for pos in initPos:
-        Q = QClass(dim, actionDim, lowBoundary, upBoundary)
         logger.info("using initial position: {}".format(pos))
         bestValue = []
         for it in range(maxIter):
@@ -285,13 +287,24 @@ def main():
                 newAction = epsilonGreedy(Q, newState)  # 根据累积奖赏获得当前状态的下一个动作
                 Q.updateStateAndAction(state, action, newState, newAction, reward)  # 更新状态和动作
                 action = newAction
-                bestValue.append([e.getOptimalValue()[1], e.getOptimalValue()[0]])
-            e.printOptimalValue()
-        bestValue.sort()
-        logger.info("bestValue store: {}".format(bestValue[0]))
 
-        endTime = datetime.datetime.now() 
-        logger.info("run time: {}".format(str(endTime-startTime)))
+            can, value = e.getOptimalValue()
+            if can and value:
+                bestValue.append([value, can])
+            e.printOptimalValue()
+        logger.debug("bestValue: {}".format(bestValue))
+        try:
+            bestValue.sort()
+            logger.info("bestValue store: {}".format(bestValue[0]))
+            globalBestValue.append(bestValue[0])
+        except Exception as e:
+            logger.error("sort bestValue fail, except: {}".format(str(e)))
+
+    globalBestValue.sort()
+    logger.info("global best value: {}".format(globalBestValue[0]))
+    endTime = datetime.datetime.now() 
+    logger.info("run time: {}".format(str(endTime - startTime)))
+    io.saveData(Q, QSavingPath)
 
 def testGeneratePoints():
     """测试-网格划分生成"""
@@ -302,3 +315,4 @@ def testGeneratePoints():
 
 if __name__ == '__main__':
     main()
+    # logger.error("error test")

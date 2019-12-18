@@ -4,11 +4,16 @@
 import sys
 sys.path.append("../")
 
+import os 
+os.environ["CUDA_VISIBLE_DEVICES"] = "0"
+
+import numba as nb
+
 import datetime
 import logging
 import numpy as np
-import geatpy as ea
 import pickle
+
 
 import model
 from util import io, tool
@@ -17,12 +22,12 @@ from quadRegresstion import *
 # 日志设置
 LOGGER_PATH = "../log"
 logger = tool.getLogger(LOGGER_PATH)
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 
 # 模型路径format
-modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model"
-singleModelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/singleModel/{}.model"
-QSavingPath = r"C:\Study\github\Lookoops\tool\毕设代码\data\Q.model"
+modelPathFormat = "../data/{}.model"
+singleModelPathFormat = "../data//singleModel/{}.model"
+QSavingPath = "../data/Q.model"
 
 startTime = datetime.datetime.now()   
 
@@ -38,6 +43,8 @@ def getSingleModel():
 
     return names
 
+optimalValue = None # 全局最优解
+
 class Env(object):
     """最小值寻优框架"""
     def __init__(self, agent, dim, lowBoundary, upBoundary, 
@@ -51,18 +58,23 @@ class Env(object):
         @param int checkLens 终止寻找取决长度
         @param float lmb 奖赏值权重
         """
+        # global optimalValue
+
         self.agent = agent
-        self.optimalValue = None
         self.dim = dim
         self.lowBoundary = lowBoundary
         self.upBoundary = upBoundary
         self.curPosition = self.initPosition(initPost)   # 当前位置记录
         self.checkLens = checkLens      # 判断最优值终止结果步长
         self.lmb = lmb     # 奖赏值权值
+
+        self.optimalValue = None    # 最优目标值
+        self.optimalPosition = None # 最优目标位置
         self.computeStore = [None]      # 计算结果记录
         self.optimalStore = [None]      # 最优值记录
+        self.optimalPositionStore = [None]  # 记录最优目标位置
         self.isEnd = False  # 计算终止
-        self.step = 0   # 步数记录
+        self.step = 0       # 步数记录
         self.candidate = self.initCan(dim, lowBoundary, upBoundary)
 
     def initPosition(self, initPost):
@@ -97,7 +109,7 @@ class Env(object):
             return reward
         for i in range(len(action)):
             self.curPosition[i] += action[i]
-        value = self.getCurCandidateValue()
+        value = self.getCurCandidateValue(self.curPosition)
 
         # 预测候选值
         computeValue = self.agent.predict([value])
@@ -106,14 +118,17 @@ class Env(object):
         # 更新最佳值, 计算奖赏值
         if not self.optimalValue:
             self.optimalValue = computeValue
+            self.optimalPosition = self.curPosition
         else:
             reward = self.rewardJudge(computeValue)
             if computeValue < self.optimalValue:
                 self.optimalValue = computeValue
+                self.optimalPosition = self.curPosition
 
         self.step += 1
         self.optimalStore.append(self.optimalValue)
-        self.checkOptimalValue()  # 检查存储值的差值，低于某个阈值后结束迭代
+        # self.optimalPositionStore.append(value)
+        self.checkOptimalValueIsConvergence()  # 检查存储值的差值，低于某个阈值后结束迭代
 
         return reward
 
@@ -126,25 +141,30 @@ class Env(object):
                 break
 
         return ret
-
-    def getCurCandidateValue(self):
+    
+    def getCurCandidateValue(self, curPosition):
         """获得当前位置的候选值"""
         value = []
         for i in range(self.dim):
-            value.append(self.candidate[i][self.curPosition[i]])
+            value.append(self.candidate[i][curPosition[i]])
 
         return value
 
+    
     def rewardJudge(self, computeValue):
         """奖赏判断"""
         reward = (self.optimalValue - computeValue) * self.lmb  # 奖赏返回差值，差值越大奖赏越多
 
         return reward
 
-    def checkOptimalValue(self):
+    
+    def checkOptimalValueIsConvergence(self):
         """检测最优值在最近迭代步长中是否改变，没有改变的话结束迭代"""
-        lastValue = self.optimalStore[len(self.optimalStore)-self.checkLens:]
+        curOptimalStoreLens = len(self.optimalStore)
+        if curOptimalStoreLens < self.checkLens:
+            return None
 
+        lastValue = self.optimalStore[curOptimalStoreLens-self.checkLens:]
         if lastValue == lastValue[::-1]:
             self.isEnd = True
             logger.debug("iteration: {}, find cur iteration optimal value, stop cur iteration".format(self.step))
@@ -157,13 +177,12 @@ class Env(object):
     def printOptimalValue(self):
         """打印最佳值"""
         logger.info("step: {}, cur optimal var: {}, optimal value: {}"\
-            .format(self.step, self.getCurCandidateValue(), self.optimalValue))
+            .format(self.step, self.getCurCandidateValue(self.optimalPosition), self.optimalValue))
 
     def getOptimalValue(self):
         """最佳值"""
-        return self.getCurCandidateValue(), self.optimalValue
+        return self.getCurCandidateValue(self.optimalPosition), self.optimalValue
     
-
 class QClass(object):
     """奖赏结构"""
     def __init__(self, dim, actionDim, lowBoundary, upBoundary):
@@ -176,13 +195,14 @@ class QClass(object):
         for i in range(dim):
             self.q[i] = np.zeros((abs(upBoundary[i]- lowBoundary[i]), actionDim))
 
-
+    
     def updateStateAndAction(self, state, action, newState, newAction, reward):
         """更新奖赏"""
         for i in range(self.dim):
             self.q[i][action[i]] = (1 - self.alpha) * self.q[i][action[i]] \
                 + self.alpha * (reward + self.gamma * self.q[i][newAction[i]])
 
+    
     def getCurOptAction(self, state):
         """基于当前奖赏的最佳动作"""
         action = []
@@ -246,6 +266,7 @@ MAX_STEP = 100000    # 最大迭代步长
 
 def main():
     """单目标，多约束寻优问题"""
+    global optimalValue, MAX_STEP
     dim = 5         # 变量维数
     actionDim = 3   # 动作维度
     lowBoundary = [-300, -300, -300, -300, -200]    # 变量下界值
@@ -256,19 +277,24 @@ def main():
     modelPath = modelPathFormat.format(modelName)   # quadraticRegression
     agent = io.getData(modelPath)   
 
+    MAX_STEP = 100000
     maxIter = 50        # 最大迭代数
     checkLens = 10000   # 检测最优最大步长
     lmb = 0.1
 
     # 初始化起点位置
-    splitPointCount = 3
-    initPos = generatePoints(lowBoundary, upBoundary, splitPointCount) 
+    splitPointCount = 1
+    # initPos = generatePoints(lowBoundary, upBoundary, splitPointCount) 
+    initPos = [[300, 300, 300, 300, 200]] # 最原始的模型尺寸
 
+    logger.info("The global optimalValue is not enabled")
     logger.info("using model: {}".format(modelName))
-    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, checkLens: {}, lmb: {},splitPointCount: {}, pointsSize:{}, EPSILON: {}, MAX_STEP: {}"\
+    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, checkLens: {}, lmb: {}, splitPointCount: {}, pointsSize:{}, EPSILON: {}, MAX_STEP: {}"\
         .format(dim, actionDim, lowBoundary, upBoundary, maxIter, checkLens,
             lmb, splitPointCount, len(initPos), EPSILON, MAX_STEP))
 
+    totalIter = len(initPos) * maxIter
+    count = 1
     # 训练
     Q = QClass(dim, actionDim, lowBoundary, upBoundary)
     globalBestValue = []
@@ -289,10 +315,19 @@ def main():
                 action = newAction
 
             can, value = e.getOptimalValue()
+            # optimalValue = value
             if can and value:
                 bestValue.append([value, can])
             e.printOptimalValue()
-        logger.debug("bestValue: {}".format(bestValue))
+
+            # 预估剩余运行时间
+            curTime = datetime.datetime.now() 
+            curRunTime = curTime - startTime
+            meanIterRunTime = curRunTime / count 
+            logger.info("needs to run: {} ".format(str((totalIter-count)*meanIterRunTime)))
+            count += 1
+
+        # logger.debug("bestValue: {}".format(bestValue))
         try:
             bestValue.sort()
             logger.info("bestValue store: {}".format(bestValue[0]))

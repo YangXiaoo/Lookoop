@@ -195,7 +195,7 @@ class QClass(object):
         for i in range(dim):
             self.q[i] = np.zeros((abs(upBoundary[i]- lowBoundary[i]), actionDim))
 
-    
+     
     def updateStateAndAction(self, state, action, newState, newAction, reward):
         """更新奖赏"""
         for i in range(self.dim):
@@ -278,8 +278,8 @@ def main():
     agent = io.getData(modelPath)   
 
     MAX_STEP = 100000
-    maxIter = 50        # 最大迭代数
-    checkLens = 10000   # 检测最优最大步长
+    maxIter = 100        # 最大迭代数
+    checkLens = 20000   # 检测最优最大步长
     lmb = 0.1
 
     # 初始化起点位置

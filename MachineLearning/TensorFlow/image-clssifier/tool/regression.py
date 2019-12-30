@@ -62,6 +62,8 @@ class softmax_classifier(object):
         h = test_data * self.weights
         predictions = h.argmax(axis=1) # 获得最大索引位置即标签
         nums = max(label.shape)
-        correct = np.array([h == predictions]) + 0
+        correct = np.array([label == predictions]) + 0
 
         print("accury: %.5f" % correct.sum() / nums)
+
+        return predictions

@@ -55,8 +55,7 @@ def getConfig(configPath):
 
     return conf
 
-
-def computeMSE(data1, data2):
+def computeMAE(data1, data2):
     """计算平均绝对误差MSE"""
     if np.shape(data1)[0] != 1:
         data1 = data1.reshape(1, len(data1))[0]
@@ -71,6 +70,26 @@ def computeMSE(data1, data2):
         tmpSum += abs(data1[i] - data2[i])
 
     return tmpSum / m
+
+def computeMSE(data1, data2):
+    """计算平均绝对误差MSE"""
+    if np.shape(data1)[0] != 1:
+        data1 = data1.reshape(1, len(data1))[0]
+    try:
+        if np.shape(data2)[0] != 1:
+            data2 = data2.reshape(1, len(data2))[0]
+    except Exception as e:
+        print("[ERROR] catch exception : {}".format(str(e)))
+    m = np.shape(data1)[0]
+    tmpSum = 0
+    for i in range(m):
+        tmpSum += (data1[i] - data2[i])**2
+
+    return tmpSum / m
+
+def computeRMSE(data1, data2):
+    """计算RMSE"""
+    return computeMSE(data1, data2):
 
 def sequeceInArray(nums, seqIndex):
     ret = np.array([])

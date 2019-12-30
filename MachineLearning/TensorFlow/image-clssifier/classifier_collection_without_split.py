@@ -602,13 +602,30 @@ def model_collection_prediction(prediction_model,
 
 
     test_feature, test_labels = [], []
+    picName = []
     for k,v in prediction_collection.items():
         test_feature.append(v) 
         test_labels.append(int(k.split('_')[0]))
+        picName.append(k.split('_')[1])
 
     test_feature, test_labels = np.mat(test_feature), np.mat(test_labels).T
-    prediction_model.prediction(test_feature, test_labels) # 打印出结果
+    predictions = prediction_model.prediction(test_feature, test_labels) # 打印出结果
 
+    resultMap = {}  # {实际年龄0：[预测年龄0， 预测年龄2]}
+    for k,v in enumerate(test_labels):
+        pdt = predictions[k]
+        if v not in resultMap:
+            resultMap[v] = [pdt]
+        else:
+            resultMap[v].append(pdt)
+
+    # 计算每个年龄段的误差
+    for k,v in resultMap.items():
+        curPdtCount = len(v)
+        tmp = 0
+        for pdt in v:
+            tmp += abs(int(pdt) - int(k))
+        print("[INFO] Real age: {}, predict MSE: {}".format(k, tmp/curPdtCount))
 
 
 if __name__ == '__main__':

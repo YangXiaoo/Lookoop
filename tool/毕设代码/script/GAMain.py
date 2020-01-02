@@ -103,7 +103,7 @@ def train(modelName, dim, maxIter):
 def mainModelOptimus():
     """对二次响应面，Stacking模型进行优化"""
     dim = 1000
-    maxIter = 10000
+    maxIter = 1000
     names = getModelName()
     for n in names:
         logger.info("cur params, dim: {}, maxIter: {}".format(dim, maxIter))

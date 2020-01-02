@@ -43,7 +43,7 @@ def testModelPdt():
     stackModel = io.getData(stackModelSavingPath)
     X, Y = getTrainData()
     pdtValue = stackModel.predict(X)
-    retMSE = tool.computeMSE(pdtValue, Y)
+    retMSE = tool.computeRMAE(Y, pdtValue)
     print("MSE : {}".format(retMSE))
     # print("X-pdt: {}".format(pdtValue))
     # print("Y-val: {}".format(Y))
@@ -60,7 +60,7 @@ def testSingleModel():
         print("model: {}, MSE : {}".format(n, retMSE))
 
 if __name__ == '__main__':
-    testSingleModel()
+    testModelPdt()
 
 
 

@@ -65,3 +65,7 @@ tool/毕设代码/log/all.log.2019-12-09
 tool/毕设代码/log/all.log.2019-12-12
 tool/毕设代码/log/all.log.2019-12-14
 tool/毕设代码/log/all.log.2019-12-16
+*.csv
+*.2019-12-05
+*.2019-12-18
+*.data

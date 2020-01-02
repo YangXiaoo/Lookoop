@@ -55,8 +55,16 @@ def getConfig(configPath):
 
     return conf
 
-def computeMAE(data1, data2):
-    """计算平均绝对误差MSE"""
+def checkData(data1, data2):
+    try:
+        _ = data1.shape
+    except:
+        data1 = np.array(data1)
+    try:
+        _ = data2.shape
+    except:
+        data2 = np.array(data2)
+
     if np.shape(data1)[0] != 1:
         data1 = data1.reshape(1, len(data1))[0]
     try:
@@ -64,6 +72,12 @@ def computeMAE(data1, data2):
             data2 = data2.reshape(1, len(data2))[0]
     except Exception as e:
         print("[ERROR] catch exception : {}".format(str(e)))
+
+    return data1, data2
+
+def computeMAE(data1, data2):
+    """计算平均绝对误差MSE"""
+    data1, data2 = checkData(data1, data2)
     m = np.shape(data1)[0]
     tmpSum = 0
     for i in range(m):
@@ -71,15 +85,19 @@ def computeMAE(data1, data2):
 
     return tmpSum / m
 
+def computeRMAE(data1, data2):
+    """计算相对平均误差"""
+    data1, data2 = checkData(data1, data2)
+    m = np.shape(data1)[0]
+    tmpSum = 0
+    for i in range(m):
+        tmpSum += abs(data1[i] - data2[i]) / data1[i]
+
+    return tmpSum / m
+
 def computeMSE(data1, data2):
     """计算平均绝对误差MSE"""
-    if np.shape(data1)[0] != 1:
-        data1 = data1.reshape(1, len(data1))[0]
-    try:
-        if np.shape(data2)[0] != 1:
-            data2 = data2.reshape(1, len(data2))[0]
-    except Exception as e:
-        print("[ERROR] catch exception : {}".format(str(e)))
+    data1, data2 = checkData(data1, data2)
     m = np.shape(data1)[0]
     tmpSum = 0
     for i in range(m):
@@ -89,7 +107,7 @@ def computeMSE(data1, data2):
 
 def computeRMSE(data1, data2):
     """计算RMSE"""
-    return computeMSE(data1, data2):
+    return computeMSE(data1, data2)
 
 def sequeceInArray(nums, seqIndex):
     ret = np.array([])
@@ -99,7 +117,7 @@ def sequeceInArray(nums, seqIndex):
     return ret
 
 
-def crossValueScore(model, X, y, cv=5):
+def crossValueScore(model, X, y, agent=computeMSE, cv=5):
     """交叉验证模型性能"""
     fold = KFold(n_splits=cv, random_state=2, shuffle=True)
 
@@ -118,6 +136,6 @@ def crossValueScore(model, X, y, cv=5):
             testY.append(y[index])
         testX = np.array(testX).reshape(len(valueIndex),len(X[0]))
         tmpPdt = model.predict(testX)
-        pdtMSE.append(computeMSE(tmpPdt, testY))
+        pdtMSE.append(agent(testY, tmpPdt))
 
     return sum(pdtMSE) / cv

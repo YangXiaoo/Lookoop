@@ -124,6 +124,6 @@ if __name__ == '__main__':
     # curveFit = io.getData(curveFitModelSavingPath)
     # pdtVDiff = curveFit.predict(X) - y
     # print("[INFO] predict mse : {}".format(curveFit.getMSE()))
-    mse = tool.crossValueScore(curveFit, X, y)
+    mse = tool.crossValueScore(curveFit, X, y, tool.computeRMAE)
     print("MSE: {}".format(mse))
 

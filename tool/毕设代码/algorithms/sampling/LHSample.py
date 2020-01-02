@@ -68,8 +68,12 @@ def main():
     print("   side-y  side-z bottom-z bottom-x front-x")
     print("{} \n\n {}".format(X, Y))
     
+def test():
+    dataSavePath = "../../data/samples-data.data"
+    X = io.getData(dataSavePath)
+    print(X)
 if __name__ =='__main__':
-    # main()
+    test()
 
 """
 # [[  54.04   40.68 -290.76 -111.42   80.6 ]

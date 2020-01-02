@@ -60,4 +60,12 @@ def testSingleModel():
         print("model: {}, MSE : {}".format(n, retMSE))
 
 if __name__ == '__main__':
-    testModelPdt()
+    testSingleModel()
+
+
+
+
+
+
+
+

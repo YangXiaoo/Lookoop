@@ -1,0 +1,98 @@
+body{
+  margin: 0px;
+  /* 渐变色 */
+  background: linear-gradient(to right, red 0%, blue 50%, red 100%);
+}
+
+.main-content{
+  width: 500px;
+  height: 500px;
+  margin:20px auto;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.header{
+  width: 250px;
+  height: 125px;
+  background-color: darkgreen;
+  margin: 10px auto;
+  border-radius: 125px 125px 0px 0px;
+  position: relative;
+}
+
+.header::before,
+.header::after{
+  /* 设置content属性 */
+  content: "";
+  /* 如果要设置宽高值需要设置为块级元素，默认是行级元素 */
+  /* 块级元素转换为行级元素方法：float display position */
+  position: absolute; /* 相对父类定位，父类需要position:realative */
+  bottom: 40px;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.header::before{
+    left: 70px;
+}
+
+.header::after{
+    right: 70px;
+}
+
+.body{
+  width: 250px;
+  height: 250px;
+  background-color: darkgreen;
+  margin:20px auto;
+  border-radius: 5px;
+  position: relative;
+}
+
+.body::before,
+.body::after{
+  content: "";
+  width: 40px;
+  height: 150px;
+  background-color: darkgreen;
+  border-radius: 5px;
+  position: absolute;
+  top:30px;
+}
+
+.body::before{
+  left: -60px;
+}
+
+.body::after{
+  right:-60px;
+}
+
+.footer{
+  width: 250px;
+  height: 100px;
+  margin: 0px auto;
+  position: relative;
+}
+
+.footer::before,
+.footer::after{
+  content: "";
+  position: absolute;
+  width:50px;
+  height:80px;
+  top: -20px;
+  background-color: darkgreen;
+  border-radius: 0px 0px 20px 20px;
+}
+
+.footer::after{
+  left: 50px;
+}
+
+.footer::before{
+  right: 50px;
+}

@@ -1,0 +1,55 @@
+body {
+}
+
+.main-content {
+  width: 500px;
+  height: 500px;
+  border: 1px solid #ccc;
+  box-sizing: content-box;
+  margin:20px auto;
+}
+
+.menu {
+  /* background-color: #60bdaf; */
+  /* 设置父元素为盒子模式，子元素自动放入盒子中 */
+  display: flex;
+  justify-content: space-between;
+  flex-grow: 1;
+
+  /* 换行 */
+  /* flex-wrap: wrap; */
+  /* flex-direction: column; */
+  flex-flow: row wrap; /* 上面两者综合 */
+}
+
+.item {
+  width: 100px;
+  height: auto;
+}
+
+.item > h3 {
+  margin: 0px;
+  height: 30px;
+  line-height: 30px;
+  background-color: #dde1e8;
+  border-bottom: 2px solid #ccc;
+  padding-left: 10px;
+}
+
+.item > .item-box {
+  width: 100%;
+  height: 0px;
+  overflow: hidden;
+  background-color: #ada8a8;
+  transition-property: height;  /* 必须要有目标，具体值 */
+  transition-duration: 0.5s;
+}
+
+.item > .item-box > ul {
+  list-style: none;
+  padding: 10px
+}
+
+.item:hover > .item-box {
+  height: 100px;
+}

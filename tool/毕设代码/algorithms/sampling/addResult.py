@@ -20,7 +20,7 @@ curveFitModelSavingPath = "../../data/quadraticRegression.model"
 def getLables():
 	"""仿真阻力值"""
 	y = [
-			# [39435.643],	# FFD0 原始尺寸
+			[39435.643],	# FFD0 原始尺寸
 			[38071.185],	# FFD2 对应电脑中的目录名
 			[39200.969],	# FFD3
 			[39193.068],	# FFD4

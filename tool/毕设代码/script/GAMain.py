@@ -124,3 +124,4 @@ def singleModelOptimus():
 
 if __name__ == '__main__':
     mainModelOptimus()
+    singleModelOptimus()

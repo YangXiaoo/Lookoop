@@ -22,13 +22,15 @@ LOGGER_PATH = "../log"
 logger = tool.getLogger(LOGGER_PATH)
 logger.setLevel(logging.INFO)
 
+startTime = datetime.datetime.now()                     # 程序运行起始时间
+TODAY = str(datetime.datetime.today()).split(" ")[0]    # 当前日期 2020-1-5
+
 # 模型路径format
 modelPathFormat = "../data/{}.model"
 singleModelPathFormat = "../data//singleModel/{}.model"
-QSavingPath = "../data/Q.model"
+QSavingPath = "../data/Q-{}.model".format(TODAY)
 
-startTime = datetime.datetime.now()   
-TODAY = str(datetime.datetime.today()).split(" ")[0]
+globalOptimalValue = None # 全局最优解
 
 def getModelName():
     """获得选择出来的最佳模型名称"""
@@ -41,8 +43,6 @@ def getSingleModel():
     names, models = model.getModel()
 
     return names
-
-optimalValue = None # 全局最优解
 
 class EnvHandler(object):
     """最小值寻优框架"""
@@ -145,7 +145,6 @@ class EnvHandler(object):
         plt.xlabel('Number of step')
         plt.ylabel('value')
         plt.savefig(picSavingPath)
- 
 
 class Env(EnvHandler):
     """最小值寻优框架"""
@@ -161,7 +160,7 @@ class Env(EnvHandler):
         @param int checkLens 终止寻找取决长度
         @param float lmb 奖赏学习率
         """
-        # global optimalValue
+        # global globalOptimalValue
 
         self.agent = agent
         self.lowBoundary = lowBoundary
@@ -192,8 +191,7 @@ class Env(EnvHandler):
 
     def interact(self, action):
         """在指定动作，返回奖赏"""
-        assert self.isEnd == False
-
+        # assert self.isEnd == False
         reward = 0
 
         # 更新当前位置，获取当前位置的候选值
@@ -219,7 +217,6 @@ class Env(EnvHandler):
                 self.optimalValue = computeValue
                 self.optimalPosition = self.curPosition[:]
                 self.optimalStep = self.step
-
 
         self.computeValueStore.append(computeValue)
         self.optimalValueStore.append(self.optimalValue)
@@ -271,14 +268,72 @@ class Env(EnvHandler):
 
     def printOptimalValue(self):
         """打印最佳值"""
-        optimlVar, optimalValue = self.getOptimalValue()
+        optimalVar, optimalValue = self.getOptimalValue()
         logger.info("last step: {}, best value appears in step: {}, optimal var: {}, optimal value: {}"\
-            .format(self.step, self.optimalStep, optimlVar, optimalValue))
+            .format(self.step, self.optimalStep, optimalVar, optimalValue))
 
 
-    
+class EnvExcutor(Env):
+    """对训练好的模型执行动作提供必要环境"""
+    def __init__(self, agent, dim, lowBoundary, upBoundary, initPost, checkLens):
+        super(EnvExcutor, self).__init__(agent, dim, lowBoundary, upBoundary, initPost, checkLens)
+
+    def interact(self, action):
+        """根据动作，更新位置"""
+        if not self.checkBoundary(action):  # 检测边界
+            return 
+
+        for i in range(len(action)):
+            self.curPosition[i] += action[i]
+        canValue = self.getCandidateValue(self.curPosition)
+        # 预测候选值并保存
+        computeValue = self.agent.predict([canValue])
+
+        self.step += 1
+
+        # 更新最佳值, 计算奖赏值
+        if not self.optimalValue:
+            self.optimalValue = computeValue
+            self.optimalPosition = self.curPosition[:]  # 深度复制
+        else:
+            if computeValue < self.optimalValue:
+                self.optimalValue = computeValue
+                self.optimalPosition = self.curPosition[:]
+                self.optimalStep = self.step
+
+        self.computeValueStore.append(computeValue)
+        self.optimalValueStore.append(self.optimalValue)
+        self.optimalVarStore.append(self.getCandidateValue(self.optimalPosition))
+        self.varStore.append(canValue)
+
+        self.checkOptimalValueIsConvergence()  # 检查存储值的差值，低于某个阈值后结束迭代
+
+class QExcutor(object):
+    def __init__(self):
+        pass
+
+    @staticmethod  
+    def epsilonGreedy(Q, state):
+        """e-贪心算法，根据当前状态获得下一个动作"""
+        if (np.random.uniform() > 1 - EPSILON) or ((Q.getCurOptAction(state) == 0).all()):
+            action = [np.random.randint(-1, 2) for i in range(Q.dim)] # 决策动作
+        else:
+            action = Q.getCurOptAction(state)
+
+        return action
+
+    @staticmethod
+    def epsilonGreedyExcutor(Q, state):
+        """e-贪心算法，对训练好的模型进行执行动作"""
+        if (Q.getCurOptAction(state) == 0).all():
+            action = [np.random.randint(-1, 2) for i in range(Q.dim)] # 决策动作
+        else:
+            action = Q.getCurOptAction(state)
+
+        return action
+
 class QFunction(object):
-    """奖赏结构"""
+    """奖赏函数"""
     def __init__(self, dim, actionDim, lowBoundary, upBoundary):
         self.alpha = 0.1
         self.gamma = 0.9
@@ -305,16 +360,6 @@ class QFunction(object):
             action.append(curAction)
 
         return np.array(action)
-
-
-def epsilonGreedy(Q, state):
-    """e-贪心算法，根据当前状态获得下一个动作"""
-    if (np.random.uniform() > 1 - EPSILON) or ((Q.getCurOptAction(state) == 0).all()):
-        action = [np.random.randint(-1, 2) for i in range(Q.dim)] # 决策动作
-    else:
-        action = Q.getCurOptAction(state)
-
-    return action
 
 def generatePoints(lowBoundary, upBoundary, splitPointCount):
     """生成不同区域初始起点"""
@@ -356,12 +401,10 @@ def crossPoint(points):
 
 # 全局变量
 EPSILON = 0.1       # 直接执行动作的概率
-MAX_STEP = 100000   # 最大迭代步长
+MAX_STEP = 10000   # 最大迭代步长
 
-def main():
-    """单目标，多约束寻优问题"""
-    global optimalValue, MAX_STEP
-
+def excute():
+    """针对训练好的模型进行寻优"""
     # Env基本参数定义
     dim = 5         # 决策变量维数
     actionDim = 3   # 动作策略维度
@@ -374,8 +417,58 @@ def main():
     agent = io.getData(modelPath)   
 
     MAX_STEP = 10000
-    maxIter = 50        # 最大迭代数
-    checkLens = 500     # 检测最优最大步数
+    checkLens = 1000     # 检测最优最大步数
+
+    initPos = [[300, 300, 300, 300, 200]] # 最原始的模型尺寸
+
+    QSavingPath = "../data/Q.model"
+    
+    # 执行动作
+    Q = io.getData(QSavingPath)
+    for pos in initPos: # 选择不同的起点进行
+        logger.info("using initial position: {}".format(pos))
+        bestValue = []
+        curPos = pos[:] # 深度复制
+        e = EnvExcutor(agent, dim, lowBoundary, upBoundary, initPost=curPos, checkLens=checkLens)
+        action = QExcutor.epsilonGreedyExcutor(Q, e.presentState)
+        while (e.isEnd is False) and (e.step < MAX_STEP):
+            e.interact(action) # 计算当前动作的奖赏
+            state = e.presentState   # 获得当前状态
+            newAction = QExcutor.epsilonGreedyExcutor(Q, state)  # 根据累积奖赏获得当前状态的下一个动作
+            action = newAction
+
+        preOptimalValueDistance = e.getOptimalValueDistance()
+
+        can, value = e.getOptimalValue()
+
+        # 按日期为目录保存绘制的结果曲线
+        savingDir = "sarsaModelExcuteResults/{}".format(TODAY)
+        tool.mkdirs(savingDir)
+        e.saveValueSnapShot('{}/optimalValueRecord.jpg'.format(savingDir))
+        e.saveVarSnapShot('{}/varRecord.jpg'.format(savingDir))
+
+        # 打印结果
+        logger.info("end step: {}, best result appears in step: {}, variabl: {}, optimal value: {}"
+                    .format(e.step, e.optimalStep, can, value))
+
+def train():
+    """单目标，多约束寻优问题"""
+    global globalOptimalValue, MAX_STEP
+
+    # Env基本参数定义
+    dim = 5         # 决策变量维数
+    actionDim = 3   # 动作策略维度
+    lowBoundary = [-300, -300, -300, -300, -200]    # 变量下界值
+    upBoundary = [300, 300, 100, 300, 200]          # 变量上界值
+
+    # 获得代理模型
+    modelName = getModelName()[1]
+    modelPath = modelPathFormat.format(modelName)   # quadraticRegression
+    agent = io.getData(modelPath)   
+
+    MAX_STEP = 20000
+    maxIter = 500        # 最大迭代数
+    checkLens = 1000     # 检测最优最大步数
     lmb = 1     # 奖赏值学习率
     elta = 2
     gamma = 0.2 # 检查最优值的最大步数学习率
@@ -389,9 +482,12 @@ def main():
     # 打印当前运行参数信息
     logger.info("The global optimalValue is not enabled")
     logger.info("using model: {}".format(modelName))
-    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, init checkLens: {}, lmb: {}, splitPointCount: {}, pointsSize:{}, EPSILON: {}, MAX_STEP: {}"\
-        .format(dim, actionDim, lowBoundary, upBoundary, maxIter, checkLens,
-            lmb, splitPointCount, len(initPos), EPSILON, MAX_STEP))
+    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, \
+        maxIter: {}, init checkLens: {}, lmb: {}, splitPointCount: {}, pointsSize:{}, \
+        EPSILON: {}, MAX_STEP: {}"\
+        .format(dim, actionDim, lowBoundary, upBoundary, 
+                maxIter, checkLens, lmb, splitPointCount, len(initPos),
+                EPSILON, MAX_STEP))
 
     totalIter = len(initPos) * maxIter  # 总迭代数
     count = 1   # 记录迭代数
@@ -399,7 +495,7 @@ def main():
     # 训练
     Q = QFunction(dim, actionDim, lowBoundary, upBoundary)
     globalBestValue = []
-    for pos in initPos:
+    for pos in initPos: # 选择不同的起点进行
         logger.info("using initial position: {}".format(pos))
         bestValueForEachStep = {}
         bestValue = []
@@ -407,13 +503,13 @@ def main():
         for it in range(maxIter):
             curPos = pos[:] # 深度复制
             e = Env(agent, dim, lowBoundary, upBoundary, initPost=curPos, checkLens=checkLens, lmb=lmb)
-            action = epsilonGreedy(Q, e.presentState)
+            action = QExcutor.epsilonGreedy(Q, e.presentState)
             while (e.isEnd is False) and (e.step < MAX_STEP):
                 # logger.inf("e.step: {}".format(e.step))
                 state = e.presentState
                 reward = e.interact(action) # 计算当前动作的奖赏
                 newState = e.presentState   # 获得当前状态
-                newAction = epsilonGreedy(Q, newState)  # 根据累积奖赏获得当前状态的下一个动作
+                newAction = QExcutor.epsilonGreedy(Q, newState)  # 根据累积奖赏获得当前状态的下一个动作
                 Q.updateStateAndAction(state, action, newState, newAction, reward)  # 更新状态和动作
                 action = newAction
 
@@ -450,9 +546,13 @@ def main():
                         next checkLens: {}, preOptimalValueDistance: {},\n\
                         cur best value appears in iter: {}, cur best optimal var:{}, cur best optimal value: {},\n\
                         still need to run: {}"\
-                        .format(it, e.step, e.optimalStep, can, value, checkLens, preOptimalValueDistance, bestValue[0], bestValue[1], bestValue[2], str(estimateTime)))
+                        .format(it, e.step, e.optimalStep, can, value, 
+                                checkLens, preOptimalValueDistance, 
+                                bestValue[0], bestValue[1], bestValue[2], 
+                                str(estimateTime)))
             
-        logger.info("best value appears in iter: {}, var: {},  bestValue : {}".format(bestValue[0], bestValue[1], bestValue[2]))
+        logger.info("based on cur initial position, best value appears in iter: {}, var: {},  bestValue : {}"\
+                    .format(bestValue[0], bestValue[1], bestValue[2]))
 
         if not globalBestValue or globalBestValue[2] > bestValue[2]:
             globalBestValue = bestValue
@@ -470,5 +570,4 @@ def testGeneratePoints():
 
 
 if __name__ == '__main__':
-    main()
-    # logger.error("error test")
+    excute()

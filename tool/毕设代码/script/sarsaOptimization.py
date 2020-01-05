@@ -7,13 +7,11 @@ sys.path.append("../")
 import os 
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
-import numba as nb
-
+import matplotlib.pyplot as plt
 import datetime
 import logging
 import numpy as np
 import pickle
-
 
 import model
 from util import io, tool
@@ -30,6 +28,7 @@ singleModelPathFormat = "../data//singleModel/{}.model"
 QSavingPath = "../data/Q.model"
 
 startTime = datetime.datetime.now()   
+TODAY = str(datetime.datetime.today()).split(" ")[0]
 
 def getModelName():
     """获得选择出来的最佳模型名称"""
@@ -45,37 +44,130 @@ def getSingleModel():
 
 optimalValue = None # 全局最优解
 
-class Env(object):
+class EnvHandler(object):
+    """最小值寻优框架"""
+    def __init__(self, dim, checkLens, lmb):
+        """初始化
+        @param int dim 决策变量维数
+        @param int checkLens 终止寻找取决长度
+        @param float lmb 奖赏学习率
+        """
+        self.dim = dim
+        self.checkLens = checkLens
+        self.lmb = lmb
+
+        self.alpha = 1e-4
+
+        self.optimalValue = None    # 最优目标值
+        self.optimalPosition = None # 最优目标位置
+        self.computeValueStore = []      # 计算结果记录
+        self.optimalValueStore = []      # 最优值记录
+        self.optimalVarStore = []   # 记录最优决策变量值
+        self.varStore = []  # 记录决策变量值
+        self.rewardStore = []
+
+        self.isEnd = False  # 计算终止
+        self.step = 0       # 步数记录
+        self.optimalStep = 1
+
+    def interact(self, action):
+        """根据动作返回奖赏"""
+        pass
+
+    def descend(self):
+        """修改学习率降,加速降低"""
+        self.lmb = (1 - self.alpha) * self.lmb
+
+    def rewardJudge(self, computeValue):
+        """奖赏判断,随着步数增加，减少负反馈影响，后期相当于先探探路"""
+        self.descend()
+        reward = (self.optimalValue - computeValue) * self.lmb  # 奖赏返回差值
+        if reward > 0:  # 强化正反馈(削弱负反馈)
+            reward /= self.lmb
+
+        return reward
+
+    def getOptimalValueDistance(self):
+        """获得两个最优值之间最大的间隔距离"""
+        maxGap = 0
+        preIndex = 0
+        for i in range(self.step-1):
+            if self.optimalVarStore[i] != self.optimalVarStore[i+1]:
+                curGap = i - preIndex
+                if curGap > maxGap:
+                    maxGap = curGap
+                    preIndex = i
+
+        return maxGap
+
+    def saveValueSnapShot(self, picSavingPath="valueSnapShot.jpg"):
+        """绘制最佳值与历史值的曲线图, X轴为迭代步，Y轴为当前最佳值"""
+        plt.close()
+        x = [i for i in range(self.step)]
+        plt.plot(x, self.computeValueStore, label="compute value")
+        plt.plot(x, self.optimalValueStore, label="optimal value")
+        plt.xlabel('Number of step')
+        plt.ylabel('value')
+        # plt.title("Simple Plot")
+        plt.savefig(picSavingPath)
+        # plt.show()
+
+    def saveVarSnapShot(self, picSavingPath="varSnapShot.jpg"):
+        """绘制决策变量的曲线, X轴迭代步, Y轴决策变量的值"""
+        plt.close() 
+        fig, (ax1, ax2) = plt.subplots(2, 1)
+        fig.subplots_adjust(hspace=0.5)
+        x = [i for i in range(self.step)]
+        for i in range(self.dim):
+            tmpOptData = []
+            tmpData = []
+            for j in range(self.step):
+                tmpOptData.append(self.optimalVarStore[j][i])
+                tmpData.append(self.varStore[j][i])
+            ax1.set_title("decision variabl")
+            ax1.plot(x, tmpData, label="var-{}".format(i))
+            ax1.set_xlabel("Number of step")
+            ax1.set_ylabel("value")
+
+            ax2.set_title("optimal variabl")
+            ax2.plot(x, tmpOptData, label="opt-var-{}".format(i))
+            ax2.set_xlabel("Number of step")
+            ax2.set_ylabel("value")
+
+        fig.tight_layout()
+        plt.savefig(picSavingPath)
+
+    def saveRewardSnapShot(self, picSavingPath="rewardSnapShot.jpg"):
+        """绘制最佳值与历史值的曲线图, X轴为迭代步，Y轴为当前最佳值"""
+        plt.close() 
+        x = [i for i in range(self.step)]
+        plt.plot(x, self.rewardStore, label="reward value")
+        plt.xlabel('Number of step')
+        plt.ylabel('value')
+        plt.savefig(picSavingPath)
+ 
+
+class Env(EnvHandler):
     """最小值寻优框架"""
     def __init__(self, agent, dim, lowBoundary, upBoundary, 
-                initPost=None, checkLens=500, lmb=0.01):
+                initPost=None, checkLens=500, lmb=1):
+        super(Env, self).__init__(dim, checkLens, lmb) # 初始化父类
         """初始化
         @param agent 代理模型，提供predict(X)接口
-        @param int dim 变量维数
+        @param int dim 决策变量维数
         @param [] lowBoundary  变量下界
         @param [] upBoundary 变量上界
         @param [,None] initPost  初始位置，默认位置中间点
         @param int checkLens 终止寻找取决长度
-        @param float lmb 奖赏值权重
+        @param float lmb 奖赏学习率
         """
         # global optimalValue
 
         self.agent = agent
-        self.dim = dim
         self.lowBoundary = lowBoundary
         self.upBoundary = upBoundary
         self.curPosition = self.initPosition(initPost)   # 当前位置记录
-        self.checkLens = checkLens      # 判断最优值终止结果步长
-        self.lmb = lmb     # 奖赏值权值
-
-        self.optimalValue = None    # 最优目标值
-        self.optimalPosition = None # 最优目标位置
-        self.computeStore = [None]      # 计算结果记录
-        self.optimalStore = [None]      # 最优值记录
-        self.optimalPositionStore = [None]  # 记录最优目标位置
-        self.isEnd = False  # 计算终止
-        self.step = 0       # 步数记录
-        self.candidate = self.initCan(dim, lowBoundary, upBoundary)
+        self.candidate = self.initCandidate(dim, lowBoundary, upBoundary)
 
     def initPosition(self, initPost):
         """初始化初始位置,初始位置居中"""
@@ -89,7 +181,7 @@ class Env(object):
 
         return pos 
 
-    def initCan(self, dim, lowBoundary, upBoundary):
+    def initCandidate(self, dim, lowBoundary, upBoundary):
         """初始候选值"""
         candidate = []
         for i in range(dim):
@@ -109,25 +201,32 @@ class Env(object):
             return reward
         for i in range(len(action)):
             self.curPosition[i] += action[i]
-        value = self.getCurCandidateValue(self.curPosition)
+        canValue = self.getCandidateValue(self.curPosition)
 
-        # 预测候选值
-        computeValue = self.agent.predict([value])
-        self.computeStore.append(computeValue)
+        # 预测候选值并保存
+        computeValue = self.agent.predict([canValue])
+
+        self.step += 1
 
         # 更新最佳值, 计算奖赏值
         if not self.optimalValue:
             self.optimalValue = computeValue
-            self.optimalPosition = self.curPosition
+            self.optimalPosition = self.curPosition[:]  # 深度复制
         else:
             reward = self.rewardJudge(computeValue)
             if computeValue < self.optimalValue:
+                # logger.info("step: {}, enter into test line".format(self.step))
                 self.optimalValue = computeValue
-                self.optimalPosition = self.curPosition
+                self.optimalPosition = self.curPosition[:]
+                self.optimalStep = self.step
 
-        self.step += 1
-        self.optimalStore.append(self.optimalValue)
-        # self.optimalPositionStore.append(value)
+
+        self.computeValueStore.append(computeValue)
+        self.optimalValueStore.append(self.optimalValue)
+        self.optimalVarStore.append(self.getCandidateValue(self.optimalPosition))
+        self.varStore.append(canValue)
+        self.rewardStore.append(reward)
+
         self.checkOptimalValueIsConvergence()  # 检查存储值的差值，低于某个阈值后结束迭代
 
         return reward
@@ -142,29 +241,21 @@ class Env(object):
 
         return ret
     
-    def getCurCandidateValue(self, curPosition):
-        """获得当前位置的候选值"""
+    def getCandidateValue(self, curPosition):
+        """获得指定位置的候选值"""
         value = []
         for i in range(self.dim):
             value.append(self.candidate[i][curPosition[i]])
 
         return value
-
-    
-    def rewardJudge(self, computeValue):
-        """奖赏判断"""
-        reward = (self.optimalValue - computeValue) * self.lmb  # 奖赏返回差值，差值越大奖赏越多
-
-        return reward
-
     
     def checkOptimalValueIsConvergence(self):
         """检测最优值在最近迭代步长中是否改变，没有改变的话结束迭代"""
-        curOptimalStoreLens = len(self.optimalStore)
+        curOptimalStoreLens = len(self.optimalValueStore)
         if curOptimalStoreLens < self.checkLens:
             return None
 
-        lastValue = self.optimalStore[curOptimalStoreLens-self.checkLens:]
+        lastValue = self.optimalValueStore[curOptimalStoreLens-self.checkLens:]
         if lastValue == lastValue[::-1]:
             self.isEnd = True
             logger.debug("iteration: {}, find cur iteration optimal value, stop cur iteration".format(self.step))
@@ -173,17 +264,20 @@ class Env(object):
     def presentState(self):
         """当前位置"""
         return self.curPosition
+    
+    def getOptimalValue(self):
+        """最佳值"""
+        return self.getCandidateValue(self.optimalPosition), self.optimalValue
 
     def printOptimalValue(self):
         """打印最佳值"""
-        logger.info("step: {}, cur optimal var: {}, optimal value: {}"\
-            .format(self.step, self.getCurCandidateValue(self.optimalPosition), self.optimalValue))
+        optimlVar, optimalValue = self.getOptimalValue()
+        logger.info("last step: {}, best value appears in step: {}, optimal var: {}, optimal value: {}"\
+            .format(self.step, self.optimalStep, optimlVar, optimalValue))
 
-    def getOptimalValue(self):
-        """最佳值"""
-        return self.getCurCandidateValue(self.optimalPosition), self.optimalValue
+
     
-class QClass(object):
+class QFunction(object):
     """奖赏结构"""
     def __init__(self, dim, actionDim, lowBoundary, upBoundary):
         self.alpha = 0.1
@@ -191,7 +285,7 @@ class QClass(object):
 
         self.dim = dim  # 变量维度
         self.actionDim = actionDim
-        self.q = [[] for i in range(dim)]
+        self.q = [[] for i in range(dim)]   # 初始化决策概率值
         for i in range(dim):
             self.q[i] = np.zeros((abs(upBoundary[i]- lowBoundary[i]), actionDim))
 
@@ -216,7 +310,7 @@ class QClass(object):
 def epsilonGreedy(Q, state):
     """e-贪心算法，根据当前状态获得下一个动作"""
     if (np.random.uniform() > 1 - EPSILON) or ((Q.getCurOptAction(state) == 0).all()):
-        action = [np.random.randint(-1, 2) for i in range(Q.dim)]
+        action = [np.random.randint(-1, 2) for i in range(Q.dim)] # 决策动作
     else:
         action = Q.getCurOptAction(state)
 
@@ -261,14 +355,16 @@ def crossPoint(points):
 
 
 # 全局变量
-EPSILON = 0.1
-MAX_STEP = 100000    # 最大迭代步长
+EPSILON = 0.1       # 直接执行动作的概率
+MAX_STEP = 100000   # 最大迭代步长
 
 def main():
     """单目标，多约束寻优问题"""
     global optimalValue, MAX_STEP
-    dim = 5         # 变量维数
-    actionDim = 3   # 动作维度
+
+    # Env基本参数定义
+    dim = 5         # 决策变量维数
+    actionDim = 3   # 动作策略维度
     lowBoundary = [-300, -300, -300, -300, -200]    # 变量下界值
     upBoundary = [300, 300, 100, 300, 200]          # 变量上界值
 
@@ -277,33 +373,40 @@ def main():
     modelPath = modelPathFormat.format(modelName)   # quadraticRegression
     agent = io.getData(modelPath)   
 
-    MAX_STEP = 100000
-    maxIter = 100        # 最大迭代数
-    checkLens = 20000   # 检测最优最大步长
-    lmb = 0.1
+    MAX_STEP = 10000
+    maxIter = 50        # 最大迭代数
+    checkLens = 500     # 检测最优最大步数
+    lmb = 1     # 奖赏值学习率
+    elta = 2
+    gamma = 0.2 # 检查最优值的最大步数学习率
+    preOptimalValueDistance = 0 # 上一次迭代中前后两次最优解之间的步数间隔
 
     # 初始化起点位置
     splitPointCount = 1
     # initPos = generatePoints(lowBoundary, upBoundary, splitPointCount) 
     initPos = [[300, 300, 300, 300, 200]] # 最原始的模型尺寸
 
+    # 打印当前运行参数信息
     logger.info("The global optimalValue is not enabled")
     logger.info("using model: {}".format(modelName))
-    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, checkLens: {}, lmb: {}, splitPointCount: {}, pointsSize:{}, EPSILON: {}, MAX_STEP: {}"\
+    logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {}, maxIter: {}, init checkLens: {}, lmb: {}, splitPointCount: {}, pointsSize:{}, EPSILON: {}, MAX_STEP: {}"\
         .format(dim, actionDim, lowBoundary, upBoundary, maxIter, checkLens,
             lmb, splitPointCount, len(initPos), EPSILON, MAX_STEP))
 
-    totalIter = len(initPos) * maxIter
-    count = 1
+    totalIter = len(initPos) * maxIter  # 总迭代数
+    count = 1   # 记录迭代数
+
     # 训练
-    Q = QClass(dim, actionDim, lowBoundary, upBoundary)
+    Q = QFunction(dim, actionDim, lowBoundary, upBoundary)
     globalBestValue = []
     for pos in initPos:
         logger.info("using initial position: {}".format(pos))
+        bestValueForEachStep = {}
         bestValue = []
+        preCheckLens = checkLens
         for it in range(maxIter):
-            # logger.info("iter: {}".format(it))
-            e = Env(agent, dim, lowBoundary, upBoundary, initPost=pos, checkLens=checkLens, lmb=lmb)
+            curPos = pos[:] # 深度复制
+            e = Env(agent, dim, lowBoundary, upBoundary, initPost=curPos, checkLens=checkLens, lmb=lmb)
             action = epsilonGreedy(Q, e.presentState)
             while (e.isEnd is False) and (e.step < MAX_STEP):
                 # logger.inf("e.step: {}".format(e.step))
@@ -314,29 +417,47 @@ def main():
                 Q.updateStateAndAction(state, action, newState, newAction, reward)  # 更新状态和动作
                 action = newAction
 
+            # 更新收敛检查步数
+            # checkLens *= elta
+            checkLens = abs(int(preCheckLens + elta * checkLens * (e.optimalStep / e.step - gamma)))
+            preOptimalValueDistance = e.getOptimalValueDistance()
+
             can, value = e.getOptimalValue()
-            # optimalValue = value
+
+            # 记录每个迭代的最佳值
             if can and value:
-                bestValue.append([value, can])
-            e.printOptimalValue()
+                bestValueForEachStep[it] = [can, value]
+            if not bestValue or value < bestValue[2]:
+                bestValue = [it, can, value, pos]
+
+            # 按日期为目录保存绘制的结果曲线
+            savingDir = "sarsaResults/{}".format(TODAY)
+            tool.mkdirs(savingDir)
+            e.saveValueSnapShot('{}/optimalValueRecord-iter-{}.jpg'.format(savingDir, it))
+            e.saveVarSnapShot('{}/varRecord-iter-{}.jpg'.format(savingDir, it))
+            e.saveRewardSnapShot('{}/rewardRecord-iter-{}.jpg'.format(savingDir, it))
 
             # 预估剩余运行时间
             curTime = datetime.datetime.now() 
             curRunTime = curTime - startTime
             meanIterRunTime = curRunTime / count 
-            logger.info("needs to run: {} ".format(str((totalIter-count)*meanIterRunTime)))
-            count += 1
+            estimateTime = (totalIter - count) * meanIterRunTime
 
-        # logger.debug("bestValue: {}".format(bestValue))
-        try:
-            bestValue.sort()
-            logger.info("bestValue store: {}".format(bestValue[0]))
-            globalBestValue.append(bestValue[0])
-        except Exception as e:
-            logger.error("sort bestValue fail, except: {}".format(str(e)))
+            count += 1 # 
 
-    globalBestValue.sort()
-    logger.info("global best value: {}".format(globalBestValue[0]))
+            # 打印当前变动参数，当前最佳值，预估仍需要运行时间的时间
+            logger.info("iter: {}, end step: {}, best value appears in step: {}, optimal var: {}, optimal value: {},\n\
+                        next checkLens: {}, preOptimalValueDistance: {},\n\
+                        cur best value appears in iter: {}, cur best optimal var:{}, cur best optimal value: {},\n\
+                        still need to run: {}"\
+                        .format(it, e.step, e.optimalStep, can, value, checkLens, preOptimalValueDistance, bestValue[0], bestValue[1], bestValue[2], str(estimateTime)))
+            
+        logger.info("best value appears in iter: {}, var: {},  bestValue : {}".format(bestValue[0], bestValue[1], bestValue[2]))
+
+        if not globalBestValue or globalBestValue[2] > bestValue[2]:
+            globalBestValue = bestValue
+
+    logger.info("global best value: {}".format(globalBestValue))
     endTime = datetime.datetime.now() 
     logger.info("run time: {}".format(str(endTime - startTime)))
     io.saveData(Q, QSavingPath)

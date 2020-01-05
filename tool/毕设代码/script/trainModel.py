@@ -5,6 +5,7 @@
 """
 import sys
 sys.path.append("../")
+import logging
 
 from util import io 
 from util import tool
@@ -14,6 +15,10 @@ dataFilePath = "../data/samples-data.data"
 labelsFilePath = "../data/samples-data-labels.data"
 stackModelSavingPath = "../data/stackingModel.model" # 融合模型保存路径
 
+# 日志设置
+LOGGER_PATH = "../log"
+logger = tool.getLogger(LOGGER_PATH)
+logger.setLevel(logging.DEBUG)
 
 def getTrainData():
     """获取训练数据"""
@@ -44,9 +49,9 @@ def testModelPdt():
     X, Y = getTrainData()
     pdtValue = stackModel.predict(X)
     retMSE = tool.computeRMAE(Y, pdtValue)
-    print("MSE : {}".format(retMSE))
-    # print("X-pdt: {}".format(pdtValue))
-    # print("Y-val: {}".format(Y))
+    logger.info("RMAE : {}".format(retMSE))
+    # logger.info("X-pdt: {}".format(pdtValue))
+    # logger.info("Y-val: {}".format(Y))
 
 def testSingleModel():
     X, Y = getTrainData()
@@ -56,16 +61,11 @@ def testSingleModel():
     for n in names:
         m = io.getData(modelSaving.format(n))
         pdtValue = m.predict(X)
-        retMSE = tool.computeMSE(pdtValue, Y)
-        print("model: {}, MSE : {}".format(n, retMSE))
+        retMSE = tool.computeRMAE(pdtValue, Y)
+        logger.info("model: {}, RMAE : {}".format(n, retMSE))
 
 if __name__ == '__main__':
+    train()
     testModelPdt()
-
-
-
-
-
-
-
-
+    trainBySingleModel()
+    testSingleModel()

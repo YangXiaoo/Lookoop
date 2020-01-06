@@ -2,6 +2,9 @@
 import math
 import numpy as np 
 import datetime
+import os
+
+
 def foo():
     print(GLOBAL_VAR)
 
@@ -41,11 +44,7 @@ class A():
 
 
 if __name__ == '__main__':
-    a = 1 - 1e-4
-    b = 1
-    for i in range(5000):
-        b = b * a
-    print(b)
-    a = 2 if 3 > 4 else 0
-    print(a)
+    modelPathFormat = "../data/sarsa-2020-1-5.model"
+    print(os.path.basename(modelPathFormat))
+    print(os.path.dirname(modelPathFormat))
 

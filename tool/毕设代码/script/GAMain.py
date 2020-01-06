@@ -76,6 +76,7 @@ class MyProblem(ea.Problem): # 继承Problem父类
 
 def train(modelName, dim, maxIter):
     """训练"""
+    logger.info("{}-GAMain-train-{}".format('*'*25, '*'*25))
     problem = MyProblem(modelName)
     NIND = dim  # 种群规模
 
@@ -102,6 +103,7 @@ def train(modelName, dim, maxIter):
 
 def mainModelOptimus():
     """对二次响应面，Stacking模型进行优化"""
+    logger.info("{}-GAMain-mainModelOptimus-{}".format('*'*25, '*'*25))
     dim = 1000
     maxIter = 1000
     names = getModelName()
@@ -112,6 +114,7 @@ def mainModelOptimus():
 
 def singleModelOptimus():
     """对单个模型进行优化"""
+    logger.info("{}-GAMain-singleModelOptimus-{}".format('*'*25, '*'*25))
     global modelPathFormat
     modelPathFormat = singleModelPathFormat
     dim = 1000

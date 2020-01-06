@@ -13,7 +13,7 @@ from sklearn.linear_model import ElasticNet, SGDRegressor, BayesianRidge
 from sklearn.kernel_ridge import KernelRidge
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.neighbors import KNeighborsRegressor
-from xgboost import XGBRegressor
+# from xgboost import XGBRegressor
 
 
 from sklearn.model_selection import cross_val_score, GridSearchCV, KFold
@@ -67,8 +67,17 @@ class stacking(BaseEstimator, RegressorMixin, TransformerMixin):
         return self
     
     def predict(self, X):
-        test_mean = np.column_stack([np.column_stack(mod.predict(X) for mod in tmp_model).mean(axis=1) for tmp_model in self.model_saved]) # 对每个test数据进行预测并取平局值
-        return self.fusion_model.predict(test_mean)
+        """预测"""
+        testMean = []
+        for model in self.model_saved:
+            tmpData = []
+            for m in model:
+                tmpData.append(np.ravel(m.predict(X)))
+            resStack = np.column_stack(tmpData).mean(axis=1)
+            testMean.append(resStack)
+        testMean = np.column_stack(testMean)
+        # testMean = np.column_stack([np.column_stack(list(mod.predict(X)) for mod in tmp_model).mean(axis=1) for tmp_model in self.model_saved]) # 对每个test数据进行预测并取平局值
+        return self.fusion_model.predict(testMean)
 
 
 def train_model(_train_raw, _labels, collectionModel=LinearRegression()):

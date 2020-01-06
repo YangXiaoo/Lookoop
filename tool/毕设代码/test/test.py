@@ -6,6 +6,7 @@ import math
 import numpy as np 
 import datetime
 import os
+import sklearn
 
 from util import io, tool
 
@@ -35,6 +36,7 @@ class A():
 
 
 if __name__ == '__main__':
-    x,y = getTrainData()
-    print(len(x), len(y))
+    nums = np.array([[1,2,3],[4,5,6]])
+    print(nums)
+    print(list(nums))
 

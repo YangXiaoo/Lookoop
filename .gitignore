@@ -77,3 +77,5 @@ tool/毕设代码/log/all.log.2019-12-16
 tool/毕设代码/script/Result/ObjV.csv
 *.svg
 *.2020-01-05
+*.svg
+*.csv

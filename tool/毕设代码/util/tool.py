@@ -5,6 +5,7 @@ import logging.handlers
 import configparser # 读写配置
 import datetime
 import time
+from copy import deepcopy
 
 import numpy as np
 from sklearn.model_selection import KFold
@@ -55,7 +56,8 @@ def getConfig(configPath):
 
     return conf
 
-def checkData(data1, data2):
+def dataAdapter(data1, data2):
+    """数据转换"""
     try:
         _ = data1.shape
     except:
@@ -64,10 +66,9 @@ def checkData(data1, data2):
         _ = data2.shape
     except:
         data2 = np.array(data2)
-
-    if np.shape(data1)[0] != 1:
-        data1 = data1.reshape(1, len(data1))[0]
     try:
+        if np.shape(data1)[0] != 1:
+            data1 = data1.reshape(1, len(data1))[0]
         if np.shape(data2)[0] != 1:
             data2 = data2.reshape(1, len(data2))[0]
     except Exception as e:
@@ -77,7 +78,7 @@ def checkData(data1, data2):
 
 def computeMAE(data1, data2):
     """计算平均绝对误差MSE"""
-    data1, data2 = checkData(data1, data2)
+    data1, data2 = dataAdapter(data1, data2)
     m = np.shape(data1)[0]
     tmpSum = 0
     for i in range(m):
@@ -87,7 +88,7 @@ def computeMAE(data1, data2):
 
 def computeRMAE(data1, data2):
     """计算相对平均误差"""
-    data1, data2 = checkData(data1, data2)
+    data1, data2 = dataAdapter(data1, data2)
     m = np.shape(data1)[0]
     tmpSum = 0
     for i in range(m):
@@ -97,7 +98,7 @@ def computeRMAE(data1, data2):
 
 def computeMSE(data1, data2):
     """计算平均绝对误差MSE"""
-    data1, data2 = checkData(data1, data2)
+    data1, data2 = dataAdapter(data1, data2)
     m = np.shape(data1)[0]
     tmpSum = 0
     for i in range(m):
@@ -116,19 +117,19 @@ def sequeceInArray(nums, seqIndex):
 
     return ret
 
-
-def crossValueScore(model, X, y, agent=computeMSE, cv=5):
+def crossValueScore(inputModel, X, y, agent=computeMSE, cv=5):
     """交叉验证模型性能"""
     fold = KFold(n_splits=cv, random_state=2, shuffle=True)
 
     pdtMSE = []
     for trainIndex, valueIndex in fold.split(X, y):
+        model = deepcopy(inputModel)
         _x, _y = np.array([]), []
         for index in trainIndex:
             _x = np.concatenate([_x, X[index]], axis=0)
             _y.append(y[index])
         _x = np.array(_x).reshape(len(trainIndex),len(X[0]))
-        model.fit(_x, np.array(_y))
+        model.fit(_x, np.ravel(_y))
 
         testX, testY = np.array([]), []
         for index in valueIndex:

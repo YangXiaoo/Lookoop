@@ -448,6 +448,7 @@ MAX_STEP = 10000   # 最大迭代步长
 
 def excute():
     """针对训练好的模型进行寻优"""
+    logger.info("{}-sarsaOptimization-excute-{}".format('*'*25, '*'*25))
     # Env基本参数定义
     dim = 5         # 决策变量维数
     actionDim = 3   # 动作策略维度
@@ -493,6 +494,7 @@ def excute():
 
 def train():
     """单目标，多约束寻优问题"""
+    logger.info("{}-sarsaOptimization-train-{}".format('*'*25, '*'*25))
     global globalOptimalValue, MAX_STEP
 
     # Env基本参数定义

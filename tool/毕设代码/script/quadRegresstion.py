@@ -12,10 +12,10 @@ from scipy.optimize import curve_fit
 import numpy as np
 import logging
 
-# # 日志设置
-# LOGGER_PATH = "../log"
-# logger = tool.getLogger(LOGGER_PATH)
-# logger.setLevel(logging.DEBUG)
+# 日志设置
+LOGGER_PATH = "../log"
+logger = tool.getLogger(LOGGER_PATH)
+logger.setLevel(logging.DEBUG)
 
 
 dataFilePath = "../data/samples-data.data"
@@ -70,7 +70,7 @@ class CurveFitHandler():
         m = np.shape(self.y)[0]
         tmpSum = 0
         for i in range(m):
-            tmpSum += abs(self.y[i] - self.pdtResult[i])
+            tmpSum += abs(self.y[i] - self.pdtResult[i])**2
 
         return tmpSum / m
 
@@ -115,15 +115,32 @@ class CurveFit(CurveFitHandler):
 
         return self.pdtResult
 
+def crossValidate(X,y):
+    """使用交叉验证的方式对模型进行训练，看模型对未知数据的拟合能力"""
+    logger.info("{}-crossValidate-{}".format('*'*25, '*'*25))
+    curveFit = CurveFit()    
+    rmae = tool.crossValueScore(curveFit, X, y, tool.computeRMAE)
+    logger.info("quadratic regression, cross validate RMAE: {}".format(rmae))
+
+def train(X, y):
+    """使用所有数据对模型进行训练, 保存模型"""
+    curveFit = CurveFit()
+    curveFit.fit(X, y)
+    io.saveData(curveFit, curveFitModelSavingPath)  # 保存当前模型
+
+def testModel(X, y):
+    """测试模型对已有训练数据的拟合能力"""
+    logger.info("{}-testModel-{}".format('*'*25, '*'*25))
+    curveFit = io.getData(curveFitModelSavingPath)
+    pdt = curveFit.predict(X)
+    rmae = tool.computeRMAE(y, pdt)
+    logger.info("quadratic regression, predict rmae : {}".format(rmae))
+
 if __name__ == '__main__':
     X, Y = getTrainData()
     y = Y.reshape(1, len(Y))[0]
-    curveFit = CurveFit()
-    curveFit.fit(X, y)
-    # io.saveData(curveFit, curveFitModelSavingPath)  # 保存当前模型
-    # curveFit = io.getData(curveFitModelSavingPath)
-    # pdtVDiff = curveFit.predict(X) - y
-    # print("[INFO] predict mse : {}".format(curveFit.getMSE()))
-    rmae = tool.crossValueScore(curveFit, X, y, tool.computeRMAE)
-    print("RMAE: {}".format(rmae))
+    train(X, y)
+    testModel(X, y)
+    crossValidate(X, y)
+    # train(X, y)
 

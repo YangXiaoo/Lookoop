@@ -1,6 +1,17 @@
 # coding:utf-8
 # 2019-12-10
 # 强化学习优化
+"""
+1. 采样建立数据样本，采样代码见`../algorithms/sampling/LHSample.py`,
+    标签添加见`../algorithms/sampling/addResult.py`
+2. 建立代理模型，网格搜索、模型选择见`ChooseParam.ipynb`, 集成学习见`trainModel.py`; 
+    二次响应面模型建立见`quaRegression.py`
+3. 遗传算法见`GAMain.py`
+4. 强化学习为本程序，训练模型为`train()`函数,训练结果在`/sarsaResults`, 强化学习模型保
+    存在`../data/sarsaModel`文件夹下;训练好模型后, 选择最好的模型使用`excute()`函数执
+    行结果在`/sarsaModelExcuteResults`目录下
+5. 运行结果全部日志见`../log`目录
+"""
 import sys
 sys.path.append("../")
 

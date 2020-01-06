@@ -120,10 +120,10 @@ if __name__ == '__main__':
     y = Y.reshape(1, len(Y))[0]
     curveFit = CurveFit()
     curveFit.fit(X, y)
-    io.saveData(curveFit, curveFitModelSavingPath)  # 保存当前模型
+    # io.saveData(curveFit, curveFitModelSavingPath)  # 保存当前模型
     # curveFit = io.getData(curveFitModelSavingPath)
     # pdtVDiff = curveFit.predict(X) - y
     # print("[INFO] predict mse : {}".format(curveFit.getMSE()))
-    mse = tool.crossValueScore(curveFit, X, y, tool.computeRMAE)
-    print("MSE: {}".format(mse))
+    rmae = tool.crossValueScore(curveFit, X, y, tool.computeRMAE)
+    print("RMAE: {}".format(rmae))
 

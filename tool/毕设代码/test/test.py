@@ -36,7 +36,11 @@ class A():
 
 
 if __name__ == '__main__':
-    nums = np.array([[1,2,3],[4,5,6]])
-    print(nums)
-    print(list(nums))
+    e = 0.002
+    E = 0.1
+    for i in range(1000):
+        if i % 100 == 0: print("i: {}, E: {}".format(i, E))
+        E = (1-e)*E 
+    print(E)
+    print(0.1/E)
 

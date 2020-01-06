@@ -24,15 +24,15 @@ import logging
 import numpy as np
 import pickle
 
-import model
+from model import getModel
 from util import io, tool
-from quadRegresstion import *
+# from quadRegresstion import *
 
 # 日志设置
 LOGGER_PATH = "../log"
 logger = tool.getLogger(LOGGER_PATH)
 logger.setLevel(logging.INFO)
-logger.info("{}-new-log-{}".format('*'*30, '*'*30))
+
 startTime = datetime.datetime.now()                     # 程序运行起始时间
 TODAY = str(datetime.datetime.today()).split(" ")[0]    # 当前日期 2020-1-5
 
@@ -51,7 +51,7 @@ def getModelName():
 
 def getSingleModel():
     """获得单个模型的名称"""
-    names, models = model.getModel()
+    names, models = getModel()
 
     return names
 
@@ -414,6 +414,12 @@ def crossPoint(points):
 
     return helper(points[1:], res)
 
+def testGeneratePoints():
+    """测试-网格划分生成"""
+    lowBoundary = [-300, -300, -300, -300, -200]
+    upBoundary = [300, 300, 100, 300, 200]
+    ret = generatePoints(lowBoundary, upBoundary)
+
 def saveProfileOfResults(resultForEachStep, picSavingPath="result.jpg"):
     """保存结果曲线为图片"""
     x = [i for i in range(len(resultForEachStep))]
@@ -495,7 +501,7 @@ def excute():
 def train():
     """单目标，多约束寻优问题"""
     logger.info("{}-sarsaOptimization-train-{}".format('*'*25, '*'*25))
-    global globalOptimalValue, MAX_STEP
+    global globalOptimalValue, MAX_STEP, EPSILON
 
     # Env基本参数定义
     dim = 5         # 决策变量维数
@@ -508,13 +514,17 @@ def train():
     modelPath = modelPathFormat.format(modelName)   # quadraticRegression
     agent = io.getData(modelPath)   
 
-    MAX_STEP = 10000
-    maxIter = 5        # 最大迭代数
-    checkLens = 500     # 检测最优最大步数
+    MAX_STEP = 20000
+    maxIter = 1000        # 最大迭代数
+    checkLens = 2000     # 检测最优最大步数
     lmb = 1     # 奖赏值学习率
     elta = 2
     gamma = 0.2 # 检查最优值的最大步数学习率
     preOptimalValueDistance = 0 # 上一次迭代中前后两次最优解之间的步数间隔
+
+    # EPSILON衰减率
+    preEPSILON = EPSILON    # 保存EPSILON值
+    eDescend = 0.002        # EPSILON衰减率，1000步后EPSILON衰减到0.0135
 
     # 初始化起点位置
     splitPointCount = 1
@@ -542,11 +552,12 @@ def train():
     Q = QFunction(dim, actionDim, lowBoundary, upBoundary)
     globalBestValue = []
     for index, pos in enumerate(initPos): # 选择不同的起点进行
-        logger.info("using initial position: {}".format(pos))
-        resultForEachStep = []
-        bestValue = []
-        checkLensStore = [checkLens]
+        logger.info("start training, using initial position: {}".format(pos))
+        resultForEachStep = []  # 记录每一步的结果
+        bestValue = []  # 记录最优结果
+        checkLensStore = [checkLens]    # 记录收敛步长数
         preCheckLens = checkLens
+        EPSILON = preEPSILON
         for it in range(maxIter):
             curPos = pos[:] # 深度复制
             e = Env(agent, dim, lowBoundary, upBoundary, initPost=curPos, checkLens=checkLens, lmb=lmb)
@@ -586,7 +597,10 @@ def train():
             meanIterRunTime = curRunTime / count 
             estimateTime = (totalIter - count) * meanIterRunTime
 
-            count += 1
+            count += 1  # 迭代计数加1
+
+            # 更新EPSILON值
+            EPSILON = (1 - eDescend) * EPSILON
 
             # 打印当前变动参数，当前最佳值，预估仍需要运行时间的时间
             logger.info("iter: {}, end step: {}, best value appears in step: {},\n\
@@ -615,12 +629,17 @@ def train():
     logger.info("run time: {}".format(str(endTime - startTime)))
     io.saveData(Q, QSavingPath)
 
-def testGeneratePoints():
-    """测试-网格划分生成"""
-    lowBoundary = [-300, -300, -300, -300, -200]
-    upBoundary = [300, 300, 100, 300, 200]
-    ret = generatePoints(lowBoundary, upBoundary)
-
+def EPSILONDescendTest():
+    """测试EPSILON衰减程度"""
+    logger.info("{}-sarsaOptimization-EPSILONDescendTest-{}".format('*'*25, '*'*25))
+    e = 0.002   # 衰减率
+    E = 0.1
+    oldE = E
+    for i in range(1000):
+        if i % 100 == 0: logger.info("i: {}, E: {}".format(i, E))
+        E = (1-e)*E 
+    logger.info(E)
+    logger.info(oldE/E)
 
 if __name__ == '__main__':
     train()

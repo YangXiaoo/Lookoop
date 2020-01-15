@@ -23,6 +23,7 @@ import datetime
 import logging
 import numpy as np
 import pickle
+import random
 
 from model import getModel
 from util import io, tool
@@ -39,10 +40,11 @@ TODAY = str(datetime.datetime.today()).split(" ")[0]    # 当前日期 2020-1-5
 # 模型路径format
 modelPathFormat = "../data/{}.model"
 singleModelPathFormat = "../data/singleModel/{}.model"
-QSavingPath = "../data/sarsaModel/sarsa-{}.model".format(TODAY)
+QSavingPath = "../data/sarsaModel/{}/sarsa.model".format(TODAY)
 sarsaResultsSavingDir = "sarsaResults/{}".format(TODAY) # # 结果保存路径
 
 globalOptimalValue = None # 全局最优解
+globalAdder = 10
 
 def checkDirIsExist():
     """检查signleModelPath,QSavingPath,sarsaResultsSavingDir目录是否存在，如果不存在则创建"""
@@ -70,13 +72,14 @@ class EnvHandler(object):
         @param int checkLens 终止寻找取决长度
         @param float lmb 奖赏学习率
         """
+        global globalOptimalValue
         self.dim = dim
         self.checkLens = checkLens
         self.lmb = lmb
 
         self.alpha = 1e-5
 
-        self.optimalValue = None    # 最优目标值
+        self.optimalValue = globalOptimalValue    # 最优目标值
         self.optimalPosition = None # 最优目标位置
         self.computeValueStore = []      # 计算结果记录
         self.optimalValueStore = []      # 最优值记录
@@ -96,12 +99,33 @@ class EnvHandler(object):
         """修改学习率降,加速降低"""
         self.lmb = (1 - self.alpha) * self.lmb
 
+    def rewardJudge01(self, computeValue):
+        """奖赏判断,随着步数增加，减少负反馈影响
+        根据实验，下一步的值比上一步的值大，若奖赏变为负数则会导致解永远在局部产生，所以奖赏值为负数时将奖赏值变为0
+        """
+        # self.descend()
+        # reward = (self.optimalValue - computeValue) * self.lmb  # 奖赏返回差值
+        reward = self.optimalValue - computeValue  # 奖赏返回差值
+        if reward >= 0:  # 强化正反馈(削弱负反馈)
+            # reward /= self.lmb
+            reward = reward # or 50
+        else:
+            reward = 0
+
+        return reward
+
     def rewardJudge(self, computeValue):
-        """奖赏判断,随着步数增加，减少负反馈影响，后期相当于先探探路"""
-        self.descend()
-        reward = (self.optimalValue - computeValue) * self.lmb  # 奖赏返回差值
-        if reward > 0:  # 强化正反馈(削弱负反馈)
-            reward /= self.lmb
+        """奖赏判断,随着步数增加，减少负反馈影响
+        根据实验，下一步的值比上一步的值大，若奖赏变为负数则会导致解永远在局部产生，所以奖赏值为负数时将奖赏值变为0
+        """
+        global globalAdder
+        reward = self.optimalValue - computeValue  # 奖赏返回差值
+        if reward >= 0:  # 强化正反馈(削弱负反馈)
+            # reward /= self.lmb
+            globalAdder += 10
+            reward = globalAdder
+        else:
+            reward = 0
 
         return reward
 
@@ -215,7 +239,7 @@ class Env(EnvHandler):
 
         # 更新当前位置，获取当前位置的候选值
         if not self.checkBoundary(action):  # 检测边界
-            return reward
+            return -5   # 达到边界的奖赏为负
         for i in range(len(action)):
             self.state[i] += action[i]
         varValue = self.getCandidateValue(self.state)
@@ -231,7 +255,7 @@ class Env(EnvHandler):
             self.optimalPosition = self.state[:]  # 深度复制
         else:
             reward = self.rewardJudge(computeValue)
-            if computeValue < self.optimalValue:
+            if computeValue <= self.optimalValue:
                 # logger.info("step: {}, enter into test line".format(self.step))
                 self.optimalValue = computeValue
                 self.optimalPosition = self.state[:]
@@ -337,7 +361,7 @@ class QExcutor(object):
     def epsilonGreedy(Q, state):
         """e-贪心算法，根据当前状态获得下一个动作"""
         if (np.random.uniform() > 1 - EPSILON) or ((Q.getCurOptAction(state) == 0).all()):
-            action = [np.random.randint(-1, 2) for i in range(Q.dim)] # 决策动作
+            action = [random.randint(-1, 1) for i in range(Q.dim)] # 决策动作
         else:
             action = Q.getCurOptAction(state)
 
@@ -347,7 +371,7 @@ class QExcutor(object):
     def epsilonGreedyExcutor(Q, state):
         """e-贪心算法，对训练好的模型进行执行动作"""
         if (Q.getCurOptAction(state) == 0).all():
-            action = [np.random.randint(-1, 2) for i in range(Q.dim)] # 决策动作
+            action = [random.randint(-1, 1) for i in range(Q.dim)] # 决策动作
         else:
             action = Q.getCurOptAction(state)
 
@@ -519,9 +543,9 @@ def train():
     modelPath = modelPathFormat.format(modelName)   # quadraticRegression
     agent = io.getData(modelPath)   
 
-    MAX_STEP = 50000
+    MAX_STEP = 5000
     maxIter = 1000        # 最大迭代数
-    checkLens = 10000     # 检测最优最大步数
+    checkLens = 5000     # 检测最优最大步数
     lmb = 1     # 奖赏值学习率
     elta = 2
     gamma = 0.8 # 检查最优值的最大步数学习率
@@ -529,15 +553,16 @@ def train():
 
     # EPSILON衰减率
     preEPSILON = EPSILON    # 保存EPSILON值
-    eDescend = 0.002        # EPSILON衰减率，1000步后EPSILON衰减到0.0135
+    eDescend = 0.001        # EPSILON衰减率，1000步后EPSILON衰减到0.0135
 
     # 初始化起点位置
-    splitPointCount = 1
-    # initPos = generatePoints(lowBoundary, upBoundary, splitPointCount) 
-    initPos = [[300, 300, 300, 300, 200]] # 最原始的模型尺寸
+    splitPointCount = 2
+    initPos = generatePoints(lowBoundary, upBoundary, splitPointCount) 
+    initPos.append([300, 300, 300, 300, 200]) # 最原始的模型尺寸
 
     # 打印当前运行参数信息
-    logger.info("The global optimalValue is not enabled")
+    # logger.info("The global optimalValue is not enabled, without EPSILON change")
+    logger.info("The global optimalValue is enabled")
     logger.info("using model: {}".format(modelName))
     logger.info("dim: {}, actionDim: {}, lowBoundary: {}, upBoundary: {},\n\
                 maxIter: {}, init checkLens: {}, lmb: {}, splitPointCount: {}, pointsSize:{},\n\
@@ -571,12 +596,13 @@ def train():
             e = Env(agent, dim, lowBoundary, upBoundary, initPost=curPos, checkLens=checkLens, lmb=lmb)
             action = QExcutor.epsilonGreedy(Q, e.presentState)
             while (e.isEnd is False) and (e.step < MAX_STEP):
+                # logger.info("action: {}".format(action))
                 state = e.presentState
                 reward = e.interact(action) # 计算当前动作的奖赏
                 newState = e.presentState   # 获得当前状态
                 newAction = QExcutor.epsilonGreedy(Q, newState)  # 根据累积奖赏获得当前状态的下一个动作
                 Q.updateStateAndAction(state, action, newState, newAction, reward)  # 更新状态和动作
-                action = newAction
+                action = newAction[:]
 
             # # 更新收敛检查步数
             # # checkLens *= elta
@@ -586,18 +612,21 @@ def train():
 
             var, value = e.getOptimalValue()
 
+            if globalOptimalValue and value < globalOptimalValue:
+                globalOptimalValue = value
+
             # 记录每个迭代的最佳值
             if var and value:
                 resultForEachStep.append([it, var, value])
             if not bestValue or value < bestValue[2]:
-                bestValue = [it, var, value, pos]
+                bestValue = [it, var, value, pos, index]
                 curOptimalModelPath = os.path.join(os.path.dirname(QSavingPath), "p-{}-iter-{}-{}".format(index, it, os.path.basename(QSavingPath)))
                 io.saveData(Q, curOptimalModelPath)
 
             # 按日期为目录保存绘制的结果曲线
-            e.saveValueSnapShot('{}/optimalValueRecord-iter-{}.jpg'.format(sarsaResultsSavingDir, it))
-            e.saveVarSnapShot('{}/varRecord-iter-{}.jpg'.format(sarsaResultsSavingDir, it))
-            e.saveRewardSnapShot('{}/rewardRecord-iter-{}.jpg'.format(sarsaResultsSavingDir, it))
+            e.saveValueSnapShot('{}/optimalValueRecord-P-{}-iter-{}.jpg'.format(sarsaResultsSavingDir, index, it))
+            e.saveVarSnapShot('{}/varRecord-P-{}-iter-{}.jpg'.format(sarsaResultsSavingDir, index, it))
+            e.saveRewardSnapShot('{}/rewardRecord-P-{}-iter-{}.jpg'.format(sarsaResultsSavingDir, index, it))
 
             # 预估剩余运行时间
             curTime = datetime.datetime.now() 
@@ -608,7 +637,7 @@ def train():
             count += 1  # 迭代计数加1
 
             # 更新EPSILON值
-            EPSILON = (1 - eDescend) * EPSILON
+            # EPSILON = (1 - eDescend) * EPSILON
 
             # 打印当前变动参数，当前最佳值，预估仍需要运行时间的时间
             logger.info("iter: {}, end step: {}, best value appears in step: {},\n\
@@ -632,8 +661,8 @@ def train():
         saveProfileOfResults(resultForEachStep, '{}/result-{}.jpg'.format(sarsaResultsSavingDir, index))
 
         # 打印使用当前初始起点的最优解
-        logger.info("based on cur initial position, best value appears in iter: {}, var: {},  bestValue : {}"\
-                    .format(bestValue[0], bestValue[1], bestValue[2]))
+        logger.info("p: {}, based on cur initial position, best value appears in iter: {}, var: {},  bestValue : {}"\
+                    .format(index, bestValue[0], bestValue[1], bestValue[2]))
 
         if not globalBestValue or globalBestValue[2] > bestValue[2]:
             globalBestValue = bestValue
@@ -669,5 +698,7 @@ def testProbility():
 
     logger.info("total iteration is: {}, EPSILON: {}, enter count: {}".format(maxIter, EPSILON, enterCount))
 
+checkDirIsExist()   # 创建文件保存目录
+
 if __name__ == '__main__':
-    train()
+    train() 

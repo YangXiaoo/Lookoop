@@ -81,3 +81,5 @@ tool/毕设代码/script/Result/ObjV.csv
 *.csv
 tool/毕设代码/log/all.log.2019-12-23
 tool/毕设代码/data/samples-data-labels.data
+*.png
+*.2020-01-06

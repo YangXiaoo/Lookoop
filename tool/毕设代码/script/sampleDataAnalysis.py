@@ -30,9 +30,22 @@ checkDir()
 data = pd.read_csv(csvDataSavingPath)
 
 # 目标变量分布
-distplot = sns.distplot(data[label])
+obj = data[label].describe()
+logger.info(obj)
+# count       30.000000
+# mean     38658.995167
+# std        589.833248
+# min      37650.160000
+# 25%      38150.199000
+# 50%      38553.244500
+# 75%      39065.474750
+# max      39840.227000
+
+distplot = sns.distplot(data[label],norm_hist=False)
 plt.savefig('{}/{}.jpg'.format(picSavingDir, label))
 # plt.show()
+
+
 
 # 皮尔逊相关系数计算
 corrmatrix = data.corr()	
@@ -55,7 +68,7 @@ k = 5
 cols = corrmatrix.nlargest(k,label)[label].index
 cm1 = data[cols].corr()
 hm2 = sns.heatmap(cm1,square=True,annot=True,cmap='RdPu',fmt='.2f',annot_kws={'size':5})
-plt.savefig('{}/heatMap_top{}.jpg'.format(k, picSavingDir))
+plt.savefig('{}/heatMap_top{}.jpg'.format(picSavingDir, k))
 
 # 单个变量与标签之间的皮尔逊相关系数
 for h in data.columns.values[:-1]:

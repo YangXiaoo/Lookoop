@@ -19,6 +19,3 @@ def getTrainData():
     Y = io.getData(labelsFilePath)
 
     return X, Y
-
-print("xx"+"ee")
-

@@ -74,4 +74,3 @@ plt.savefig('{}/heatMap_top{}.jpg'.format(picSavingDir, k))
 for h in data.columns.values[:-1]:
 	sns.jointplot(x=h,y=label,data=data)
 	plt.savefig('{}/{}_{}.jpg'.format(picSavingDir, h, label))
-

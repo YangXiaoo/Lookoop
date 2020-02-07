@@ -51,18 +51,18 @@ def trainBySingleModel():
         singleModle = model.train_by_model(n, X, Y)
         io.saveData(singleModle, singleModelSaving.format(n))
 
-def testModelPdt():
+def testModelPdtRMAE():
     """使用所有数据进行训练，然后对训练数据进行预测"""
-    logger.info("{}-testModelPdt-{}".format('*'*25, '*'*25))
+    logger.info("{}-testModelPdtRMAE-{}".format('*'*25, '*'*25))
     stackModel = io.getData(stackModelSavingPath)
     X, Y = getTrainData()
     pdtValue = stackModel.predict(X)
     retMSE = tool.computeRMAE(Y, pdtValue)
     logger.info("stacking model using all data, RMAE : {}".format(retMSE))
 
-def testSingleModel():
+def testSingleModelRMAE():
     """使用所有数据进行训练，然后对训练数据进行预测"""
-    logger.info("{}-testSingleModel-{}".format('*'*25, '*'*25))
+    logger.info("{}-testSingleModelRMAE-{}".format('*'*25, '*'*25))
     X, Y = getTrainData()
     names, models = model.getModel()
 
@@ -72,9 +72,9 @@ def testSingleModel():
         retMSE = tool.computeRMAE(Y, pdtValue)
         logger.info("model: {}, using all data, RMAE : {}".format(n, retMSE))
 
-def crossValidate():
+def crossValidateRMAE():
     """使用交叉验证验证模型精度"""
-    logger.info("{}-crossValidate-{}".format('*'*25, '*'*25))
+    logger.info("{}-crossValidateRMAE-{}".format('*'*25, '*'*25))
     X, y = getTrainData()
 
     _, trainModels = model.getModel()
@@ -88,7 +88,48 @@ def crossValidate():
         rmae = tool.crossValueScore(m, X, y, tool.computeRMAE)
         logger.info("model: {}, cross validate RMAE: {}".format(n, rmae))
 
+def testModelPdtMAE():
+    """使用所有数据进行训练，然后对训练数据进行预测"""
+    logger.info("{}-testModelPdtMAE-{}".format('*'*25, '*'*25))
+    stackModel = io.getData(stackModelSavingPath)
+    X, Y = getTrainData()
+    pdtValue = stackModel.predict(X)
+    retMSE = tool.computeMAE(Y, pdtValue)
+    logger.info("stacking model using all data, MAE : {}".format(retMSE))
+
+def testSingleModelMAE():
+    """使用所有数据进行训练，然后对训练数据进行预测"""
+    logger.info("{}-testSingleModelMAE-{}".format('*'*25, '*'*25))
+    X, Y = getTrainData()
+    names, models = model.getModel()
+
+    for n in names:
+        m = io.getData(singleModelSaving.format(n))
+        pdtValue = m.predict(X)
+        retMSE = tool.computeMAE(Y, pdtValue)
+        logger.info("model: {}, using all data, MAE : {}".format(n, retMSE))
+
+def crossValidateMAE():
+    """使用交叉验证验证模型精度"""
+    logger.info("{}-crossValidateMAE-{}".format('*'*25, '*'*25))
+    X, y = getTrainData()
+
+    _, trainModels = model.getModel()
+    stackModel = model.stacking(trainModels, LinearRegression())
+    rmae = tool.crossValueScore(stackModel, X, y, tool.computeMAE)
+    logger.info("stacking model, cross validate RMAE: {}".format(rmae))
+
+    names, models = model.getModel()
+
+    for n, m in zip(names, models):
+        rmae = tool.crossValueScore(m, X, y, tool.computeMAE)
+        logger.info("model: {}, cross validate MAE: {}".format(n, rmae))
 if __name__ == '__main__':
-    testModelPdt()
-    testSingleModel()
-    crossValidate()
+    train()
+    trainBySingleModel()
+    testModelPdtRMAE()
+    testSingleModelRMAE()
+    crossValidateRMAE()
+    testModelPdtMAE()
+    testSingleModelMAE()
+    crossValidateMAE()

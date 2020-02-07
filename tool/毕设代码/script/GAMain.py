@@ -14,10 +14,10 @@ import model
 from util import io, tool
 from quadRegresstion import *
 
-# 日志设置
-LOGGER_PATH = "../log"
-logger = tool.getLogger(LOGGER_PATH)
-logger.setLevel(logging.DEBUG)
+# # 日志设置
+# LOGGER_PATH = "../log"
+# logger = tool.getLogger(LOGGER_PATH)
+# logger.setLevel(logging.DEBUG)
 
 # 模型路径format
 modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model"
@@ -76,7 +76,7 @@ class MyProblem(ea.Problem): # 继承Problem父类
 
 def train(modelName, dim, maxIter):
     """训练"""
-    logger.info("{}-GAMain-train-{}".format('*'*25, '*'*25))
+    # logger.info("{}-GAMain-train-{}".format('*'*25, '*'*25))
     problem = MyProblem(modelName)
     NIND = dim  # 种群规模
 
@@ -118,7 +118,7 @@ def singleModelOptimus():
     global modelPathFormat
     modelPathFormat = singleModelPathFormat
     dim = 1000
-    maxIter = 10000
+    maxIter = 1000
     names = getSingleModel()
     for n in names:
         logger.info("cur params, dim: {}, maxIter: {}".format(dim, maxIter))

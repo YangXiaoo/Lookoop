@@ -32,10 +32,26 @@ def getModel():
     names = []  # 模型名
     models = [
                 SVR(epsilon=1000, gamma=0.0001, kernel='rbf'),
-                ElasticNet(alpha=0.001,max_iter=10000), 
+                # ElasticNet(alpha=0.001,max_iter=10000), 
                 BayesianRidge(),  
                 ExtraTreesRegressor(min_samples_leaf=0.4, min_samples_split=0.1), 
                 BaggingRegressor(n_estimators=7),
+                KNeighborsRegressor(n_neighbors=19)
+            ]
+    for m in models:
+        names.append(m.__class__.__name__)
+
+    return names, models
+
+def _getModel():
+    """选择出来的最佳模型"""
+    names = []  # 模型名
+    models = [
+                SVR(epsilon=1000, gamma=0.0001, kernel='rbf'),
+                RandomForestRegressor(max_depth=1, n_estimators=20), 
+                BayesianRidge(alpha_1=1e-6, alpha_2=1e-6, tol=0.0001),  
+                ExtraTreesRegressor(min_samples_leaf=0.4, min_samples_split=0.7), 
+                # BaggingRegressor(n_estimators=7),
                 KNeighborsRegressor(n_neighbors=19)
             ]
     for m in models:

@@ -8,7 +8,7 @@
     二次响应面模型建立见`quaRegression.py`
 3. 遗传算法见`GAMain.py`
 4. 强化学习为本程序，训练模型为`train()`函数,训练结果在`/sarsaResults`, 强化学习模型保
-    存在`../data/sarsaModel`文件夹下;训练好模型后, 选择最好的模型使用`excute()`函数执
+    存在`../data/sarsaModel`文件夹下;训练好模型后, 选择最好的模型使用`excute()`函数，执
     行结果在`/sarsaModelExcuteResults`目录下
 5. 运行结果全部日志见`../log`目录
 """
@@ -404,7 +404,9 @@ def generatePoints(lowBoundary, upBoundary, splitPointCount):
     return pos 
 
 def crossPoint(points):
-    """交叉组合"""
+    """递归进行交叉组合
+    @example points: [[1,10],[2,20],[3,30]]，返回[[1, 2, 3], [1, 2, 30], [1, 20, 3], [1, 20, 30], [10, 2, 3], [10, 2, 30], [10, 20, 3], [10, 20, 30]]
+    """
     def helper(points, res):
         if not points:
             return res
@@ -476,6 +478,7 @@ def excute():
 
     initPos = [[300, 300, 300, 300, 200]] # 最原始的模型尺寸
 
+    # # 结果最优的代理模型路径
     # QSavingPath = "../data/Q.model"
     
     # 执行动作

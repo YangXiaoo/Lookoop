@@ -46,7 +46,6 @@ plt.savefig('{}/{}.jpg'.format(picSavingDir, label))
 # plt.show()
 
 
-
 # 皮尔逊相关系数计算
 corrmatrix = data.corr()	
 logger.info(corrmatrix)
@@ -64,7 +63,7 @@ plt.savefig('{}/heatmap.jpg'.format(picSavingDir))
 # plt.show()
 
 # topk热图
-k = 5
+k = 6
 cols = corrmatrix.nlargest(k,label)[label].index
 cm1 = data[cols].corr()
 hm2 = sns.heatmap(cm1,square=True,annot=True,cmap='RdPu',fmt='.2f',annot_kws={'size':5})

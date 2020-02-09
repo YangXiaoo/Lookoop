@@ -139,4 +139,4 @@ def crossValueScore(inputModel, X, y, agent=computeMSE, cv=5):
         tmpPdt = model.predict(testX)
         pdtMSE.append(agent(testY, tmpPdt))
 
-    return sum(pdtMSE) / cv
+    return sum(pdtMSE) / len(pdtMSE)

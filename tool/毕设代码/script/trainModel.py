@@ -117,19 +117,20 @@ def crossValidateMAE():
     _, trainModels = model.getModel()
     stackModel = model.stacking(trainModels, LinearRegression())
     rmae = tool.crossValueScore(stackModel, X, y, tool.computeMAE)
-    logger.info("stacking model, cross validate RMAE: {}".format(rmae))
+    logger.info("stacking model, cross validate MAE: {}".format(rmae))
 
     names, models = model.getModel()
 
     for n, m in zip(names, models):
         rmae = tool.crossValueScore(m, X, y, tool.computeMAE)
         logger.info("model: {}, cross validate MAE: {}".format(n, rmae))
+
 if __name__ == '__main__':
     train()
     trainBySingleModel()
     testModelPdtRMAE()
-    testSingleModelRMAE()
-    crossValidateRMAE()
     testModelPdtMAE()
+    testSingleModelRMAE()
     testSingleModelMAE()
+    crossValidateRMAE()
     crossValidateMAE()

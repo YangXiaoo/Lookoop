@@ -1,10 +1,9 @@
 # coding=utf-8
-# 代码风格有点糟糕, 源自网络
 
 import os
 import time
 
-basedir = r'C:\Study\github\Lookoops\LeetCode'
+basedir = r'C:\Study\github\Lookoops\tool\毕设代码'
 filelists = []
 # 指定想要统计的文件类型
 whitelist = ['py', 'cpp', 'hpp', 'java']
@@ -23,7 +22,7 @@ def countLine(fname):
     for file_line in open(fname, encoding='utf-8').readlines():
         if file_line != '' and file_line != '\n': #过滤掉空行
             count += 1
-    # print(fname + '----' , count)
+    print(fname + '----' , count)
     return count
 
 if __name__ == '__main__' :

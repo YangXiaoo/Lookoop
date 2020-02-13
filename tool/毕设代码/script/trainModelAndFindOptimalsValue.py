@@ -8,6 +8,8 @@ from trainModel import *
 from GAMain import mainModelOptimus,singleModelOptimus
 
 logger.info("{}-v2-{}".format('@'*25, '@'*25))
+
+
 train()
 trainBySingleModel()
 testModelPdtRMAE()
@@ -16,7 +18,6 @@ testSingleModelRMAE()
 testSingleModelMAE()
 crossValidateRMAE()
 crossValidateMAE()
-
 
 mainModelOptimus()
 singleModelOptimus()

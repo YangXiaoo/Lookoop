@@ -6,16 +6,8 @@ import math
 import numpy as np 
 import datetime
 import os
-import sklearn
 
-from util import io, tool
+import random 
 
-dataFilePath = "../data/samples-data.data"
-labelsFilePath = "../data/samples-data-labels.data"
-
-def getTrainData():
-    """获取训练数据"""
-    X = io.getData(dataFilePath)
-    Y = io.getData(labelsFilePath)
-
-    return X, Y
+for i in range(10):
+    print(random.randint(1,30))

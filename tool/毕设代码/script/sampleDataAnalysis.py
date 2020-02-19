@@ -29,7 +29,7 @@ checkDir()
 
 data = pd.read_csv(csvDataSavingPath)
 
-# 散点分布图
+# 获得设计变量的散点分布图
 scatterX, scatterY = [], []
 for x in data.columns.values[:-1]:
 	for y in data[x]:

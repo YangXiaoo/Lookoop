@@ -29,6 +29,22 @@ checkDir()
 
 data = pd.read_csv(csvDataSavingPath)
 
+# 散点分布图
+scatterX, scatterY = [], []
+for x in data.columns.values[:-1]:
+	for y in data[x]:
+		scatterX.append(x)
+		scatterY.append(y)
+plt.scatter(scatterX, scatterY, color="k")
+plt.title('scatter')
+plt.xlabel('var')
+plt.ylabel('mm')
+plt.savefig('{}/{}.jpg'.format(picSavingDir, "设计变量散点图"))
+plt.show()
+
+assert False, "已阻止程序运行"
+
+
 # 目标变量分布
 obj = data[label].describe()
 logger.info(obj)
@@ -73,3 +89,4 @@ plt.savefig('{}/heatMap_top{}.jpg'.format(picSavingDir, k))
 for h in data.columns.values[:-1]:
 	sns.jointplot(x=h,y=label,data=data)
 	plt.savefig('{}/{}_{}.jpg'.format(picSavingDir, h, label))
+

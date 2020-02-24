@@ -85,3 +85,4 @@ tool/毕设代码/data/samples-data-labels.data
 *.2020-01-06
 tool/毕设代码/log/all.log.2020-02-09
 MachineLearning/TensorFlow/image-clssifier/GUI/log/all.log.2019-10-12
+*.svg

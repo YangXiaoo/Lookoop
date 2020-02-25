@@ -14,8 +14,8 @@ import util
 
 # 定义切边补偿值
 up = 100    # 由于手指上方缺失部分较多,所以定义为100
-right = 50  # 右边补偿
-left = 50   # 左边补偿
+right = 100  # 右边补偿
+left = 100   # 左边补偿
 
 def getROIPoint(img, f="SIFT"):
     """使用SIFT,SURF,ORB获得特征点"""
@@ -79,11 +79,13 @@ def getMargin(cluster):
     """获得特征点的边界"""
     u, r, d, l = 9999, 0, 0, 9999
     for p in cluster:
+        # height
         if p[1] < u:
             u = p[1]
         if p[1] > d:
             d = p[1]
 
+        # width
         if p[0] < l:
             l = p[0]
         if p[0] > r:
@@ -127,7 +129,7 @@ def process(imageDir, outputDir):
     marginInfo = {}
     for i, f in enumerate(files):
         basename = os.path.basename(f)
-        print("process {} / {}: {}".format(i+1, total, basename))
+        print("[info] crop image, process {} / {}: {}".format(i+1, total, basename))
         img = cv2.imread(f)
 
         maxMargin = None
@@ -169,8 +171,7 @@ def process(imageDir, outputDir):
             cv2.imwrite(cropSavePath, retImg)
 
         # 三种方法获得的最大边界
-        h, w = img.shape[0], img.shape[1]
-        print
+        w, h = img.shape[0], img.shape[1]
         if maxMargin[0] - up < 0:
             maxMargin[0] = 0
         else:
@@ -180,7 +181,7 @@ def process(imageDir, outputDir):
             maxMargin[1] = w - 1
         else:
             maxMargin[1] += right
-
+        # 图片下边缘不补偿
         if maxMargin[3] - left < 0:
             maxMargin[3] = 0
         else:
@@ -199,7 +200,7 @@ def process(imageDir, outputDir):
 
 
 if __name__ == '__main__':
-    imageDir = r"C:\Study\test\bone\100-original"
-    outputDir = r"C:\Study\test\bone\100-original-crop"
+    imageDir = r"C:\Study\test\bone\crop-test"
+    outputDir = r"C:\Study\test\bone\crop-test-results-01"
 
     process(imageDir, outputDir)

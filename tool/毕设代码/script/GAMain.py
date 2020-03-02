@@ -25,7 +25,10 @@ singleModelPathFormat = "../data/singleModel/{}.model"
 
 def getModelName():
     """获得选择出来的最佳模型名称"""
-    names = ["quadraticRegression", "stackingModel"]
+    names = [
+                # "quadraticRegression", 
+                "stackingModel"
+                ]
 
     return names
 
@@ -131,4 +134,4 @@ def singleModelOptimus():
 
 if __name__ == '__main__':
     mainModelOptimus()
-    singleModelOptimus()
+    # singleModelOptimus()

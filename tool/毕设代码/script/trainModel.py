@@ -6,11 +6,14 @@
 import sys
 sys.path.append("../")
 import logging
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, ElasticNet, Ridge, RidgeCV, Lasso
+from sklearn.svm import LinearSVR
+from sklearn.kernel_ridge import KernelRidge
 
 from util import io 
 from util import tool
 import model
+
 
 dataFilePath = "../data/samples-data.data"
 labelsFilePath = "../data/samples-data-labels.data"
@@ -39,7 +42,7 @@ class ModelAdapter(object):
 def train():
     """训练stacking模型并保存"""
     X, Y = getTrainData()
-    stackModel = model.train_model(X, Y)
+    stackModel = model.train_model(X, Y, collectionModel=Lasso())
     io.saveData(stackModel, stackModelSavingPath)
 
 def trainBySingleModel():
@@ -125,12 +128,53 @@ def crossValidateMAE():
         rmae = tool.crossValueScore(m, X, y, tool.computeMAE)
         logger.info("model: {}, cross validate MAE: {}".format(n, rmae))
 
+def getSecondModel():
+    """获得次级模型"""
+    names = []
+    models = [
+        LinearRegression(),
+        ElasticNet(),
+        KernelRidge(),
+        LinearSVR(),
+        Lasso()
+    ]
+
+    for m in models:
+        names.append(m.__class__.__name__)
+
+    return names, models
+
+
+def secondModelValid():
+    """对不同次级模型进行评估"""
+    logger.info("{}-secondModelValid-{}".format('*'*25, '*'*25))
+    
+
+    names, models = getSecondModel()
+    for name, m in zip(names, models):
+        X, y = getTrainData()
+        stackModel = model.train_model(X, y, collectionModel=m)
+
+        pdtValue = stackModel.predict(X)
+        pdtMAE = tool.computeMAE(y, pdtValue)
+        logger.info("second model : {}, stacking model, pdt MAE: {}".format(name, pdtMAE))
+        pdtRMAE = tool.computeRMAE(y, pdtValue)
+        logger.info("second model : {}, stacking model, pdt RMAE: {}".format(name, pdtRMAE))
+
+        mae = tool.crossValueScore(stackModel, X, y, tool.computeMAE)
+        logger.info("second model : {}, stacking model, cross validate MAE: {}".format(name, mae))
+        rmae = tool.crossValueScore(stackModel, X, y, tool.computeRMAE)
+        logger.info("second model : {}, stacking model, cross validate RMAE: {}".format(name, rmae))
+
+
+
 if __name__ == '__main__':
     train()
-    trainBySingleModel()
-    testModelPdtRMAE()
-    testModelPdtMAE()
-    testSingleModelRMAE()
-    testSingleModelMAE()
-    crossValidateRMAE()
-    crossValidateMAE()
+    # trainBySingleModel()
+    # testModelPdtRMAE()
+    # testModelPdtMAE()
+    # testSingleModelRMAE()
+    # testSingleModelMAE()
+    # crossValidateRMAE()
+    # crossValidateMAE()
+    # secondModelValid()

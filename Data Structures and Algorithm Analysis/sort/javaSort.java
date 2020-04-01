@@ -4,7 +4,8 @@
 import java.util.*;
 
 public class javaSort {
-
+	public static int REVERSED = -1;
+	public static int SORTED = 1;
 	// 交换数组工具
 	public static void swap(int[] nums, int index1, int index2) {
 		int tmp = nums[index1];
@@ -118,11 +119,44 @@ public class javaSort {
 		}
 	}
 
+
+	// 选择排序
+	public void selectSort(int[] nums) {
+		int length = nums.length;
+		for (int i = 0; i < length - 1; ++i) {
+			for (int j = i + 1; j < length; ++j) {
+				if (nums[i] > nums[j]) {
+					swap(nums, i, j);
+				}
+			}
+		}
+
+		print(nums);
+	}
+
+	public void selectSort(int[] nums, int sortCode) {
+		int length = nums.length;
+		for (int i = 0; i < length - 1; ++i) {
+			for (int j = i + 1; j < length; ++j) {
+				if (nums[i] < nums[j] && sortCode == REVERSED) {
+					swap(nums, i, j);
+				} else if (nums[i] > nums[j] && sortCode == SORTED) {
+					swap(nums, i, j);
+				}
+			}
+		}
+
+		print(nums);
+	}
+
+
 	public static void main(String[] args) {
 		// test
 		int[] nums = {3, 4, 1, 6, 2, 9, 11, 5, 878, 234, 3};
 		javaSort util = new javaSort();
 		util.qucikSort(nums);
 		util.mergeSort(nums);
+		util.selectSort(nums, javaSort.REVERSED);
 	}
+
 }

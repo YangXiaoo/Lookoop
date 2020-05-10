@@ -20,7 +20,7 @@ public class javaSort {
 
 	// 外接口
 	// 快排
-	public void qucikSort(int[] nums) {
+	public void quickSort(int[] nums) {
 		new QuickSort().sort(nums);
 	}
 	// 归并
@@ -154,7 +154,7 @@ public class javaSort {
 		// test
 		int[] nums = {3, 4, 1, 6, 2, 9, 11, 5, 878, 234, 3};
 		javaSort util = new javaSort();
-		util.qucikSort(nums);
+		util.quickSort(nums);
 		util.mergeSort(nums);
 		util.selectSort(nums, javaSort.REVERSED);
 	}

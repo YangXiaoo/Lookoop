@@ -1,16 +1,8 @@
 # coding:utf-8
-# 2019-12-10
-# 强化学习优化
+# 2020-5-10
+# 对简单三维曲面进行寻优
 """
-1. 采样建立数据样本，采样代码见`../algorithms/sampling/LHSample.py`,
-    标签添加见`../algorithms/sampling/addResult.py`
-2. 建立代理模型，网格搜索、模型选择见`ChooseParam.ipynb`, 集成学习见`trainModel.py`; 
-    二次响应面模型建立见`quaRegression.py`
-3. 遗传算法见`GAMain.py`
-4. 强化学习为本程序，训练模型为`train()`函数,训练结果在`/sarsaResults`, 强化学习模型保
-    存在`../data/sarsaModel`文件夹下;训练好模型后, 选择最好的模型使用`excute()`函数，执
-    行结果在`/sarsaModelExcuteResults`目录下
-5. 运行结果全部日志见`../log`目录
+寻优的代理模型见SimpleModel类定义
 """
 import sys
 sys.path.append("../")
@@ -19,6 +11,8 @@ import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"
 
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
 import datetime
 import logging
 import numpy as np
@@ -52,17 +46,18 @@ def checkDirIsExist():
     tool.mkdirs(os.path.dirname(QSavingPath))
     tool.mkdirs(sarsaResultsSavingDir)
 
-def getModelName():
-    """获得选择出来的最佳模型名称"""
-    names = ["quadraticRegression", "stackingModel"]
 
-    return names
+class SimpleModel():
+    def __init__(self):
+        pass
 
-def getSingleModel():
-    """获得单个模型的名称"""
-    names, models = getModel()
+    def fit(self):
+        pass
 
-    return names
+    def predict(self, x):
+        x = x[0]
+        return x[0]**2 + x[1]**2 + 2
+
 
 class EnvHandler(object):
     """最小值寻优框架"""
@@ -129,7 +124,7 @@ class EnvHandler(object):
 
         return reward
 
-    def getOptimalValueGapDistance(self):
+    def getOptimalValueDistance(self):
         """获得两个最优值之间最大的间隔距离"""
         maxGap = 0
         preIndex = 0
@@ -151,6 +146,7 @@ class EnvHandler(object):
         plt.xlabel('Number of step')
         plt.ylabel('value')
         # plt.title("Simple Plot")
+        plt.legend()
         plt.savefig(picSavingPath)
         # plt.show()
 
@@ -177,6 +173,7 @@ class EnvHandler(object):
             ax2.set_ylabel("value")
 
         fig.tight_layout()
+        plt.legend()
         plt.savefig(picSavingPath)
 
     def saveRewardSnapShot(self, picSavingPath="rewardSnapShot.jpg"):
@@ -186,10 +183,33 @@ class EnvHandler(object):
         plt.plot(x, self.rewardStore, label="reward value")
         plt.xlabel('Number of step')
         plt.ylabel('value')
+        plt.legend()
         plt.savefig(picSavingPath)
 
+class SimpleEnvHandler(EnvHandler):
+    def __init__(self, dim, checkLens, lmb):
+        super(SimpleEnvHandler, self).__init__(dim, checkLens, lmb)
+        pass
 
-class Env(EnvHandler):
+    def saveVarSnapShotOnSurface(self, picSavingPath="varSnapShotOnSurface.jpg"):
+        plt.close() 
+        fig = plt.figure()
+        ax = fig.add_subplot(111, projection='3d')
+        _x = np.arange(-10,10,0.2)
+        _y = np.arange(-10,10,0.2)
+        _x, _y = np.meshgrid(_x, _y)
+        _z = _x**2 + _y**2 + 2
+        ax.plot_surface(_x, _y, _z)
+
+        x, y, z = [], [], []
+        for j in range(self.step):
+            x.append([self.varStore[j][0]])
+            y.append([self.varStore[j][1]])
+            z.append(self.agent.predict([[self.varStore[j][0], self.varStore[j][1]]]))
+        ax.scatter(x, y, z, c='r', marker=".")
+        plt.savefig(picSavingPath)
+
+class Env(SimpleEnvHandler):
     """最小值寻优框架"""
     def __init__(self, agent, dim, lowBoundary, upBoundary, 
                 initPost=None, checkLens=500, lmb=1):
@@ -414,7 +434,7 @@ def gridMeshPoints(lowBoundary, upBoundary, splitPointCount):
     pos = None
     gap = []
     for i in range(dim):
-        gap.append(upBoundary[i] - lowBoundary[i·])
+        gap.append(upBoundary[i] - lowBoundary[i])
     splitPoint = []
     for i in range(dim):
         increate = int(gap[i] // (splitPointCount + 1))
@@ -467,6 +487,7 @@ def saveProfileOfResults(resultForEachStep, picSavingPath="result.jpg"):
     plt.plot(x, bestValueStore, label="optimal value")
     plt.xlabel('Number of iter')
     plt.ylabel('value')
+    plt.legend()
     plt.savefig(picSavingPath)
 
 def saveProfileOfCheckLens(checkLensStore, picSavingPath="checkLens.jpg"):
@@ -476,6 +497,7 @@ def saveProfileOfCheckLens(checkLensStore, picSavingPath="checkLens.jpg"):
     plt.plot(x, checkLensStore, label="value")
     plt.xlabel('Number of iter')
     plt.ylabel('value')
+    plt.legend()
     plt.savefig(picSavingPath)
 
 
@@ -536,32 +558,30 @@ def train():
     global globalOptimalValue, MAX_STEP, EPSILON
 
     # Env基本参数定义
-    dim = 5         # 决策变量维数
+    dim = 2         # 决策变量维数
     actionDim = 3   # 动作策略维度
-    lowBoundary = [-300, -300, -300, -300, -200]    # 变量下界值
-    upBoundary = [300, 300, 100, 300, 200]          # 变量上界值
+    lowBoundary = [-10, -10]    # 变量下界值
+    upBoundary = [10, 10]          # 变量上界值
 
     # 获得代理模型
-    modelName = getModelName()[1]
-    modelPath = modelPathFormat.format(modelName)   # quadraticRegression
-    agent = io.getData(modelPath)   
+    modelName = "simple3d"
+    agent = SimpleModel()   
 
-    MAX_STEP = 5000
-    maxIter = 1000        # 最大迭代数
+    MAX_STEP = 1000
+    maxIter = 500        # 最大迭代数
     checkLens = 5000     # 检测最优最大步数
     lmb = 1     # 奖赏值学习率
-    elta = 2
-    gamma = 0.8 # 检查最优值的最大步数学习率
-    preOptimalValueDistance = 0 # 上一次迭代中前后两次最优解之间的步数间隔
+    # elta = 2
+    # gamma = 0.8 # 检查最优值的最大步数学习率
+    # preOptimalValueDistance = 0 # 上一次迭代中前后两次最优解之间的步数间隔
 
     # EPSILON衰减率
     preEPSILON = EPSILON    # 保存EPSILON值
-    eDescend = 0.001        # EPSILON衰减率，1000步后EPSILON衰减到0.0135
+    # eDescend = 0.001        # EPSILON衰减率，1000步后EPSILON衰减到0.0135
 
     # 初始化起点位置
     splitPointCount = 2
     initPos = gridMeshPoints(lowBoundary, upBoundary, splitPointCount) 
-    initPos.append([300, 300, 300, 300, 200]) # 最原始的模型尺寸
 
     # 打印当前运行参数信息
     # logger.info("The global optimalValue is not enabled, without EPSILON change")
@@ -611,7 +631,7 @@ def train():
             # # checkLens *= elta
             # checkLens = abs(int(preCheckLens + elta * checkLens * (e.optimalStep / e.step - gamma)))
             # checkLensStore.append(checkLens)
-            preOptimalValueGapDistance = e.getOptimalValueGapDistance()
+            preOptimalValueDistance = e.getOptimalValueDistance()
 
             var, value = e.getOptimalValue()
 
@@ -630,7 +650,7 @@ def train():
             e.saveValueSnapShot('{}/optimalValueRecord-P-{}-iter-{}.jpg'.format(sarsaResultsSavingDir, index, it))
             e.saveVarSnapShot('{}/varRecord-P-{}-iter-{}.jpg'.format(sarsaResultsSavingDir, index, it))
             e.saveRewardSnapShot('{}/rewardRecord-P-{}-iter-{}.jpg'.format(sarsaResultsSavingDir, index, it))
-
+            e.saveVarSnapShotOnSurface('{}/varRecordOnSurface-P-{}-iter-{}.jpg'.format(sarsaResultsSavingDir, index, it))
             # 预估剩余运行时间
             curTime = datetime.datetime.now() 
             curRunTime = curTime - startTime
@@ -645,14 +665,14 @@ def train():
             # 打印当前变动参数，当前最佳值，预估仍需要运行时间的时间
             logger.info("iter: {}, end step: {}, best value appears in step: {},\n\
                         optimal var: {}, optimal value: {},\n\
-                        next checkLens: {}, preOptimalValueGapDistance: {},\n\
+                        next checkLens: {}, preOptimalValueDistance: {},\n\
                         cur best value appears in iter: {},\n\
                         cur best optimal var:{}, cur best optimal value: {},\n\
                         cur EPSILON: {},\n\
                         still need to run: {}"
                         .format(it, e.step, e.optimalStep, 
                                 var, value, 
-                                checkLens, preOptimalValueGapDistance, 
+                                checkLens, preOptimalValueDistance, 
                                 bestValue[0], 
                                 bestValue[1], bestValue[2], 
                                 EPSILON,
@@ -674,32 +694,6 @@ def train():
     logger.info("global best value: {}".format(globalBestValue))
     endTime = datetime.datetime.now() 
     logger.info("run time: {}".format(str(endTime - startTime)))
-
-def EPSILONDescendTest():
-    """测试EPSILON衰减程度"""
-    logger.info("{}-sarsaOptimization-EPSILONDescendTest-{}".format('*'*25, '*'*25))
-    eNums = [0.002, 0.004, 0.005]   # 衰减率
-    E = 0.1
-    oldE = E
-    maxIter = 1000
-    for e in eNums:
-        E = oldE
-        for i in range(maxIter):
-            if i % 100 == 0: logger.info("i: {}, E: {}".format(i, E))
-            E = (1-e)*E 
-        logger.info("initial E: {}, e: {}, after {} iteration, the value of E is: {}".format(oldE, e, maxIter, E))
-
-def testProbility():
-    """测试指定概率落入次数"""
-    global EPSILON
-    logger.info("{}-sarsaOptimization-testProbility-{}".format('*'*25, '*'*25))
-    enterCount = 0
-    maxIter = 10000
-    for i in range(maxIter):
-        if np.random.uniform() > 1 - EPSILON:
-            enterCount += 1
-
-    logger.info("total iteration is: {}, EPSILON: {}, enter count: {}".format(maxIter, EPSILON, enterCount))
 
 checkDirIsExist()   # 创建文件保存目录
 

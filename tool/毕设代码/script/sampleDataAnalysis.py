@@ -20,7 +20,7 @@ TODAY = str(datetime.datetime.today()).split(" ")[0]
 
 csvDataSavingPath = "../data/samples-csv.csv"
 picSavingDir = "dataAnalysisResults/{}".format(TODAY)
-label = 'force'
+label = 'Force'
 
 def checkDir():
 	tool.mkdirs(picSavingDir)
@@ -42,7 +42,7 @@ plt.ylabel('mm')
 plt.savefig('{}/{}.jpg'.format(picSavingDir, "设计变量散点图"))
 plt.show()
 
-assert False, "已阻止程序运行"
+# assert False, "已阻止程序运行"
 
 
 # 目标变量分布

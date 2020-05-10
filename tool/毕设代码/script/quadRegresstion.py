@@ -151,12 +151,18 @@ def testModelMAE(X, y):
     rmae = tool.computeMAE(y, pdt)
     logger.info("quadratic regression, predict mae : {}".format(rmae))
 
+def testRes():
+    X = np.array([[299.99, 299.99, 99.99, 299.99, -199.99]])
+    curveFit = io.getData(curveFitModelSavingPath)
+    pdt = curveFit.predict(X)
+    print(pdt)
+
 if __name__ == '__main__':
-    X, Y = getTrainData()
-    y = Y.reshape(1, len(Y))[0]
-    train(X, y)
-    testModel(X, y)
-    testModelMAE(X, y)
-    crossValidate(X, y)
-    crossValidateMAE(X,y)
+    # X, Y = getTrainData()
+    # y = Y.reshape(1, len(Y))[0]
     # train(X, y)
+    # testModel(X, y)
+    # testModelMAE(X, y)
+    # crossValidate(X, y)
+    # crossValidateMAE(X,y)
+    testRes()

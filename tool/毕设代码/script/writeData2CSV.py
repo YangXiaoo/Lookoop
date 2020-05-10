@@ -12,7 +12,7 @@ csvDataSavingPath = "../data/samples-csv.csv"
 def main():
 	X, Y = util.getTrainData()
 
-	header = "y1,z1,z2,x2,x3,force\n"	# 列名
+	header = "Y1,Z1,Z2,X2,X3,Force\n"	# 列名
 	text = header
 
 	for k,v in enumerate(X):

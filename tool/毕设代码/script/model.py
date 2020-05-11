@@ -33,10 +33,10 @@ def getModel():
     models = [
                 RandomForestRegressor(max_depth=1, n_estimators=60),
                 SVR(epsilon=1000, gamma=0.005, kernel='rbf'),
-                # ElasticNet(), 
+                ElasticNet(), 
                 BayesianRidge(),  
                 ExtraTreesRegressor(min_samples_leaf=0.4, min_samples_split=0.9), 
-                # BaggingRegressor(n_estimators=30),
+                BaggingRegressor(n_estimators=30),
                 KNeighborsRegressor(n_neighbors=19)
             ]
     for m in models:

@@ -26,7 +26,7 @@ singleModelPathFormat = "../data/singleModel/{}.model"
 def getModelName():
     """获得选择出来的最佳模型名称"""
     names = [
-                # "quadraticRegression", 
+                "quadraticRegression", 
                 "stackingModel"
                 ]
 
@@ -110,7 +110,7 @@ def mainModelOptimus():
     """对二次响应面，Stacking模型进行优化"""
     logger.info("{}-GAMain-mainModelOptimus-{}".format('*'*25, '*'*25))
     dim = 200
-    maxIter = 1000
+    maxIter = 60
     names = getModelName()
     for n in names:
         logger.info("{}".format('*'*50))
@@ -124,7 +124,7 @@ def singleModelOptimus():
     global modelPathFormat
     modelPathFormat = singleModelPathFormat
     dim = 200
-    maxIter = 1000
+    maxIter = 60
     names = getSingleModel()
     for n in names:
         logger.info("{}".format('*'*50))
@@ -133,5 +133,5 @@ def singleModelOptimus():
         train(n, dim, maxIter)
 
 if __name__ == '__main__':
-    mainModelOptimus()
-    # singleModelOptimus()
+    # mainModelOptimus()
+    singleModelOptimus()

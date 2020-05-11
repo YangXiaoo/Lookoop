@@ -16,6 +16,8 @@ import datetime
 
 from trainModel import logger
 
+# plt.rcParams['font.sans-serif']=['SimHei'] 
+
 TODAY = str(datetime.datetime.today()).split(" ")[0]
 
 csvDataSavingPath = "../data/samples-csv.csv"
@@ -36,13 +38,13 @@ for x in data.columns.values[:-1]:
 		scatterX.append(x)
 		scatterY.append(y)
 plt.scatter(scatterX, scatterY, color="k")
-plt.title('scatter')
-plt.xlabel('var')
+# plt.title('离散图')
+plt.xlabel('variable')
 plt.ylabel('mm')
 plt.savefig('{}/{}.jpg'.format(picSavingDir, "设计变量散点图"))
 plt.show()
 
-# assert False, "已阻止程序运行"
+assert False, "已阻止程序运行"
 
 
 # 目标变量分布

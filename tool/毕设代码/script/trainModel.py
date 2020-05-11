@@ -169,8 +169,8 @@ def secondModelValid():
 
 
 if __name__ == '__main__':
-    train()
-    # trainBySingleModel()
+    # train()
+    trainBySingleModel()
     # testModelPdtRMAE()
     # testModelPdtMAE()
     # testSingleModelRMAE()

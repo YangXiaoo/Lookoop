@@ -27,7 +27,7 @@ def getModelName():
     """获得选择出来的最佳模型名称"""
     names = [
                 "quadraticRegression", 
-                "stackingModel"
+                # "stackingModel"
                 ]
 
     return names
@@ -89,6 +89,7 @@ def train(modelName, dim, maxIter):
     population = ea.Population(Encoding, Field, NIND)
     myAlgorithm = ea.soea_SEGA_templet(problem, population)
     myAlgorithm.MAXGEN = maxIter # 最大进化代数
+    myAlgorithm.drawing = 1  
     [population, obj_trace, var_trace] = myAlgorithm.run()
     population.save(printHandler=logger.info)
 
@@ -133,5 +134,5 @@ def singleModelOptimus():
         train(n, dim, maxIter)
 
 if __name__ == '__main__':
-    # mainModelOptimus()
-    singleModelOptimus()
+    mainModelOptimus()
+    # singleModelOptimus()

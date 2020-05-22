@@ -1,7 +1,6 @@
 # coding:utf-8
 # 2020-2-7
 # 样本数据分析脚本
-
 import sys 
 sys.path.append("../")
 
@@ -20,7 +19,7 @@ from trainModel import logger
 
 TODAY = str(datetime.datetime.today()).split(" ")[0]
 
-csvDataSavingPath = "../data/samples-csv.csv"
+csvDataSavingPath = "../data/samples-csv.csv"	# 由`../writeData2CSV.py`将数据写成csv格式
 picSavingDir = "dataAnalysisResults/{}".format(TODAY)
 label = 'Force'
 

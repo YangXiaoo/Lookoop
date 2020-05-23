@@ -526,15 +526,16 @@ def inversePair(nums):
         right = _helper(nums[mid:], seq)
         ret = []
         
-        while len(left) != 0 and len(right) != 0:
-            if left[-1] > right[-1]:
-                ret.append(left[-1])
-                tmp = [left[-1], right[-1]]
-                left.pop()
-                seq.append(tmp)
-            else:
-                ret.append(right[-1])
-                right.pop()
+        # 有问题
+        # while len(left) != 0 and len(right) != 0:
+        #     if left[-1] > right[-1]:
+        #         ret.append(left[-1])
+        #         tmp = [left[-1], right[-1]]
+        #         left.pop()
+        #         seq.append(tmp)
+        #     else:
+        #         ret.append(right[-1])
+        #         right.pop()
 
         ret += left
         ret += right

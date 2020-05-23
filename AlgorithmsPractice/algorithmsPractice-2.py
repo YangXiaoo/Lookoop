@@ -388,6 +388,12 @@ def test_findKthToTail():
 # test_findKthToTail()
 
 #######################################
+# 23 链表中环的入口
+# LC-142
+def entryNodeOfLoopLinkedList(head):
+    pass
+
+#######################################
 # 24 翻转链表
 def reverseLinkedList(head):
     pre, cur = None, head
@@ -546,9 +552,18 @@ def test_invertTree():
 
 #######################################
 # 28 对称的二叉树
+def isSymetry(root):
+    pass
 
 #######################################
 # 29 顺时针打印矩阵
+def printMatrixClockwisely(maxtrix):
+    pass
+
+#######################################
+# 30 包含min函数的栈
+class Stack():
+    pass
 
 #######################################
 # 31 栈的压入弹出顺序
@@ -600,6 +615,11 @@ def copyLinkedList(head):
 #######################################
 # 36 二叉搜索树与双向链表
 def convertBSTToLinkedList(root):
+    pass
+
+#######################################
+# 37 序列化二叉树
+def serialize(root):
     pass
 
 #######################################
@@ -715,6 +735,15 @@ def test_findGreastSumOfSubArray():
 
 # test_findGreastSumOfSubArray()
 
+#######################################
+# 43 1~n整数中1出现的次数
+def numberOf1Between1AndN(n):
+    pass
+
+#######################################
+# 44 数字序列中某一位的数字
+def digitInSerial(index):
+    pass
 #######################################
 # 45 把数组排成最小的数
 def getMinNumber(nums):
@@ -842,20 +871,359 @@ def test_longestSubstringWithoutDuplication():
 def uglyNumber(index):
     """只包含2,3,5的数称为丑数，获得第index个顺序的丑数"""
     pass
+    
+################### 2020-5-23 #####################
+# 50 第一个只出现一次的字符
+def firstNotRepeatingChar(s):
+    table = [0 for _ in range(256)] # 字符长度为女8即256种可能
+    for i in range(len(s)):
+        index = ord(s[i])
+        table[index] += 1
+    for i in range(len(s)):
+        if table[ord(s[i])] == 1:
+            return s[i]
+
+    return '\0'
+
+def test_firstNotRepeatingChar():
+    s = "abaccdeff"
+    ret = firstNotRepeatingChar(s)
+    print(ret)
+
+# test_firstNotRepeatingChar()
 
 #######################################
+# 51 数组中的逆序对
+def inversePair(nums):
+    """[7,5,6,4]-->[7,6], [7,5], [7,4], [6,4], [5,4]"""
+    def helper(nums):
+        nonlocal ret 
+        if len(nums) == 1 or len(nums) == 0: return nums
+        mid = len(nums) >> 1
+        left = helper(nums[:mid])
+        right = helper(nums[mid:])
+
+        seq = []
+        while len(left) > 0 and len(right) > 0:
+            if left[-1] > right[-1]:
+                seq.insert(0, right[-1])
+                for n in left:
+                    ret.append([n, right[-1]])
+                right.pop()
+            else:
+                seq.insert(0, left[-1])
+                left.pop()
+
+        seq = left + seq
+        seq = right + seq
+        # print(seq, ret)
+        return seq
+
+    ret = []
+    helper(nums)
+
+    return ret 
+
+def test_inversePair():
+    nums = [7, 5, 6, 4]
+    print(inversePair(nums)) 
+
+# test_inversePair()
+
 #######################################
+# 52 两个链表的第一个公共节点
+def firstCommonNodeOfLinkedList(head1, head2):
+    pass
+
 #######################################
+# 53 在排序数组中查找数字
+# LC-34
+def getCounterOfN(nums, n):
+    """数字在排序数组中出现的次数"""
+    pass
+
+def getMissingNumber(nums):
+    """0~n-1中缺失的数字
+    转换为其它问题
+    """
+    pass
+
+def getNumberSameAsIndex(nums):
+    """数组中数值和下标相等的元素
+    单调递增的数组里的每一个元素都是整数并且唯一，找出数组中任意一个数值等于其下标的元素
+    """
+    pass
+
 #######################################
+# 54 二叉搜索树的第K大节点
+def kthNodeOfBinaryTree(root, k):
+    def helper(root):
+        nonlocal k 
+        ret = None
+        if root.left:
+            ret = helper(root.left)
+        
+        if not ret:
+            if k != 1:
+                k -= 1
+            else:
+                ret = root 
+
+        if not ret and root.right:
+            ret = helper(root.right)
+
+        return ret 
+    ret = helper(root)
+
+    return ret
+
+def test_kthNodeOfBinaryTree():
+    """
+        10
+        /\
+       5 12
+      / \
+     4  7
+    """
+    root = getTree()
+    ks = [1,2,3,4,5]
+    for k in ks:
+        ret = kthNodeOfBinaryTree(root, k)
+        print(ret.val)
+
+# test_kthNodeOfBinaryTree()
+
 #######################################
+# 55 二叉树的深度
+def maxDepthOfTree(root:TreeNode) -> int:
+    if not root:
+        return 0
+    left = maxDepthOfTree(root.left)
+    right = maxDepthOfTree(root.right)
+
+    return 1 + max(left, right)
+
+def test_maxDepthOfTree() -> None:
+    root = getTree()
+    ret = maxDepthOfTree(root)
+
+    print(ret)
+
+# test_maxDepthOfTree()
+
 #######################################
+# 55-2 判断平衡二叉树
+def isBalanceTree(root) -> bool:
+    """dfs"""
+    if not root:
+        return True
+
+    if abs(maxDepthOfTree(root.left) - maxDepthOfTree(root.right)) > 1:
+        return False
+
+    return isBalanceTree(root.left) and isBalanceTree(root.right)
+
+def isBalanceTree2(root) -> bool:
+    """通过BFS，可以提前截断"""
+    if not root:
+        return True
+
+    stack = [root]
+    minDepth = 0
+    curDepth = 0
+    while stack:
+        curSize = len(stack)
+        tmp = []
+        curDepth += 1
+        while curSize != 0:
+            curRoot = stack.pop()
+            if not curRoot.left and not curRoot.right:
+                if minDepth == 0:
+                    minDepth = curDepth
+                else:
+                    stack = []
+                    break
+            if curRoot.left:
+                tmp.append(curRoot.left)
+            if curRoot.right:
+                tmp.append(curRoot.right)
+
+            curSize -= 1
+
+        stack = tmp[:]
+        # print(stack, curDepth)
+
+    # print(curDepth, minDepth)
+    return [False, True][curDepth-minDepth <= 1]
+
+def test_isBalanceTree() -> None:
+    root = getTree()
+
+    ret = isBalanceTree2(root)
+    print(ret)
+
+# test_isBalanceTree()
+
 #######################################
+# 55-3 最小二叉树
+# LC-111
+def minDepthOfTree(root):
+    """二叉树最小深度"""
+    pass
+
 #######################################
+# 56-0 数组中只出现一次的一个数字
+# LC-136
+def findOneNumAppearOnce(nums):
+    n = nums[0]
+    for x in nums[1:]:
+        n = n ^ x
+
+    return n
+
+def findOneNumAppearOnce2(nums):
+    """使用字典即可解决"""
+    pass
+
+def test_findOneNumAppearOnce():
+    nums = [2, 5, 3, 4, 7, 3, 4, 2, 5]
+    ret = findOneNumAppearOnce(nums)
+    print(ret)
+
+# test_findOneNumAppearOnce()
+
 #######################################
+# 56-1 数组中只出现一次的两个数字
+def findTwoNumAppearOnce(nums):
+    """数组中只有两个数字出现一次，其余数字出现两次"""
+    xor = 0
+    for n in nums:
+        xor ^= n 
+
+    index = findLast1BitIndex(xor)
+
+    num1, num2 = 0, 0
+    for n in nums:
+        is1Bit = (n >> index) & 1
+        if is1Bit:
+            num1 ^= n 
+        else:
+            num2 ^= n 
+
+    return num1, num2 
+
+def findLast1BitIndex(n):
+    """寻找二进制中最右边第一个出现的1的索引"""
+    lastIndex = 0
+    while n and n & 1 == 0:
+        lastIndex += 1
+        n >>= 1
+
+    return lastIndex
+
+def test_findTwoNumAppearOnce():
+    nums = [2, 5, 3, 4, 7, 3, 4, 2, 5, 0]
+    ret = findTwoNumAppearOnce(nums)
+
+    print(ret)
+
+# test_findTwoNumAppearOnce()
+
 #######################################
+# 56-2 数组中唯一出现一次的数字
+# LC-137
+def findNum(nums):
+    """数组中除了一个数字出现一次之外，其余数字都出现三次"""
+    pass
+
 #######################################
+# 57-1 和为S的数字
+# LC-01
+def findPairWithSum(nums, s):
+    """双指针和哈希"""
+    pass
+
 #######################################
+# 57-2 和为S的连续正数序列
+def findSequenceWithSum(nums, s):
+    curSum = 0
+    preIndex = 0
+    ret = []
+    for i in range(len(nums)):
+        curSum += nums[i]
+        while curSum > s and preIndex <= i:
+            curSum -= nums[preIndex]
+            preIndex += 1
+        if curSum == s:
+            tmp = []
+            for j in range(preIndex, i+1):
+                tmp.append(nums[j])
+            ret.append(tmp)
+
+    return ret 
+
+def test_findSequenceWithSum():
+    nums = [1,2,3,4,5,6,7,8,9,10]
+    k = 15
+
+    ret = findSequenceWithSum(nums, k)
+    print(ret)
+
+# test_findSequenceWithSum()
 #######################################
+# 58-1 翻转字符串
+def reverseSentence(s):
+    """i am a student. -> student. a am i"""
+    s = s[::-1]
+    sNums = s.split(' ')
+    for i in range(len(sNums)):
+        sNums[i] = sNums[i][::-1]
+
+    return " ".join(sNums)
+
+def test_reverseSentence():
+    s = "i am a student."
+
+    ret = reverseSentence(s)
+    print(ret)
+
+# test_reverseSentence()
+
+#######################################
+# 58-2 左旋转字符串
+def leftRotateString(s, n):
+    """将s中的前n个移到后面"""
+    pass
+
+#######################################
+# 59 滑动窗口的最大值
+# LC-239
+def maxValueInSliceWindow(nums, windowSize):
+    window = []
+    curWindowSize = 0
+    ret = []
+    for i, n in enumerate(nums):
+        while window and nums[window[-1]] < n:
+            window.pop()
+
+        window.append(i)
+        curWindowSize += 1
+            
+        if i - window[0] == windowSize:
+            window.pop(0)
+        
+        ret.append(nums[window[0]])
+
+    return ret[windowSize-1:]
+
+def test_maxValueInSliceWindow():
+    nums = [2,3,4,2,6,2,5,1]
+    windowSize = 3
+
+    ret = maxValueInSliceWindow(nums, windowSize)
+    print(ret)
+
+# test_maxValueInSliceWindow()
 #######################################
 #######################################
 #######################################

@@ -616,7 +616,7 @@ def test_probability():
     n = 6
     ret = probability(n)
     print("ret: {} \nverify sum(pro): {}".format(ret, sum(ret)))
-
+test_probability()
 #######################################
 # 62-圆圈中最后剩下的数字
 def lastNumber(n, m):

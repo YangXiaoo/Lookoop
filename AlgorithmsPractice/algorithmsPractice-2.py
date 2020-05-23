@@ -1224,10 +1224,52 @@ def test_maxValueInSliceWindow():
     print(ret)
 
 # test_maxValueInSliceWindow()
+
 #######################################
+# 60 n个骰子的点数
+def probilityOfValue(n):
+    """把n个骰子扔地上，朝上一面点数之和为s，打印出s的所有可能的值出现的概率"""
+    def helper(n):
+        for i in range(1, maxValue+1):
+            countPro(n, i)
+
+    def countPro(count, sum):
+        if count == 1:
+            pro[sum - maxValue] += 1
+        else:
+            for i in range(1, maxValue+1):
+                countPro(count-1, sum+i)
+
+    maxValue = 6
+    pro = [0 for _ in range(maxValue*n - 6 + 1)]
+    helper(n)
+
+    total = maxValue**n 
+    for i in range(len(pro)):
+        pro[i] /= total
+
+    return pro 
+
+def test_probilityOfValue():
+    n = 6
+    ret = probilityOfValue(n)
+    print("ret: {} \nverify sum(pro): {}".format(ret, sum(ret)))
+
+# test_probilityOfValue()
 #######################################
+# 61 扑克牌中的顺序
+def isContinuous(nums):
+    """从扑克排中随机抽取5张，判断是不是一个顺子"""
+    pass
 #######################################
+# 62 圆圈中最后剩下的数字
+def lastRemaining(n, m):
+    """0~n-1数字排成一个圆圈，从数字0开始，每次从圆圈中删除第m个数字，求出最后剩下的数字"""
+    pass
 #######################################
+# LC-236 树中两个节点的最低公共祖先
+def lowestCommonAncestor(root, p, q):
+    pass
 #######################################
 #######################################
 #######################################

@@ -24,6 +24,7 @@ def getTree():
     root = TreeNode(10, rootLeft, rootRight)
 
     return root
+
 def printTreePreorder(head):
     if head != None:
         print(head.val)
@@ -1261,7 +1262,7 @@ def test_probilityOfValue():
 def isContinuous(nums):
     """从扑克排中随机抽取5张，判断是不是一个顺子"""
     pass
-#######################################
+################# 2020-5-24 ######################
 # 62 圆圈中最后剩下的数字
 def lastRemaining(n, m):
     """0~n-1数字排成一个圆圈，从数字0开始，每次从圆圈中删除第m个数字，求出最后剩下的数字"""
@@ -1321,16 +1322,217 @@ def test_lowestCommonAncestor():
     ret = lowestCommonAncestor(node_10, node_4, node_12)
     print(ret.val)
 
-test_lowestCommonAncestor()
+# test_lowestCommonAncestor()
+
+################ LeetCode #######################
+# LC-139 word break
+def wordBreak(s, wordDict) -> bool:
+    """"s = "leetcode", wordDict = ["leet", "code"], 判断s是否能由wordDict中的字符串组成"""
+    sLength = len(s)
+    if sLength == 0:
+        return False
+    stack = [0]
+    while stack:
+        preIndex = stack.pop()
+        for string in wordDict:
+            curStringLength = len(string)
+            curIndex = preIndex + curStringLength
+            if s[preIndex:curIndex] == string:
+                if curIndex == sLength:
+                    return True 
+                stack.append(curIndex)
+
+    return False
+
+def test_wordBreak():
+    s = "leetcode"
+    wordDict = ["leet", "code"]
+
+    ret = wordBreak(s, wordDict)
+    print(ret)
+
+# test_wordBreak()
+
+#######################################
+# 当当-1
+# 阿拉伯数字转为中文大小写
+# 11011 -> 壹万壹仟零壹拾壹元整
+def arabic2Chinese(num):
+    pass
+
+def convert(n):
+    units = ['', '万', '亿']
+    nums = ['零', '壹', '贰', '叁', '肆', '伍', '陆', '柒', '捌', '玖']
+    decimal_label = ['角', '分']
+    small_int_label = ['', '拾', '佰', '仟']
+    int_part, decimal_part = str(int(n)), str(n - int(n))[2:]  # 分离整数和小数部分
+
+    res = []
+    if decimal_part:
+        res.append(''.join([nums[int(x)] + y for x, y in zip(decimal_part, decimal_label) if x != '0']))
+
+    if int_part != '0':
+        res.append('圆')
+        while int_part:
+            small_int_part, int_part = int_part[-4:], int_part[:-4]
+            tmp = ''.join([nums[int(x)] + (y if x != '0' else '') for x, y in list(zip(small_int_part[::-1], small_int_label))[::-1]])
+            print(tmp, list(zip(small_int_part[::-1], small_int_label)))
+            tmp = tmp.rstrip('零').replace('零零零', '零').replace('零零', '零')
+            unit = units.pop(0)
+            if tmp:
+                tmp += unit
+                res.append(tmp)
+    return ''.join(res[::-1])
+
+def test_arabic2Chinese():
+    num = 1011011
+    ret = convert(num)
+    print(ret)
+
+# test_arabic2Chinese()
+
+#######################################
+# 携程-2
+def reverseExpr(s):
+    """
+    表达式中括号表示将里面的字符串翻转
+    输入
+    一行字符串
+
+    输出
+    一行字符串
+    如果表达式括号不匹配，输出空字符串
+    样例输入
+    ((ur)oi)
+    样例输出
+    iour
+    """
+    stack = []
+    for c in s:
+        if c == '(':
+            stack.append(c)
+        elif c == ')':
+            curString = ""
+            while stack[-1] != '(':
+                curString = stack.pop() + curString
+            stack[-1] = curString[::-1]
+        else:
+            if stack[-1] == '(':
+                stack.append('')
+            stack[-1] = stack[-1] + c 
+        print(stack)
+    return stack[-1]
+
+def test_reverseExpr():
+    s = "((ur)oi(ab))"
+    ret = reverseExpr(s)
+    print(ret)
+
+# test_reverseExpr()
+
+#######################################
+# 爱奇艺-2
+
+#######################################
+# 猿辅导-1
+def decodeString(s):
+    """ 
+    "((A2B)2)2G2" -> 'AABAABAABAABGG'
+    """
+    stack = []
+    digit = 0
+    for c in s:
+        if c.isdigit():
+            digit = 10*digit + int(c)
+            continue
+        if digit != 0:
+            stack[-1] = stack[-1]*digit
+            digit = 0
+        if c == ')':
+            curString = ""
+            while stack[-1] != '(':
+                curString = stack.pop() + curString
+            stack[-1] = curString
+        elif c == '(':
+            stack.append(c)
+        else:
+            stack.append(c)
+    if digit != 0:
+        stack[-1] = stack[-1]*digit
+    return "".join(stack)
+
+def test_decodeString():
+    sNums = [        
+        "A11B",
+        "(AA)2A",
+        "((A2B)2)2G",
+        "(YUANFUDAO)2JIAYOU",
+        "A2BC4D2"
+    ]
+
+    ans = [
+        'AAAAAAAAAAAB',
+        'AAAAA',
+        'AABAABAABAABG',
+        'YUANFUDAOYUANFUDAOJIAYOU',
+        'AABCCCCDD'
+    ]
+    for i,s in enumerate(sNums):
+        ret = decodeString(s)
+        print(ret == ans[i])
+
+# test_decodeString()
+
+#######################################
+# 途家-1
+"""
+法师住在喜马拉雅上脚下的一个村庄，突然一天，发生大雪崩，很快村庄就要被掩埋，所有人将会遇难。
+法师的跑步的速度为13m/s,以这样的速度，是无法逃离雪崩的。但是，法师有闪跳技能，可在1s内移动50m,每次使用技能后，会消耗10点魔法值。魔法值的恢复速度为4点/s,只有在原地休息状态时才能够恢复。
+现已知法师初始值为M,所在位置与安全区域的距离为S,雪崩到达村庄的时间为T。
+编写一个程序，计算法师如何在最短的时间内到达安全区域，如不能够逃脱，输出法师在时间内走的最远距离。
+
+输入
+输入一行，包括空格隔开的三个非负整数M，S，T。
+
+输出
+输出两行:
+第1行为字符串"Yes"或"No" (区分大小写)，即守望者是否能逃离荒岛。
+第2行包含一个整数，第一行为"Yes" (区分大小写）时表示守望着逃离荒岛的最短时间
+第一行为"No" (区分大小写) 时表示守望者能走的最远距离。
+
+样例输入
+36 255 10
+样例输出
+Yes
+10
+"""
+def runFast(m, s, t):
+    curM = m
+    retDist = 0
+    mDist = 0
+    for i in range(1, t+1):
+        retDist += 13
+        if curM >= 10:
+            mDist += 50
+            curM -= 10
+        else:
+            curM += 4
+        retDist = max(retDist, mDist)
+        if retDist >= s:
+            return "YES", i
+
+    return "NO", retDist
+
+def test_runFast():
+    m, s, t = 36, 255, 10
+    ret = runFast(m, s, t)
+
+    print(ret)
+
+# test_runFast()
 
 #######################################
 # 
-#######################################
-#######################################
-#######################################
-#######################################
-#######################################
-#######################################
 #######################################
 #######################################
 #######################################

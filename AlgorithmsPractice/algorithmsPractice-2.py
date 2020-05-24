@@ -1265,12 +1265,66 @@ def isContinuous(nums):
 # 62 圆圈中最后剩下的数字
 def lastRemaining(n, m):
     """0~n-1数字排成一个圆圈，从数字0开始，每次从圆圈中删除第m个数字，求出最后剩下的数字"""
-    pass
+    nums = [x for x in range(n)]
+    preIndex = 0
+    while len(nums) > 1:
+        curIndex = preIndex
+        curLength = len(nums)
+        for i in range(m-1):
+            curIndex += 1
+            if curIndex > curLength - 1:
+                curIndex = curIndex - curLength
+        nums.pop(curIndex)
+        preIndex = curIndex
+
+    return nums[0]
+
+def test_lastRemaining():
+    n, m = 5, 3
+    ret = lastRemaining(n, m)
+    print(ret)
+
+# test_lastRemaining()
 #######################################
 # LC-236 树中两个节点的最低公共祖先
 def lowestCommonAncestor(root, p, q):
-    pass
+    if root == p or root == q or not root:
+        return root
+
+    left = lowestCommonAncestor(root.left, p, q)
+    right = lowestCommonAncestor(root.right, p, q)
+
+    if right and left:
+        return root 
+
+    return [right, left][right == None]
+
+def test_lowestCommonAncestor():
+    """
+        10
+        /\
+       5 12
+      / \
+     4  7
+    """
+    node_10 = TreeNode(10)
+    node_5 = TreeNode(5)
+    node_12 = TreeNode(12)
+    node_4 = TreeNode(4)
+    node_7 = TreeNode(7)
+
+    node_10.left, node_10.right = node_5, node_12
+    node_5.left, node_5.right = node_4, node_7
+    node_5.parent, node_12.parent = node_10, node_10
+    node_4.parent, node_7.parent = node_5, node_5
+
+    ret = lowestCommonAncestor(node_10, node_4, node_12)
+    print(ret.val)
+
+test_lowestCommonAncestor()
+
 #######################################
+# 
 #######################################
 #######################################
 #######################################

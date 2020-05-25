@@ -56,6 +56,7 @@ def printLinkedList(head):
 
 #######################################
 # 03 数组中重复的数字
+# LC-287
 def findDuplicate(nums):
     """[2,3,1,0,2,5,3]"""
     for i in range(len(nums)):
@@ -747,6 +748,7 @@ def digitInSerial(index):
     pass
 #######################################
 # 45 把数组排成最小的数
+# LC-179
 def getMinNumber(nums):
     sNums = [str(n) for n in nums]
     for i in range(1, len(nums)):
@@ -1581,29 +1583,123 @@ def test_isMatch():
 #######################################
 # LC-12 Integer to Roman
 #######################################
+# LC-15 three sum equal zero
+def threeSum(nums):
+    # 先排序
+    pass
 #######################################
+# LC-168
+def convertToTitle(n):
+    """
+    1 -> A
+    2 -> B
+    3 -> C
+    ...
+    26 -> Z
+    27 -> AA
+    28 -> AB 
+    """
+    based = ord('A')
+    ret = ""
+    while n:
+        ret = chr((n - 1) % 26 + based) + ret 
+        n = (n - 1) // 26
+
+    return ret 
+
+def test_convertToTitle():
+    nums = [28, 701]
+    for n in nums:
+        ret = convertToTitle(n)
+        print(ret)
+
+# test_convertToTitle()
 #######################################
+# LC-172
 #######################################
+# LC-188
 #######################################
+# LC-18
 #######################################
+# LC-19 reverse bits
 #######################################
+# LC-198 house robber
 #######################################
+# LC-201
 #######################################
+# LC-204
 #######################################
+# LC-209
 #######################################
+# LC-214
+def shortestPalindrome(s):
+    """
+    Input: "abcd"
+    Output: "dcbabcd"
+    """ 
+    r = s[::-1]
+    for i in range(len(s)+1):
+        if s.startwith(r[i:]):
+            return r[:i] + s 
 #######################################
+# LC-216
+def combinationSum(k, n):
+    """
+    Input: k = 3, n = 9
+    Output: [[1,2,6], [1,3,5], [2,3,4]]
+    """
+    def helper(cur, tmp):
+        nonlocal k, n, ret
+        if len(tmp) == k:
+            if sum(tmp) == n:
+                ret.append(tmp[:])
+        else:
+            for i in range(cur, 10):
+                tmp.append(i)
+                helper(i+1, tmp)
+                tmp.pop()
+
+    ret = []
+    helper(1, [])
+
+    return ret 
+
+def test_combinationSum():
+    k, n = 3, 9
+    ret = combinationSum(k, n)
+    print(ret)
+
+# test_combinationSum()
 #######################################
+# LC-217
 #######################################
+# LC-219 
 #######################################
+# LC-220 cotains duplicateIII
 #######################################
+# LC-221 maximal-square
 #######################################
+# LC-222 count complete tree nodes
 #######################################
+# LC-223 rectangle area
+# 商汤-1
 #######################################
+# LC-224 basic calculator
+# LC-227 
 #######################################
+# LC-22
 #######################################
+# LC-238 product of array except self
 #######################################
+# LC-23 merge k sorted lits
 #######################################
+# LC-24 swap nodes in k-group
 #######################################
+# LC-29
+#######################################
+# LC-322
+#######################################
+# LC-32
 #######################################
 #######################################
 #######################################

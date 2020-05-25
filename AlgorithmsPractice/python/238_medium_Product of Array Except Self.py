@@ -26,6 +26,7 @@ class Solution:
         	ret.append(pre)
         	pre = pre * i 
         pre = 1
+        print(ret)
         for i in range(len(nums) - 1, -1, -1):
         	ret[i] = ret[i] * pre 
         	pre = pre * nums[i]

@@ -58,7 +58,7 @@ class ListNode(object):
 
 dummy = List = ListNode(0)
 nums = [1,6, 2,3,6,4,5,6]
-val = 6
+val = 1
 for i in nums:
     dummy.next = ListNode(i)
     dummy = dummy.next

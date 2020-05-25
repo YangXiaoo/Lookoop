@@ -73,7 +73,7 @@ class Solution1(object):
 
 
 class Solution2(object):
-    def isMatch(self, s, p,id="0"):
+    def isMatch(self, s, p):
         """
         :type s: str
         :type p: str
@@ -81,11 +81,10 @@ class Solution2(object):
         """
         if p == "":
             return s == ""
-        print(id,"---->s is:",s,"\t|p is:",p)
         if len(p) > 1 and p[1] == "*":
-            return self.isMatch(s, p[2:],id="1") or (s and (s[0] == p[0] or p[0] == '.') and self.isMatch(s[1:], p,id="2"))
+            return self.isMatch(s, p[2:]) or (s and (s[0] == p[0] or p[0] == '.') and self.isMatch(s[1:], p))
         else:
-            return s and (s[0] == p[0] or p[0] == '.') and self.isMatch(s[1:], p[1:],id="3")
+            return s and (s[0] == p[0] or p[0] == '.') and self.isMatch(s[1:], p[1:])
 
 s="ab"
 p=".*c"

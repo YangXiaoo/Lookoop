@@ -1531,11 +1531,55 @@ def test_runFast():
 
 # test_runFast()
 
+################# 2020-5-25 ######################
+# LC-5 字符串中最长的回文串
+def longestPalindrome(s):
+    maxLength, startIndex = 0, 0
+    sLength = len(s)
+
+    for i in range(sLength):
+        if i - maxLength >= 0 and s[i-maxLength:i+1] == s[i-maxLength:i+1][::-1]:
+            startIndex = i - maxLength
+            maxLength += 1
+        if i - maxLength >= 1 and s[i-maxLength-1:i+1] == s[i-maxLength-1:i+1][::-1]:
+            startIndex = i - maxLength - 1
+            maxLength += 2
+
+    return s[startIndex: startIndex+maxLength]
+
+def test_longestPalindrome():
+    s = "ccabcbaewdf"
+    ret = longestPalindrome(s)
+    print(ret)
+
+# test_longestPalindrome()
+
 #######################################
-# 
+# LC-6 ZigZag convert
 #######################################
+# LC-10 正则表达式匹配
+# 剑指offer-19
+def isMatch(s, p):
+    if p == "":
+        return s == ""
+    if len(p) > 1 and p[1] == "*":
+        return isMatch(s, p[2:]) or (s and (s[0] == p[0] or p[0] == '.') and isMatch(s[1:], p))
+    else:
+        return s and (s[0] == p[0] or p[0] == '.') and isMatch(s[1:], p[1:])
+
+def test_isMatch():
+    s = "ab"
+    p = ".*c"
+    ret = isMatch(s, p)
+    if ret:
+        print('True')
+    else:
+        print('False')
+
+# test_isMatch()
+
 #######################################
-#######################################
+# LC-12 Integer to Roman
 #######################################
 #######################################
 #######################################

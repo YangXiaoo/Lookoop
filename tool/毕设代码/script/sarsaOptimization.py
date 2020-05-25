@@ -267,7 +267,8 @@ class Env(EnvHandler):
         self.varStore.append(varValue)
         self.rewardStore.append(reward)
 
-        self.checkOptimalValueIsConvergence()  # 检查存储值的差值，低于某个阈值后结束迭代
+        # 不需要检测迭代停止准则
+        # self.checkOptimalValueIsConvergence()  # 检查存储值的差值，低于某个阈值后结束迭代
 
         return reward
 

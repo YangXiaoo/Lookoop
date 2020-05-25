@@ -124,7 +124,8 @@ class MyWindow(QMainWindow, ui_MainWindow.Ui_MainWindow):
 
     def mockPredictFunc(self):
         """测试"""
-        return os.path.basename(self.predictPic), 34
+        import random
+        return os.path.basename(self.predictPic), random.randint(0,30)
 
     def predictFunc(self):
         """预测，使用Stacking继承学习方法直接预测.

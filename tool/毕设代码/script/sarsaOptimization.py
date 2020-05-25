@@ -8,7 +8,7 @@
     二次响应面模型建立见`quaRegression.py`
 3. 遗传算法见`GAMain.py`
 4. 强化学习为本程序，训练模型为`train()`函数,训练结果在`/sarsaResults`, 强化学习模型保
-    存在`../data/sarsaModel`文件夹下;训练好模型后, 选择最好的模型使用`excute()`函数执
+    存在`../data/sarsaModel`文件夹下;训练好模型后, 选择最好的模型使用`excute()`函数，执
     行结果在`/sarsaModelExcuteResults`目录下
 5. 运行结果全部日志见`../log`目录
 """
@@ -129,7 +129,7 @@ class EnvHandler(object):
 
         return reward
 
-    def getOptimalValueDistance(self):
+    def getOptimalValueGapDistance(self):
         """获得两个最优值之间最大的间隔距离"""
         maxGap = 0
         preIndex = 0
@@ -406,7 +406,7 @@ class QFunction(object):
         return np.array(action)
 
 
-def generatePoints(lowBoundary, upBoundary, splitPointCount):
+def gridMeshPoints(lowBoundary, upBoundary, splitPointCount):
     """生成不同区域初始起点"""
     if splitPointCount == 0:
         return [None]
@@ -414,7 +414,7 @@ def generatePoints(lowBoundary, upBoundary, splitPointCount):
     pos = None
     gap = []
     for i in range(dim):
-        gap.append(upBoundary[i] - lowBoundary[i])
+        gap.append(upBoundary[i] - lowBoundary[i·])
     splitPoint = []
     for i in range(dim):
         increate = int(gap[i] // (splitPointCount + 1))
@@ -428,7 +428,9 @@ def generatePoints(lowBoundary, upBoundary, splitPointCount):
     return pos 
 
 def crossPoint(points):
-    """交叉组合"""
+    """递归进行交叉组合
+    @example points: [[1,10],[2,20],[3,30]]，返回[[1, 2, 3], [1, 2, 30], [1, 20, 3], [1, 20, 30], [10, 2, 3], [10, 2, 30], [10, 20, 3], [10, 20, 30]]
+    """
     def helper(points, res):
         if not points:
             return res
@@ -447,7 +449,7 @@ def testGeneratePoints():
     """测试-网格划分生成"""
     lowBoundary = [-300, -300, -300, -300, -200]
     upBoundary = [300, 300, 100, 300, 200]
-    ret = generatePoints(lowBoundary, upBoundary)
+    ret = gridMeshPoints(lowBoundary, upBoundary)
 
 def saveProfileOfResults(resultForEachStep, picSavingPath="result.jpg"):
     """保存结果曲线为图片"""
@@ -500,6 +502,7 @@ def excute():
 
     initPos = [[300, 300, 300, 300, 200]] # 最原始的模型尺寸
 
+    # # 结果最优的代理模型路径
     # QSavingPath = "../data/Q.model"
     
     # 执行动作
@@ -557,7 +560,7 @@ def train():
 
     # 初始化起点位置
     splitPointCount = 2
-    initPos = generatePoints(lowBoundary, upBoundary, splitPointCount) 
+    initPos = gridMeshPoints(lowBoundary, upBoundary, splitPointCount) 
     initPos.append([300, 300, 300, 300, 200]) # 最原始的模型尺寸
 
     # 打印当前运行参数信息
@@ -608,7 +611,7 @@ def train():
             # # checkLens *= elta
             # checkLens = abs(int(preCheckLens + elta * checkLens * (e.optimalStep / e.step - gamma)))
             # checkLensStore.append(checkLens)
-            # preOptimalValueDistance = e.getOptimalValueDistance()
+            preOptimalValueGapDistance = e.getOptimalValueGapDistance()
 
             var, value = e.getOptimalValue()
 
@@ -642,14 +645,14 @@ def train():
             # 打印当前变动参数，当前最佳值，预估仍需要运行时间的时间
             logger.info("iter: {}, end step: {}, best value appears in step: {},\n\
                         optimal var: {}, optimal value: {},\n\
-                        next checkLens: {}, preOptimalValueDistance: {},\n\
+                        next checkLens: {}, preOptimalValueGapDistance: {},\n\
                         cur best value appears in iter: {},\n\
                         cur best optimal var:{}, cur best optimal value: {},\n\
                         cur EPSILON: {},\n\
                         still need to run: {}"
                         .format(it, e.step, e.optimalStep, 
                                 var, value, 
-                                checkLens, preOptimalValueDistance, 
+                                checkLens, preOptimalValueGapDistance, 
                                 bestValue[0], 
                                 bestValue[1], bestValue[2], 
                                 EPSILON,

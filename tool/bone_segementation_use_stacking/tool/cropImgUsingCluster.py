@@ -5,6 +5,7 @@ import pickle
 
 import cv2
 import numpy as np
+import copy
 
 
 import DBSCAN
@@ -14,8 +15,8 @@ import util
 
 # 定义切边补偿值
 up = 100    # 由于手指上方缺失部分较多,所以定义为100
-right = 50  # 右边补偿
-left = 50   # 左边补偿
+right = 100  # 右边补偿
+left = 100   # 左边补偿
 
 def getROIPoint(img, f="SIFT"):
     """使用SIFT,SURF,ORB获得特征点"""
@@ -45,12 +46,16 @@ def getMaxCluster(points, minPoints=5):
     eps = DBSCAN.epsilon(points, minPoints)
 
     types, sub_class = DBSCAN.dbscan(points, eps, minPoints)
+
+    # 统计每个簇类点的数量
     cluster = {}
     sub_m, sub_n = np.shape(sub_class)
     for i in range(sub_m):
         for j in range(sub_n):
             cluster[sub_class[i, j]] = cluster.get(sub_class[i,j], 1) + sub_class[i,j]
 
+
+    # 找到点数最多的簇类
     max_cluster_class,max_total = 0, 0
     for k,v in cluster.items():
         if v > max_total:
@@ -79,11 +84,13 @@ def getMargin(cluster):
     """获得特征点的边界"""
     u, r, d, l = 9999, 0, 0, 9999
     for p in cluster:
+        # height
         if p[1] < u:
             u = p[1]
         if p[1] > d:
             d = p[1]
 
+        # width
         if p[0] < l:
             l = p[0]
         if p[0] > r:
@@ -113,6 +120,11 @@ def writeMarginInfo(outputPath, marginInfo):
     pickle.dump(marginInfo, fp)
     fp.close()
 
+def moveMargin(img, margin):
+    """去除图片边框"""
+    x, w, y, h = margin
+
+    return img[x:w, y:h]
 
 def process(imageDir, outputDir):
     """使用DBSACN裁剪图片"""
@@ -127,26 +139,34 @@ def process(imageDir, outputDir):
     marginInfo = {}
     for i, f in enumerate(files):
         basename = os.path.basename(f)
-        print("process {} / {}: {}".format(i+1, total, basename))
+        print("[info] crop image, process {} / {}: {}".format(i+1, total, basename))
         img = cv2.imread(f)
+
+        cropImg = moveMargin(img, (45,-45,45,-45))   # 删除边框特征
 
         maxMargin = None
         method = ["SIFT", "SURF", "ORB"]
+        mergePoints = []
         for m in method:
+            img = copy.deepcopy(cropImg)
             curpointsDir = os.path.join(pointsDir, m)
             curcluserDir = os.path.join(cluserDir, m)
             curcropDir = os.path.join(cropDir, m)
             util.mkdirs([curcluserDir, curcropDir, curpointsDir])
 
 
-            points = getROIPoint(img)               # 获得ROI点
+            points = getROIPoint(img, f=m)               # 获得ROI点
 
             # 保存ROI
             pointsSavePath = os.path.join(curpointsDir, basename)
             savePointsImg(pointsSavePath, points, img.shape)
 
-
-            maxCluster = getMaxCluster(points, 40)  # 获得最大聚类
+            try:
+                maxCluster = getMaxCluster(points, 40)  # 获得最大聚类
+            except:
+                print("[error] skip: {}".format(basename))
+                continue
+            mergePoints.extend(maxCluster)          # 融合特征点
 
             # 保存关键点图像
             clusterSavePath = os.path.join(curcluserDir, basename)
@@ -169,8 +189,7 @@ def process(imageDir, outputDir):
             cv2.imwrite(cropSavePath, retImg)
 
         # 三种方法获得的最大边界
-        h, w = img.shape[0], img.shape[1]
-        print
+        w, h = img.shape[0], img.shape[1]
         if maxMargin[0] - up < 0:
             maxMargin[0] = 0
         else:
@@ -180,7 +199,7 @@ def process(imageDir, outputDir):
             maxMargin[1] = w - 1
         else:
             maxMargin[1] += right
-
+        # 图片下边缘不补偿
         if maxMargin[3] - left < 0:
             maxMargin[3] = 0
         else:
@@ -189,9 +208,15 @@ def process(imageDir, outputDir):
         marginInfo[basename] = maxMargin    # 记录切边信息
         retImg = cropImage(img, maxMargin)  # 裁剪图片
 
+        # 保存不同特征点融合图像
+        mergeSavePath = os.path.join(pointsDir, "mergePoints_{}".format(basename))
+        savePointsImg(mergeSavePath, mergePoints, img.shape)
+
         # 保存裁剪结果
         cropSavePath = os.path.join(cropDir, basename)
         cv2.imwrite(cropSavePath, retImg)
+
+        # if i == 5: assert False, 'break'
 
     writeMarginInfo(os.path.join(outputDir, "marginInfo.txt"), marginInfo)   # 保存到结果目录
 
@@ -199,7 +224,7 @@ def process(imageDir, outputDir):
 
 
 if __name__ == '__main__':
-    imageDir = r"C:\Study\test\bone\100-original"
-    outputDir = r"C:\Study\test\bone\100-original-crop"
+    imageDir = r"C:\Study\test\bone\100-gt"
+    outputDir = r"C:\Study\test\bone\gt-crop-test-results-01"
 
     process(imageDir, outputDir)

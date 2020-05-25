@@ -25,9 +25,9 @@ def generateFace(name, end=200):
             # 保存
             if not os.path.isdir(dirs):
                 os.makedirs(dirs)
-            cv2.imwrite("%s%s.pgm" % (dirs, str(count)), f)
+            cv2.imwrite("%s/%s.pgm" % (dirs, str(count)), f)
             count += 1
-            print("%s%s.pgm" % (dirs, str(count)))
+            print("%s/%s.pgm" % (dirs, str(count)))
 
         cv2.imshow("face", frame)
 
@@ -39,6 +39,6 @@ def generateFace(name, end=200):
     return file_name
 
 if __name__ == "__main__":
-    dirs = generateFace("tes", 50)
+    dirs = generateFace("zhenghongxu", 50)
     # dirs = "C:\\Study\\github\\Lookoop\\Image\\OpenCV\\face_detect\\face"
     generateCSV(dirs)

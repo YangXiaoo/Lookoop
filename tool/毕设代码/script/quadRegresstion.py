@@ -122,6 +122,13 @@ def crossValidate(X,y):
     rmae = tool.crossValueScore(curveFit, X, y, tool.computeRMAE)
     logger.info("quadratic regression, cross validate RMAE: {}".format(rmae))
 
+def crossValidateMAE(X,y):
+    """使用交叉验证的方式对模型进行训练，看模型对未知数据的拟合能力"""
+    logger.info("{}-crossValidateMAE-{}".format('*'*25, '*'*25))
+    curveFit = CurveFit()    
+    rmae = tool.crossValueScore(curveFit, X, y, tool.computeMAE)
+    logger.info("quadratic regression, cross validate MAE: {}".format(rmae))
+
 def train(X, y):
     """使用所有数据对模型进行训练, 保存模型"""
     curveFit = CurveFit()
@@ -136,11 +143,26 @@ def testModel(X, y):
     rmae = tool.computeRMAE(y, pdt)
     logger.info("quadratic regression, predict rmae : {}".format(rmae))
 
-if __name__ == '__main__':
-    X, Y = getTrainData()
-    y = Y.reshape(1, len(Y))[0]
-    train(X, y)
-    testModel(X, y)
-    crossValidate(X, y)
-    # train(X, y)
+def testModelMAE(X, y):
+    """测试模型对已有训练数据的拟合能力"""
+    logger.info("{}-testModelMAE-{}".format('*'*25, '*'*25))
+    curveFit = io.getData(curveFitModelSavingPath)
+    pdt = curveFit.predict(X)
+    rmae = tool.computeMAE(y, pdt)
+    logger.info("quadratic regression, predict mae : {}".format(rmae))
 
+def testRes():
+    X = np.array([[299.99, 299.99, 99.99, 299.99, -199.99]])
+    curveFit = io.getData(curveFitModelSavingPath)
+    pdt = curveFit.predict(X)
+    print(pdt)
+
+if __name__ == '__main__':
+    # X, Y = getTrainData()
+    # y = Y.reshape(1, len(Y))[0]
+    # train(X, y)
+    # testModel(X, y)
+    # testModelMAE(X, y)
+    # crossValidate(X, y)
+    # crossValidateMAE(X,y)
+    testRes()

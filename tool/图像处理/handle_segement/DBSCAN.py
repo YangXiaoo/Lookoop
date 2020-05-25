@@ -103,21 +103,19 @@ def dbscan(data, eps, MinPts):
     # 计算每个样本之间的欧拉距离
     dist = distance(data)
 
-    # 用于标记
+    # 用于标记簇类
     number = 1
 
     # 对每一个点进行处理
     for i in range(m):
         if dealed[i, 0] == 0:
             D = dist[i, :] # 第i个样本与其他点的距离
-            ind = findEps(D, eps)
-
-            # 区分点的类型
+            ind = findEps(D, eps)   # 找到与当前点距离小于eps的点的索引
 
             # 边界点
             if len(ind) > 1 and len(ind) < MinPts + 1:
-                types[0, i] = 0
-                sub_class[0, i] = 0
+                types[0, i] = 0 # 将当前点标记为边界点
+                sub_class[0, i] = 0 # 将当前点归于第0个簇类
 
             # 噪音点
             if len(ind) == 1:
@@ -129,35 +127,34 @@ def dbscan(data, eps, MinPts):
             if len(ind) >= MinPts + 1:
                 types[0, i] = 1
                 for x in ind:
-                    sub_class[0, x] = number
+                    sub_class[0, x] = number    # 将点标记为number值，表示属于第Number个簇类
 
                 # 判断核心点是否密度可达
                 while len(ind) > 0:
-                    dealed[ind[0], 0] = 1
-                    D = dist[ind[0], :]
-                    tmp = ind[0]
-                    del ind[0]
-                    index = findEps(D, eps)
+                    dealed[ind[0], 0] = 1   # 标记ind[0]点为已处理，当前点表示为K
+                    D = dist[ind[0], :]     # k点与其它所有点之间的欧拉距离
+                    tmp = ind[0]            # 记k点为tmp
+                    del ind[0]              # 删除K点在ind中的记录
+                    index = findEps(D, eps) # 找到与当前点距离小于eps的点的索引
 
                     # 处理非噪音点
-                    if len(index) > 1:
-                        for x in index:
+                    if len(index) > 1:  # 如果周围存在属于一个簇的点
+                        for x in index: # 将周围的点标记为number值的簇
                             sub_class[0, x] = number
 
                         # 判断点类型
-                        if len(index) >= MinPts + 1:
-                            types[0, tmp] = 1
+                        if len(index) >= MinPts + 1:    # 如果当前处理点所在簇类的个数大于最小簇类数
+                            types[0, tmp] = 1           # 则标记为核心点
                         else:
-                            types[0, tmp] = 0
+                            types[0, tmp] = 0           # 否则标记为非核心点
 
 
-                        for j in range(len(index)):
-                            if dealed[index[j], 0] == 0:
-                                dealed[index[j], 0] = 1
-                                ind.append(index[j])
-                                sub_class[0, index[j]] = number
-
-                number += 1
+                        for j in range(len(index)):     
+                            if dealed[index[j], 0] == 0:    
+                                dealed[index[j], 0] = 1         # 如果与K点同一个簇类的点没有被处理过则标记为处理过
+                                ind.append(index[j])            # 将k点同一个簇类的点放入ind中，在下一个循环中处理
+                                # sub_class[0, index[j]] = number # 这一步可以不需要，与145行代码重复了
+                number += 1 # 簇类标记数+1
 
     # 最后处理未分类的点为噪点
     inds = ((sub_class == 0).nonzero())[1]

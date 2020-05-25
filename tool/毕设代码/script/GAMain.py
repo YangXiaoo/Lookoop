@@ -14,18 +14,21 @@ import model
 from util import io, tool
 from quadRegresstion import *
 
-# 日志设置
-LOGGER_PATH = "../log"
-logger = tool.getLogger(LOGGER_PATH)
-logger.setLevel(logging.DEBUG)
+# # 日志设置
+# LOGGER_PATH = "../log"
+# logger = tool.getLogger(LOGGER_PATH)
+# logger.setLevel(logging.DEBUG)
 
 # 模型路径format
-modelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/{}.model"
-singleModelPathFormat = r"C:\Study\github\Lookoops\tool\毕设代码\data/singleModel/{}.model"
+modelPathFormat = "../data/{}.model"
+singleModelPathFormat = "../data/singleModel/{}.model"
 
 def getModelName():
     """获得选择出来的最佳模型名称"""
-    names = ["quadraticRegression", "stackingModel"]
+    names = [
+                "quadraticRegression", 
+                # "stackingModel"
+                ]
 
     return names
 
@@ -76,7 +79,7 @@ class MyProblem(ea.Problem): # 继承Problem父类
 
 def train(modelName, dim, maxIter):
     """训练"""
-    logger.info("{}-GAMain-train-{}".format('*'*25, '*'*25))
+    # logger.info("{}-GAMain-train-{}".format('*'*25, '*'*25))
     problem = MyProblem(modelName)
     NIND = dim  # 种群规模
 
@@ -86,8 +89,9 @@ def train(modelName, dim, maxIter):
     population = ea.Population(Encoding, Field, NIND)
     myAlgorithm = ea.soea_SEGA_templet(problem, population)
     myAlgorithm.MAXGEN = maxIter # 最大进化代数
+    myAlgorithm.drawing = 1  
     [population, obj_trace, var_trace] = myAlgorithm.run()
-    population.save()
+    population.save(printHandler=logger.info)
 
     # 输出结果
     best_gen = np.argmin(problem.maxormins * obj_trace[:, 1]) # 记录最优种群个体是在哪一代
@@ -101,13 +105,16 @@ def train(modelName, dim, maxIter):
     logger.info('评价次数：%s'%(myAlgorithm.evalsNum))
     logger.info('时间已过 %s 秒'%(myAlgorithm.passTime))
 
+    # savePicFromExistResults(modelName)  # 保存已有的result1.svg
+
 def mainModelOptimus():
     """对二次响应面，Stacking模型进行优化"""
     logger.info("{}-GAMain-mainModelOptimus-{}".format('*'*25, '*'*25))
-    dim = 1000
-    maxIter = 1000
+    dim = 200
+    maxIter = 60
     names = getModelName()
     for n in names:
+        logger.info("{}".format('*'*50))
         logger.info("cur params, dim: {}, maxIter: {}".format(dim, maxIter))
         logger.info("optimus model: {}".format(n))
         train(n, dim, maxIter)
@@ -117,14 +124,15 @@ def singleModelOptimus():
     logger.info("{}-GAMain-singleModelOptimus-{}".format('*'*25, '*'*25))
     global modelPathFormat
     modelPathFormat = singleModelPathFormat
-    dim = 1000
-    maxIter = 10000
+    dim = 200
+    maxIter = 60
     names = getSingleModel()
     for n in names:
+        logger.info("{}".format('*'*50))
         logger.info("cur params, dim: {}, maxIter: {}".format(dim, maxIter))
         logger.info("optimus model: {}".format(n))
         train(n, dim, maxIter)
 
 if __name__ == '__main__':
     mainModelOptimus()
-    singleModelOptimus()
+    # singleModelOptimus()

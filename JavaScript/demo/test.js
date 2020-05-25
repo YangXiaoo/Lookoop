@@ -2,4 +2,10 @@ var obj = {
     get () { return '0'; }
 };
 
-console.log(obj.get());
+config = {
+	baseUrl: '/',
+	homeName: 'home'
+}
+
+const { homeName } = config
+console.log(homeName)

@@ -65,8 +65,14 @@ public class Test {
 		// System.out.println(c.c);	// 错误: c 在 C 中是 private 访问控制
 	}
 
+	class D {
+		public static void d() {
+			System.out.println("d-test");
+		}
+	}
+
 	public static void main(String[] args) {
-		testDefaultDeclare();
+		new Test().D.d();
 	}
 
 }

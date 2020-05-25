@@ -89,3 +89,5 @@ tool/毕设代码/log/all.log.2020-01-07
 tool/毕设代码/log/all.log.2020-01-08
 tool/毕设代码/log/all.log.2020-01-09
 tool/毕设代码/data/samples-data-labels.data
+*.data
+tool/毕设代码/log/all.log.2020-01-16

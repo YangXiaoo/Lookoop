@@ -11,7 +11,6 @@ Example 2:
 Input: ")()())"
 Output: 4
 Explanation: The longest valid parentheses substring is "()()"
-
 '''
 
 # 2018-6-19

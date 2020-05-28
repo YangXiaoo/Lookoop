@@ -26,8 +26,8 @@ singleModelPathFormat = "../data/singleModel/{}.model"
 def getModelName():
     """获得选择出来的最佳模型名称"""
     names = [
-                "quadraticRegression", 
-                # "stackingModel"
+                # "quadraticRegression", 
+                "stackingModel"
                 ]
 
     return names

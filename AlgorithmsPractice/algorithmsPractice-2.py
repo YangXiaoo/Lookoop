@@ -1709,17 +1709,43 @@ def basicCalculator(s):
 
     return ret + sign*num
 
+#######################################
 # LC-227 
 #######################################
 # LC-22 
 #######################################
 # LC-238 product of array except self
+def productExceptSelf(nums):
+    """
+    Input:  [1,2,3,4]
+    Output: [24,12,8,6]
+    """
+    pre, ret = 1, []
+    for n in nums:
+        ret.append(pre)
+        pre *= n 
+    pre = 1
+    for i in range(len(nums)-1, -1, -1):
+        ret[i] = ret[i]*pre
+        pre *= nums[i]
+
+    return ret 
+
+def test_productExceptSelf():
+    nums = [1,2,3,4]
+    ret = productExceptSelf(nums)
+    print(ret)
+
+test_productExceptSelf()
+
 #######################################
 # LC-23 merge k sorted lits
 #######################################
 # LC-24 swap nodes in k-group
 #######################################
 # LC-29 
+#######################################
+# LC-315
 #######################################
 # LC-322 
 #######################################

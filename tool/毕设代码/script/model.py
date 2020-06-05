@@ -63,38 +63,38 @@ def _getModel():
 
 class stacking(BaseEstimator, RegressorMixin, TransformerMixin):
     """stacking集成学习"""
-    def __init__(self, model, fusion_model):
+    def __init__(self, model, fusionModel):
         self.model = model
-        self.fusion_model = fusion_model
+        self.fusionModel = fusionModel
         self.kf = KFold(n_splits=5, random_state=2, shuffle=True)
+        self.modelSaved = None
         
     def fit(self, X, y):
-        self.model_saved = [list() for i in self.model] 
-        train_pred = np.zeros((X.shape[0], len(self.model))) # 存储每个数据被预测的结果， 其结果使用融合模型进行训练
+        self.modelSaved = [list() for i in self.model] 
+        trainPred = np.zeros((X.shape[0], len(self.model))) # 存储每个数据被预测的结果， 其结果使用融合模型进行训练
         
         for i,mod in enumerate(self.model):
-            for train_index, value_index in self.kf.split(X, y):
-                # print("[DEBUG] train_index: %s, value_index: %s" % (train_index, value_index))
-                tmp_model = clone(mod)
-                tmp_model.fit(X[train_index], y[train_index])
-                self.model_saved[i].append(tmp_model)
-                train_pred[value_index, i] = tmp_model.predict(X[value_index])
-        self.fusion_model.fit(train_pred, y) # 将训练数据预测结果作为融合模型的输入训练数据
+            for trainIndex, valueIndex in self.kf.split(X, y):
+                # print("[DEBUG] trainIndex: %s, valueIndex: %s" % (trainIndex, valueIndex))
+                tmpModel = clone(mod)
+                tmpModel.fit(X[trainIndex], y[trainIndex])
+                self.modelSaved[i].append(tmpModel)
+                trainPred[valueIndex, i] = tmpModel.predict(X[valueIndex])
+        self.fusionModel.fit(trainPred, y) # 将训练数据预测结果作为融合模型的输入训练数据
         
         return self
     
     def predict(self, X):
         """预测"""
         testMean = []
-        for model in self.model_saved:
+        for model in self.modelSaved:
             tmpData = []
             for m in model:
                 tmpData.append(np.ravel(m.predict(X)))
             resStack = np.column_stack(tmpData).mean(axis=1)
             testMean.append(resStack)
         testMean = np.column_stack(testMean)
-        # testMean = np.column_stack([np.column_stack(list(mod.predict(X)) for mod in tmp_model).mean(axis=1) for tmp_model in self.model_saved]) # 对每个test数据进行预测并取平局值
-        return self.fusion_model.predict(testMean)
+        return self.fusionModel.predict(testMean)
 
 
 def train_model(_train_raw, _labels, collectionModel=LinearRegression()):

@@ -1,0 +1,27 @@
+2020-02-12 20:57:10,691 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2020-02-12 20:57:10,694 - util.py[line: 54] - DEBUG - [ERROR] picture path is not exist, please check the path you input
+2020-02-12 20:57:11,282 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2020-02-12 20:57:11,282 - util.py[line: 54] - DEBUG - [ERROR] picture path is not exist, please check the path you input
+2020-02-12 21:02:11,830 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-2-1.7_new.png
+2020-02-12 21:02:13,025 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2020-02-12 21:02:13,025 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2020-02-12 21:02:13,026 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-2-1.7_new.png, estimate age: 9 ¡À 6 month
+2020-02-12 21:02:13,865 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2020-02-12 21:02:13,865 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2020-02-12 21:02:13,866 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-2-1.7_new.png, estimate age: 19 ¡À 6 month
+2020-02-12 21:02:14,531 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2020-02-12 21:02:14,532 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2020-02-12 21:02:14,533 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-2-1.7_new.png, estimate age: 16 ¡À 6 month
+2020-02-12 21:02:21,658 - util.py[line: 54] - DEBUG - [INFO] reset inputs
+2020-02-12 21:02:26,925 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-1-2.4_new.png
+2020-02-12 21:02:27,867 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2020-02-12 21:02:27,868 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2020-02-12 21:02:27,868 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-1-2.4_new.png, estimate age: 15 ¡À 6 month
+2020-02-12 21:02:29,883 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-2-1.7_new.png
+2020-02-12 21:02:30,725 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2020-02-12 21:02:30,726 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2020-02-12 21:02:30,726 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-2-1.7_new.png, estimate age: 29 ¡À 6 month
+2020-02-12 21:02:35,261 - util.py[line: 54] - DEBUG - [INFO] load picture, source : C:/Study/test/bone/100-gt/fm-2-2.91_new.png
+2020-02-12 21:02:36,247 - util.py[line: 54] - DEBUG - [INFO] check resources load
+2020-02-12 21:02:36,248 - util.py[line: 54] - DEBUG - [INFO] loading predict models.
+2020-02-12 21:02:36,250 - util.py[line: 54] - DEBUG - [INFO] picture name: fm-2-2.91_new.png, estimate age: 28 ¡À 6 month

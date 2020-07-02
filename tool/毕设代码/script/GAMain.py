@@ -38,30 +38,23 @@ def getSingleModel():
 
     return names
 
-class MyProblem(ea.Problem): # 继承Problem父类
+class MyProblem(ea.Problem):
     def __init__(self, modelName):
-        name = 'MyProblem'
         self.modelName = modelName
         M = 1 # 目标维数
         maxormins = [1] # 1：最小化该目标；-1：最大化该目标
         self.Dim = 5 # 决策变量维数
         varTypes = [0 for _ in range(self.Dim)] # 元素为0表示对应的变量是连续的；1表示是离散的
-        # lb = [-300 for _ in range(self.Dim)] # 决策变量下界
-        # ub = [300 for _ in range(self.Dim)] # 决策变量上界
-        lb = [-300, -300, -300, -300, -200]
-        ub = [300, 300, 100, 300, 200]
+        lb = [-300, -300, -300, -300, -200] # 决策变量下界
+        ub = [300, 300, 100, 300, 200] # 决策变量上界
         lbin = [0, 0, 0, 0, 0]  # 1表示能取到边界，0表示取不到边界
         ubin = [0, 0, 0, 0, 0]
-        ea.Problem.__init__(self, name, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
+        ea.Problem.__init__(self, self.modelName, M, maxormins, self.Dim, varTypes, lb, ub, lbin, ubin)
     
     def aimFunc(self, pop):
         """自定义目标函数"""
         model = self.loadModel()
         X = pop.Phen
-        # logger.info(X)
-        feature = []
-        for i in range(self.Dim):
-            feature.append(X[:, [i]][0])
         val = model.predict(X)
         ret = []
         for v in val:

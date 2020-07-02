@@ -13,8 +13,14 @@ def main():
 		v = getV(f, L)
 		print("Fr: {}, v: {}".format(f, v))
 
+def getFr(v, L):
+		return v / ((L*G)**0.5)
+
 if __name__ == '__main__':
-	main()
+	L = 14.23
+	v = 5
+	fr = getFr(v, L)
+	print(fr)
 
 # Fr: 0.05, v: 0.5904532157588779
 # Fr: 0.1, v: 1.1809064315177558

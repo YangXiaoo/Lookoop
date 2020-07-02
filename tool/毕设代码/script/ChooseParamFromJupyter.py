@@ -114,16 +114,13 @@ def gridSearch():
 
     grid(LinearSVR()).grid_train(X,Y,{'epsilon':[0.0005, 0.001,0.005, 0.01, 0.05, 0.1, 0.5], 'loss':['epsilon_insensitive', 'squared_epsilon_insensitive']})
 
-
     grid(GradientBoostingRegressor()).grid_train(X,Y,{'learning_rate':[float(i/10) for i in range(1, 10)]})
-
 
     grid(LinearSVR()).grid_train(X,Y,{'epsilon':[0.0005, 0.001,0.005, 0.01, 0.05, 0.1, 0.5], 'loss':['epsilon_insensitive', 'squared_epsilon_insensitive']})
 
-
     grid(ElasticNet()).grid_train(X,Y,{'alpha':[0.0005, 0.001,0.005, 0.01, 0.05, 0.1, 0.5],'l1_ratio':[0.08,0.1,0.3,0.5,0.7],'max_iter':[10000]})
 
-    # grid(SGDRegressor()).grid_train(X,Y,{'alpha':[0.005, 0.01, 0.05, 0.1,0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 5],'l1_ratio':[0.08,0.1,0.3,0.5,0.7, 0.8, 0.9, 1]})
+    grid(SGDRegressor()).grid_train(X,Y,{'alpha':[0.005, 0.01, 0.05, 0.1,0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 5],'l1_ratio':[0.08,0.1,0.3,0.5,0.7, 0.8, 0.9, 1]})
 
     grid(KernelRidge()).grid_train(X,Y,{'alpha':[0.05, 0.1, 0.3,0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 5], 'kernel':['polynomial'], 'coef0':[1, 1.2, 1.5, 1.6, 1.8, 1.9, 2, 2.2, 2.5, 3]})
 

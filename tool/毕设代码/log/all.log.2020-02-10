@@ -1,8 +1,0 @@
-2020-02-10 16:47:13,685 - quadRegresstion.py[line: 140] - INFO - *************************-testModel-*************************
-2020-02-10 16:47:13,685 - quadRegresstion.py[line: 144] - INFO - quadratic regression, predict rmae : 0.003878893985150893
-2020-02-10 16:47:13,685 - quadRegresstion.py[line: 148] - INFO - *************************-testModelMAE-*************************
-2020-02-10 16:47:13,685 - quadRegresstion.py[line: 152] - INFO - quadratic regression, predict mae : 150.07221056977747
-2020-02-10 16:47:13,685 - quadRegresstion.py[line: 120] - INFO - *************************-crossValidate-*************************
-2020-02-10 16:47:13,810 - quadRegresstion.py[line: 123] - INFO - quadratic regression, cross validate RMAE: 0.030616517726345677
-2020-02-10 16:47:13,810 - quadRegresstion.py[line: 127] - INFO - *************************-crossValidateMAE-*************************
-2020-02-10 16:47:13,935 - quadRegresstion.py[line: 130] - INFO - quadratic regression, cross validate MAE: 1185.8437252884771

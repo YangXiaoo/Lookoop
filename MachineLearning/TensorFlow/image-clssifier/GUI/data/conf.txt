@@ -4,5 +4,5 @@ vgg = C:/Users/Yauno/Desktop/tmp/test.pb
 inception = C:/Users/Yauno/Desktop/tmp/test.pb
 
 [defaultLoadDir]
-pic-default-load-dir = C:/Study/test/bone/100-gt
+pic-default-load-dir = C:/Study/github/Lookoops/MachineLearning/TensorFlow/image-clssifier/GUI
 

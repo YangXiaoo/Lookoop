@@ -1,7 +1,4 @@
-class test(object):
-    def __init__(self):
-        self.a = 1
+# coding:utf-8
 
-t = test()
-t.b = 2
-print(t.b)
+s = 3
+print(s*(1/s))

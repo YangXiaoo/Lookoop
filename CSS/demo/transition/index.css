@@ -1,0 +1,9 @@
+.test1 {
+	/* one transition */
+	transition: background-color .3s linear;
+	/* multiple transitions */
+	transition: color .6s ease, font-size .3s linear;
+	transition: background-color 1s linear,
+	            left .6s ease-out 1s,
+	            transform 1s steps(3, start);
+}

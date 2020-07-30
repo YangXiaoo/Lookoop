@@ -39,7 +39,7 @@ The size of the input 2D-array will be between 3 and 1000.
 Every integer represented in the 2D-array will be between 1 and N, where N is the size of the input array.
 """
 
-
+# 2020-7-28
 class Solution(object):
     def findRedundantDirectedConnection(self, edges):
         """

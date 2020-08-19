@@ -45,7 +45,6 @@ class Solution:
         # don not understand
         # ...
 
-
         # use bfs
         if amount == 0: return 0
         queue = [0]
@@ -67,11 +66,6 @@ class Solution:
                         tmp.append(new_val)
             queue = tmp 
         return -1
-
-
-
-
-
 
 coins = [186,419,83,408]
 

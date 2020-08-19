@@ -1,11 +1,18 @@
 let s = "hello"
 s = s + " world"
 
-let arr = [2,4,3]
-arr.push(5)
-arr.sort()
-arr.reverse()
-arr.pop()
-arr.shift()
-let ret = arr.join("--")
-console.log(ret)
+let objArr = [
+	{
+		name: 's'
+	},
+	{
+		name: 'a'
+	}
+]
+
+for (let i of objArr) {
+	console.log(i)
+	for (let obj in i) {
+		console.log(i)
+	}
+}

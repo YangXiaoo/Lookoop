@@ -35,7 +35,7 @@ public class Singleton {
 
 // 双重校验锁
 public class Singleton {
-    private volatile static Singleton singleton;
+    private volatile static Singleton singleton;	// 防止指令重排序
     private Singleton (){}
     public static Singleton getSingleton() {
 		if (singleton == null) {

@@ -23,10 +23,8 @@ class Solution:
                 nums[i] += nums[i-1]
         return max(nums)
 
-
-
 # test
 nums = [-2,1,-3,4,-1,2,1,-5,4]
 test = Solution()
-res = test.maxSubArray(nums)
+res = test.maxSubArray2(nums)
 print(res)

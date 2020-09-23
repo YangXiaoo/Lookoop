@@ -46,11 +46,28 @@ class Solution:
                 if totalA - a + b == totalB - b + a:
                     return [a, b]
 
-A = [1,2,5]
-B = [2,4]
+    def fairCandySwap2(self, A, B):
+        flag = True
+        if sum(A) > sum(B):
+            A, B = B, A
+            flag = False
+        totalA, totalB = sum(A), sum(B)
+        for i, a in enumerate(A):
+            for j, b in enumerate(B[::-1]):
+                if totalA - a + b < totalB - b + a: # 截断
+                    break
+                if totalA - a + b == totalB - b + a:
+                    if flag:
+                        return [a, b]
+                    else:
+                        return [b, a]
+
+
+A = [2]
+B = [1,3]
 test = Solution()
-ret = test.fairCandySwap(A, B)
-# print(ret)
+ret = test.fairCandySwap2(A, B)
+print(ret)
 
 s = "abcds"
 print(s[::-1])

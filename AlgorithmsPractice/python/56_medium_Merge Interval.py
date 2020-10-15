@@ -34,6 +34,9 @@ class Interval(object):
         self.start = s
         self.end = e
 
+    def __str__(self):
+        print("[{}, {}]".format(self.start, self.end))
+
 
 # List should be sorted befor handle
 class Solution1:
@@ -89,15 +92,42 @@ class Solution2:
                 out += i,
         return r
 
+class Solution:
+    def merge(self, intervals):
+
+        # sort
+        intervals.sort(key=lambda item: item[0])
+
+        i = 0
+        # no neeed to check the last array
+        while (i + 1) < len(intervals):
+
+            curr_a = intervals[i]
+            next_a = intervals[i+1]
+
+            # check for overlap
+            if curr_a[1] >= next_a[0]:
+
+                # merge
+                # we use max coz of such a case: [[1,4],[2,3]]
+                # make the last element of the first array be the furthest(largest value)
+                intervals[i][1] = max(curr_a[1], next_a[1])
+
+                # delete the second array
+                intervals.pop(i+1)
+
+            else:
+                i += 1
+
+        return intervals
 
 nums = [[1,3],[2,6],[8,10],[15,18]]
-intervals = []
-for i in nums:
-    add = Interval(i[0],i[1])
-    intervals.append(add)
+intervals = nums
+# for i in nums:
+#     add = Interval(i[0],i[1])
+#     intervals.append(add)
 
-test = Solution1()
+test = Solution()
 res = test.merge(intervals)
-for r in res:
-    print(r.start,r.end)
+print(res)
         

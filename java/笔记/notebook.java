@@ -30,7 +30,7 @@
 	包装类型： Boolean
 
 	基本类型： byte 二进制位数：8
-	包装类： java.lang.Byte
+	包装类： java.lang.Byte  
 	最小值： Byte.MIN_VALUE = -128
 	最大值： Byte.MAX_VALUE = 127
 

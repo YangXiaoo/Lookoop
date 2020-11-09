@@ -109,7 +109,7 @@ def testRemoveString():
     ret = removeString(string, removeLen)
     print("消除后的字符串为: {}".format(ret))
 
-testRemoveString()
+# testRemoveString()
 #############################################################################
 """申请开发测试资源
 输入1: 需要使用资源的日期数组 [1,4,6,7,8,20]
@@ -171,4 +171,108 @@ def testMinCostApply():
 # testMinCostApply()
 #############################################################################
 """成研访客
+输入1: 节点数，节点按照字母顺序编号 8
+输入2：字符串表示，可达节点间耗时 a->b:4,b->h:1,b->e:2,e->d:1,h->g:1,h->c:2,g->f:2,g->c:5,f->c:2,c->d:1
+输入3: 当前访客位置 a
+输入4: 访客目的地 d
+输出：最短耗时，如果没有字母串为None abed
+"""
+def minCostPath(pointCount, path, startP, endP):
+    edges = initPath(pointCount, path)
+    print("edges: {}".format(edges))
+    # startP, endP = ord(startP) - ord('a'), ord(endP) - ord('a')
+    # print("startP: {}, endP: {}".format(startP, endP))
+    minCost, minPath = 0, []
 
+    def helper(curS, curCost, curPath):
+        """辅助函数，递归查找"""
+        nonlocal minCost, minPath, edges
+        if curS == endP:
+            if minCost == 0 or curCost < minCost:
+                minCost = curCost
+                minPath = curPath[::]
+        else:
+            # print("curS: {}, curCost: {}, curPath: {}".format(curS, curCost, curPath))
+            for pIndex, c in enumerate(edges[curS]):
+                if c != 0:
+                    curPath.append(chr(pIndex + ord('a')))
+                    curCost += c
+                    helper(pIndex, curCost, curPath)
+                    curCost -= c
+                    curPath.pop()
+
+    helper(startP, 0, [chr(startP + ord('a'))])
+
+    if minCost != 0:
+        return "".join(minPath)
+
+    return None 
+
+
+def initPath(pointCount, path):
+    pathNums = path.split(',')
+    edges = [[0 for _ in range(pointCount)] for _ in range(pointCount)]
+    for p in pathNums:
+        pStart, pEnd, cost = ord(p[0]) - ord('a'), ord(p[3]) - ord('a'), int(p[-1])
+        edges[pStart][pEnd] = cost
+
+    return edges
+
+def testMinCostPath():
+    pointCount = 8
+    path = "a->b:4,b->h:1,b->e:2,e->d:1,h->g:1,h->c:2,g->f:2,g->c:5,f->c:2,c->d:1"
+    startP = 'a'
+    endP = 'd'
+    tmp = minCostPath(pointCount, path, startP, endP)
+    print(tmp)
+
+# testMinCostPath()
+#############################################################################
+"""结对编程
+根据人员合作情况，判断重新结对是否能够让所有结对的成员曾经有合作经验
+输入1: 结对对数 2
+输入2：结对情况 tom:jim, mike:mini
+输入3：有合作经验的对数数量 2
+输入4：有合作经验的人员对应情况 mike:jim, tom:mini
+输出： 能否重新结对，1是，0否  1
+"""
+def newPair(pairCount, pair, copCount, cop):
+    edges = initPair(cop)
+    peoples = getPeople(pair)
+    finalCop = []
+
+    for p in peoples:
+        if p in edges:
+            finalCop.append(p)
+
+    print(finalCop)
+    return len(finalCop) == pairCount
+
+def getPeople(pair):
+    pairNums = pair.split(",")
+    peoples = []
+    for p in pairNums:
+        cop = p.split(":")
+        peoples.append(cop[0])
+        peoples.append(cop[1])
+
+    return peoples
+
+def initPair(pair):
+    pairNums = pair.split(",")
+    edges = {}
+    for p in pairNums:
+        cop = p.split(":")
+        edges[cop[0]] = cop[1]
+        edges[cop[1]] = cop[0]
+
+    return edges
+
+def test_newPair():
+    pairCount, pair, copCount, cop = 2, "tom:jim,mike:mini", 2, "mike:jim,tom:mini"
+
+    ret = newPair(pairCount, pair, copCount, cop)
+    print(ret)
+
+
+test_newPair()

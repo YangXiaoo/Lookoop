@@ -228,7 +228,9 @@ def testMinCostPath():
 
 # testMinCostPath()
 #############################################################################
-"""结对编程
+# 2020-11-10
+
+"""结对编程 
 根据人员合作情况，判断重新结对是否能够让所有结对的成员曾经有合作经验
 输入1: 结对对数 2
 输入2：结对情况 tom:jim, mike:mini
@@ -249,6 +251,7 @@ def newPair(pairCount, pair, copCount, cop):
     return len(finalCop) == pairCount
 
 def getPeople(pair):
+    """分割字符串获得人员"""
     pairNums = pair.split(",")
     peoples = []
     for p in pairNums:
@@ -259,6 +262,7 @@ def getPeople(pair):
     return peoples
 
 def initPair(pair):
+    """分割字符串获得配对信息"""
     pairNums = pair.split(",")
     edges = {}
     for p in pairNums:
@@ -275,4 +279,96 @@ def test_newPair():
     print(ret)
 
 
-test_newPair()
+# test_newPair()
+#############################################################################
+"""8.碰碰乐游戏
+给定一数组表示方块，正负表示运动方向（负数向左，正数向右），求最终剩余方块
+输入1： 初始方块 [5,10,2,-5]
+输出：剩余方块 [5,10]
+"""
+def crashGame(block):
+    if len(block) < 2:      # 特殊判断
+        return block
+
+    stack = []
+    for b in block:
+        stack.append(b)
+        if b < 0:
+            while len(stack) > 1:
+                if stack[-1] + stack[-2] == 0:              # 最后两个数可以直接抵消，抵消后退出循环
+                    stack.pop()
+                    stack.pop()
+                    break
+                else:
+                    if stack[-2] < 0:                       # 倒数第二个为负数，退出循环
+                        break
+                    else:                                   # 最后一个为负数，倒数第二个为正数
+                        if stack[-1] + stack[-2] < 0:       # 正数被抵消
+                            stack.pop(len(stack) - 2)
+                        elif stack[-1] + stack[-2] > 0:     # 负数被抵消, 直接退出循环
+                            stack.pop()
+                            break
+
+    return [stack, None][len(stack) == 0]
+
+def test_crashGame():
+    blocks = [[5,10,2,-5], [6,-6]]
+
+    for block in blocks:
+        ret = crashGame(block)
+        print(ret)
+
+# test_crashGame()
+#############################################################################
+"""健康打卡人员塞选
+输入： 筛选条件 J="aA", 员工办公状态打卡 S="aAAbbb"
+输出： 3 三名满足"aAA"
+"""
+def selectPeople(J, S):
+    jNums =[j for j in J]
+    match = []
+    
+    for s in S:
+        if s in jNums:
+            match.append(s)
+
+    return len(match)
+
+def test_selectPeople():
+    J, S = "aA", "aAAbbb"
+
+    ret = selectPeople(J, S)
+    print(ret)
+
+# test_selectPeople()
+#############################################################################
+"""到岗人数增长统计
+记录多少天后人数会超过当天人数
+输入：记录到岗人员数量的数组 [66,65,67,65]
+输入2: 记录的天数 4
+输出：字符串 2,1,0,0
+"""
+def employeeStatistic(employees, dayNum):
+    """暴力破解"""
+    if len(employees) == 1:
+        return [0]
+
+    ret = []
+    for i, n in enumerate(employees):
+        tmpRes = 0
+        for j in range(i + 1, len(employees)):
+            if employees[j] > n:
+                tmpRes = j - i
+                break
+
+        ret.append(tmpRes)
+
+    return ret 
+
+def test_employeeStatistic():
+    employees, dayNum = [66,65,67,65], 4
+
+    ret = employeeStatistic(employees, dayNum)
+    print(ret)
+
+# test_employeeStatistic()

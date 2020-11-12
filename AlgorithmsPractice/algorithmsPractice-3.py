@@ -2,7 +2,7 @@
 # 2020-11-09
 
 # 2020-11-09
-"""外协分配 
+"""2-外协分配 
 输入1： 各小组资源需求 [1, 5, 3, 9, 6]
 输入2 : 各外协生产效率 [1,3,1,2,7,7]
 输出: 能够满足需求的小组数量 4
@@ -35,7 +35,7 @@ def testQuatifyTeam():
 
 # testQuatifyTeam()
 #############################################################################
-"""裁纸游戏
+"""3-裁纸游戏
 给定一个长方形的长和宽，将其裁剪为一个或多个正方形，且不能有纸张浪费，返回裁剪的正方形的最大变长.(求最大公约数)
 """
 def maxSquareSize(length, width):
@@ -68,7 +68,7 @@ def testMaxSquareSize():
 
 # testMaxSquareSize()
 #############################################################################
-"""消消乐
+"""4-消消乐
 相同字符长度达到消除长度可消除，返回消除后的字符串
 输入: aabbbeccceeffaccfcaa (字符串)
 输入: 20 (字符串长度)
@@ -129,7 +129,7 @@ def testRemoveString():
 
 # testRemoveString()
 #############################################################################
-"""申请开发测试资源
+"""5-申请开发测试资源
 输入1: 需要使用资源的日期数组 [1,4,6,7,8,20]
 输入2: 天数 6
 输入3: 连续使用1天，1周，1个月的成本数组 [4,14,30]
@@ -199,7 +199,7 @@ def minCostPath(pointCount, path, startP, endP):
     edges = initPath(pointCount, path)
     print("edges: {}".format(edges))
     startP, endP = ord(startP) - ord('a'), ord(endP) - ord('a')
-    # print("startP: {}, endP: {}".format(startP, endP))
+    print("startP: {}, endP: {}".format(startP, endP))
     minCost, minPath = 0, []
 
     def helper(curS, curCost, curPath):
@@ -244,10 +244,10 @@ def testMinCostPath():
     tmp = minCostPath(pointCount, path, startP, endP)
     print(tmp)
 
-# testMinCostPath()
+testMinCostPath()
 #############################################################################
 # 2020-11-10
-"""7结对编程 
+"""7-结对编程 
 根据人员合作情况，判断重新结对是否能够让所有结对的成员曾经有合作经验
 输入1: 结对对数 2
 输入2：结对情况 tom:jim, mike:mini
@@ -298,7 +298,7 @@ def test_newPair():
 
 # test_newPair()
 #############################################################################
-"""8.碰碰乐游戏
+"""8-碰碰乐游戏
 给定一数组表示方块，正负表示运动方向（负数向左，正数向右），求最终剩余方块
 输入1： 初始方块 [5,10,2,-5]
 输出：剩余方块 [5,10]
@@ -362,7 +362,7 @@ def test_crashGame():
         ret = crashGame2(block)
         print(ret)
 
-test_crashGame()
+# test_crashGame()
 #############################################################################
 """9-健康打卡人员塞选
 输入： 筛选条件 J="aA", 员工办公状态打卡 S="aAAbbb"
@@ -712,3 +712,195 @@ def test_maxWorkload():
         print(ret)
 
 # test_maxWorkload()
+#############################################################################
+"""19-专利统计情况
+给定保存员工信息的数据结构，包含唯一ID，发表专利数和直系下属的ID，多个下属用'&'分割，每条记录用'{}'包含。
+返回员工和他下属的专利数量之和
+输入：专利信息字符串，查找员工ID {1,5,[2&3]}{2,3,[]}{3,3,[]};1
+输出：该员工辖内发表专利数 11
+
+{1,5,[2&3]}: ,1号员工专利数为5，下属员工号为2,3
+"""
+def patentStatistics(s):
+    userPatent, userRelation = {}, {}
+
+    searchUserId = s.split(';')[-1]
+
+    patentInfo = s.split(';')[0][1:-1].split('}{')
+    print(patentInfo)
+    for info in patentInfo:
+        userId, patentCount, underlingInfo = info.split(',')
+        userPatent[userId] = int(patentCount)
+        underlingNums = underlingInfo[1:-1].split('&')
+        # print("underlingNums: {}".format(underlingNums))
+        userRelation[userId] = []
+        for underling in underlingNums:
+            if underling != '':
+                userRelation[userId].append(underling)
+    print(userPatent, userRelation)
+
+    def helper(curUser):
+        nonlocal patentCount, userRecord, userRelation, userPatent
+        if curUser:
+            patentCount += userPatent[curUser]
+            for user in userRelation[curUser]:
+                if user and user not in userRecord:
+                    if userPatent[user]:
+                        userRecord.append(user)
+                        helper(user)
+
+    patentCount = userPatent[searchUserId]
+    userRecord = []
+    for user in userRelation[searchUserId]:
+        helper(user)
+
+    return patentCount
+
+def test_patentStatistics():
+    inputValue = [
+        "{1,5,[2&3]}{2,3,[]}{3,3,[]};1",
+        "{1,5,[2]}{2,3,[3]}{3,4,[]};2"
+    ]
+
+    for s in inputValue:
+        ret = patentStatistics(s)
+        print(ret)
+
+# test_patentStatistics()
+#############################################################################
+"""20-规范数字格式
+给定一个整数N，每隔三位加一个英文逗号','作为千位符，处理后以字符串格式返回
+输入：n=987
+"""
+def addThousandSeparator(n):
+    n = str(n)
+    stack, count = [], 0
+    for c in n[::-1]:
+        count += 1
+        if count == 4:
+            stack.append(',')
+            count = 1
+        stack.append(c)
+        # print(stack)
+
+    return "".join(stack[::-1])
+
+def test_addThousandSeparator():
+    inputValue = [
+        987,            # 987
+        1234,           # 1,234
+        123456789,      # 123,456,789
+        0,              # 0
+        123456789900,   # 123,456,789,900
+    ]
+
+    for n in inputValue:
+        ret = addThousandSeparator(n)
+        print(ret)
+
+# test_addThousandSeparator()
+#############################################################################
+"""21-制定考试目标分数
+给定分数数组，返回第一个比自己高的分数, 没有比自己高的分数记为-1
+输入：[70,75,60]
+输出：[75,-1,-1]
+"""
+def setTargetScore(scores):
+    record = [-1 for _ in scores]
+    stack = []
+    for i in range(len(scores)):
+        curScore = scores[i]
+        while stack and curScore > scores[stack[-1]]:
+            preIndex = stack.pop()
+            record[preIndex] = i
+        stack.append(i)
+
+    for i in range(len(record)):
+        if record[i] != -1:
+            record[i] = scores[record[i]]
+
+    return record
+
+def test_setTargetScore():
+    inputValue = [
+        [70,75,60],                 # [75, -1, -1]
+        [70,80,72,85,94,63,70],     # [80, 85, 85, 94, -1, 70, -1]
+    ]
+
+    for scores in inputValue:
+        print("------------------------")
+        ret = setTargetScore(scores)
+        print(ret)
+
+# test_setTargetScore()
+#############################################################################
+"""外协完成模块数
+每名中级可以开发medium个模块，每名高级可以完成high个模块，给定n名外协，计算能够完成功能数的可能情况。
+输入：medium = 1, high = 2, num = 3
+输出：[3,4,5,6]
+"""
+def computeCompleteModule(medium, high, num):
+    ret = []
+    users = [medium, high]
+    def helper(curIndex, curUserCount, curModuleCount):
+        if curUserCount == num:
+            if curModuleCount not in ret:
+                ret.append(curModuleCount)
+        else:
+            for i in range(len(users)):
+                helper(i, curUserCount + 1, curModuleCount + users[i])
+
+    helper(0, 0, 0)
+
+    return ret 
+
+def test_computeCompleteModule():
+    inputValue = [
+        [1,2,3],
+    ]
+
+    for medium, high, num in inputValue:
+        ret = computeCompleteModule(medium, high, num)
+        print(ret)
+
+# test_computeCompleteModule()
+#############################################################################
+"""23-保证itable用户唯一
+以最小整数重命名用户姓名
+输入：name = ['a', 'b(1)', 'c(22)', 'b', 'c']
+输出： ['a', 'b(1)', 'c(22)', 'b(2)', 'c']
+"""
+def renameUser(names):
+    userNameRecord = {}
+    repeatRecord = {}
+    for i, name in enumerate(names):
+        if name in userNameRecord:
+            names[i] = "{}({})".format(name, userNameRecord[name] + 1)
+            userNameRecord[name] = userNameRecord[name] + 1
+        else:
+            if name and name[-1] == ')':
+                userName, suffix = name.split('(')[0], name[:-1].split('(')[-1]
+                if userName in userNameRecord:                                              # 如果已经重复则
+                    userNameRecord[userName] = max(userNameRecord[userName], int(suffix))   # 记录最大的版本号
+                else:
+                    userNameRecord[userName] = int(suffix)
+            else:
+                userNameRecord[name] = 0
+
+    return names
+
+def test_renameUser():
+    inputValue = [
+        ['a', 'b(1)', 'c(22)', 'b', 'c'],
+        ['a', 'a(1)', 'a', 'c'],
+        ['a(11)', 'a(1)', 'a', 'a'],
+    ]
+
+    for names in inputValue:
+        ret = renameUser(names)
+        print(ret)
+
+# test_renameUser()
+#############################################################################
+"""24-批量节点调度
+"""

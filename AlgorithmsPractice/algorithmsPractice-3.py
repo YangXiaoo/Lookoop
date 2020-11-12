@@ -244,7 +244,7 @@ def testMinCostPath():
     tmp = minCostPath(pointCount, path, startP, endP)
     print(tmp)
 
-testMinCostPath()
+# testMinCostPath()
 #############################################################################
 # 2020-11-10
 """7-结对编程 
@@ -408,14 +408,32 @@ def employeeStatistic(employees, dayNum):
         ret.append(tmpRes)
 
     return ret 
+def employeeStatistic2(employees, dayNum):
+    ret = [0 for _ in employees]
+    stack = []
+
+    for i in range(dayNum):
+        curPeopleCount = employees[i]
+        while stack and curPeopleCount > employees[stack[-1]]:
+            preIndex = stack.pop()
+            ret[preIndex] = i - preIndex
+        stack.append(i)
+
+    return ret
 
 def test_employeeStatistic():
-    employees, dayNum = [66,65,67,65], 4
+    inputValue = [
+        [[66,65,67,65], 4],         # [2, 1, 0, 0]
+        [[1, 5, 4, 3, 4, 6], 6],    # [1, 4, 3, 1, 1, 0]
+    ]
+     
+    for employees, dayNum in inputValue:
+        ret = employeeStatistic2(employees, dayNum)
+        print(ret)
 
-    ret = employeeStatistic(employees, dayNum)
-    print(ret)
+    print("------------------")
 
-# test_employeeStatistic()
+test_employeeStatistic()
 #############################################################################
 """11-更新应急预案
 编写程序比较两个版本号，V1>V2返回1，V1<V2返回-1，相等返回0，异常返回-100
@@ -450,13 +468,13 @@ def compareVersion(v1, v2):
     return ret 
 
 def test_compareVersion():
-    v = [
+    inputValue = [
             ["7.5.2.4", "7.5.3"],   # -1
             ["0.1", "1.1"],         # -1
             ["1.01", "1.001"],      # 0
             ["1.0", "1.0.0"]        # 0
         ]
-    for v1, v2 in v:
+    for v1, v2 in inputValue:
         ret = compareVersion(v1, v2)
         print(ret)
 
@@ -903,4 +921,41 @@ def test_renameUser():
 # test_renameUser()
 #############################################################################
 """24-批量节点调度
+给定节点先后列表prerequisite和一个查询对列表queries,判断节点queires[i][0]是否必须在节点quires[i][1]之前调起，
+如果是返回1，否则返回0
+输入：n = 2, prerequisite=[[1,0]], quires=[[0,1],[1,0]]
+输出：[0,1]
 """
+def checkIsPrerequisite(n, prerequisite, quires):
+    def helper(curNode, endNode):
+        nonlocal edges, ret 
+        if curNode == endNode:
+            ret.append(1)
+            return True
+        else:
+            for i, n in enumerate(edges[curNode]):
+                if n != 0:
+                    if helper(i, endNode): return True
+        ret.append(0)
+
+    edges = [[0 for _ in range(n)] for _ in range(n)]
+    for nodes in prerequisite:
+        edges[nodes[0]][nodes[1]] = 1
+
+    ret = []
+    for startNode, endNode in quires:
+        helper(startNode, endNode)
+
+    return ret
+
+def test_checkIsPrerequisite():
+    inputValue = [
+        [2, [[1,0]], [[0,1],[1,0]]],        # [0,1]
+        [3, [[1,0],[2,0]], [[0,1],[2,0]]],  # [0,1]
+    ]
+
+    for n, prerequisite, quires in inputValue:
+        ret = checkIsPrerequisite(n, prerequisite, quires)
+        print(ret)
+
+# test_checkIsPrerequisite()

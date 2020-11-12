@@ -188,7 +188,7 @@ def testMinCostApply():
 
 # testMinCostApply()
 #############################################################################
-"""成研访客
+"""6-成研访客
 输入1: 节点数，节点按照字母顺序编号 8
 输入2：字符串表示，可达节点间耗时 a->b:4,b->h:1,b->e:2,e->d:1,h->g:1,h->c:2,g->f:2,g->c:5,f->c:2,c->d:1
 输入3: 当前访客位置 a
@@ -247,7 +247,7 @@ def testMinCostPath():
 # testMinCostPath()
 #############################################################################
 # 2020-11-10
-"""结对编程 
+"""7结对编程 
 根据人员合作情况，判断重新结对是否能够让所有结对的成员曾经有合作经验
 输入1: 结对对数 2
 输入2：结对情况 tom:jim, mike:mini
@@ -303,7 +303,7 @@ def test_newPair():
 输入1： 初始方块 [5,10,2,-5]
 输出：剩余方块 [5,10]
 """
-def crashGame(block):
+def crashGameHandler(block):
     if len(block) < 2:      # 特殊判断
         return block
     stack = []
@@ -314,27 +314,57 @@ def crashGame(block):
                 if stack[-2] < 0:                       # 倒数第二个为负数，退出循环
                     break
                 else:                                   # 最后一个为负数，倒数第二个为正数
-                    if stack[-1] + stack[-2] < 0:       # 正数被抵消
+                    blockSum = stack[-1] + stack[-2]
+                    if blockSum < 0:                    # 正数被抵消
                         stack.pop(len(stack) - 2)
-                    elif stack[-1] + stack[-2] > 0:     # 负数被抵消, 直接退出循环
+                    elif blockSum > 0:                  # 负数被抵消, 直接退出循环
                         stack.pop()
                         break
-                    elif stack[-1] + stack[-2] == 0:    # 最后两个数可以直接抵消，抵消后退出循环
+                    elif blockSum == 0:                 # 最后两个数可以直接抵消，抵消后退出循环
                         stack.pop()
                         stack.pop()
                         break
+
+    return stack 
+
+def crashGame(block):
+    """左右边界不相接"""
+    stack = crashGameHandler(block)
     return [stack, None][len(stack) == 0]
 
+def crashGame2(block):
+    """考虑左右链接成环"""
+    handledBlock = crashGameHandler(block)
+    while True:
+        preLength = len(handledBlock)
+        if preLength < 2:
+            break
+        # 只有左边界块往左（负值），右边界块往右（正值）才会合并
+        if handledBlock[0] < 0 and handledBlock[-1] > 0:
+            blockSum = handledBlock[0] + handledBlock[-1]
+            if  blockSum == 0:                  # 左右抵消
+                handledBlock.pop(0)
+                handledBlock.pop()
+            elif blockSum > 0:                  # 负值被抵消
+                handledBlock.pop(0)
+            else:                               # 正值被抵消
+                handledBlock.pop()
+
+        if preLength == len(handledBlock): break
+
+    return [handledBlock, None][len(handledBlock) == 0]
+
+
 def test_crashGame():
-    blocks = [[5,10,2,-5], [6,-6]]
+    blocks = [[5,10,2,-5], [6,-6], [-6, -4, -3, 3, 4, 6]]
 
     for block in blocks:
-        ret = crashGame(block)
+        ret = crashGame2(block)
         print(ret)
 
-# test_crashGame()
+test_crashGame()
 #############################################################################
-"""健康打卡人员塞选
+"""9-健康打卡人员塞选
 输入： 筛选条件 J="aA", 员工办公状态打卡 S="aAAbbb"
 输出： 3 三名满足"aAA"
 """
@@ -356,7 +386,7 @@ def test_selectPeople():
 
 # test_selectPeople()
 #############################################################################
-"""到岗人数增长统计
+"""10-到岗人数增长统计
 记录多少天后人数会超过当天人数
 输入：记录到岗人员数量的数组 [66,65,67,65]
 输入2: 记录的天数 4
@@ -387,7 +417,7 @@ def test_employeeStatistic():
 
 # test_employeeStatistic()
 #############################################################################
-"""更新应急预案
+"""11-更新应急预案
 编写程序比较两个版本号，V1>V2返回1，V1<V2返回-1，相等返回0，异常返回-100
 输入1：V1 "7.5.2.4"
 输入2：V2 "7.5.3"
@@ -563,4 +593,122 @@ def test_assigningTask():
         ret = assigningTask(workload, moduleCount, staffCount)
         print(ret)
 
-test_assigningTask()
+# test_assigningTask()
+#############################################################################
+"""15-数据库备库情况
+排查出第一个没有备份数据库的系统，返回索引，如果不存在返回-1.
+输入：aabcc
+输出：2
+"""
+def checkBackup(databseNums):
+    database, backupInfo = [], {}
+    for d in databseNums:
+        if d not in database:
+            database.append(d)
+        backupInfo[d] = backupInfo.get(d, 0) + 1
+
+    for i, d in enumerate(databseNums):
+        if backupInfo[d] == 1:
+            return i 
+
+    return -1
+
+def test_checkBackup():
+    databseNums = "aabcc"
+
+    ret = checkBackup(databseNums)
+    print(ret)
+
+# test_checkBackup()
+#############################################################################
+"""16-办公用品采购
+求需求量最大的前三种办公用品的总数
+输入： p = [1,1,1,2,2,3,3,4,5]
+输出：7
+"""
+def maxPurchase(p):
+    officeInfo = {}
+    for v in p:
+        officeInfo[v] = officeInfo.get(v, 0) + 1
+
+    needInfo = [v for (k, v) in officeInfo.items()]
+    needInfo = sorted(needInfo, reverse=True)
+
+    if len(needInfo) < 3:
+        return sum(needInfo)
+    else:
+        return sum(needInfo[:3])
+
+def test_maxPurchase():
+    inputValue = [
+        [1,1,1,2,2,3,3,4,5],    # 7
+        [1,1,1,1,5],            # 5
+        [1,1,2,2,3,4,5,6]       # 5
+    ]
+
+    for p in inputValue:
+        ret = maxPurchase(p)
+        print(ret)
+
+# test_maxPurchase()
+#############################################################################
+"""17-代码格式检查
+对括号进行判断，返回添加最少括号使得括号正确的括号数
+输入：())
+输出： 1
+"""
+def validParenthese(s):
+    mapDict = {')': '('}
+
+    stack = []
+    for c in s:
+        if c == '(':
+            stack.append(c)
+        else:
+            curChange = mapDict[c]
+            if len(stack) != 0 and stack[-1] == curChange:
+                stack.pop()
+            else:
+                stack.append(c)
+
+    return len(stack)
+
+def test_validParenthese():
+    inputValue = [
+        "())",  # 1
+        "(((",  # 3
+        "()",   # 0
+        "()))(("    # 4
+    ]
+
+    for s in inputValue:
+        ret = validParenthese(s)
+        print(ret)
+
+# test_validParenthese()
+#############################################################################
+"""18-新员工分配任务
+给定开发合集，找到不相邻的开发任务的最大工作量
+"""
+def maxWorkload(workload):
+    dp = [0 for _ in workload]
+    dp[0] = workload[0]
+    dp[1] = workload[1]
+    for i in range(2, len(workload)):
+        dp[i] = max(dp[i - 1], workload[i] + dp[i - 2])
+
+    # print(dp)
+    return dp[-1]
+
+def test_maxWorkload():
+    inputValue = [
+        [1,2,3,1],          # 4
+        [2,7,9,3,1],        # 12
+        [2,1,4,5,3,1,1,3],  # 12
+    ]
+
+    for workload in inputValue:
+        ret = maxWorkload(workload)
+        print(ret)
+
+# test_maxWorkload()

@@ -433,7 +433,7 @@ def test_employeeStatistic():
 
     print("------------------")
 
-test_employeeStatistic()
+# test_employeeStatistic()
 #############################################################################
 """11-更新应急预案
 编写程序比较两个版本号，V1>V2返回1，V1<V2返回-1，相等返回0，异常返回-100
@@ -959,3 +959,176 @@ def test_checkIsPrerequisite():
         print(ret)
 
 # test_checkIsPrerequisite()
+#############################################################################
+"""字符串压缩
+输入: ABC[3OJ[2BJ]]
+输出：ABCOJBJBJCOJBJBJCOJBJBJ
+"""
+def decompression(s):
+    stack = []
+    preInt, preStr = 0, ''
+    for c in s:
+        if c == '[':
+            if preInt:
+                stack.append(preInt)
+                preInt = 0
+            if preStr:
+                stack.append(preStr)
+                preStr = ''
+        elif c.isdigit():
+            preInt = preInt * 10 + int(c)
+        elif c != ']':
+            if preInt != 0:
+                stack.append(preInt)
+                preInt = 0
+            preStr += c 
+        else:                       # c == ']'
+            curInt = stack.pop()
+            if stack:
+                stack[-1] = stack[-1] + curInt * preStr
+            else:
+                stack.append(curInt * preStr)
+            preStr = stack.pop()
+        print("stack: {}".format(stack))
+    if preStr:
+        stack.append(preStr)
+
+    print("stack: {}".format(stack))
+
+    return "".join(stack)
+
+def test_decompression():
+    inputValue = [
+        "ABC[3OJ[2BJ]]",        # ABCOJBJBJCOJBJBJCOJBJBJ
+        "ABC[3OJ]",             # ABCOJOJ
+        "[2ABC]OJ[3JB]",        # ABCABCOJJBJBJB
+        "[2M[3E[2V[2A]]]]",     # MEVAAVAAEVAAVAAEVAAVAAMEVAAVAAEVAAVAAEVAAVAA
+    ]
+
+    for s in inputValue:
+        print("---------------------------")
+        ret = decompression(s)
+        print(ret)
+
+# test_decompression()
+#############################################################################
+# LeetCode 
+# 2020-11-16
+# 并查集
+def initFa(n):
+    fa =  [i for i in range(n + 1)]
+    return fa
+
+def find(fa, x):
+    if fa[x] == x:
+        return x
+    else:
+        return find(fa, fa[x])
+
+# 684
+def findRedundantConnection(edges):
+    fa = initFa(len(edges))
+
+    for x, y in edges:
+        if find(fa, x) == find(fa, y):
+            return x, y
+        else:
+            fa[find(fa, x)] = find(fa, y)
+
+def test_findRedundantConnection():
+    inputValue = [
+        [[1,2], [2,3], [3,4], [1,4], [1,5]],
+        [[1,2], [1,3], [2,3]]
+    ]
+
+    for edges in inputValue:
+        ret = findRedundantConnection(edges)
+        print(ret)
+
+# test_findRedundantConnection()
+#############################################################################
+"""P1536 村村通
+给定道路连通情况，计算至少还需要建设多少条道路
+"""
+def findRoadForConnected(m, edges):
+    """
+    @param m 道路
+    @param edges 连通情况
+    """
+    fa, ret = initFa(m), 0
+
+    for x, y in edges:                      # 设置父级
+        fa[find(fa, x)] = find(fa, y)
+
+    for i in range(1, m + 1):
+        if find(fa, i) == i:
+            ret += 1
+
+    ret -= 1
+
+    return ret 
+
+def test_findRoadForConnected():
+    inputValue = [
+        [4, [[1,3], [4,3]]],            # 1
+        [3, [[1,2], [1,3], [2,3]]],      # 0
+    ]
+
+    for m, edges in inputValue:
+        ret = findRoadForConnected(m, edges)
+        print(ret)
+
+# test_findRoadForConnected()
+
+#############################################################################
+"""P2820-局域网
+给定局域网连通情况，解决回路问题，去除一些连线，使得网络中没有回路并且求去除网线的最大值
+"""
+class Node():
+    def __init__(self, x, y, w):
+        self.x = x
+        self.y = y
+        self.w = w
+
+def removeCable(n, edges):
+    """
+    @param n 道路
+    @param edges 连通情况
+    """
+    fa = initFa(n)
+    
+    totalW, nodes = 0, []
+    for x, y, w in edges:
+        node = Node(x, y, w)
+        nodes.append(node)
+        totalW += w 
+
+    def getW(node):
+        return node.w
+
+    nodes.sort(key=getW)
+    tmpW = 0
+    for node in nodes:
+        if find(fa, node.x) == find(fa, node.y):
+            continue
+        fa[find(fa, node.x)] = find(fa, node.y)
+        tmpW += node.w 
+
+    return totalW - tmpW
+
+def test_removeCable():
+    inputValue = [
+        [5, 
+            [[1,2,8],
+            [1,3,1],
+            [1,5,3],
+            [2,4,5],
+            [3,4,2]]
+        ],                  # 8
+    ]
+
+    for n, edges in inputValue:
+        ret = removeCable(n, edges)
+        print(ret)
+
+test_removeCable()

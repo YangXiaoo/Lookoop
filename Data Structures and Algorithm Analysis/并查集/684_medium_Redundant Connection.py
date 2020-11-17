@@ -62,7 +62,7 @@ class Solution(object):
 
     def init(self, n):
     	self.fa = [i for i in range(n+1)]
-
+ 
 
     def find(self, x):
     	if self.fa[x] == x:
